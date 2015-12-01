@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151126005445) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -29,12 +32,12 @@ ActiveRecord::Schema.define(version: 20151126005445) do
     t.string   "username"
   end
 
-  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
-  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
-  add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true
+  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true, using: :btree
+  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
+  add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true, using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.datetime "created"
+    t.time     "created"
     t.integer  "creator"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20151126005445) do
     t.integer  "account_id"
   end
 
-  add_index "brands", ["account_id"], name: "index_brands_on_account_id"
+  add_index "brands", ["account_id"], name: "index_brands_on_account_id", using: :btree
 
   create_table "countries", force: :cascade do |t|
     t.string   "name"
@@ -73,7 +76,7 @@ ActiveRecord::Schema.define(version: 20151126005445) do
     t.string   "avatar_tiny"
   end
 
-  add_index "profiles", ["account_id"], name: "index_profiles_on_account_id"
+  add_index "profiles", ["account_id"], name: "index_profiles_on_account_id", using: :btree
 
   create_table "user_brand_following_relationships", force: :cascade do |t|
     t.integer  "account_id"
@@ -82,7 +85,10 @@ ActiveRecord::Schema.define(version: 20151126005445) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "user_brand_following_relationships", ["account_id"], name: "index_user_brand_following_relationships_on_account_id"
-  add_index "user_brand_following_relationships", ["brand_id"], name: "index_user_brand_following_relationships_on_brand_id"
+  add_index "user_brand_following_relationships", ["account_id"], name: "index_user_brand_following_relationships_on_account_id", using: :btree
+  add_index "user_brand_following_relationships", ["brand_id"], name: "index_user_brand_following_relationships_on_brand_id", using: :btree
 
+  add_foreign_key "brands", "accounts"
+  add_foreign_key "user_brand_following_relationships", "accounts"
+  add_foreign_key "user_brand_following_relationships", "brands"
 end
