@@ -1,0 +1,100 @@
+// Place all the styles related to the Articles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.articles-container {
+  width: 100%;
+  text-align: center;
+  background: url('/assets/stars_aurora_borealis_milky_way_skyscapes_1680x1050_62480.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.button {
+  border : none ;
+}
+.button-share {
+  background: url('/assets/share.png') no-repeat center center fixed;
+  width: 16px;
+  height: 16px;
+}
+.article-list {
+    list-style: none;
+    padding-left: 18px;
+    margin: 0;
+    padding: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    /*-webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;*/
+}
+
+/**
+ *
+ */
+.article {
+  box-sizing: border-box;
+  width: 180px;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 6px 1px;
+  border-radius: 3px;
+  font-size: 14px;
+    background-color: #fff;
+    border: 1px solid #E9DEDE ;
+}
+/**
+ *
+ */
+.article .name {
+    text-align: center;
+    padding: 0 5px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.2em;
+    color: #777;
+}
+.article .details {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.article .switcher {
+    text-align: center;
+}
+.article .details .info {
+    width: 200%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+.article .details .info > span {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    width: 50%;
+    margin: 0;
+    padding: 10px 5px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 1em;
+    color: #666;
+}

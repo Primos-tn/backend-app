@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= t('app') %></title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  </head>
+	<%= render :partial => "company/partials/about/header" %>
+
+
+  	<!--  Hero Section  -->
+  	<section class="hero" id="hero">
+  		<div class="container">
+  			<div class="caption">
+  				<h1 class="text-uppercase  animated wow fadeInLeft">Take Photos Like A Pro.</h1>
+  				<p class="text-lowercase  animated wow fadeInLeft">With only your iphone and capture app you can take stunning image like a professional Photographer.</p>
+
+  				<a href="http://pixelhint.com/capture-free-responsive-bootstrap-app-landing-page-theme" class="app_store_btn text-uppercase animated wow fadeInLeft">
+  					<i class="android_icon"></i>
+  					<span>Android App</span>
+  				</a>
+  			</div>
+  		</div>
+  	</section>
+  	<!--  End Hero Section  -->
+
+  	<!--  End About Section  -->
+    <section class="featured_on">
+  		<div class="container">
+  			<ul class="list-unstyled text-center clearfix">
+  				<li style="visibility: visible; animation-name: fadeInDown;" class="col-xs-6 col-sm-6 col-md-3 animated wow fadeInDown animated">
+  					<img src="/assets/welcome/google_logo.png" alt="" title="">
+  				</li>
+  				<li style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;" class="col-xs-6 col-sm-6 col-md-3 animated wow fadeInDown animated" data-wow-delay=".2s">
+  					<img src="/assets/welcome/facebook_logo.png" alt="" title="">
+  				</li>
+  				<li style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInDown;" class="col-xs-6 col-sm-6 col-md-3 animated wow fadeInDown animated" data-wow-delay=".3s">
+  					<img src="/assets/welcome/yahoo_logo.png" alt="" title="">
+  				</li>
+  				<li style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInDown;" class="col-xs-6 col-sm-6 col-md-3 animated wow fadeInDown animated" data-wow-delay=".4s">
+  					<img src="/assets/welcome/paypal_logo.png" alt="" title="">
+  				</li>
+  			</ul>
+  		</div>
+  	</section>
+	<!--  About Section  -->
+	<section class="about" id="about">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 text-center animated wow fadeInLeft">
+				<div class="iphone">
+					<img src="/assets/welcome/iphone.png" alt="" titl="">
+				</div>
+			</div>
+			<div class="col-md-6 animated wow fadeInRight">
+				<div class="features_list">
+					<h1 class="text-uppercase">Capture unforgettable moments.</h1>
+					<p>Seuismod ligula ipsum vulputate tellus quisque dictum tortor at purus faucibus tincidunt, pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. </p>
+					<ul class="list-unstyled">
+						<li class="camera_icon">
+							<span>Euismod ligula ipsum vulputate tellus.</span>
+						</li>
+						<li class="video_icon">
+							<span>Morbi non efficitur nibh sit amet est eros.</span>
+						</li>
+						<li class="eye_icon">
+							<span>Fusce faucibus ante liberonec luctus egestas.</span>
+						</li>
+						<li class="pic_icon">
+							<span>Quisque pretium malesuada ornare.</span>
+						</li>
+						<li class="loc_icon">
+							<span>Cras interdum vestibulum dolor.</span>
+						</li>
+					</ul>
+
+					<a href="#" class="app_store_btn text-uppercase" id="play_video" data-video="http://www.youtube.com/embed/Bm3NV3gGB2w?autoplay=1&showinfo=0">
+						<i class="play_icon"></i>
+						<span>About Video</span>
+					</a>
+					<a href="#hero" class="app_link">Get the app</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="about_video show_video">
+		<a href="" class="close_video"></a>
+	</div>
+	</section>
+	<!--  Email Subscription Section  -->
+	<section class="sub_box">
+	<p class="cta_text animated wow fadeInDown">Join Our Liste and stay updated!</p>
+	<form action="http://pixelhint.us3.list-manage.com/subscribe/post?u=9cf3b8b1cfc597a436b9964d3&amp;id=2449ed590e" metohd="post" class="animated wow fadeIn" data-wow-duration="2s" id="submit_form">
+		<input type="email" id="mc-email" placeholder="Enter your email"/>
+		<button type="submit" id="mc_submit">
+			<i class="icon"></i>
+		</button>
+	</form>
+	<div class="message" id="error_msg">Please Enter A Valid Email.</div>
+	<div class="message" id="success_msg">Thank You For Your Subscription.</div>
+	</section>
+
+  <section class="about" id="about">
+  <div class="container text-center">
+
+  <ul class="list-unstyled list-inline app_platform">
+			<li class="animated wow fadeInDown" data-wow-delay="0s">
+				<a href=""><img src="/assets/welcome/android_icon.png" alt="" title=""></a>
+			</li>
+		</ul>
+</div>
+</div>
+  <%= render :partial => "layouts/footer" %>
+  <script>
+           new WOW().init();
+  </script>
+</body>
+</html>

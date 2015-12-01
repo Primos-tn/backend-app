@@ -1,0 +1,29 @@
+<%= render :partial => "shared/announcing" %>
+<header class="about">
+<div class="container">
+    <div class="logo pull-left animated wow fadeInLeft">
+      <img src="/assets/welcome/logo.png" alt="" title="">
+    </div>
+
+    <nav class="pull-left">
+      <ul class="list-unstyled">
+        <li class="animated wow fadeInLeft" data-wow-delay=".4s">
+          <%= link_to "Affaires", company_page_path("business") %>
+        </li>
+        <li class="animated wow fadeInLeft" data-wow-delay=".6s">
+            <%= link_to 'Back', "/brands/" , "class": "app-button" %>
+        </li>
+
+      </ul>
+    </nav>
+    <div class="social pull-right">
+      <ul class="list-unstyled">
+        <li class="animated wow fadeInRight" data-wow-delay=".2s"><a href="#"><img src="/assets/welcome/facebook.png" alt="" title=""></a></li>
+        <li class="animated wow fadeInRight" data-wow-delay=".1s"><a href="#"><img src="/assets/welcome/twitter.png" alt="" title=""></a></li>
+        <li class="animated wow fadeInRight" data-wow-delay="0s"><a href="#"><img src="/assets/welcome/google.png" alt="" title=""></a></li>
+      </ul>
+    </div>
+    <span class="burger_icon">menu</span>
+  </div>
+<!--  End Header Section  -->
+</header>

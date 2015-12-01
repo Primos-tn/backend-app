@@ -1,0 +1,31 @@
+.announcing {
+    background-color: #40C27D;
+    color: #FFF;
+    text-align: center;
+    padding: 15px;
+    font-size: 29px;
+}
+.navbar-header {
+  background-color: #fff;
+}
+.navbar-brand{
+    font-weight: bold;
+    color : green ;
+}
+.navbar-header a, .navbar a, .announcing{
+  font-family: "proxima-nova","Helvetica","Verdana",sans-serif;
+  color: #414B56;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 49px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 0px none;
+  position: relative;
+  height: 100%;
+  padding: 0px 12px;
+  display: block;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease 0s;
+}

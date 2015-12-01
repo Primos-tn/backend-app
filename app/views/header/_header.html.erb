@@ -1,0 +1,10 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="announcing">
+      بداية من فيفري 2016، تنطلق خدمة بَدَلْ في تونس
+  </div>
+  <% if user_signed_in?.present? %>
+  <%= render :partial => "/header/in" %>
+  <% else %>
+    <%= render :partial => "/header/out" %>
+  <% end %>
+</nav>
