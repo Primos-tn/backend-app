@@ -42,9 +42,20 @@
 
 </section>	<!--  And App Features Section  -->
 <%= render :partial => "company/partials/prices" %>
-
+<!--  Email Subscription Section  -->
+<section class="sub_box">
+<p class="cta_text animated wow fadeInDown">Are you interested, just register your email and we contact you!</p>
+<form action="" metohd="post" class="animated wow fadeIn" data-wow-duration="2s" id="submit_form">
+	<input type="email" id="mc-email" placeholder="Enter your email"/>
+	<button type="submit" id="mc_submit">
+		<i class="icon"></i>
+	</button>
+</form>
+<div class="message" id="error_msg">Please Enter A Valid Email.</div>
+<div class="message" id="success_msg">Thank You For Your Subscription.</div>
+</section>
 <script>
-				 new WOW().init();
+		 new WOW().init();
 </script>
 <script>
 $(function(){ //DOM Ready
