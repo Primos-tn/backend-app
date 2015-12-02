@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="831ddaef-600e-4204-98c6-cb2774369446" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/company/partials/_features.html" afterPath="$PROJECT_DIR$/app/views/company/partials/_features.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/company/business.html.erb" afterPath="$PROJECT_DIR$/app/views/company/business.html.erb" />
     </list>
     <ignored path="gingo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,20 +33,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="business.html.erb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="business.html.erb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/company/business.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0925927">
-              <caret line="46" column="107" selection-start-line="46" selection-start-column="107" selection-end-line="46" selection-end-column="107" />
+            <state vertical-scroll-proportion="0.7306968">
+              <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_features.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_features.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/company/partials/_features.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.57781756">
+            <state vertical-scroll-proportion="-12.423077">
               <caret line="19" column="45" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
               <folding />
             </state>
@@ -136,8 +136,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/_welcome/main.css" />
         <option value="$PROJECT_DIR$/app/views/company/about.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/company/business.html.erb" />
         <option value="$PROJECT_DIR$/app/views/company/partials/_features.html" />
+        <option value="$PROJECT_DIR$/app/views/company/business.html.erb" />
       </list>
     </option>
   </component>
@@ -389,18 +389,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/company/business.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/views/company/partials/_features.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.0925927">
-          <caret line="46" column="107" selection-start-line="46" selection-start-column="107" selection-end-line="46" selection-end-column="107" />
+        <state vertical-scroll-proportion="-12.423077">
+          <caret line="19" column="45" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/company/partials/_features.html">
+    <entry file="file://$PROJECT_DIR$/app/views/company/business.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57781756">
-          <caret line="19" column="45" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.7306968">
+          <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
           <folding />
         </state>
       </provider>
