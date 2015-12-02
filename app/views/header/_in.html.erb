@@ -15,7 +15,7 @@
         </li>
 
           <li class="dropdown">
-            <%= link_to current_user.username, {}, "class":"dropdown-toggle", "data-toggle":"dropdown", "role":"button", "aria-haspopup":"true", "aria-expanded":"true" %>
+            <%= link_to current_user.username, {}, "class" => "dropdown-toggle", "data-toggle" => "dropdown", "role" => "button", "aria-haspopup" => "true", "aria-expanded" => "true" %>
             <ul class="dropdown-menu">
               <li>
                 <%= link_to "Profile",  edit_profile_path(current_user.username) %>
