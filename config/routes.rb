@@ -24,10 +24,10 @@ Rails.application.routes.draw do
     end
 
   post "/company/contact" => "company#contact"
-
+  post "/business/contact" => "company#contact_business"
   # Example of regular route:
   get 'company/:page' , to: 'company#show' , as:'company_page'
-
+  get 'business/contact'  => redirect("/company/business")
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

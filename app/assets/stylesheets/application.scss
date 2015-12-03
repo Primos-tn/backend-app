@@ -61,3 +61,17 @@ a.app-button {
     clear: both;
     margin: 0px;
 }
+.notice {
+	width : 100%;
+	color : white ;
+	padding:  12px;
+	text-align : center ;
+}
+
+.notice.success{
+	background-color : green ;
+}
+
+.notice.error{
+	background-color : red ;
+}
