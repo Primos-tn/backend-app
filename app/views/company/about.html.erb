@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= t('app') %></title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-	<%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
-	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  </head>
-	<%= render :partial => "company/partials/about/header" %>
-
 
   	<!--  Hero Section  -->
   	<section class="hero" id="hero">
@@ -112,9 +102,6 @@
 		</ul>
 </div>
 </div>
-  <%= render :partial => "layouts/footer" %>
   <script>
            new WOW().init();
   </script>
-</body>
-</html>

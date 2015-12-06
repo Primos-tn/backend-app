@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :products
+  resources :products
   devise_for :accounts, singular: :user # singular used to use predefiend function
   resources :profiles
 
