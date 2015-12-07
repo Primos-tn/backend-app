@@ -5,9 +5,11 @@
   <div class="announcing">
     Official launch (mars 2016)
   </div>
-  <% if user_signed_in?.present? %>
-  <%= render :partial => "/header/in" %>
-  <% else %>
-    <%= render :partial => "/header/out" %>
-  <% end %>
+  <div id="container_header">
+    <% if user_signed_in?.present? %>
+    <%= render :partial => "/header/in" %>
+    <% else %>
+      <%= render :partial => "/header/out" %>
+    <% end %>
+  </div>
 </nav>

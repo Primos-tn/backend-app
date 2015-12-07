@@ -47,8 +47,8 @@
 <section class="sub_box">
 <p class="cta_text animated wow fadeInDown">Are you interested, just register your email and we contact you!</p>
 <form action="" method="POST" >
-	
- <%= csrf_meta_tag %>	
+
+ <%= csrf_meta_tag %>
 </form>
 <%= form_tag '/business/contact', authenticity_token: 'external_token', 'class'=>"animated wow fadeIn", 'data-wow-duration'=>"2s", 'id'=>"submit_form" do %>
 	<div>
@@ -72,9 +72,6 @@
 
 </br>
 </br>
-<script>
-		 new WOW().init();
-</script>
 <script>
 $(function(){ //DOM Ready
 

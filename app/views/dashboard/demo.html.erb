@@ -1,0 +1,45 @@
+<%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
+<div class="col-lg-12">
+  <div class="col-lg-2 row">
+       <ul class="dashboad-nav list-unstyled">
+           <li class="dashboad-nav__item">
+               <a href="#">Products</a>
+           </li>
+           <li class="dashboad-nav__item">
+               <a href="#">Users</a>
+           </li>
+           <li class="dashboad-nav__item">
+               <a href="#">Events</a>
+           </li>
+           <li class="dashboad-nav__item">
+               <a href="#">Webhooks</a>
+           </li>
+           <li class="dashboad-nav__item">
+               <a href="/public/dashboard/demo/payment">Payment</a>
+           </li>
+       </ul>
+    </div>   <!-- /#sidebar-wrapper -->
+       <!-- Page Content -->
+       <div class="col-lg-10 row">
+        Loading awsome components
+
+
+       </div>
+       <!-- /#page-content-wrapper -->
+
+   </div>
+...
+   <!-- Menu Toggle Script -->
+   <script>
+   $("#menu-toggle").click(function(e) {
+       e.preventDefault();
+       $("#wrapper").toggleClass("toggled");
+   });
+   $('#container_header').hide();
+  $(function(){ //DOM Ready
+  	$(".gridster ul").gridster({
+  			widget_margins: [10, 9],
+  			widget_base_dimensions: [200, 200]
+  	});
+  });
+</script>
