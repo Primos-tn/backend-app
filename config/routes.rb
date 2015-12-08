@@ -31,8 +31,14 @@ Rails.application.routes.draw do
   get 'company/:page' , to: 'company#show' , as:'company_page'
   get 'business/contact'  => redirect("/company/business")
   get '*path' => 'welcome#index'
-  get 'public/dashboard/demo/'  => "dashboard#dashboard_demo"
-  get 'public/dashboard/demo/payment'  => "dashboard#dashboard_demo_pricing"
+  get 'dashboard/products/'  => "dashboard#dashboard_demo"
+  get 'dashboard/users/'  => "dashboard#dashboard_demo"
+  get 'dashboard/events/'  => "dashboard#dashboard_demo"
+  get 'dashboard/webhooks/'  => "dashboard#dashboard_demo"
+  get 'dashboard/webhooks/'  => "dashboard#dashboard_demo"
+  get 'dashboard/targetizeIO/'  => "dashboard#dashboard_demo"
+  get 'dashboard/payment'  => "dashboard#dashboard_demo_pricing"
+  get 'dashboard/*path'  => "dashboard#dashboard_demo"
 
 
   # Example of regular route:

@@ -15,7 +15,7 @@
 //= require react
 //= require react_ujs
 //= require_self
-//= require ./_welcome/bootstrap.js
+//= require_tree  ./vendor
 //= require_tree .
 //= require components
 //= require gridster.js
