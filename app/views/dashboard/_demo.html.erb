@@ -1,21 +1,24 @@
 <%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
-<div class="col-lg-12">
-  <div class="col-lg-2 dashboad__sideBar row">
+<div class="container">
+  <div class="dashboad__sideBar col-lg-2">
        <ul class="dashboad-nav list-unstyled">
            <li class="dashboad-nav__item">
-               <a href="#">Products</a>
+               <a href="/dashboard/products">Products</a>
            </li>
            <li class="dashboad-nav__item">
-               <a href="#">Users</a>
+               <a href="/dashboard/users">Users</a>
            </li>
            <li class="dashboad-nav__item">
-               <a href="#">Events</a>
+               <a href="/dashboard/events">Events</a>
            </li>
            <li class="dashboad-nav__item">
-               <a href="#">Webhooks</a>
+               <a href="/dashboard/webhooks">Webhooks</a>
+           </li>
+		   <li class="dashboad-nav__item">
+               <a href="/dashboard/targetize">targetiZe</a>
            </li>
            <li class="dashboad-nav__item dashboad-nav__item--active">
-               <a href="/public/dashboard/demo/payment">Payment</a>
+               <a href="/dashboard/payment">Payment</a>
            </li>
        </ul>
   </div>   <!-- /#sidebar-wrapper -->

@@ -1,8 +1,11 @@
 class DashboardController < ApplicationController
-  def dashboard_demo
+  def dashboard
+    render 'dashboard/default'
+  end
+  def dashboard_payment
     render 'dashboard/pricing'
   end
-  def dashboard_demo_pricing
-    render 'dashboard/pricing'
+  def targetize
+    render 'dashboard/targetize'
   end
 end
