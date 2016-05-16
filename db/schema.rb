@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20151206053040) do
   add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true, using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.time     "created"
     t.integer  "creator"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

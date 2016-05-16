@@ -31,9 +31,6 @@ Rails.application.routes.draw do
   get 'company/:page' , to: 'company#show' , as:'company_page'
   get 'business/contact'  => redirect("/company/business")
   #get '*path' => 'welcome#index'
-  get 'dashboard/pricing/'  => "dashboard#dashboard_payment"
-  get 'dashboard/targetize/'  => "dashboard#targetize"
-  get 'dashboard/*path'  => "dashboard#dashboard"
 
 
   # Example of regular route:
@@ -79,9 +76,13 @@ Rails.application.routes.draw do
   #   resources :photos, concerns: :toggleable
 
   # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+    namespace :dashboard do
+      # Directs /admin/products/* to Admin::ProductsController
+      # (app/controllers/admin/products_controller.rb)
+      resources :products
+      resources :brands
+      get '/' , to: redirect('dashboard/products')
+      get 'targetize' => 'dasboard#targetize', as: :targetize
+      get 'pricing'  => "dashboard#dashboard_payment"
+    end
 end
