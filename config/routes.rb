@@ -82,7 +82,7 @@ Rails.application.routes.draw do
       resources :products
       resources :brands
       get '/' , to: redirect('dashboard/products')
-      get 'targetize' => 'dasboard#targetize', as: :targetize
-      get 'pricing'  => "dashboard#dashboard_payment"
+      get 'targetize' => 'dashboard#targetize', as: :targetize
+      get 'pricing/'  => "dashboard#dashboard_payment"
     end
 end
