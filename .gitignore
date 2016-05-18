@@ -16,3 +16,4 @@
 .env
 \n.idea/**/
 .idea/**/
+database.yml

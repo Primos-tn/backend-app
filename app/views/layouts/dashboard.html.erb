@@ -1,7 +1,9 @@
-<% content_for :content do %>
+<% content_for :title do %>
+    <%= t('app') %> | dashboard
+<% end %>
+<% content_for :main_content do %>
 <%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
 <div class="container">
-  <hfhdhfhd></hfhdhfhd>
   <div class="dashboad__sideBar col-lg-2">
        <ul class="dashboad-nav list-unstyled">
            <li class="dashboad-nav__item">
@@ -11,7 +13,7 @@
                <a href="/dashboard/users">Users</a>
            </li>
            <li class="dashboad-nav__item">
-               <a href="/dashboard/events">Events</a>
+               <a href="/dashboard/compaings">Events</a>
            </li>
            <li class="dashboad-nav__item">
                <a href="/dashboard/webhooks">Webhooks</a>

@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  resources :products
-  resources :products
   devise_for :accounts, singular: :user # singular used to use predefiend function
-  resources :profiles
+  get 'profile' => 'account/profiles#show' # Account::ProfilesController#index
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
@@ -81,8 +79,12 @@ Rails.application.routes.draw do
       # (app/controllers/admin/products_controller.rb)
       resources :products
       resources :brands
-      get '/' , to: redirect('dashboard/products')
+      resources :users
+      resources :webhooks
+      resources :compaings
       get 'targetize' => 'dashboard#targetize', as: :targetize
       get 'pricing/'  => "dashboard#dashboard_payment"
+      get '/' , to: redirect('dashboard/products')
+      get '/demo' , to: redirect('dashboard/products')
     end
 end

@@ -1,4 +1,4 @@
-class Dashboard::ProductsController < Dashboard::DashboardController
+class Dashboard::CompaingsController < Dashboard::DashboardController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   # GET /products

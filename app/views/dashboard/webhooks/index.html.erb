@@ -1,0 +1,30 @@
+<% content_for :inner_content do %>
+    <p id="notice"><%= notice %></p>
+
+    <h1>Listing webhooks</h1>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Brand</th>
+        <th colspan="3"></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @webhooks.each do |webhooks| %>
+          <tr>
+            <td><%= webhook.name %></td>
+            <td><%= webhook.brand_id %></td>
+            <td><%= link_to 'Show', webhook %></td>
+            <td><%= link_to 'Edit', edit_webhook_path(webhook) %></td>
+            <td><%= link_to 'Destroy', webhook, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <br>
+    <%= link_to 'New webhook', new_dashboard_webhook_path %>
+<%end%>

@@ -5,7 +5,8 @@ class Dashboard::DashboardController < ApplicationController
   def dashboard_payment
     render 'pricing'
   end
+
   def targetize
-    render 'targetize'
+    render 'dashboard/targetize'
   end
 end

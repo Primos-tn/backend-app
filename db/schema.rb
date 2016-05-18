@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206053040) do
+ActiveRecord::Schema.define(version: 20160518014500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,12 @@ ActiveRecord::Schema.define(version: 20151206053040) do
 
   add_index "profiles", ["account_id"], name: "index_profiles_on_account_id", using: :btree
 
+  create_table "subscribers", force: :cascade do |t|
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_brand_following_relationships", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "brand_id"
@@ -101,6 +107,16 @@ ActiveRecord::Schema.define(version: 20151206053040) do
 
   add_index "user_brand_following_relationships", ["account_id"], name: "index_user_brand_following_relationships_on_account_id", using: :btree
   add_index "user_brand_following_relationships", ["brand_id"], name: "index_user_brand_following_relationships_on_brand_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "webhooks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   add_foreign_key "brands", "accounts"
   add_foreign_key "user_brand_following_relationships", "accounts"

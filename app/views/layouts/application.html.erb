@@ -9,7 +9,7 @@
   <body>
   <%= render :partial => "header/header" %>
   <main class="main-content" id="body">
-    <%= yield %>
+    <%= content_for?(:main_content) ? yield(:main_content) : yield %>
   </main>
   <%= render 'layouts/footer' %>
 </body>

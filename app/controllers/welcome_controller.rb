@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  def index ()
+  def index
     render 'company/about'
   end
 end
