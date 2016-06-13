@@ -72,9 +72,25 @@ Rails.application.routes.draw do
   #   end
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
-
+  namespace :api do
+    namespace :v1,  defaults: {format: :json} do
+      constraints format: :json do
+        resources :brands do 
+                member do
+                   post 'follow'
+                   post 'unfollow'
+                   get 'follow'
+                   get 'unfollow'
+                end 
+        end 
+        resources :users
+        resources :products
+        match 'session/:action' => 'posts#show', via: [:post]
+      end
+    end
+  end
   # Example resource route within a namespace:
-    namespace :dashboard do
+  namespace :dashboard do
       # Directs /admin/products/* to Admin::ProductsController
       # (app/controllers/admin/products_controller.rb)
       resources :products

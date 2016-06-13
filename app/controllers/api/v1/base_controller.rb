@@ -6,6 +6,8 @@ class Api::V1::BaseController < ApplicationController
   # destroy action
   before_action :destroy_session
 
+  respond_to  :json
+
   # destroy current session
   def destroy_session
     request.session_options[:skip] = true
@@ -29,6 +31,8 @@ class Api::V1::BaseController < ApplicationController
   # Once the client has the token it sends both token and email
   # to the API for each subsequent request.
   def authenticate_user!
+    # FIXME
+    return true
     #FIXME ,  plase filter your source
     if current_user
       return current_user
