@@ -22,10 +22,10 @@ App.Dispatcher = {
    * @param action to be attached
    * @param data to excecute
    */
-   dispatch : function (action, data){
+   dispatch : function (action, data, event){
      if (App.Dispatcher._listeners[action]){
         App.Dispatcher._listeners[action].forEach(function (callback){
-              callback (data);
+              callback (data, event);
         });
      }
    }
@@ -36,9 +36,9 @@ App.Dispatcher = {
  */
 App.Stores = {
   /**
-   * @param event to be attached
-   * @param callback to excecute
-   */
+   *
+   * @param options
+     */
   loadData : function (options){
     $.ajax({
       type : 'GET',
@@ -48,27 +48,27 @@ App.Stores = {
         App.Dispatcher.dispatch(options.action || options.url, data);
       }.bind(this),
      error: function(xhr, status, err) {
-       console.error(this.props.url, status, err.toString());
+       console.error(options.action || options.url, status, err.toString());
      }.bind(this)
     });
   },
   /**
    *
+   * @param options
    */
-  request : function (options){
+  post : function (options){
     $.ajax({
-      type : options.type || 'GET',
+      type : 'POST',
       url : options.url ,
-      dataType : 'json',
-      data : options.data,
+      data : options.data || {},
       success : function(data) {
-        App.Dispatcher.dispatch(options.action || options.action, data);
+        App.Dispatcher.dispatch(options.action || options.url, data, options.event || {});
       }.bind(this),
-     error: function(xhr, status, err) {
-       console.error(this.props.url, status, err.toString());
-     }.bind(this)
-   });
-  }
+      error: function(xhr, status, err) {
+        console.error(options.action || options.url, status, err.toString());
+      }.bind(this)
+    });
+  },
 };
 
 /**
@@ -84,19 +84,23 @@ App.Helpers = {
       url = url.replace (':' + key, data[key]);
     }
     return url ;
-  },
+  }
 };
-
 /**
- * Mininmum facebook Store
+ *
  */
-App.Routes = {
-  /**
-   * Format an url given a key, value object
-   * foo/:bar , { bar : "alex" } will be transformed to foo/alex
-   */
-  followBrand : 'brand/:id/follow',
-  unFollowBrand : 'brand/:id/follow',
-
-  
+var routes = {
+  search : 'search',
+  brands : 'brands',
+  followBrand : 'brands/:id/follow',
+  unFollowBrand : 'brands/:id/unfollow',
+  products : 'products',
+  wishList : 'products/:id/whish',
 };
+//
+var baseApiUrl = "/api/v1/";
+App.Routes = {};
+for (var key in routes){
+  App.Routes[key] = baseApiUrl + routes[key] ;
+}
+

@@ -4,8 +4,7 @@ var ButtonToggle = React.createClass({
      *
      */
    render: function() {
-      console.log (this.props);
-      var following = this.props.following ;
+      var following = this.props.isFollowing ;
       return (
       <div className="onoffswitch">
        <input type="checkbox" defaultChecked={following ? "checked" : false }  onChange={this.props.onToggle} name="onoffswitch" className="onoffswitch-checkbox" id={"myonoffswitch-" + this.props.index }/>
