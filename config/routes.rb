@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   post "/company/contact" => "company#contact"
   post "/business/contact" => "company#contact_business"
   # Example of regular route:
-  get 'company/:page' , to: 'company#show' , as:'company_page'
+  get 'company/:page' , to: 'web/company#show' , as:'company_page'
   get 'business/contact'  => redirect("/company/business")
 
   # Example resource route within a namespace:

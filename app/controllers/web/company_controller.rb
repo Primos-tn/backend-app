@@ -4,9 +4,9 @@ class Web::CompanyController < ApplicationController
   def show
     page = params[:page]
     if page == 'pluto' then
-      render "company/#{page}", :layout => false
+      render "#{page}", :layout => false
     else
-      render "company/#{page}"
+      render "#{page}"
     end
 
   end
