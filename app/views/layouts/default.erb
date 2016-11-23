@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>
+    <%= content_for?(:title) ? yield(:title) : t('app') %>
+  </title>
+
+  <%= stylesheet_link_tag 'vendor', media: 'all', 'data-turbolinks-track' => true %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+
+  <%= content_for?(:stylesheets) ? yield(:stylesheets) : '' %>
+
+  <% if I18n.locale.equal?(:ar) %>
+      <%= stylesheet_link_tag 'rtl', media: 'all', 'data-turbolinks-track' => true %>
+  <% end %>
+
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+
+  <%= render partial: 'shared/i18n/' + locale.to_s %>
+
+  <%= content_for?(:body) ? yield(:body) : yield %>
+
+  <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+</body>
+</html>

@@ -1,0 +1,25 @@
+fr:
+  Sign in : "Entrer"
+  Sign up : "Enregistrer"
+  registration policy : "شروط التسجيل"
+  identifier not valid : 'البريد الإلكتروني او الهاتف غير صحيح'
+  activerecord:
+    attributes:
+      account :
+          username : الاسم
+          email: "المستخدم او البريد الالكتروني"
+          password: "كلمة السر"
+          password_confirmation : 'تاكيد كلمة السر'
+          remember_me : تذكرني
+    errors :
+      models :
+        account :
+          attributes :
+            email :
+              taken : البريد الالكتروني موجود
+            username :
+              taken : الاسم موجود
+  Back: "رجوع"
+  # devise/shared_links
+  Forgot your password? : "نسيت كلمة السر"
+  Send me reset password instructions  : "اعادة تحيين كلمة السر"

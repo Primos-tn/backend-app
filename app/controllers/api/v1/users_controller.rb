@@ -1,10 +1,19 @@
 class Api::V1::UsersController < Api::V1::BaseController
+  #
+  skip_before_filter :authenticate_user!, only: [:index, :show]
+  before_action :set_user, only: [:follow, :unfollow, :show]
 
-  before_filter :authenticate_user!
-    
+  def index
+
+  end
+
   def show
-    user = Account.find(params[:id])
-    render json: user.profile
+    render 'info'
+  end
+
+  private
+  def set_user
+    @user = Account.find(params[:id])
   end
 
 end

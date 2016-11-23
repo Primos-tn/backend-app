@@ -1,37 +1,98 @@
 <% content_for :title do %>
     <%= t('app') %> | dashboard
 <% end %>
-<% content_for :main_content do %>
-<%= javascript_include_tag 'about', 'data-turbolinks-track' => true %>
-<div class="container">
-  <div class="dashboad__sideBar col-lg-2">
-       <ul class="dashboad-nav list-unstyled">
-           <li class="dashboad-nav__item">
-               <a href="/dashboard/products">Products</a>
-           </li>
-           <li class="dashboad-nav__item">
-               <a href="/dashboard/users">Users</a>
-           </li>
-           <li class="dashboad-nav__item">
-               <a href="/dashboard/compaings">Events</a>
-           </li>
-           <li class="dashboad-nav__item">
-               <a href="/dashboard/webhooks">Webhooks</a>
-           </li>
-		   <li class="dashboad-nav__item">
-               <a href="/dashboard/targetize">targetiZe</a>
-           </li>
-           <li class="dashboad-nav__item dashboad-nav__item--active">
-               <a href="/dashboard/payment">Payment</a>
-           </li>
-       </ul>
-  </div>   <!-- /#sidebar-wrapper -->
-   <!-- Page Content -->
-   <div class="col-lg-10 row">
-     <%= yield :inner_content %>
-   </div>
-       <!-- /#page-content-wrapper -->
-</div>
 
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag 'dashboard', media: 'all', 'data-turbolinks-track' => true %>
 <% end %>
-<%= render template: "layouts/application"%>
+
+<% content_for :body do %>
+    <div class="wrapper">
+      <% if @show_sidebar %>
+          <div class="sidebar" data-background-color="white" data-active-color="danger">
+            <!--
+            Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+            Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+          -->
+            <div class="sidebar-wrapper">
+              <div class="logo">
+                <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
+                    <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb)}) %>
+                <% end %>
+                <%= link_to dashboard_main_path do %>
+                    <span class="simple-text"><%= session[:current_brand_name] %></span>
+                <% end %>
+              </div>
+
+              <ul class="nav">
+                <% $dashboard_tabs.each_with_index do |tab, index| %>
+                    <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
+                      <a href="<%= get_tab_link(tab) %>">
+                        <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
+                        <p><%= I18n.t(tab) %></p>
+                      </a>
+                    </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+      <% else %>
+          <div class="sidebar" data-background-color="black" data-active-color="danger"></div>
+      <% end %>
+      <div class="main-panel">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bar1"></span>
+                <span class="icon-bar bar2"></span>
+                <span class="icon-bar bar3"></span>
+              </button>
+              <a class="navbar-brand" href='<%= dashboard_main_path %>'><%= t('Dashboard') %></a>
+            </div>
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="ti-panel"></i>
+                    <p><%= t('Statistics') %></p>
+                  </a>
+                </li>
+                <%= react_component('DashboardNotifier', {}, {:tag => 'li', class: 'dropdown'}) %>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="ti-settings"></i>
+                    <p><%= current_user.username %></p>
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <%= link_to "me", edit_user_registration_path(current_user) %>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <%= link_to t("Exit"), destroy_user_session_path, :method => :delete %>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </nav>
+
+
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <%= yield %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= javascript_include_tag 'dashboard', 'data-turbolinks-track' => true %>
+<% end %>
+
+<%= render template: 'layouts/default' %>

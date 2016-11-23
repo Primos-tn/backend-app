@@ -1,13 +1,26 @@
-	<!--  Footer Section  -->
-	<footer>
-		<p class="copyright animated wow fadeIn" data-wow-duration="2s">© 2017, Pingo . All Rights Reserved</p>
-    <%= link_to "business",  company_page_path("business") %>  |  <%= link_to "about",  company_page_path("about") %> || <%= link_to "investor",  company_page_path("pluto") %>
-		<div class="social">
-      <ul class="list-unstyled list-inline">
-        <li class="animated wow fadeInRight" data-wow-delay=".2s"><a href="#"><img src="/assets/welcome/facebook.png" alt="" title=""></a></li>
-        <li class="animated wow fadeInRight" data-wow-delay=".1s"><a href="#"><img src="/assets/welcome/twitter.png" alt="" title=""></a></li>
-        <li class="animated wow fadeInRight" data-wow-delay="0s"><a href="#"><img src="/assets/welcome/google.png" alt="" title=""></a></li>
-      </ul>
+<div>
+
+  <!--  End Footer Section  -->
+  <footer>
+    <div class="container">
+      <div class="col-lg-12 row text-center">
+        <div class="Footer__CompanyLinksContainer">
+          <%= link_to I18n.t('Business'), company_page_path('business') %>
+          <%= link_to 'about', company_page_path('about') %>
+          <%= link_to I18n.t('About'), company_page_path('pluto') %>
+          <%= link_to I18n.t('join us'), company_page_path('jobs') %>
+          <%= link_to I18n.t('privacy'), company_page_path('privacy') %>
+          <%= link_to I18n.t('api'), company_page_path('api') %>
+          <%= link_to I18n.t('help'), company_page_path('help') %>
+          <span class="card-separator"></span>
+
+          <a href="#"><i class=" Footer__BottomIconLink ti-facebook"></i></a>
+          <a href="#"><i class="Footer__BottomIconLink ti-linkedin"></i></a>
+          <a href="#"><i class="Footer__BottomIconLink ti-twitter"></i></a>
+          © <%= I18n.t('app') %>
+        </div>
+      </div>
     </div>
-	</footer>
-	<!--  End Footer Section  -->
+
+  </footer>
+</div>

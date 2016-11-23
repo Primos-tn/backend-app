@@ -53,3 +53,15 @@ gem 'devise', '3.5.2'
 gem 'react-rails', '1.4.2'
 
 gem 'nokogiri', '1.6.7.rc3'
+# pagination
+gem 'kaminari'
+# uplaod
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+#
+gem 'mini_magick'
+# passenger
+gem 'passenger', '>= 5.0.25', require: 'phusion_passenger/rack_handler'
+#
+gem 'rack-mini-profiler', require: false
+#
+gem "bullet", :group => "development"

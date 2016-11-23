@@ -10,13 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require react
-//= require react_ujs
 //= require_self
-//= require_tree  ./vendor
-//= require_tree .
-//= require components
-//= require gridster.js
-App = {};
+//= require vendor
+//= require_tree ./components/app

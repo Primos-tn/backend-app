@@ -6,7 +6,6 @@
 #
 class Api::V1::SocketController   < Api::V1::BaseController
   before_action :set_global_vars
-
   # return where the socket is hosted
   def socket_connection_info
     render :json => {:host => @socket_host}

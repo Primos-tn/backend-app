@@ -1,4 +1,6 @@
-class Web::CompanyController < ApplicationController
+class Web::CompanyController < Web::BaseController
+
+  before_action :get_tags
 
 
   def show
@@ -30,5 +32,10 @@ class Web::CompanyController < ApplicationController
   end
 
   def contact
+  end
+
+  private
+  def get_tags
+    @tags = Category.all()
   end
 end

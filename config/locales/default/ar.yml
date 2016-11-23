@@ -1,0 +1,38 @@
+ar:
+  Error when submitting your data ! : "خطأ عند تقديم البيانات الخاصة بك!"
+  search : "بحث"
+  slogon : 'You will not miss it again !'
+
+  # header in
+  Create a new brand : "إنشاء علامة جديدة"
+
+  Log out : "خروج"
+  profile : "الملف الشخصي"
+  account : "الحساب"
+  services : "الخدمات"
+
+  Copyright © : "©  جميع الحقوق محفوضة"
+  privacy : "الخصوصية"
+  contact Us : "اتصل بنا"
+  join us : "التحق بنا"
+  api : "api"
+  help : مساعدة
+
+  Administration: "الادارة"
+  Dashboard : "لوحة القيادة"
+
+  Name fr: "اسم المنتج  فرنسي"
+  Name ar: "اسم المنتج  عربي"
+  Error when submitting your request : "Error when submitting your request"
+
+  Back : "عودة"
+  Show : "التفاصيل"
+  User : "المستخدم"
+  Brands : "الماركات"
+  Products : "منتوجات"
+  Hottest : "الجديدة"
+  Search : "بحث"
+  map : 'خريطة'
+  date :
+    order : ["day"]
+  Categories : "الفئات"

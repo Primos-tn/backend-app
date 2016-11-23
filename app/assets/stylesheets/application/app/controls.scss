@@ -1,0 +1,8 @@
+// Place all the styles related to all forms controls
+@import "colors";
+@import "mixins";
+input[type='checkbox'],
+input[type='file']{
+  border: none;
+
+}

@@ -1,0 +1,276 @@
+// Place all the styles related to the Articles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "colors";
+@import "mixins";
+
+.ProductDetails {
+  position: relative;
+  .nav-tabs {
+
+    background-color: $color-white;
+    left: 0px;
+    bottom: 0px;
+    border: 0px;
+    li {
+      a {
+        color: $dark;
+      }
+      a:hover {
+        a {
+          text-decoration: none;
+          background-color: transparent;
+          border: none;
+        }
+      }
+    }
+    li {
+      &.active {
+        a {
+          border: none;
+          color: $primary-color;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .ProductDetails__Cover {
+    background-size: cover;
+    background: transparent linear-gradient(to left, $primary-color, $color-white) repeat scroll 0% 0%;
+    border-top-left-radius: 2px;
+    padding: 0px;
+    min-height: 250px;
+    position: relative;
+    .ProductDetails__BaseImage {
+      width: 100%;
+      min-height: 250px;
+    }
+
+    .ProductDetails__Name {
+      color: $color-white;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+
+    }
+
+    .ProductDetails__Stats {
+      color: $color-white;
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+
+    }
+  }
+
+}
+
+.ProductDetails__BrandImage {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.Product_GalleryThumbnails {
+  -webkit-box-shadow: -2px 0px 5px 0px rgba(153, 156, 137, 1);
+  -moz-box-shadow: -2px 0 5px 0px rgba(153, 156, 137, 1);
+  box-shadow: -2px 0 5px 0 rgba(153, 156, 137, 0.5);
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  box-shadow: #1b6d85;
+  img {
+    height: 50px;
+    width: 50px;
+    border-top: solid 1px $color-white;
+  }
+  img:last-child {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-left: solid 1px $color-white;
+  }
+}
+
+.ProductListContainerLeft, .ProductListContainerRight {
+  width: 50%;
+  display: inline-block;
+}
+
+.ProductCardLisContainer {
+  position: relative;
+  margin-top: 22px;
+  height: 100%;
+}
+
+.ProductCardContainer {
+  position: absolute;
+  margin-top: 5px;
+  clear: both;
+  width: 49%;
+
+}
+
+.ProductCard {
+  position: relative;
+  margin: 5px 1px;
+  background: #FFF none repeat scroll 0% 0%;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);
+  min-height: 200px;
+  .icon {
+    font-size: 25px;
+  }
+  .ProductCard__Name {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: 25px;
+    color: $color-white;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .ProductCard__ImageContainer {
+    width: 100%;
+    position: relative;
+  }
+  .ProductCard__Image {
+    width: auto;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-size: cover;
+  }
+
+  .ProductCard__BrandImageContainer {
+    position: absolute;
+    left: 5px;
+    img {
+      height: 70px;
+      width: 70px;
+      background: transparent linear-gradient(to left, $primary-color, $color-white) repeat scroll 0% 0%;
+      @include rounded(50%);
+
+    }
+    top: 5px;
+  }
+  .ProductCard__ShareButton {
+    @include rounded(50%);
+  }
+
+  .ProductCard__WishButton {
+    right: 40px;
+    top: 5px;
+    @include rounded(50%);
+    &.ProductCard__WishButton--on {
+      color: $primary-color;
+    }
+
+    &.ProductCard__WishButton--off {
+      color: $color-red;
+    }
+  }
+  .ProductCard__WishButton, .ProductCard__ShareButton{
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 1px;
+    top : 5px;
+
+  }
+  .ProductCard__ShareButton {
+    right: 5px;
+    i {
+      color: $primary-color
+    }
+  }
+  .ProductCard__Details {
+    border: solid 1px $primary-color;
+    border-top: 0;
+    border-radius: 0px 0px 6px 6px;
+    min-height: 51px;
+    .ProductCard__WishersList {
+      padding: 6px;
+      .ProductCard__WisherListItem {
+
+        img {
+          border: 1px solid $primary-color;
+          @include rounded(50%);
+          height: 38px;
+          width: 38px;
+          margin-left: 1px;
+        }
+
+      }
+      .ProductCard__WisherListItem, .ProductCard__WishersListMore {
+        color: $primary-color;
+        float: left;
+      }
+      .ProductCard__WishersListMore {
+        float: right;
+        font-size: 16px;
+        top: 8px;
+      }
+    }
+  }
+  .timer {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    font-size: 15px;
+    color: #fff;
+    position: relative;
+    padding: 5px 12px;
+    text-align: right;
+    background-color: rgba(0, 0, 0, 0.11);
+    height: 15px;
+    .progress-color {
+      background-color: $primary-color;
+      left: 0;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+    .progress-text {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      right: 50%;
+      top: -2px;
+    }
+  }
+}
+
+
+.ProductWishersList {
+  .ProductWishersList__Item {
+    min-height: 30px;
+    float: left;
+    height: 80px;
+    width: 20%;
+    text-align: left;
+    border-radius: 1px;
+    border-right: solid 1px red;
+    img {
+      width: 50px;
+      height: 50px;
+      margin: 1px;
+      border-radius: 50%;
+    }
+  }
+
+}
+.DayTimer {
+  background-color: $primary-color;
+  span {
+    font-size: 50px;
+  }
+}
+

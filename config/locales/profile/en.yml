@@ -1,0 +1,35 @@
+en:
+  activerecord:
+    attributes:
+      profile :
+        firstname: first name
+        lastname: last name
+        phone_number: phone number
+        email: mail address
+        address: contact address
+        age: age
+  edit : edit
+
+  # company/contact us
+  first name : firstname
+  last name : last name
+  email : email
+  subject : subject
+  your message : your message
+  phone : phone
+  phone number : phone number
+  password : password
+  username : username
+  address : address
+  age : age
+  password confirmation : confirm password
+
+  send me confirmation sms : Send me an sms confirmation
+  # sign in / sign up
+  login : Login
+  remember me  : Remember me
+  Log in : Log in
+  Sign up : Sign up
+  create a new account : Create a new account
+  profile information : Profile information
+  Editing Profile : Edit profile

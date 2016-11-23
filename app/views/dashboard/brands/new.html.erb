@@ -1,10 +1,5 @@
-
-<h1>New Brand</h1>
+<h1><%= t('New Brand') %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', brands_path %>
-<% content_for :inner_content do %>
-kkk
-
-<% end %>
+<%= link_to 'Back', dashboard_brands_path %>

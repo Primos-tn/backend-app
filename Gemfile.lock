@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/carrierwaveuploader/carrierwave.git
+  revision: a94b68cf848d6bd6ea5fbc2ce7d772456e4a5914
+  specs:
+    carrierwave (0.11.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -46,6 +55,9 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    bullet (5.4.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.10.0)
     byebug (8.2.1)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -77,11 +89,15 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
+    kaminari (0.17.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99)
+    mini_magick (4.4.0)
     mini_portile (0.7.0.rc4)
     minitest (5.8.3)
     multi_json (1.11.2)
@@ -90,9 +106,14 @@ GEM
     nokogiri (1.6.7.rc3-x86-mingw32)
       mini_portile (~> 0.7.0.rc4)
     orm_adapter (0.5.0)
+    passenger (5.0.30)
+      rack
+      rake (>= 0.8.1)
     pg (0.18.4)
     pg (0.18.4-x86-mingw32)
     rack (1.6.4)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.5)
@@ -160,6 +181,7 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uniform_notifier (1.10.0)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.2.1)
@@ -173,13 +195,19 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  bullet
   byebug
+  carrierwave!
   coffee-rails (~> 4.1.0)
   devise (= 3.5.2)
   jbuilder (~> 2.0)
   jquery-rails
+  kaminari
+  mini_magick
   nokogiri (= 1.6.7.rc3)
+  passenger (>= 5.0.25)
   pg
+  rack-mini-profiler
   rails (= 4.2.5)
   react-rails (= 1.4.2)
   sass-rails (~> 5.0)

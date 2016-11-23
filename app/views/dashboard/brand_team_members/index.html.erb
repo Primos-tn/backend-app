@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title"><%= t('Hooks') %> </h4>
+        <div class="text-center col-lg-12">
+          <div class="col-lg-4 col-lg-offset-4">
+            <%= form_for([:dashboard, @model], method: :post, url: { action: 'invite'}) do |f| %>
+                <div class="form-group">
+                  <%= text_field(:member, :email, class: "form-control border-input", value: @email) %>
+                </div>
+                <div>
+
+                  <%= f.submit class: 'btn btn-primary' %>
+                </div>
+            <% end %>
+        </div>
+        </div>
+      </div>
+      <div class="content">
+
+        <div class="content table-responsive table-full-width">
+          <table class="table table-striped">
+            <thead>
+            <th>User</th>
+            <th></th>
+            </thead>
+
+            <% @members.each do |member| %>
+                <tr>
+                  <td><%= member.username %></td>
+                  <td>
+                    <% if member.is_brand_admin %>
+
+                        <%= form_for(@model, url: set_admin_dashboard_team_path(member), method: :post) do |f| %>
+                            <%= f.submit :class => 'btn btn-info btn-sm' %>
+                        <% end %>
+                    <% else %>
+                        do
+                    <% end %>
+                  </td>
+                  <td>
+                    <% unless member.is_brand_admin %>
+                        <%= link_to t('Destroy'), dashboard_team_path(@brand, dashboard_brands_store), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                    <% end %>
+                    </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

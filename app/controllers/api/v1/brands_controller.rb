@@ -1,42 +1,68 @@
 class Api::V1::BrandsController < Api::V1::BaseController
+  skip_before_filter  :authenticate_user!, only: ['index', 'show', 'followers', 'stores']
 
-  before_filter :authenticate_user!
-  ## FIXME , we need to get only count of users
   def index
     page = params[:page]
+    limit = params[:limit] || 10
+
     if page.nil?
       page = 1
     else
       page = [page.to_i, 1].max
     end
+    # get brands
+    @brands = Brand.eager_load(:account).page(page).per(limit)
 
-
-    @brands = Brand.eager_load(:account, :followers).limit(10).offset((page -1) * 10)
+    # get all brands ids
     brands_ids = []
     @brands.map do |brand|
       brands_ids.append (brand.id)
     end
-    followings = UserBrandFollowingRelationship.where({account: current_user.id, brand: brands_ids }).all
-    @followings_brands_by_brand_id = {}
-    followings.map do |following|
-      @followings_brands_by_brand_id[following[:brand_id]] = true
+
+
+    # build followers
+    @followers = UserBrandFollowingRelationship.top_followers(3, brands_ids)
+    @followers_by_brands_id = {}
+    current_brand_id = nil
+    @followers.map do |entry|
+      current_brand_id = entry.brand_id
+      unless @followers_by_brands_id.has_key?(current_brand_id)
+        @followers_by_brands_id[current_brand_id] = []
+      end
+      # because we use outer join, some entry does'nt have this
+      if entry.username
+        @followers_by_brands_id[current_brand_id].push(entry)
+      end
     end
-    render 'index.jbuilder'
+    @me_and_brands = {}
+
+    if current_user
+      mine = current_user.get_brands_i_follow_given_list(brands_ids)
+      mine.map do |entry|
+        @me_and_brands[entry[:brand_id]] = true
+      end
+    end
 
   end
 
+
+  # show brand main action
   def show
-    id = params[:id]
-    result = {
-        'id' => id
-    }
-    render :json => result
+    @brand = Brand.find(params[:id])
+    render 'show.jbuilder'
   end
 
   # get all followers
   def followers
-    @followers = UserBrandFollowingRelationship.where(:brand_id => params[:id]).all
+    @items = UserBrandFollowingRelationship.where(:brand => params[:id])
     render 'followers.jbuilder'
+  end
+
+
+  # get all followers
+  def stores
+    @items = BrandStore.where(:brand_id => params[:id])
+    render 'stores.jbuilder'
   end
 
 

@@ -1,0 +1,20 @@
+// Place all the styles related to authentication section
+@import "colors";
+.PopularEmbedList {
+
+  .PopularEmbedList__Item {
+    position: relative;
+    margin-bottom: 5px ;
+    height: 100px;
+    background-color: $color-white;
+    border : solid 2px $primary-color;
+    border-radius: 2px;
+    /*box-shadow: -1px 0px 1px 0px $primary-color;*/
+    .PopularEmbedList__Title{
+      color: white;
+      position: absolute;
+      left : 20px;
+      height : 20px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+ar:
+  # views/dashboard/index.html
+  Launch : إطلاق
+  Edit :  تحرير
+  Show : إظهار
+  Product name : اسم المنتوج
+  New Product : اضافة منتوج جديد
+  Brand : العلامة تجارية
+  Destroy : محو
+  Last launch : أحدث إطلاق
+  The products : المنتجات
+  Are you sure about that :  هل انت متاكد من ذلك ?

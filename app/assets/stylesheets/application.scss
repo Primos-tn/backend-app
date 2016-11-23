@@ -10,68 +10,26 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
- *= require_tree ./fonts
- *= require_self
+ *= include_self
+ *= require ./icons
+ *= require ./vendor/themify-icons
+ *= require_directory ./application/app
  */
 
 html {
     position:relative;
-    min-height:100%;
 }
 body {
     background-color: rgba(167, 195, 196, 0.24);
     font-family: "proxima-nova", "Helvetica", "Verdana", sans-serif;
-    display: flex;
     min-height: 100vh;
-    flex-direction: column;
 }
-body.about {
-    margin: 0 0 100px;
-    /* bottom = footer height */
-}
-.main-content {
-    flex: 1;
-}
-#body {
-    margin-top: 100px;
-}
-*:focus {
-    outline: 0;
-}
-.app-button {
-    background-color: transparent;
-    color: #ccc;
-    border-radius: 2px;
-    border: solid 1px #928787;
-    padding: 4px 10px;
-    text-decoration: none;
-}
-a.app-button {
-    border: none;
-}
-.app-title {
-    text-align: left;
-    padding-left: 25px;
-}
-.app-greenting {
-    text-align: center;
-}
-.clearfix {
-    clear: both;
-    margin: 0px;
-}
-.notice {
-	width : 100%;
-	color : white ;
-	padding:  12px;
-	text-align : center ;
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-.notice.success{
-	background-color : green ;
-}
-
-.notice.error{
-	background-color : red ;
+main {
+  flex: 1 0 auto;
 }

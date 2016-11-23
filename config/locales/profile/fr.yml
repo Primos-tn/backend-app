@@ -1,0 +1,40 @@
+fr:
+  welcome : "Bienvenu"
+  # contact us
+  first name : "Nom de l'utilisateur"
+  activerecord:
+    attributes:
+      profile :
+        first name: nom
+        last name: Prénom
+        phone_number: numéro du télphone
+        email: addresse email
+        address: adresse du contact
+        age: Âge
+  # contact us
+  first name : "Nom"
+  last name : "Prénom"
+  email : "email"
+  subject : "Le sujet"
+  your message : "Votre message"
+  # register
+  user name : "Nom"
+  last name : "last name"
+  phone :
+  phone number : "numéro de télphone"
+  password : "mot de passse"
+  username : "nom de l'utilisateur"
+  address : "addresse"
+  age : "age"
+  password confirmation : "réecrire password"
+
+  send me confirmation sms : Envoie moi un sms de confiration
+  # sign in / sign up
+  login : "Entrer"
+  remember me  : "remember me "
+  Log in : "Entrer"
+  Sign up : "Enregistrer"
+  create a new account : "creér un nouveau compte"
+  privacy : "vie privée"
+  profile information : "Informations personnelles"
+  Editing Profile : "Modification du profile"

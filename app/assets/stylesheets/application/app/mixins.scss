@@ -1,0 +1,16 @@
+@mixin rounded($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin footerLinks(){
+  span {
+    a:last-child, div:last-child{
+      padding-left: 0;
+    }
+    a:first-child, div:first-child{
+      padding-right: 0;
+    }
+  }
+}

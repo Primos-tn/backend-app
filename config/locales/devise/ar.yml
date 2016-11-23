@@ -1,0 +1,18 @@
+ar:
+  devise:
+    sessions:
+      signed_in: مرحبا
+      signed_out : لقد خرجت للتو
+    passwords:
+      user:
+        send_instructions : الرجاء التحقق من بريدك الالكتروني
+
+  activerecord:
+    attributes:
+      contact :
+          firstname:    "الاسم الاول"
+          lastname: "الاسم"
+          content: "المحتوى"
+          subject: "الموضوع"
+          email: "البريد الإلكتروني"
+

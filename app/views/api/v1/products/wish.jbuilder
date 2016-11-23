@@ -1,0 +1,1 @@
+json.name @product.name

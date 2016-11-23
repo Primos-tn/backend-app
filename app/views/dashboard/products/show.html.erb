@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Name:</strong>
   <%= @product.name %>
@@ -7,8 +5,11 @@
 
 <p>
   <strong>Brand:</strong>
-  <%= @product.brand_id %>
+  <%= @product.brand.name %>
 </p>
 
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<%= link_to I18n.t('Edit'), edit_dashboard_product_path(@product) %> |
+<%= link_to I18n.t('Back'), dashboard_products_path %>
+<% @product.pictures.each do |pic| %>
+<%= image_tag  "/images/#{pic.url(:small_thumb)}" %>
+<% end %>

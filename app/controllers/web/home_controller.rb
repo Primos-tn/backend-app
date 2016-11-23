@@ -1,4 +1,4 @@
-class  Web::HomeController < ApplicationController
+class  Web::HomeController < Web::CompanyController
   def index
   end
 end

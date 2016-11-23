@@ -30692,8 +30692,8 @@ var Brand = React.createClass({
 
   getInitialState: function () {
     //super ();
-    this.unFollowUrl = App.Helpers.formatUrl(App.Routes.unFollowBrand, { id: this.props.item.id });
-    this.followUrl = App.Helpers.formatUrl(App.Routes.followBrand, { id: this.props.item.id });
+    this.unFollowUrl = App.Helpers.formatApiUrl(App.Routes.unFollowBrand, { id: this.props.item.id });
+    this.followUrl = App.Helpers.formatApiUrl(App.Routes.followBrand, { id: this.props.item.id });
     this.setState({ following: this.props.item.following });
     this.action = "brand_" + this.props.item.id;
   },
@@ -30850,8 +30850,8 @@ $(document).ready(function() {
     woeid: '',
     unit: 'f',
     success: function(weather) {
-      current = weather.temp+'° <i class="icon-'+weather.code+'"></i>';
-      hiTemp = 'Hi '+weather.high+'°';
+      current = weather.temp+'ï¿½ <i class="icon-'+weather.code+'"></i>';
+      hiTemp = 'Hi '+weather.high+'ï¿½';
       wind = weather.wind.speed+' '+weather.units.speed;
 
       $("#weather-widget #current").html(current);
@@ -31044,7 +31044,7 @@ App.Helpers = {
    * Format an url given a key, value object
    * foo/:bar , { bar : "alex" } will be transformed to foo/alex
    */
-  formatUrl : function (url, data){
+  formatApiUrl : function (url, data){
     for (var key in data){
       url = url.replace (':' + key, data[key]);
     }

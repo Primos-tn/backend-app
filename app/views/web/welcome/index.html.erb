@@ -1,3 +1,9 @@
-<div class="container">
-		<%= react_component('Brands') %>
-</div>
+<%= render template: 'web/products/index' %>
+<% content_for :scripts do %>
+    <script>
+
+      $(document).ready(function (){
+        $('.parallax').stellar();
+      });
+    </script>
+<% end %>

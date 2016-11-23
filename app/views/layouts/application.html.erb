@@ -1,16 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= t('app') %></title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
-  </head>
-  <body>
-  <%= render :partial => "header/header" %>
-  <main class="main-content" id="body">
-    <%= content_for?(:main_content) ? yield(:main_content) : yield %>
-  </main>
-  <%= render 'layouts/footer' %>
-</body>
-</html>
+<% content_for :title do %>
+    <%= controller_name %>
+    <%= content_for?(:title) ? yield(:title) : t('app') %>
+<% end %>
+
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+<% end %>
+
+<% is_logged_in = user_signed_in?.present? %>
+
+<% content_for :body do %>
+    <body class="<%= user_signed_in?.present? ? '' : 'hello' %>">
+    <span id="header_waypoint"></span>
+    <%= render :partial => 'header/mini_header' %>
+    <%- if with_full_header? %>
+    <%- else -%>
+        <%= render :partial => 'header/header' %>
+    <% end -%>
+    <%- if not is_logged_in and (%w(welcome).include?(controller_name)) %>
+        <div class="Cover">
+
+        </div>
+    <% end -%>
+    <%- unless is_logged_in %>
+        <%= render template: 'devise/sessions/new_modal' %>
+        <%= render template: 'devise/registrations/new_modal' %>
+    <% end -%>
+    <%= content_for?(:outside_main) ? yield(:outside_main) : '' %>
+    <main class="container AppContainer">
+      <div class="<%= with_full_header? ? '' : 'col-lg-8' %>">
+        <%= content_for?(:main_content) ? yield(:main_content) : yield %>
+      </div>
+      <div class="<%= with_full_header? ? '' : 'col-lg-4' %>">
+        <%- if is_logged_in %>
+            <%= react_component('SideBar', {:id => current_user.id}) %>
+        <%- else -%>
+            <%- if not is_devise? %>
+                <%= react_component('SideBarOut') %>
+            <% end -%>
+        <%- end %>
+      </div>
+    </main>
+
+    <%= render 'layouts/footer' %>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+
+<% end %>
+
+
+<%= render template: 'layouts/default' %>

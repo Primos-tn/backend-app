@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+# categories = Category.create([{ name: 'Kids' }, { name: 'Food' }])
+
+categories = Category.create({ name: 'Drinks' , parent_id: 2 })
+print (Category.find(2).categories.count())

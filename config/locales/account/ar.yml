@@ -1,0 +1,31 @@
+ar:
+  Sign in : "دخول"
+  Accounts : المستخدمون
+  Sign up : "تسجيل"
+  registration policy : "شروط التسجيل"
+  identifier not valid : 'البريد الإلكتروني او الهاتف غير صحيح'
+  activerecord:
+    attributes:
+      account :
+          username : الاسم
+          email: "المستخدم او البريد الالكتروني"
+          password: "كلمة السر"
+          password_confirmation : 'تاكيد كلمة السر'
+          remember_me : تذكرني
+    errors :
+      models :
+        account :
+          attributes :
+            email :
+              taken : البريد الالكتروني موجود
+              blank : فارغ
+            password :
+              blank: فارغة
+            username :
+              taken : الاسم موجود
+              blank: فارغ
+  # ar.activerecord.errors.models.account.attributes.email.blank
+  Back: "رجوع"
+  # devise/shared_links
+  Forgot your password? : "نسيت كلمة السر"
+  Send me reset password instructions  : "اعادة تحيين كلمة السر"
