@@ -1,0 +1,41 @@
+<% content_for :title do %>
+    <%= controller_name %>
+    <%= content_for?(:title) ? yield(:title) : t('app') %>
+<% end %>
+
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag 'dashboard', media: 'all', 'data-turbolinks-track' => true %>
+<% end %>
+
+<% content_for :body do %>
+    <div class="wrapper">
+      <div class="sidebar">
+
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+            <% $admin_tabs.each_with_index do |tab, index| %>
+                <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
+                  <a href="<%= get_admin_tab_link(tab) %>">
+                    <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
+                    <p><%= I18n.t(tab) %></p>
+                  </a>
+                </li>
+            <% end %>
+          </ul>
+        </div>
+
+      </div>
+      <div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <%= content_for?(:main_content) ? yield(:main_content) : yield %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+
+<%= render template: 'layouts/default' %>

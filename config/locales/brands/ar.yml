@@ -1,0 +1,31 @@
+ar:
+  # views/dashboard/index.html
+  Edit :  تحرير
+  Show : إظهار
+  New brand : اضافة علامة جديد
+  Create Brand : اضافة علامة جديد
+  The brand : العلامة تجارية
+  Destroy : محو
+  Last launch : أحدث إطلاق
+  The products : المنتجات
+  Are you sure about that :  هل انت متاكد من ذلك ?
+  activerecord:
+      attributes:
+        brand :
+            name : الاسم
+            cover : الصورة
+      actions :
+        brand :
+          submit : اضافة علامة جديد
+      errors :
+        models :
+          account :
+            attributes :
+              email :
+                taken : البريد الالكتروني موجود
+                blank : فارغ
+              password :
+                blank: فارغة
+              username :
+                taken : الاسم موجود
+                blank: فارغ

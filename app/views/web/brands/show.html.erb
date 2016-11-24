@@ -1,0 +1,4 @@
+<% render partial: 'shared/requires_map' %>
+<div>
+  <%= react_component('BrandProfile', props={'id' => params[:id], 'activeTab' => @active_tab, 'cover' => get_assets_url(@brand.cover.to_s) }) %>
+</div>

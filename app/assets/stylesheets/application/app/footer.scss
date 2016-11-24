@@ -1,0 +1,18 @@
+@import "colors";
+@import "mixins";
+footer {
+  padding-top: 15px;
+  padding-bottom: 5px;
+  .Footer__Copy {
+    padding: 5px 10px;
+    color : $color-white;
+  }
+  .Footer__CompanyLinksContainer {
+    a{
+      color : $primary-color;
+      margin-right: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}

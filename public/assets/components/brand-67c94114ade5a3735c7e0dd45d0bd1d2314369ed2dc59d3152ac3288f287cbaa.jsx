@@ -1,8 +1,8 @@
 var Brand = React.createClass({
   getInitialState : function (){
     //super ();
-    this.unFollowUrl = App.Helpers.formatUrl(App.Routes.unFollowBrand , { id : this.props.item.id });
-    this.followUrl = App.Helpers.formatUrl( App.Routes.followBrand , { id : this.props.item.id });
+    this.unFollowUrl = App.Helpers.formatApiUrl(App.Routes.unFollowBrand , { id : this.props.item.id });
+    this.followUrl = App.Helpers.formatApiUrl( App.Routes.followBrand , { id : this.props.item.id });
     this.setState({following : this.props.item.following});
     this.action = "brand_" + this.props.item.id ;
 

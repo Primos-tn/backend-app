@@ -1,0 +1,78 @@
+en:
+  app : "24"
+  welcome text : "Because you have a lot of boring to do !"
+  why Izzy : "Let us do it !"
+  workers : "التحق بنا"
+  Izribni's workers List : "Izribni قائمة عمال"
+  Error when submitting your data ! : "خطأ عند تقديم البيانات الخاصة بك!"
+  Stay in touch : "استنّانا"
+  username : "اسم المستخدم"
+  phone or email : "الهاتف أو البريد الإلكتروني"
+  new offer : "حاجتي بخدمة"
+  search for workers : "لوج على خدامة"
+  your message : "سؤالك أو رسالتك"
+  contact us : contact us
+  AllRR : "جميع الحقوق محفوظة"
+  stay connected : "اعلمني كي تحضر"
+  identifier not valid : 'البريد الإلكتروني او الهاتف غير صحيح'
+  # sign in
+  Pingo, we will be in touch soonly ! : ' شكرا ! لقد تم تسجيل المتابعة، سنقوم بمراسلتك فور التشغيل.'
+  welcome : "مرحبا"
+  # contact us
+  first name : "الاسم"
+  # contact us
+  first name : "first name"
+  last name : "last Name"
+  email : "email"
+  subject : "الموضوع"
+  your message : "رسالتك"
+  # register
+  user name : "username"
+  last name : "last name"
+  phone : "phone number"
+  phone number : "phone number"
+  password : "password"
+  username : "username"
+  address : "address"
+  age : "age"
+  password confirmation : "retype password"
+
+  send me confirmation sms : send me confirmation sms
+  # sign in / sign up
+  login : "Log in"
+  remember me  : "remember me "
+  Log in : "Enter"
+  Sign up : "Sign up"
+  create a new account : "create a new account"
+
+  OTO : "OTO"
+  the power of SMS : "the power of SMS"
+  # request/_form
+  description : "description"
+
+  # about
+  how it works :
+  #footer , header/_out
+  ABOUT US :
+  enter : "Enter"
+  join us : "work with us"
+  make a request : "new request"
+
+
+  #switch to worker view
+  switch on worker view : "Worker dashboard"
+
+  #header in
+  create a new task : new basket
+  Log out : "sign out"
+  profile : "الملف الشخصي"
+  account : "الحساب"
+  services : "الخدمات"
+  confirmation code : ""
+  # request
+  service type : service type
+  sender identifer : you phone
+  team :
+  #
+  description : description
+  Error when submitting your request : "Error when submitting your request"

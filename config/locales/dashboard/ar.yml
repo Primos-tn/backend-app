@@ -1,0 +1,35 @@
+ar:
+  Profile : "الملف الشخصي"
+  Account : "الحساب"
+  Log out : "خروج"
+
+  My orders : "طلباتي"
+  Services : "الخدمات"
+  System : "إعدادات النظام"
+  Dashboard : "الرئيسية"
+  Budget : "الميزانية"
+  Campaigns : "الحملات"
+  Hooks : "الإجراءات"
+  Api-keys: "المفاتيح"
+  Goods: "المنتجات"
+  Scheduler : "البرنامج"
+  Users : "المستخدمون"
+  # header nav
+  Statistics : 'الاحصائيات'
+
+  Listing Of users : "قائمة المستخدمين"
+  Loyality points : "نقاط الولاء"
+  current balance : "الرصيد الحالي"
+  Recharge  : "شحن"
+  Payment Details : "تفاصيل الدفع"
+  CV CODE   : "الكود"
+  COUPON CODE : "رمز بطاقة التخفيض"
+
+  Brand: الماركة
+  Please select a brand to start : الرجاء اختيار العلامة التجارية للبدء
+
+
+  CARD NUMBER : "رقم البطاقة"
+  EXPIRATION DATE : "تاريخ انتهاء الصلاحية"
+  Select brand : 'اختيار'
+  New Brand : علامة جديدة

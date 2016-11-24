@@ -1,0 +1,12 @@
+<div class="content table-responsive table-full-width">
+  <table class="table table-striped">
+    <% @brand_stores.each do |dashboard_brands_store| %>
+        <tr>
+          <td><%= dashboard_brands_store.name %></td>
+          <td><%= link_to t('Show'), dashboard_brand_brand_store_path(@brand, dashboard_brands_store) %></td>
+          <td><%= link_to t('Edit'), edit_dashboard_brand_brand_store_path(@brand, dashboard_brands_store) %></td>
+          <td><%= link_to t('Destroy'), dashboard_brand_brand_stores_path(@brand, dashboard_brands_store), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>

@@ -1,0 +1,14 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+<table>
+
+  <% @brands.each do |brand| %>
+      <tr>
+        <td><%= brand.name %></td>
+        <td><%= brand.brand_users_followers_count %></td>
+        <td><%= brand.comments_count %></td>
+        <td><%= brand.cover %></td>
+        <td><%= link_to 'Show', admin_brand_path(brand) %></td>
+      </tr>
+  <% end %>
+</table>

@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    attributes:
+      contact :
+          firstname: first name
+          lastname: last name
+          content: content
+          subject: subject
+          email: email

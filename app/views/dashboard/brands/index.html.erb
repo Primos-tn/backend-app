@@ -1,3 +1,37 @@
-<div class="container">
-		<%= react_component('Brands', { 'url' => brands_path + '.json' }) %>
-</div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Striped Table</h4>
+            <p class="category">Here is a subtitle for this table</p>
+            <%= link_to 'New Product', new_dashboard_brand_path %>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-striped">
+              <thead>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Salary</th>
+              <th>Country</th>
+              <th>City</th>
+              </thead>
+              <tbody>
+
+              <% @brands.each do |brand| %>
+                  <tr>
+                    <td><%= brand.account_id %></td>
+                    <td><%= brand.name %></td>
+                    <td><%= link_to 'Show', dashboard_brand_path(brand) %></td>
+                    <td><%= link_to 'Edit', edit_dashboard_brand_path(brand) %></td>
+                    <td><%= link_to 'Destroy', dashboard_brand_path(brand), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+    </div>

@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Brands</h1>
+
+
+<%= form_tag admin_brands_path, :method => 'get', :id => "products_search" do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag "Search", :name => nil %>
+    </p>
+    <div id="products"><%= render 'brands' %></div>
+<% end %>
+

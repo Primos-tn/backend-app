@@ -1,106 +1,162 @@
 Rails.application.routes.draw do
+
   devise_for :accounts, singular: :user # singular used to use predefiend function
-  get 'profile' => 'account/profiles#show' # Account::ProfilesController#index
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
+  authenticated do
+    root :to => 'web/home#index'
+  end
+
+  root :to => 'web/welcome#index', :as => 'anonymous'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-  resources :brands
-    # Example resource route (maps HTTP verbs to controller actions automatically):
-    # Example resource route with options:
-    resources :articles do
-      collection do
-         get 'search'
-       end
-       member do
-         post 'follow'
-         post 'unfollow'
-       end
-    end
-
-  post "/company/contact" => "company#contact"
-  post "/business/contact" => "company#contact_business"
-  # Example of regular route:
-  get 'company/:page' , to: 'company#show' , as:'company_page'
-  get 'business/contact'  => redirect("/company/business")
-  #get '*path' => 'welcome#index'
-
 
   # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-  namespace :api do
-    namespace :v1,  defaults: {format: :json} do
-      constraints format: :json do
-        resources :brands do 
-                member do
-                   post 'follow'
-                   post 'unfollow'
-                   get 'follow'
-                   get 'unfollow'
-                end 
-        end 
-        resources :users
-        resources :products
-        match 'session/:action' => 'posts#show', via: [:post]
+  scope :module => 'web' do
+    resources :products,  only: %w(index show) do
+      member do
+        get 'stores'
+        get 'reviews'
+        get 'wishers'
+        get 'coupons'
       end
     end
-  end
-  # Example resource route within a namespace:
-  namespace :dashboard do
-      # Directs /admin/products/* to Admin::ProductsController
-      # (app/controllers/admin/products_controller.rb)
-      resources :products
-      resources :brands
-      resources :users
-      resources :webhooks
-      resources :compaings
-      get 'targetize' => 'dashboard#targetize', as: :targetize
-      get 'pricing/'  => "dashboard#dashboard_payment"
-      get '/' , to: redirect('dashboard/products')
-      get '/demo' , to: redirect('dashboard/products')
+    resources :brands, only: %w(index show) do
+      member do
+        get 'stores'
+        get 'reviews'
+        get 'followers'
+        get 'info'
+        get 'products'
+        get 'stores'
+      end
     end
+
+    get 'map', to: 'map#index'
+    get 'company/:page', to: 'company#show' , as:'company_page'
+    # check for not authenticated
+    get 'profile', to: 'profiles#show'
+  end
+
+
+  # Route
+  namespace :dashboard do
+    resources :products do
+      member do
+        post 'launch'
+      end
+      resources :targetize, only: :index
+    end
+
+    resources :brand_team_members , as: 'team', path: 'team'  do
+      member do
+        post 'set-admin'
+      end
+      collection do
+        post 'invite'
+      end
+    end
+
+    resources :brands do
+        collection do
+          get 'select'
+          post 'select'
+        end
+        member do
+          post 'upload'
+        end
+        resources :brand_stores, :path => '/brand-stores'
+    end
+    resources :users
+    resources :api_keys, :path => '/api-keys', only: ['index', 'create', 'destroy']
+    resources :hooks
+
+    get '/demo(/:page)'  => 'demo#index'
+    get '/'  => 'dashboard#index', as: 'main'
+
+    resources :system, only: ['index']
+
+  end
+
+  # admin routes
+
+  namespace :admin do
+    get '/'  => 'base#index', as: 'main'
+    get '/system'  => 'system#index'
+    resources :categories
+    resources :brands, only: ['index', 'show']
+    resources :accounts, only: ['index', 'show']
+
+  end
+
+
+
+  # api routes
+  namespace :api do
+    namespace :v1 do
+      resources :categories , only: :index
+
+      get '/search'  => 'search#index'
+
+      resources :products do
+        collection do
+          get 'search'
+        end
+        member do
+          # share
+          get 'share'
+          # wishers api
+          get 'wishers'
+          # product reviews api
+          get 'reviews'
+          # wish a product
+          post 'wish'
+          # unwish
+          post 'unwish'
+          # unwish
+          post 'review'
+          #
+          get 'coupons'
+          # notify me
+          post 'notify'
+        end
+      end
+
+      resources :users do
+        member do
+          get 'followers'
+          get 'brands'
+          get 'whishes'
+          post 'follow'
+          post 'unfollow'
+        end
+      end
+
+      resources :brands do
+        collection do
+          get 'search'
+        end
+        member do
+          get 'followers'
+          post 'follow'
+          post 'unfollow'
+          post 'review'
+          get 'stores'
+          get 'reviews'
+          get 'followers'
+          get 'info'
+          get 'stores'
+        end
+      end
+
+    end
+  end
+
+
+
 end

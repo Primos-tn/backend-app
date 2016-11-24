@@ -1,0 +1,38 @@
+ar:
+  activerecord:
+      attributes:
+        profile :
+          firstname: "الاسم"
+          lastname: "الاسم الأخير"
+          phone_number: "الهاتف"
+          email: "البريد الإلكتروني"
+          address: "العنوان"
+          age : "العمر"
+  edit :
+
+  welcome : "مرحبا"
+  # contact us
+
+  email :
+  subject : "الموضوع"
+  your message : "رسالتك"
+  send me confirmation sms : "تاكيد الهاتف الجوال"
+  confirm  : "تاكيد"
+  resend confirmation : "اعادة التاكيد"
+  # register/login
+  user name : "اسم المستخدم"
+  username : "اسم المستخدم"
+  address : "العنوان"
+
+  password : "كلمة السر"
+  password confirmation : "تأكيد كلمة السر"
+  # sign in / sign up
+  login : "دخول"
+  remember me  : "تذكرني"
+  Log in : "دخول"
+  Sign up : "تسجيل"
+  create a new account : "معلومات عن الحساب"
+
+  # Profile
+  profile information : "معلومات شخصية"
+  Editing Profile : "تعديل الملف الشخصي"

@@ -1,0 +1,57 @@
+@import "colors";
+
+.AppSideBar {
+  position: relative;
+  background-color: $color-white;
+  border: solid 1px $primary-color;
+  min-height: 470px;
+  border-radius: 2px;
+  .AppSideBar__Profile {
+    .AppSideBar__ProfileCover {
+      clip-path: polygon(50% 19%, 0 76%, 100% 76%);
+      width: 120px;
+      img {
+        max-width: 120px;
+        max-height: 120px;
+      }
+    }
+  }
+  .AppSideBar__Footer {
+
+    .SideBarFooter__Company {
+      border: solid 1px $primary-color;
+      position: relative;
+      bottom: -7px;
+      padding-top: 4px;
+      height: 40px;
+      background-color: $primary-color;
+      color: $color-white;
+      border-radius: 0px 0px 2px 2px;
+      a {
+        float: left;
+        color: $color-white;
+        font-style: normal;
+
+        &:hover{
+          text-decoration: none;
+        }
+      }
+      span{
+        font-weight: bold;
+        float: right;
+      }
+      a, span{
+        margin: 6px;
+      }
+    }
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    left: 0px;
+    right: 0px;
+    img {
+      width: auto;
+      height: 60px;
+    }
+  }
+}

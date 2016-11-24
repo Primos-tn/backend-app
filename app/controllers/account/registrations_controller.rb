@@ -52,7 +52,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
   def after_sign_up_path_for(resource)
-	edit_profile_path(current_user.profile) if current_user
+	  edit_profile_path(current_user.profile) if current_user
   end
 
   # The path used after sign up for inactive accounts.
