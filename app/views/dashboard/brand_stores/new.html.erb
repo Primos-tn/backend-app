@@ -1,11 +1,8 @@
 <div class="card">
   <div class="header">
-    <h4 class="title"><%= @brand.name %> New Brand Store</h4>
-
-    <%= link_to 'Back', dashboard_brand_brand_stores_path %>
-
+    <h4 class="title"><%= I18n.t('New Brand Store') %></h4>
   </div>
   <div class="content">
-<%= render 'form' %>
-</div>
+    <%= render 'form' %>
   </div>
+</div>

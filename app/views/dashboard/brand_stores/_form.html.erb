@@ -1,18 +1,18 @@
+<%= form_for([:dashboard, @brand, @store]) do |f| %>
+    <% if @store.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@store.errors.count, "error") %> prohibited this dashboard_brands_store from being
+            saved:</h2>
 
-<%= form_for([:dashboard, @brand, @brand_store]) do |f| %>
-  <% if @brand_store.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@brand_store.errors.count, "error") %> prohibited this dashboard_brands_store from being saved:</h2>
-
-      <ul>
-      <% @brand_store.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% @store.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="form-group">
           <%= f.label :name %><br>
           <%= f.text_field :name, :class => 'form-control border-input' %>
@@ -23,53 +23,47 @@
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">
-          <label>City</label>
-          <input type="text" class="form-control border-input" placeholder="City" value="Melbourne">
+          <%= f.label :country %><br>
+          <%= f.select :country, options_from_collection_for_select(Country.where(code: %w(FR TN)), 'code', 'name', selected: 'TN'), {},
+                       :class => 'form-control border-input' %>
         </div>
       </div>
+
       <div class="col-md-4">
         <div class="form-group">
-          <label>Country</label>
-          <input type="text" class="form-control border-input" placeholder="Country" value="Australia">
+          <%= f.label :city %><br>
+          <%= f.text_field :city, :class => 'form-control border-input' %>
         </div>
       </div>
+
       <div class="col-md-4">
         <div class="form-group">
-          <label>Postal Code</label>
-          <input type="number" class="form-control border-input" placeholder="ZIP Code">
+          <%= f.label :zip_code %><br>
+          <%= f.text_field :city, :class => 'form-control border-input', :type => "number" %>
         </div>
       </div>
+
     </div>
 
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <label>Address</label>
-          <input type="text" class="form-control border-input" placeholder="Home Address" value="Melbourne, Australia">
+          <div class="form-group">
+            <%= f.label :address %><br>
+            <%= f.text_field :address, :class => 'form-control border-input' %>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>About Me</label>
-                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike">Oh so, your weak rhyme
-You doubt I'll bother, reading into it
-I'll probably won't, left to my own devices
-But that's the difference in our opinions.</textarea>
-        </div>
-      </div>
+    <div class="NoticeInfo">
+      <%= I18n.t('This store will be associated to') + current_brand.name %>
     </div>
+
     <div class="text-center">
-      <%= f.submit :class => 'btn btn-info btn-fill btn-wd' %>
+      <%= f.submit I18n.t('New Brand Store'), :class => 'btn btn-info btn-fill btn-wd' %>
+
+      <%= link_to 'Back', dashboard_brand_brand_stores_path %>
     </div>
     <div class="clearfix"></div>
-
-    <div class="field">
-    </div>
-
-  <div class="actions">
-
-  </div>
 <% end %>

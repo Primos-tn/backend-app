@@ -21,9 +21,15 @@ class Admin::BrandsController < Admin::BaseController
   def show
   end
 
+  protected
+
+  def set_tab
+    @active_tab = "brands"
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_brand
-      @brand  = Brand.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_brand
+    @brand  = Brand.find(params[:id])
+  end
 end

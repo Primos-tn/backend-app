@@ -3,7 +3,7 @@
   grid = 'grid'
 
 %>
-   <div class="row">
+
   <div class="col-md-12">
     <div class="card">
       <div class="header">
@@ -20,13 +20,10 @@
         <% else %>
             <%= render 'list' %>
         <%end %>
+
+        <div class="text-center">
+          <%= link_to t('New Product'), new_dashboard_product_path, class: 'btn btn-primary' %>
+        </div>
       </div>
-      <div class="text-center">
-        <%= link_to t('New Product'), new_dashboard_product_path, class: 'btn btn-primary' %>
-      </div>
-      <div class="clearfix"></div>
-      <br/>
     </div>
   </div>
-
-</div>

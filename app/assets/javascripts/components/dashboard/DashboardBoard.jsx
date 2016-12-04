@@ -9,19 +9,22 @@ var DashboardBoard = React.createClass({
     /**
      *
      */
-    componentDidMount: function () {
+    componentDidMount () {
+        if (this.props.id){
+            alert(this.props.id);
+        }
+        console.log(this.props);
+    },
+    /**
+     *
+     */
+    componentWillUnmount () {
 
     },
     /**
      *
      */
-    componentWillUnmount: function () {
-
-    },
-    /**
-     *
-     */
-    getInitialState: function () {
+    getInitialState () {
         return {items: []};
     },
     /**
@@ -30,7 +33,7 @@ var DashboardBoard = React.createClass({
     render: function () {
         return (
             <div>
-                <DashboardBoardStaticsBlock/>
+                <DashboardBoardSmallWidgetBlock/>
                 <DashboardBoardUsersBlock/>
                 <div className="card">
                     <DashboardBrandStoresMap/>

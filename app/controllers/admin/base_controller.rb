@@ -3,6 +3,7 @@ class Admin::BaseController < ApplicationController
   layout 'admin'
   # verify if  the user is a admin
   before_filter :is_admin
+  before_filter :set_tab
 
   def index
     @total_brands = Brand.count
@@ -11,6 +12,11 @@ class Admin::BaseController < ApplicationController
     render 'admin/index'
   end
 
+  protected
+
+  def set_tab
+    @active_tab = "dashboard"
+  end
 
   def is_admin
     unless current_user and current_user.is_admin?

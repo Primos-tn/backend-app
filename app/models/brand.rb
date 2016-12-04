@@ -1,16 +1,21 @@
 class Brand < ActiveRecord::Base
   mount_uploader :cover, BrandUploader
 
+  belongs_to :account
+  # brands stores associations
+  has_many :stores, dependent: :destroy
+
+  # memebres of configuration associations
   has_many :brand_team_members
   has_many :members, :through => :brand_team_members, class_name: :Account
 
+  # products comments associations
+
   has_many :products
 
+  # brands comments associations
+
   has_many :comments, class_name: :BrandComment
-
-  has_many :stores, foreign_key: :brand_id, class_name: :BrandStore
-
-  belongs_to :account
 
 
 

@@ -4,6 +4,9 @@ ar:
   Sign up : "تسجيل"
   registration policy : "شروط التسجيل"
   identifier not valid : 'البريد الإلكتروني او الهاتف غير صحيح'
+  we need your current password to confirm your changes : نحن بحاجة إلى كلمة المرور الحالية لتأكيد التغييرات
+  Cancel my account : إلغاء الحساب
+  leave blank if you don\'t want to change it: أترك حقل كلمة السر فارغا إذا كنت لا ترغب في تغييره
   activerecord:
     attributes:
       account :
@@ -11,6 +14,7 @@ ar:
           email: "المستخدم او البريد الالكتروني"
           password: "كلمة السر"
           password_confirmation : 'تاكيد كلمة السر'
+          current_password : كلمة السر الحالية
           remember_me : تذكرني
     errors :
       models :
@@ -26,6 +30,7 @@ ar:
               blank: فارغ
   # ar.activerecord.errors.models.account.attributes.email.blank
   Back: "رجوع"
+  Are you sure? : هل أنت متاكد؟
   # devise/shared_links
   Forgot your password? : "نسيت كلمة السر"
   Send me reset password instructions  : "اعادة تحيين كلمة السر"

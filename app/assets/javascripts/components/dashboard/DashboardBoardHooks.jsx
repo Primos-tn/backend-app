@@ -40,9 +40,9 @@ var DashboardBoardHooks = React.createClass({
                             <hr/>
                             <div className="footer">
                                 <div className="chart-legend">
-                                    <i className="fa fa-circle text-info"></i> Open
-                                    <i className="fa fa-circle text-danger"></i> Bounce
-                                    <i className="fa fa-circle text-warning"></i> Unsubscribe
+                                    <span className="ChartLabel text-info"></span> Open
+                                    <span className="ChartLabel text-danger"></span> Bounce
+                                    <span className="ChartLabel text-warning"></span> Unsubscribe
                                 </div>
                                 <div className="stats">
                                     <i className="ti-timer"></i> Campaign sent 2 days ago

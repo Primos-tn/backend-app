@@ -1,0 +1,37 @@
+<!--  App Features Section  -->
+<section>
+	<div class="container">
+		<h4 class="sectionTitle">Pricing </h4>
+		<div class="row text-center  SectionPrices">
+			<div class="col-sm-12 col-md-4 col-lg-4">
+				<h4 class="text-uppercase SectionPrices__Title"><%= I18n.t('Free') %></h4>
+				<p class="text-lowercase">* <%= I18n.t('Statistics') %> </p>
+			</div>
+			<div class="col-sm-12 col-md-4 col-lg-4">
+				<h4 class="text-uppercase SectionPrices__Title"><%= I18n.t('Basic') %>  <small> (10$) <%= I18n.t('Monthly') %></small></h4>
+				<p class="text-lowercase">
+					<ul>
+						<li>
+							* <%= I18n.t('Statistics') %>
+						</li>
+						<li>
+							* <%= I18n.t('BI') %>
+						</li>
+
+						<li>
+							* <%= I18n.t('Campaign') %>
+						</li>
+
+						<li>
+							* <%= I18n.t('Collaboration') %>
+						</li>
+					</ul>
+				</p>
+			</div>
+			<div class="col-sm-12 col-md-4  col-lg-4">
+				<h4 class="text-uppercase SectionPrices__Title"><%= I18n.t('Custom') %></h4>
+				<p class="text-lowercase"><%= link_to company_page_path('contact') do %><%= I18n.t('Contact') %> <% end %></p>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+
+business_one_profile:
+  username: Business one  first name
+  last_name: Business one last name
+  account: business_one
+
+business_two_profile:
+  first_name: Business two first name
+  last_name: Business two last name
+
+
+user_one_profile:
+  first_name: user one  first name
+  last_name: user one last name
+  account: user_one
+
+
+user_two_profile:
+  first_name: user two  first name
+  last_name: user two last name
+  account: user_two

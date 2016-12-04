@@ -48,12 +48,13 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
-  def after_sign_up_path_for(resource)
-	  edit_profile_path(current_user.profile) if current_user
-  end
+   def after_sign_up_path_for(resource)
+     super(resource)
+     AccountsMailer.welcome_user_and_validation(resource).deliver_later
+     AccountsMailer.new_user_notify_system(resource).deliver_later
+     profile_path
+   end
+
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

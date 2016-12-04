@@ -1,0 +1,6 @@
+ar:
+  activerecord:
+      attributes:
+        contact :
+            mail : الاسم
+            body : المحتوى

@@ -17,6 +17,6 @@ module AdminHelper
       dashboard_url + (link != 'dashboard' ? link.downcase : '')
   end
 
-  $admin_tabs = %w(Dashboard  Brands Categories Accounts System)
-  $dashboard_tabs_icons = %w(panel map view-list-alt user pencil-alt2 key user settings)
+  $admin_tabs = %w(Dashboard  Invitations Brands Categories Accounts Business  System)
+  $admin_tabs_icons = %w(panel user map view-list-alt user settings settings)
 end

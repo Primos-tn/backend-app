@@ -1,0 +1,17 @@
+@import "../app/colors";
+.ChartLabel {
+  border-radius: 50%;
+  height: 13px;
+  width: 13px;
+  display: inline-block;
+  margin: 0 5px;
+  &.text-warning {
+    background-color: $primary-color;
+  }
+  &.text-info {
+    background-color: #249fff;
+  }
+  &.text-danger {
+    background-color: red;
+  }
+}

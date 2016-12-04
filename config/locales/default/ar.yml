@@ -2,6 +2,8 @@ ar:
   Error when submitting your data ! : "خطأ عند تقديم البيانات الخاصة بك!"
   search : "بحث"
   slogon : 'You will not miss it again !'
+  Update : تحديث
+  Success saving : تم التسجيل
 
   # header in
   Create a new brand : "إنشاء علامة جديدة"
@@ -9,6 +11,7 @@ ar:
   Log out : "خروج"
   profile : "الملف الشخصي"
   account : "الحساب"
+  Settings : الحساب
   services : "الخدمات"
 
   Copyright © : "©  جميع الحقوق محفوضة"
@@ -29,6 +32,8 @@ ar:
   Show : "التفاصيل"
   User : "المستخدم"
   Brands : "الماركات"
+  # used in admin
+  Invitations : إستدعاء المستخدمين
   Products : "منتوجات"
   Hottest : "الجديدة"
   Search : "بحث"

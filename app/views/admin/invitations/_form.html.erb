@@ -1,0 +1,35 @@
+<%= form_for([:admin, @invitation], url:  admin_invitations_path) do |f| %>
+    <% if @invitation.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@invitation.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+          <ul>
+            <% @invitation.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <div class="row">
+      <div class="form-group col-lg-6">
+        <%= f.label :last_name %><br>
+        <%= f.text_field :last_name, class: "form-control border-input" %>
+      </div>
+
+      <div class="field input-field col-lg-6">
+        <%= f.label :first_name %><br>
+        <%= f.text_field :first_name, class: "form-control border-input" %>
+      </div>
+
+      <div class="field input-field col-lg-6">
+        <%= f.label :email %><br>
+        <%= f.text_field :email, class: "form-control border-input" %>
+      </div>
+    </div>
+    <div class="text-center">
+      <%= f.submit :class => 'btn btn-info btn-fill btn-wd' %>
+      <%= link_to t('Back'), admin_invitations_path %>
+    </div>
+
+    <div class="clearfix"></div>
+<% end %>

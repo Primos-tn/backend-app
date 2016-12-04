@@ -8,8 +8,6 @@
 
   <%= stylesheet_link_tag 'vendor', media: 'all', 'data-turbolinks-track' => true %>
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-
   <%= content_for?(:stylesheets) ? yield(:stylesheets) : '' %>
 
   <% if I18n.locale.equal?(:ar) %>

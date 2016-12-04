@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+business_one_profile:
+  account: business_one
+  expires : <%= Date.today.month(1) %>
+
+business_two_profile:
+  account: business_two
+  expires : <%= Date.today %>

@@ -2,36 +2,37 @@ class Web::CompanyController < Web::BaseController
 
   before_action :get_tags
 
-
   def show
     page = params[:page]
     if page == 'pluto' then
       render "#{page}", :layout => false
+    elsif page == 'contact' then
+      @contact = Contact.new
+      render "#{page}"
+    elsif page == 'help' then
+       render 'help'
     else
       render "#{page}"
     end
 
   end
 
-  def contact_business
-    email = params[:email]
-    if Contact.exists?(:email => email) then
-      flash[:notice] = "Email already created !"
-      flash[:notice_class] = "error"
-      render :template => 'company/business'
-    else
-      flash[:notice] = "Pingo, we will be in touch soonly !"
-      flash[:notice_class] = "success"
-      comer = Contact.new
-      comer.email = params[:email]
-      comer.body = params[:body]
-      comer.type = "business"
-      comer.save
-      BusinessContactMailer.reply_invitation(comer.email).deliver_now
+  def contact
+    @contact = Contact.new(contact_params)
+    @contact.save
+    if @contact.save
+      flash[:notice] = I18n.t('Success')
+      flash[:notice_class] = 'success'
+      ContactMailer.reply_contact(@contact.email).deliver_later
+      ContactMailer.notify_admin_contact(@contact).deliver_later
+      redirect_to root_path
     end
+
   end
 
-  def contact
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def contact_params
+    params.require(:contact).permit(:email, :subject, :body)
   end
 
   private

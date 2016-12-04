@@ -2,9 +2,9 @@ ar:
   activerecord:
       attributes:
         profile :
-          firstname: "الاسم"
-          lastname: "الاسم الأخير"
-          phone_number: "الهاتف"
+          first_name: "الاسم"
+          last_name: "الاسم الأخير"
+          phone: "الهاتف"
           email: "البريد الإلكتروني"
           address: "العنوان"
           age : "العمر"

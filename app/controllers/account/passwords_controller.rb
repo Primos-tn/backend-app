@@ -26,7 +26,8 @@ class Account::PasswordsController < Devise::PasswordsController
   # end
 
   # The path used after sending reset password instructions
-  # def after_sending_reset_password_instructions_path_for(resource_name)
-  #   super(resource_name)
-  # end
+  def after_sending_reset_password_instructions_path_for(resource_name)
+    set_flash_message(:notice, "success sending mail")
+    super(resource_name)
+  end
 end

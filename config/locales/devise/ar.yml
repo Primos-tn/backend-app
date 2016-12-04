@@ -1,4 +1,12 @@
 ar:
+  Change your password : تغيير كلمة السر
+  Change my password:  تغيير كلمة السر
+  New password : كلمة السر الجديدة
+  Confirm new password : تاكيد كلمة السر الجديدة
+  Characters minimum: أحرف كحد أدنى
+  Save : تسجيل
+
+
   devise:
     sessions:
       signed_in: مرحبا
@@ -15,4 +23,5 @@ ar:
           content: "المحتوى"
           subject: "الموضوع"
           email: "البريد الإلكتروني"
+
 

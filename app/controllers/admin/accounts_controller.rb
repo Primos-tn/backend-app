@@ -21,14 +21,20 @@ class Admin::AccountsController < Admin::BaseController
   def show
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_account
-      @account = Account.find(params[:id])
-    end
+  protected
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def account_params
-      params.require(:account).permit(:category_id, :product_id)
-    end
+  def set_tab
+    @active_tab = "accounts"
+  end
+
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_account
+    @account = Account.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def account_params
+    params.require(:account).permit(:category_id, :product_id)
+  end
 end

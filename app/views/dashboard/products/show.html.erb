@@ -1,15 +1,18 @@
+<% render partial: 'shared/requires_map' %>
 <p>
   <strong>Name:</strong>
   <%= @product.name %>
 </p>
-
 <p>
   <strong>Brand:</strong>
   <%= @product.brand.name %>
 </p>
 
+<% @product.pictures.each do |pic| %>
+    <%= image_tag  "/images/#{pic.url(:small_thumb)}" %>
+<% end %>
+
+<%= react_component('DashboardBoard', props={'id' => @product.id}) %>
+
 <%= link_to I18n.t('Edit'), edit_dashboard_product_path(@product) %> |
 <%= link_to I18n.t('Back'), dashboard_products_path %>
-<% @product.pictures.each do |pic| %>
-<%= image_tag  "/images/#{pic.url(:small_thumb)}" %>
-<% end %>

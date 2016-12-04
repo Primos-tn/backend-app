@@ -1,0 +1,40 @@
+<%= form_for(@system, url: admin_business_configure_path) do |f| %>
+    <div class="header">
+      <h4 class="title"><%= t('Business Accounts') %></h4>
+    </div>
+    <div class="content">
+      <form>
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <%= f.label :offer_basic_price %>
+              <%= f.text_field :offer_basic_price, class: "form-control border-input" %>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><%= t('Countries') %>(</label>
+              <small>
+                <% (@system.supported_countries || []).each do |supported| %>
+                    <%= supported %>
+                <% end %>
+              </small>
+              )
+              <%= f.collection_select :supported_countries, Country.all, :code, :name, {}, {multiple: true, class: "form-control border-input"} %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-info btn-fill btn-wd"><%= t('Update') %></button>
+        </div>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+<% end %>

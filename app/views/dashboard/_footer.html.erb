@@ -1,0 +1,13 @@
+<div class="DashboardFooter">
+  <%= form_tag(request.original_url, method: :get, id: :locale_select_form) do %>
+      <%= select_tag :locale, options_for_select(SystemConfiguration.first.supported_languages, I18n.locale.to_s) , {id: :locale_select}%>
+  <% end %>
+</div>
+
+<script>
+  var select = document.getElementById('locale_select');
+  select.onchange = function (){
+    document.getElementById('locale_select_form').submit();
+  }
+
+</script>

@@ -3,14 +3,12 @@ var BrandsList = React.createClass({
     actions: {
         list: "BRANDS_LIST"
     },
+
     /**
      *
      */
-    loadDataFromServer: function () {
-        App.Stores.loadData({
-            url: App.Routes.brands,
-            action: this.actions.list
-        });
+    getInitialState: function () {
+        return {items: []};
     },
 
     /**
@@ -24,19 +22,22 @@ var BrandsList = React.createClass({
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.list, this.onDataChangeListener);
-    },
-    /**
-     *
-     */
-    getInitialState: function () {
-        return {items: []};
+        App.Dispatcher.detach(this.actions.list, this.onDataChange);
     },
     /**
      *
      */
     onDataChange: function (result) {
         this.setState({items: result.brands});
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.brands,
+            action: this.actions.list
+        });
     },
     /**
      *

@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
-
-  devise_for :accounts, singular: :user # singular used to use predefiend function
-
   # You can have the root of your site routed with "root"
   authenticated do
     root :to => 'web/home#index'
   end
 
   root :to => 'web/welcome#index', :as => 'anonymous'
+
+  # handle account
+  # check fo devise_scope method to show how to handle
+  devise_scope :user do
+    get 'accounts/settings', :to => 'devise/registrations#edit'
+  end
+  devise_for :accounts, singular: :user, :controllers => {:passwords => "account/passwords", :registrations => "account/registrations"}
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -18,7 +23,7 @@ Rails.application.routes.draw do
   # Example of regular route:
 
   scope :module => 'web' do
-    resources :products,  only: %w(index show) do
+    resources :products, only: %w(index show) do
       member do
         get 'stores'
         get 'reviews'
@@ -37,15 +42,32 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :business, path: "business", only: :index do
+      collection do
+        post 'request'
+        get 'request'
+      end
+    end
     get 'map', to: 'map#index'
-    get 'company/:page', to: 'company#show' , as:'company_page'
+    post 'company/contact'
+    get 'company/:page', to: 'company#show', as: 'company_page'
     # check for not authenticated
     get 'profile', to: 'profiles#show'
+    post 'profile', to: 'profiles#update'
   end
 
 
   # Route
   namespace :dashboard do
+
+    scope :account, controller: "accounts" do
+      post 'go-free'
+      get 'expired'
+      post 'upgrade'
+      get 'upgrade-form'
+      post 'pay'
+    end
+
     resources :products do
       member do
         post 'launch'
@@ -53,7 +75,7 @@ Rails.application.routes.draw do
       resources :targetize, only: :index
     end
 
-    resources :brand_team_members , as: 'team', path: 'team'  do
+    resources :brand_team_members, as: 'team', path: 'team' do
       member do
         post 'set-admin'
       end
@@ -63,22 +85,22 @@ Rails.application.routes.draw do
     end
 
     resources :brands do
-        collection do
-          get 'select'
-          post 'select'
-        end
-        member do
-          post 'upload'
-        end
-        resources :brand_stores, :path => '/brand-stores'
+      collection do
+        get 'select'
+        post 'select'
+      end
+      member do
+        post 'upload'
+      end
+      resources :stores, :path => '/brand-stores'
     end
     resources :users
-    resources :api_keys, :path => '/api-keys', only: ['index', 'create', 'destroy']
+    resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
     resources :hooks
 
-    get '/demo(/:page)'  => 'demo#index'
-    get '/'  => 'dashboard#index', as: 'main'
+    get '/' => 'dashboard#index', as: 'main'
 
+    resources :targetize, only: ['index']
     resources :system, only: ['index']
 
   end
@@ -86,26 +108,30 @@ Rails.application.routes.draw do
   # admin routes
 
   namespace :admin do
-    get '/'  => 'base#index', as: 'main'
-    get '/system'  => 'system#index'
+    get '/' => 'base#index', as: 'main'
+    get '/system' => 'system#index'
+    get '/business/configure' => 'business#index'
+    post '/business/configure' => 'business#update'
+    resources :account_registration_invitations, :path => '/invitations', :controller => 'invitations', as: 'invitations'
+    resources :business_profiles, :path => '/business', :controller => 'business'
     resources :categories
-    resources :brands, only: ['index', 'show']
-    resources :accounts, only: ['index', 'show']
+    resources :brands, only: %w(index show)
+    resources :accounts, only: %w(index show)
 
   end
-
 
 
   # api routes
   namespace :api do
     namespace :v1 do
-      resources :categories , only: :index
+      resources :categories, only: :index
 
-      get '/search'  => 'search#index'
+      get '/search' => 'search#index'
 
       resources :products do
         collection do
           get 'search'
+          get 'product-of-day'
         end
         member do
           # share
@@ -156,7 +182,6 @@ Rails.application.routes.draw do
 
     end
   end
-
 
 
 end

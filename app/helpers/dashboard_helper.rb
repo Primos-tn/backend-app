@@ -23,6 +23,9 @@ module DashboardHelper
 
   end
 
-  $dashboard_tabs = %w(Dashboard  Shops Products Users Hooks Api-keys  Team System)
-  $dashboard_tabs_icons = %w(panel map view-list-alt user pencil-alt2 key user settings)
+  $dashboard_tabs = %w(Dashboard  Shops Products Users Hooks Team Targetize System )
+  $dashboard_tabs_icons = %w(panel map view-list-alt user bolt user target  settings)
+
+  $dashboard_tabs_soon = %w(Api-keys)
+  $dashboard_tabs_soon_icons = %w(key)
 end

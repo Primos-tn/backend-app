@@ -1,42 +1,63 @@
-<%= form_for("profile") do |f| %>
-  <% if @profile.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
+<%= form_for @profile, url:  profile_path, method: 'post' do |f| %>
+    <% if @profile.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
 
-      <ul>
-      <% @profile.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+          <ul>
+            <% @profile.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="row">
+
+      <div class="field form-group col-lg-6">
+        <%= f.label :first_name %><br>
+        <%= f.text_field :first_name, class: 'form-control' %>
+      </div>
+
+
+      <div class="field form-group  col-lg-6">
+        <%= f.label :last_name %><br>
+        <%= f.text_field :last_name, class: 'form-control' %>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="field form-group  col-lg-6">
+        <%= f.label :phone %><br>
+        <%= f.text_field :phone, class: 'form-control' %>
+      </div>
+
+
+      <div class="field form-group col-lg-6">
+        <%= f.label :age %><br>
+        <%= f.text_field :age, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field form-group col-lg-12">
+        <%= f.label :address %><br>
+        <%= f.text_area :address , class: 'form-control'%>
+      </div>
+    </div>
+    <!--
+    <div class="field form-group">
+      <%= f.label :birthdate %><br>
+      <%= f.date_select :birthdate %>
+    </div>
+    :-->
+      <%= render 'web/company/privacy/profile' %>
+    <div class="text-center">
+      <%= f.submit t("Update"), class:'btn btn-default' %>
+    </div>
+    <div class="text-center">
+      <br/>
+      <%= link_to  accounts_settings_path , class: 'btn btn-warning' do %>
+          <i class="ti-settings"></i> <%= t('Settings') %>
       <% end %>
-      </ul>
     </div>
-  <% end %>
-
-
-    <div class="field">
-      <%= f.label :last_name %><br>
-      <%= f.text_field :last_name %>
-    </div>
-
-
-    <div class="field">
-      <%= f.label :telephone %><br>
-      <%= f.text_field :telephone %>
-    </div>
- 
-    <div class="field">
-      <%= f.label :first_name %><br>
-      <%= f.text_field :first_name %>
-    </div>
-    <div class="field">
-      <%= f.label :age %><br>
-      <%= f.text_field :age %>
-    </div>
-  <div class="field">
-    <%= f.label :birthdate %><br>
-    <%= f.date_select :birthdate %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>

@@ -1,16 +1,16 @@
 // app/assets/javascripts/components/article.js.jsx
-var DashboardBoardStaticsBlock = React.createClass({
+var DashboardBoardSmallWidgetBlock = React.createClass({
     /**
      *
      */
-    loadDataFromServer: function () {
-
+    getInitialState (){
+        return {items: []};
     },
     /**
      *
      */
-    componentDidMount: function () {
-        
+    componentDidMount () {
+        this._loadDataFromServer();
     },
     /**
      *
@@ -21,8 +21,8 @@ var DashboardBoardStaticsBlock = React.createClass({
     /**
      *
      */
-    getInitialState: function () {
-        return {items: []};
+    _loadDataFromServer() {
+
     },
     /**
      *

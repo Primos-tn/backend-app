@@ -1,6 +1,6 @@
 <div class="content table-responsive table-full-width">
   <table class="table table-striped">
-    <% @brand_stores.each do |dashboard_brands_store| %>
+    <% @stores.each do |dashboard_brands_store| %>
         <tr>
           <td><%= dashboard_brands_store.name %></td>
           <td><%= link_to t('Show'), dashboard_brand_brand_store_path(@brand, dashboard_brands_store) %></td>

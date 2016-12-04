@@ -1,0 +1,18 @@
+ar:
+  # views/dashboard/index.html
+  Basic :  عادي
+  Custom : حسب الطلب
+  Contact : اتصل بنا
+  Free :  مجاني
+  Statistics : احصائيات
+  BI: خدمة النصائح التسوقية
+  Campaign : خدمة الاشهار الموجه
+  Collaboration : الاشتراك مع فريق
+  Submit contact : ابعث الرسالة
+  Monthly : شهريا
+  Limited branad count: لايمكنك اضافة اكثر من علامة تجارية مع العرض المجاني
+  Feature not available for free account: هذه الخدمة غير متوفرة مع العرض المجاني
+  helpers:
+    submit:
+          business_profile:
+            create: المرور الى العرض الاولي

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= t('Listing Invitations') %></h1>
+
+
+<%= form_tag admin_invitations_path, :method => 'get', :id => "invitations_search" do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag t('Search'), :name => nil %>
+    </p>
+    <div id='invitations'><%= render 'list' %></div>
+    <%= link_to t('Create'), new_admin_invitation_path %>
+<% end %>
+

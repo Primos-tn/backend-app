@@ -1,6 +1,5 @@
-<% render partial: 'header/flash' %>
-<% is_business = true if (user_signed_in?.present? and current_user.is_business?) %>
 <header>
+  <%= render partial: 'header/flash' %>
   <div class="container HeaderContainer">
     <div class="col-lg-12">
       <div class="navbar-header">
@@ -22,11 +21,11 @@
         </button>
 
       </div>
-      <% if user_signed_in?.present? %>
+      <% if @is_logged_in %>
           <ul class="nav navbar-nav navbar-right">
-             <% if is_business %>
+             <% if @is_business %>
                 <li>
-                  <%= link_to dashboard_path do %>
+                  <%= link_to dashboard_main_path do %>
                       <span class="visible-lg-inline  NavMainLinks__TextLink "><%= t("dashboard") %></span>
                       <i class="visible-xs-inline visible-sm-inline  ti-settings"></i>
                   <% end %>
@@ -35,15 +34,14 @@
           </ul>
       <% end %>
       <ul id="navbar" class="nav navbar-nav navbar-right navbar-collapse collapse">
-        <% if user_signed_in?.present? %>
-
+        <% if @is_logged_in %>
             <li>
               <%= link_to profile_path do %>
                   <i class="ti-bell"></i>
               <% end %>
             </li>
             <li class="dropdown">
-              <%= link_to edit_user_registration_path(current_user) do %>
+              <%= link_to profile_path do %>
                   <i class="ti-user"></i>
               <% end %>
             </li>

@@ -10,3 +10,10 @@ ar:
   Last launch : أحدث إطلاق
   The products : المنتجات
   Are you sure about that :  هل انت متاكد من ذلك ?
+
+  activerecord:
+      attributes:
+        product :
+            name : الاسم
+            brand_id : العلامة تجارية
+            pictures : المنتجات

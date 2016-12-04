@@ -1,0 +1,23 @@
+<%= form_for(@system, url: admin_business_configure_path) do |f| %>
+    <div class="header">
+      <h4 class="title"><%= t('Contacts Email Reports') %></h4>
+    </div>
+    <div class="content">
+      <div class="row">
+        <% (@system.contacts_mail_alert || []).each do |supported| %>
+            <%= supported %>
+        <% end %>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.label "email" %>
+            <%= f.text_field :contacts_mail_alert, class: "form-control border-input", placeholder: "add Email" %>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-info btn-fill btn-wd"><%= t('Add') %></button>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+<% end %>

@@ -1,6 +1,6 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   #
-  skip_before_filter :authenticate_user!, only: [:index, :show, :reviews, :wishers]
+  skip_before_filter :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
   before_action :set_product, only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
 
 
@@ -91,6 +91,9 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   end
 
+  def product_of_day
+
+  end
   #
   # Wish list
   #

@@ -3,9 +3,9 @@
 one:
   account_id: 1
   value: MyString
-  validate_to: 2016-08-18 20:57:35
+  valide_to: 2016-08-18 20:57:35
 
 two:
   account_id: 1
   value: MyString
-  validate_to: 2016-08-18 20:57:35
+  valide_to: 2016-08-18 20:57:35

@@ -1,5 +1,6 @@
 class Dashboard::BrandsController < Dashboard::DashboardController
   skip_before_filter :select_brand
+  before_filter :can_add_more?, only: [:new, :create]
   before_action :set_brand, only: [:show, :edit, :update, :destroy, :upload]
   before_action :require_permission, only: [:show, :edit, :update, :destroy, :upload]
 
@@ -36,40 +37,25 @@ class Dashboard::BrandsController < Dashboard::DashboardController
 
   # GET /brands/1/edit
   def edit
+
   end
-
-  # POST /brands/1/follow
-  def follow
-    connection = UserBrandFollowingRelationship.new(account=current_user, brand=Brand.find(params[:id]))
-    connection.save
-  end
-
-
-  # POST /brands/1/follow
-  def unfollow
-    connection = UserBrandFollowingRelationship.find(account=current_user, brand=Brand.find(params[:id]))
-    if connection
-      connection.destroy
-    end
-  end
-
   # POST /brands
   # POST /brands.json
   def create
-    @brand = Brand.new(brand_params)
-    @brand.account = current_user
+      @brand = Brand.new(brand_params)
+      @brand.account = current_user
 
-    respond_to do |format|
-      if @brand.save
-        format.html { redirect_to dashboard_brand_url(@brand), notice: I18n.t('Brand was successfully created.') }
-        format.json { render :show, status: :created, location: @brand }
-      else
-        format.html { render :new }
-        format.json { render json: @brand.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @brand.save
+          format.html { redirect_to dashboard_brand_url(@brand), notice: I18n.t('Brand was successfully created.') }
+          format.json { render :show, status: :created, location: @brand }
+        else
+          format.html { render :new }
+          format.json { render json: @brand.errors, status: :unprocessable_entity }
+        end
       end
-    end
-  end
 
+  end
 
   # POST /brands/1/upload
   def upload
@@ -138,6 +124,12 @@ class Dashboard::BrandsController < Dashboard::DashboardController
   # Never trust parameters from the scary internet, only allow the white list through.
   def brand_pictures_params
     params.require(:brand).permit(:cover)
+  end
+
+  def can_add_more?
+    if current_user.is_business_free? && current_user.brands.count > 0
+      check_if_must_upgrade(I18n.t('Limited branad count'))
+    end
   end
 
   def require_permission

@@ -1,3 +1,4 @@
 class Contact < ActiveRecord::Base
-	self.primary_key = "email"
+  validates_presence_of(:body, :email)
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
 end

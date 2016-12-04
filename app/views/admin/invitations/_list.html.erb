@@ -1,0 +1,16 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+<table>
+
+  <% @invitations.each do |invitation| %>
+      <tr>
+        <td><%= invitation.first_name %></td>
+      </tr>
+      <tr>
+        <td><%= invitation.last_name %></td>
+      </tr>
+      <tr>
+        <td><%= invitation.email %></td>
+      </tr>
+  <% end %>
+</table>

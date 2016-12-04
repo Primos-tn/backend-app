@@ -1,4 +1,5 @@
 @import "../app/mixins";
+@import "../app/colors";
 .sidebar-wrapper{
   .DashboardSideBar__uploadIcon {
     i{
@@ -14,4 +15,12 @@
     position: absolute;
     cursor: pointer;
   }
+}
+.NoticeInfo {
+  margin: 5px 0px;
+  text-align: center;
+  padding: 4px 5px;
+  font-weight: bold;
+  color : $primary-color;
+
 }

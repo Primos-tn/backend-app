@@ -61,6 +61,12 @@ class Admin::CategoriesController < Admin::BaseController
     end
   end
 
+  protected
+
+  def set_tab
+    @active_tab = "categories"
+  end
+
   private
 
     # Use callbacks to share common setup or constraints between actions.

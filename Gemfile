@@ -45,10 +45,18 @@ group :development do
   gem 'spring'
 end
 
+group :test do
+  gem 'factory_girl'
+end
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 # Bundle devise
 gem 'devise', '3.5.2'
+
+# Bundle devise
+gem 'sidekiq', '4.0.0'
+
 # react dvise
 gem 'react-rails', '1.4.2'
 

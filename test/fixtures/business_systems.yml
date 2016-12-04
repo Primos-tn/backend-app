@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  offer_basic_price: 1.5
+  supported_countries: ['FR', 'TN']
+  last_modified_by: 1

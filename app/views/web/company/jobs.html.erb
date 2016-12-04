@@ -1,11 +1,12 @@
 <!--  About Section  -->
-<div class="container row text-center	" style="direction: ltr">
-		<h1>Our prefer guides are  </h1>
-		<br/>
-		<%= link_to 'The Joel Test', 'http://www.joelonsoftware.com/articles/fog0000000043.html'%>
-		<br/>
-	<%= link_to 'Basics of the Unix Philosophy', 'http://www.catb.org/esr/writings/taoup/html/ch01s06.html' %>
-	<br/>
-		<h2></h2>
-	@contact as :
+<div class="container">
+  <h1><%= I18n.t('join us') %></h1>
+  <hr/>
+
+  <%= link_to 'The Joel Test', 'http://www.joelonsoftware.com/articles/fog0000000043.html' %>
+  <br/>
+  <%= link_to 'Basics of the Unix Philosophy', 'http://www.catb.org/esr/writings/taoup/html/ch01s06.html' %>
+  <br/>
+
+  <a href="//" class="btn btn-lg"><i class="ti-github"></i></a>
 </div>

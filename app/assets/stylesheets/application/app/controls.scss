@@ -6,3 +6,23 @@ input[type='file']{
   border: none;
 
 }
+.AppButton {
+  background-color: $primary-color;
+  color : $color-white;
+  padding: 8px;
+  border-radius: 2px;
+  border :none ;
+  &:hover{
+    color : $color-white;
+  }
+}
+.NoticeInfo {
+  margin: 5px 0px;
+  padding: 4px 5px;
+  font-weight: bold;
+  color : $primary-color;
+  &.Danger {
+    color: red;
+  }
+
+}

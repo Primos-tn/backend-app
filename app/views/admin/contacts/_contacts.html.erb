@@ -1,0 +1,10 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+<table>
+
+  <% @accounts.each do |account| %>
+      <tr>
+        <td><%= account.username %></td>
+      </tr>
+  <% end %>
+</table>

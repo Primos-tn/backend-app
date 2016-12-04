@@ -1,0 +1,23 @@
+@import "colors";
+.SectionPrices {
+    .col-lg-4, .col-md-4 , .col-sm-12{
+      float: right;
+    }
+  .SectionPrices__Title{
+
+    margin: 40px 0px;
+    & , small{
+      text-decoration: underline;
+      color :$primary-color;
+
+    }
+  }
+}
+.sectionTitle {
+  margin-bottom: 15px ;
+  margin-top: 15px;
+  color : $primary-color;
+  font-size: 25px;
+  text-decoration: underline;
+  font-weight: bold;
+}

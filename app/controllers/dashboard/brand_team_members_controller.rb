@@ -1,10 +1,11 @@
 class Dashboard::BrandTeamMembersController < Dashboard::DashboardController
-  # verify weather the user is a business account
+  before_filter :check_if_must_upgrade
+
 
   def index
     members = BrandTeamMember
-                   .where({brand_id: current_brand.id})
-    members_ids = members.map{|entry| entry.account_id}
+                  .where({brand_id: current_brand.id})
+    members_ids = members.map { |entry| entry.account_id }
     @members = Account.find(members_ids)
     current_user.is_brand_admin = true
     @members.append(current_user)
@@ -20,7 +21,7 @@ class Dashboard::BrandTeamMembersController < Dashboard::DashboardController
 
   def invite
     if member_invite_params[:email]
-       @email = member_invite_params[:email]
+      @email = member_invite_params[:email]
     end
     index
   end
@@ -31,6 +32,9 @@ class Dashboard::BrandTeamMembersController < Dashboard::DashboardController
   def member_invite_params
     params.require(:member).permit(:email)
   end
+
+
+
 
   def set_tab
     @active_tab = 'team'

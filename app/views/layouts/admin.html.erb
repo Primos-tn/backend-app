@@ -16,7 +16,7 @@
             <% $admin_tabs.each_with_index do |tab, index| %>
                 <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
                   <a href="<%= get_admin_tab_link(tab) %>">
-                    <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
+                    <i class="ti-<%= $admin_tabs_icons[index] %>"></i>
                     <p><%= I18n.t(tab) %></p>
                   </a>
                 </li>
@@ -35,6 +35,8 @@
         </div>
       </div>
     </div>
+
+    <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
 <% end %>
 
 

@@ -1,11 +1,11 @@
 module ApplicationHelper
 
-  def is_devise?
-    %w(devise).include?(controller_path.split('/').first) or controller_name == 'company'
+  def hide_side_bar?
+    %w(devise).include?(controller_path.split('/').first) or %w(company profiles registrations business passwords).include?(controller_name)
   end
 
   def with_full_header?
-    is_devise?
+    hide_side_bar?
   end
 
 

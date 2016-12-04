@@ -1,4 +1,7 @@
 ar:
   errors :
     messages :
-      not_saved : لم يقع تسجيل الحساب
+      not_saved : العملية لم تكتمل
+      blank: فارغ
+      invalid : غير مقبول
+      not_found : غير موجود

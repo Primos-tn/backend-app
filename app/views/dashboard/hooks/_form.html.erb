@@ -17,7 +17,8 @@
   <div class="field">
     <%= f.label :brand_id %><br>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="text-center">
+    <%= f.submit I18n.t('New Hook'), :class => 'btn btn-info btn-fill' %>
+    <%= link_to t('Back'), dashboard_hooks_path, :class => 'btn btn-default btn-fill' %>
   </div>
 <% end %>

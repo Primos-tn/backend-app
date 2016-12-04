@@ -151,6 +151,7 @@ var routes = {
     brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
     products: 'products',
+    productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',
     unWishProduct: 'products/:id/unwish',
     showProduct: 'products/:id/',

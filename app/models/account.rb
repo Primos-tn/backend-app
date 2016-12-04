@@ -1,11 +1,13 @@
 class Account < ActiveRecord::Base
 
-  enum accounts_type: {user: 1, business: 2, system: 0, admin: -1}
+  enum accounts_type: {user: 0, business: 2, system: -2, admin: -1, business_request: 1}
 
+  before_validation :beta_invited?
   after_create :add_profile
 
 
   has_one :profile
+  has_one :business_profile
 
   # business
   has_many :brands
@@ -52,9 +54,6 @@ class Account < ActiveRecord::Base
   end
 
 
-
-
-
   # Given a list of brands ids, will check all brands that follow in this list
   scope :brands_followed_from_brands_list, -> (account, brands_ids) do
     UserBrandFollowingRelationship.where({account: account, brand: brands_ids}).all
@@ -93,17 +92,42 @@ class Account < ActiveRecord::Base
 
   # Only allow letter, number, underscore and punctuation.
   validates_format_of :username, with: /\A[a-zA-Z0-9_\.]*\z/
-
   validate :validate_username
 
 
+  def beta_invited?
+    if not self.is_admin? and SystemConfiguration.first.with_invitation?
+      unless AccountRegistrationInvitation.exists?(:email => email)
+        errors.add :email, t("Sorry, you are not allowed to registrer, please contact us !")
+      end
+    end
+  end
+
   def is_business?
-    self.account_type == Account.accounts_types[:business]
+    not self.business_profile.nil? or (self.account_type == Account.accounts_types[:business])
   end
 
 
+  def is_business_basic?
+    self.business_profile.nil? or
+        (self.business_profile.plan_type == BusinessProfile.plans_types[:basic])
+  end
+
+  def is_business_free?
+    self.business_profile.nil? or
+        (self.business_profile.plan_type != BusinessProfile.plans_types[:free] && self.business_profile.expires < Date.today)
+    (self.business_profile.plan_type == BusinessProfile.plans_types[:free])
+  end
+
+
+  def is_plan_expired?
+    # check if no business profile or it has a business profile  but has expires
+    self.business_profile.nil? or
+        ((self.business_profile.plan_type == BusinessProfile.plans_types[:basic]) and self.business_profile.expires < Date.today)
+  end
+
   def is_admin?
-    self.account_type == Account.accounts_types[:admin]
+    self.is_super_admin or self.account_type == Account.accounts_types[:admin]
   end
 
   def validate_username
@@ -122,6 +146,7 @@ class Account < ActiveRecord::Base
   end
 
   private
+
   def add_profile
     Profile.create(:account => self)
   end
