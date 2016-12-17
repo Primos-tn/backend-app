@@ -20,4 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  app : "Loading !"
+  app : "Primos"
+  Beta invitation : We are in beta version and we are working on the official version, thanks for your patience!
+  This service is not available in beta mode :
+

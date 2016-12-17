@@ -1,4 +1,8 @@
 ar:
+  api error : هناك خطأ في الطلب
+  geo :
+    no address provided : هناك خطأ في طلب العنوان
+    no coordinates provided : هناك خطأ في الإحداثيات
   errors :
     messages :
       not_saved : العملية لم تكتمل

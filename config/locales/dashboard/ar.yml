@@ -15,6 +15,7 @@ ar:
   Goods: "المنتجات"
   Scheduler : "البرنامج"
   Users : "المستخدمون"
+  Stores : المحلات
   # header nav
   Statistics : 'الاحصائيات'
 
@@ -25,12 +26,19 @@ ar:
   Payment Details : "تفاصيل الدفع"
   CV CODE   : "الكود"
   COUPON CODE : "رمز بطاقة التخفيض"
+  Domain : الصفحة الخاصة
 
   Brand: الماركة
   Please select a brand to start : الرجاء اختيار العلامة التجارية للبدء
 
+  Card number : "رقم البطاقة"
+  Expiration date : "تاريخ انتهاء الصلاحية"
+  Recharge my offer : "تاكيد الدفع"
+  Stay basic :  البقاء مع العرض المجاني
 
-  CARD NUMBER : "رقم البطاقة"
-  EXPIRATION DATE : "تاريخ انتهاء الصلاحية"
+
   Select brand : 'اختيار'
   New Brand : علامة جديدة
+  Try Pro for month free : جرب العرض المتقدم لشهر مجانا
+
+  Not available in beta version : غير متوفرة في النسخة التجريبية

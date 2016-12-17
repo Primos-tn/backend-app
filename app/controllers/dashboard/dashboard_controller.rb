@@ -2,9 +2,13 @@ class Dashboard::DashboardController < ApplicationController
   # define layout
   layout 'dashboard'
   # verify weather the user is a business account
-  before_filter :is_business_account?
-  before_filter :has_expired?
-  before_filter :select_brand
+  before_action :is_business_account?
+  # verify weather the user is a blocked account
+  before_action :is_blocked?
+  # select brand
+  before_action :select_brand
+  # check for expiration
+  before_action :has_expired?
   # check for brand
   before_action :set_tab
   # define the helper method
@@ -18,46 +22,49 @@ class Dashboard::DashboardController < ApplicationController
   end
 
 
+
+
   def is_business_account?
-    if action_name != 'go_free'
-      return true
-    end
     unless current_user and current_user.is_business?
-      redirect_to '/company/business'
+      redirect_to business_index_path
     end
   end
 
+
+  def is_blocked?
+    if current_user.business_profile.is_blocked?
+      redirect_to  dashboard_blocked_path
+    end
+  end
+
+
   def select_brand
     @show_sidebar = true
-    unless session[:brand_id]
+    unless current_user.brands.count > 0
       @show_sidebar = false
       # views/dashboard/select
-      redirect_to  select_dashboard_brands_path
+      redirect_to new_dashboard_brand_path
     end
   end
 
 
   def current_brand
-    @current_brand ||= Brand.find(session[:brand_id]) if session[:brand_id]
+    @current_brand ||= Brand.where(:account => current_user).first
   end
 
   protected
 
-  def set_session_brand(id, name)
-    session[:brand_id] = id
-    session[:current_brand_name]= name
-  end
 
   def check_if_must_upgrade(message=t('Feature not available for free account'))
-    if current_user.is_business_free?
+    if current_user.is_business_free? and not current_user.in_trial_mode?
       flash["upgrade_message"] = message
-      redirect_to  dashboard_upgrade_form_path
+      redirect_to dashboard_upgrade_form_path
     end
   end
 
   def has_expired?
-    if current_user.is_plan_expired?
-      redirect_to  dashboard_expired_path
+    if current_user.has_expired?
+      redirect_to dashboard_expired_path
     end
   end
 

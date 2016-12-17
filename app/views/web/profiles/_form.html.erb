@@ -53,11 +53,12 @@
       <%= render 'web/company/privacy/profile' %>
     <div class="text-center">
       <%= f.submit t("Update"), class:'btn btn-default' %>
+      <%= link_to  accounts_settings_path , class: 'btn  btn-primary' do %>
+          <i class="ti-settings"></i> <%= t('Settings') %>
+      <% end %>
     </div>
     <div class="text-center">
       <br/>
-      <%= link_to  accounts_settings_path , class: 'btn btn-warning' do %>
-          <i class="ti-settings"></i> <%= t('Settings') %>
-      <% end %>
+
     </div>
 <% end %>

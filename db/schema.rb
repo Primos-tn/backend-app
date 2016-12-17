@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,18 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161204023903) do
+ActiveRecord::Schema.define(version: 20161216060234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.integer  "account"
+    t.string   "value"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "account_registration_invitations", force: :cascade do |t|
     t.string   "last_name"
     t.string   "first_name"
     t.string   "email"
     t.integer  "admin_sent_by"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "is_confirmed",      default: false
+    t.integer  "invitation_source", default: 0
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -41,18 +50,9 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.string   "username"
     t.integer  "account_type",           default: 0
     t.boolean  "is_super_admin",         default: false
-  end
-
-  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true, using: :btree
-  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
-  add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true, using: :btree
-
-  create_table "api_keys", force: :cascade do |t|
-    t.integer  "account_id"
-    t.string   "value"
-    t.datetime "valide_to"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_accounts_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
+    t.index ["username"], name: "index_accounts_on_username", unique: true, using: :btree
   end
 
   create_table "articles", force: :cascade do |t|
@@ -63,13 +63,22 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.integer  "brand_id"
   end
 
-  create_table "brand_comments", force: :cascade do |t|
+  create_table "brand_namespaces", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "brand_id"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "brand_reviews", force: :cascade do |t|
     t.integer  "brand_id"
     t.integer  "author_id"
     t.string   "comment"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "likes_count", default: 0
+    t.integer  "eval",        default: 0
   end
 
   create_table "brand_team_members", force: :cascade do |t|
@@ -81,39 +90,59 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "brands", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+  create_table "brand_user_followers", force: :cascade do |t|
     t.integer  "account_id"
-    t.integer  "brand_users_followers_count", default: 0
-    t.integer  "comments_count",              default: 0
-    t.json     "picture"
-    t.string   "cover"
+    t.integer  "brand_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_brand_user_followers_on_account_id", using: :btree
+    t.index ["brand_id"], name: "index_brand_user_followers_on_brand_id", using: :btree
   end
 
-  add_index "brands", ["account_id"], name: "index_brands_on_account_id", using: :btree
+  create_table "brands", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "account_id"
+    t.integer  "followers_count", default: 0
+    t.integer  "reviews_count",   default: 0
+    t.json     "picture"
+    t.string   "cover"
+    t.integer  "products_count",  default: 0
+    t.integer  "stores_count",    default: 0
+    t.index ["account_id"], name: "index_brands_on_account_id", using: :btree
+  end
 
   create_table "business_profiles", force: :cascade do |t|
     t.integer  "account_id"
-    t.integer  "plan_type",    default: 0
+    t.integer  "plan_type",               default: 0
     t.datetime "expires"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "is_confirmed", default: false
-    t.boolean  "is_blocked",   default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "is_confirmed",            default: false
+    t.boolean  "is_blocked",              default: false
+    t.string   "company_name"
+    t.string   "city"
+    t.integer  "post_code"
+    t.string   "country"
+    t.string   "business_phone"
+    t.string   "business_email"
+    t.string   "company_address"
+    t.boolean  "pending",                 default: true
+    t.boolean  "has_free_account",        default: false
+    t.datetime "free_account_started_at"
   end
 
   create_table "business_systems", force: :cascade do |t|
     t.float    "offer_basic_price",                    default: 10.0
-    t.json     "supported_countries",                  default: ["TN", "FR"]
+    t.json     "supported_countries",                  default: "[\"TN\", \"FR\"]"
     t.integer  "last_modified_by"
-    t.datetime "created_at",                                                  null: false
-    t.datetime "updated_at",                                                  null: false
-    t.json     "crash_mails_alert",                    default: []
-    t.json     "account_expires_requests_mails_alert", default: []
-    t.json     "business_requests_mail_alert",         default: []
-    t.json     "contacts_mail_alert",                  default: []
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.json     "crash_mails_alert",                    default: "[]"
+    t.json     "account_expires_requests_mails_alert", default: "[]"
+    t.json     "business_requests_mail_alert",         default: "[]"
+    t.json     "contacts_mail_alert",                  default: "[]"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -148,6 +177,32 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.datetime "updated_at", null: false
     t.string   "code"
     t.string   "real_name"
+  end
+
+  create_table "mobile_device_tokens", force: :cascade do |t|
+    t.integer  "user"
+    t.string   "type"
+    t.string   "expires"
+    t.string   "uuid"
+    t.json     "info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "to_user"
+    t.string   "type"
+    t.boolean  "seen",       default: false
+    t.json     "info"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "offer_services", force: :cascade do |t|
+    t.string   "service_name"
+    t.integer  "offer_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "product_comments", force: :cascade do |t|
@@ -203,9 +258,8 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.integer  "age"
     t.json     "pictures"
     t.string   "address"
+    t.index ["account_id"], name: "index_profiles_on_account_id", using: :btree
   end
-
-  add_index "profiles", ["account_id"], name: "index_profiles_on_account_id", using: :btree
 
   create_table "stores", force: :cascade do |t|
     t.string   "name"
@@ -217,26 +271,18 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.string   "country_code"
     t.string   "address"
     t.string   "zip_code"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "system_configurations", force: :cascade do |t|
-    t.json     "supported_languages", default: ["ar", "en", "fr"]
-    t.json     "crash_mails_alert",   default: []
+    t.json     "supported_languages", default: "[\"ar\", \"en\", \"fr\"]"
+    t.json     "crash_mails_alert",   default: "[]"
     t.integer  "last_modified_by"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
     t.boolean  "with_invitation",     default: true
   end
-
-  create_table "user_brand_following_relationships", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "brand_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "user_brand_following_relationships", ["account_id"], name: "index_user_brand_following_relationships_on_account_id", using: :btree
-  add_index "user_brand_following_relationships", ["brand_id"], name: "index_user_brand_following_relationships_on_brand_id", using: :btree
 
   create_table "user_product_shares", force: :cascade do |t|
     t.integer  "account_id"
@@ -251,6 +297,8 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.integer  "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "user_product_wishes", force: :cascade do |t|
@@ -265,7 +313,7 @@ ActiveRecord::Schema.define(version: 20161204023903) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "brand_user_followers", "accounts"
+  add_foreign_key "brand_user_followers", "brands"
   add_foreign_key "brands", "accounts"
-  add_foreign_key "user_brand_following_relationships", "accounts"
-  add_foreign_key "user_brand_following_relationships", "brands"
 end

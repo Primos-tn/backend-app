@@ -1,5 +1,5 @@
+
 <% content_for :title do %>
-    <%= controller_name %>
     <%= content_for?(:title) ? yield(:title) : t('app') %>
 <% end %>
 
@@ -7,11 +7,12 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 <% end %>
 
+<% full_template = with_full_header? %>
 
 <% content_for :body do %>
     <body class="<%= (@is_logged_in and !hide_side_bar?) ? '' : 'hello' %>">
 
-    <%- if with_full_header? %>
+    <%- if full_template %>
         <%= render :partial => 'header/mini_header' %>
     <%- else -%>
         <%= render :partial => 'header/header' %>
@@ -28,17 +29,17 @@
     <%= content_for?(:outside_main) ? yield(:outside_main) : '' %>
 
     <main class="container AppContainer">
-      <%- if !with_full_header? %>
-          <div class="col-lg-12">
+      <%- if !with_full_header? and not controller_name == 'brands'%>
+          <div class="col-lg-12" >
             <%= react_component('ProductOfDay') %>
           </div>
-    <% end -%>
+      <% end -%>
       <div>
-        <div class="<%= with_full_header? ? '' : 'col-lg-8' %>">
+        <div class="<%= full_template ? '' : 'col-lg-8 NoPadding' %>">
           <%= content_for?(:main_content) ? yield(:main_content) : yield %>
         </div>
-        <div class="<%= with_full_header? ? '' : 'col-lg-4' %>">
-          <%- if not hide_side_bar? %>
+        <div class="<%= full_template ? '' : 'col-lg-4' %>">
+          <%- if not full_template %>
               <%- if @is_logged_in %>
                   <%= react_component('SideBar', {:id => current_user.id}) %>
               <%- else -%>
@@ -53,9 +54,9 @@
     <%= render 'layouts/footer' %>
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
     <%= content_for?(:scripts) ? yield(:scripts) : '' %>
 
 <% end %>
-
 
 <%= render template: 'layouts/default' %>

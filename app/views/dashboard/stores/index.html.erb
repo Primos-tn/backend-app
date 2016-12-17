@@ -1,0 +1,29 @@
+<%
+   view_style = @view_style || 'list'
+%>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">
+          <%= I18n.t('Shops') %>
+          <%= link_to  dashboard_stores_path({:style => get_shops_list_style(view_style)}) , class: 'pull-right' do %>
+              <i class="<%= get_shops_list_style_icon(view_style) %>"></i>
+          <% end %>
+        </h4>
+      </div>
+      <div class="content">
+        <% if view_style == 'map' %>
+            <%= render 'map' %>
+        <% else %>
+            <%= render 'list' %>
+        <% end %>
+        <br/>
+        <div class="row text-center">
+          <%= link_to t('New store'), new_dashboard_store_path, class: 'btn  btn-primary' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

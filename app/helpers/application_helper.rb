@@ -1,11 +1,12 @@
 module ApplicationHelper
 
   def hide_side_bar?
-    %w(devise).include?(controller_path.split('/').first) or %w(company profiles registrations business passwords).include?(controller_name)
+    %w(devise).include?(controller_path.split('/').first) or
+        %w(company profiles registrations business passwords sessions).include?(controller_name)
   end
 
   def with_full_header?
-    hide_side_bar?
+    @full_template_page or hide_side_bar?
   end
 
 

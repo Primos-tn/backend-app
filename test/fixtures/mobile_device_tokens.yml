@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: 1
+  type: 
+  expires: MyString
+  uuid: MyString
+  info: 
+
+two:
+  user: 1
+  type: 
+  expires: MyString
+  uuid: MyString
+  info: 

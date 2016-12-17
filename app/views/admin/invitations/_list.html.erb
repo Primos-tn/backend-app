@@ -1,16 +1,32 @@
-<%= hidden_field_tag :direction, params[:direction] %>
-<%= hidden_field_tag :sort, params[:sort] %>
-<table>
+<div class="content table-responsive table-full-width">
+  <table class="table table-striped">
+    <thead>
+    <th><%= t('First name') %></th>
+    <th><%= t('Last name') %></th>
+    <th><%= t('Email') %></th>
+    <th><%= t('created at') %></th>
+    </thead>
+    <tbody>
 
-  <% @invitations.each do |invitation| %>
-      <tr>
-        <td><%= invitation.first_name %></td>
-      </tr>
-      <tr>
-        <td><%= invitation.last_name %></td>
-      </tr>
-      <tr>
-        <td><%= invitation.email %></td>
-      </tr>
-  <% end %>
-</table>
+
+    <% @invitations.each do |invitation| %>
+        <tr>
+          <td><%= invitation.first_name %></td>
+          <td><%= invitation.last_name %></td>
+          <td><%= invitation.email %></td>
+          <td><%= invitation.created_at %></td>
+          <td>
+            <% if invitation.is_confirmed %>
+                <%= form_for([:admin, invitation], url: resend_admin_invitation_path(invitation)) do |f| %>
+                    <%= f.submit t('Resend request'), :class => 'btn btn-info' %>
+                <% end %>
+            <% else %>
+                <%= form_for([:admin, invitation], url: confirm_admin_invitation_path(invitation)) do |f| %>
+                    <%= f.submit t('Accept request'), :class => 'btn btn-danger' %>
+                <% end %>
+            <% end %>
+          </td>
+        </tr>
+    <% end %></tbody>
+  </table>
+</div>

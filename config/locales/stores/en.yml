@@ -1,1 +1,11 @@
 en:
+  # views/dashboard/index.html
+  New store : New shop
+  Store name : Shop name
+  Shops : Shops
+  This store will be associated to : "This store will be associated to "
+  helpers:
+          submit :
+            store :
+              create : New shop
+              update : Edit

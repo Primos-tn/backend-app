@@ -19,5 +19,7 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  app : "Loading !"
+fr:
+  app : "Primos"
+  Beta invitation : Nous somme en beta version et nous travaillons sur la version officielle, merci pour votre patience!
+  This service is not available in beta mode : Ce service n'est pas disponible en mode bêta.

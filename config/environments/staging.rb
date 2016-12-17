@@ -23,7 +23,7 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
-  config.serve_static_files = true
+  config.public_file_server.enabled = true
 
 
   # Compress JavaScripts and CSS.
@@ -67,7 +67,17 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { :host => 'herokuapp.primos-staging.com' }
+  config.action_mailer.delivery_method = :smtp
 
+  config.action_mailer.smtp_settings = {
+      :from => ENV['MAILER_SMTP_FROM'],
+      :address => ENV['MAILER_SMTP_ADDRESS'],
+      :port => ENV['MAILER_SMTP_PORT'],
+      :authentication => ENV['MAILER_SMTP_AUTHENTICATION'],
+      :enable_starttls_auto => ENV['MAILER_SMTP_ENABLE_STARTTLS_AUTO'],
+      :user_name => ENV['MAILER_SMTP_USERNAME'],
+      :password => ENV['MAILER_SMTP_PASSWORD']
+  }
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
@@ -82,7 +92,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   CarrierWave.configure do |config|
-    config.root = '~/www/b24/'
+    config.root = Rails.application.secrets.storage['root']
   end
 
 end

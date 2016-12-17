@@ -1,0 +1,11 @@
+<div class="LanguagesSelector">
+  <%= form_tag(request.original_url, method: :get, id: :locale_select_form) do %>
+      <% SystemConfiguration.first.supported_languages.each do |lang| %>
+          <button value="<%= lang %>" type="submit" name="locale" <%= if locale.to_s == lang then
+                                                       'disabled=disabled'
+                                                     else
+                                                       ''
+                                                     end %>><%= lang %></button>
+      <% end %>
+  <% end %>
+</div>

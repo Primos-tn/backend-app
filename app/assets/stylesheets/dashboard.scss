@@ -20,7 +20,31 @@ body {
     background-color: red;
   }
 }
+.DashboardMainContainer {
+  min-height:calc(100% - 90px) !important;
+  position:relative;
+}
 .DashboardFooter {
-  position: fixed;
+  .DashboardFooter__SelectLanguages {
+    float: left;
+  }
+  .DashboardFooter__Feedback {
+    display: inline-block;
+    border : solid 1px #ccc;
+  }
+
+  .DashboardFooter__PlanType {
+    float: right;
+    opacity: 0.5;
+    padding: 2px;
+    border : solid 1px #ccc;
+  }
+  position:absolute;
+  width:100%;
+  padding: 15px;
   bottom: 0px;
+  margin: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
 }

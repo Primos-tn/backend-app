@@ -75,7 +75,9 @@ var BrandsListItem = React.createClass({
                     </div>
                     <div className="BrandCard__ImageContainer">
                         <a href={App.Helpers.getAbsoluteUrl(App.Routes.brand, {id: this.props.entry.id})}>
-                            <img className="BrandCard__Image" src="/assets/Well-clothed_baby.jpg"/>
+                            <img
+                                className="BrandCard__Image"
+                                src={App.Helpers.getMediaUrl(entry.cover.thumb.url)}/>
                         </a>
 
                     </div>

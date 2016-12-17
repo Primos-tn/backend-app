@@ -2,24 +2,23 @@ en:
   Sign in : "Sign in"
   Sign up : "Sign up"
   registration policy : "Sign up"
-  identifier not valid : 'البريد الإلكتروني او الهاتف غير صحيح'
+  identifier not valid : Identifier not valid
   activerecord:
     attributes:
       account :
-          username : الاسم
-          email: "المستخدم او البريد الالكتروني"
-          password: "كلمة السر"
-          password_confirmation : 'تاكيد كلمة السر'
-          remember_me : تذكرني
+          username : username
+          email: Username or email
+          password: Password
+          password_confirmation : Password confirmation
+          remember_me : Remember me
     errors :
       models :
         account :
           attributes :
             email :
-              taken : البريد الالكتروني موجود
+              taken : Email already exists
             username :
-              taken : الاسم موجود
-  Back: "رجوع"
+              taken : Username already exsits
   # devise/shared_links
-  Forgot your password? : "نسيت كلمة السر"
-  Send me reset password instructions  : "اعادة تحيين كلمة السر"
+  Forgot your password? : Forgot your password?
+  Send me reset password instructions  : Send me reset password instructions

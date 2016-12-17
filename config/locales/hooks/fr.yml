@@ -1,29 +1,3 @@
 fr:
-  app : "izzY"
-  Administration : "Administration"
-  my dashboard : "dashboard"
-  profile : Profile
-  account : Compte
-  services : Services
-  Log out : Sortir
-
-  My orders : Mes paniers
-  Scheduler : Le programme
-  Budget : Budget
-  orders history : Historique des commandes
-
-  Real time : Live
-  Goods: Poroduits
-  Scheduler : Calendrier
-  Provisioning : Provisionnement
-  Wait List : Liste d'attentes
-  Users : Utilisateurs
-  Listing Of users : Liste des utilisateurs
-  Loyality points : Points de fidélités
-  current balance : Compte actuel
-  Recharge  : Recharge de compte
-  Payment Details : Details de payment
-  card number : Numéro de comtpe
-  expiration date : Find de validité de carte
-  CV CODE   : Code
-  COUPON CODE : Code de coupon
+  # views/dashboard/index.html
+  New Hook : Nouveau callback

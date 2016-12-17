@@ -14,20 +14,15 @@ ar:
   Settings : الحساب
   services : "الخدمات"
 
-  Copyright © : "©  جميع الحقوق محفوضة"
-  privacy : "الخصوصية"
-  contact Us : "اتصل بنا"
-  join us : "التحق بنا"
-  api : "api"
-  help : مساعدة
 
   Administration: "الادارة"
   Dashboard : "لوحة القيادة"
-
-  Name fr: "اسم المنتج  فرنسي"
-  Name ar: "اسم المنتج  عربي"
   Error when submitting your request : "Error when submitting your request"
-
+  # used for admin
+  BusinessAccounts : حسابات الشركات
+  BusinessRequests : طلبات حسابات الشركات
+  BusinessConfiguration : ادارة حسابات الاعمال
+  Contacts : اتصالات
   Back : "عودة"
   Show : "التفاصيل"
   User : "المستخدم"

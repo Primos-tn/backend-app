@@ -1,5 +1,5 @@
 class Dashboard::HooksController  < Dashboard::DashboardController
-
+  before_action  :check_if_must_upgrade
   # GET /products
   # GET /products.json
   def index

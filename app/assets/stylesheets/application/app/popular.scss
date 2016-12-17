@@ -1,20 +1,45 @@
 // Place all the styles related to authentication section
 @import "colors";
-.PopularEmbedList {
 
-  .PopularEmbedList__Item {
-    position: relative;
-    margin-bottom: 5px ;
-    height: 100px;
-    background-color: $color-white;
-    border : solid 2px $primary-color;
-    border-radius: 2px;
-    /*box-shadow: -1px 0px 1px 0px $primary-color;*/
-    .PopularEmbedList__Title{
+#categories_carousel {
+  margin-right: 6px;
+  margin-left: 6px;
+  direction: ltr !important;
+  .item {
+    background: $color-white;
+    padding: 30px 0px;
+    border : solid 1px $primary-color;
+    margin: 10px;
+    color: $primary-color;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;
+    &.clicked {
       color: white;
-      position: absolute;
-      left : 20px;
-      height : 20px;
+      background: $primary-color;
+
     }
   }
+  .owl-wrapper-outer {
+  }
+  .owl-page {
+    span {
+      background-color: $primary-color;
+    }
+  }
+}
+
+.customNavigation {
+  text-align: center;
+}
+
+//use styles below to disable ugly selection
+.customNavigation a {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

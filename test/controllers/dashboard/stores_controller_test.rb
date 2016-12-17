@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class Dashboard::StoresControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
+
   setup do
+    @user = accounts(:business_one)
+    sign_in @user
     @controller = Dashboard::StoresController.new
     @store = stores(:primos_head)
   end

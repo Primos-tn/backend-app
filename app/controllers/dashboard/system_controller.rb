@@ -4,7 +4,7 @@ class Dashboard::SystemController  < Dashboard::DashboardController
   # GET /products
   # GET /products.json
   def index
-
+    @business_profile = current_user.business_profile
   end
 
   private

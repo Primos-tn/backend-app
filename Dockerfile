@@ -1,6 +1,6 @@
 
 # Seed system
-RUN rake seed
+RUN rake db:seed
 # Configure all
 RUN rake configure:all
 #

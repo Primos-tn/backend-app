@@ -2,6 +2,7 @@ json.brands @brands do |brand|
   json.name brand.name
   json.id brand.id
   json.owner brand.account.username
+  json.cover brand.cover
   json.followers_count brand.followers.size
   json.is_following = false
   if current_user and  @me_and_brands[brand.id]

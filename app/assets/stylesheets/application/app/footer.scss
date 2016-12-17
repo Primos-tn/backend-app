@@ -23,6 +23,21 @@ footer {
       }
     }
 
+    .LanguagesSelector {
+      display: inline-block;
+      form{
+        display: inline-block;
+      }
+      button{
+        text-decoration: underline;
+        border :none;
+        color : $primary-color;
+      }
+      button[disabled=disabled]{
+        color : gray;
+        text-decoration: none;
+      }
+    }
     .Footer__CompanySeparator {
       float: left;
     }

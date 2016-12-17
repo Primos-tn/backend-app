@@ -1,18 +1,32 @@
 ar:
   # views/dashboard/index.html
+  Confirm Pro : تاكيد المرور نحو العرض الاولي
+  Pending request : طلبك بصدد الدرس
+  We are working hard to validate your request:  نحن نعمل  للتحقق من صحة طلبك، سنتصل بك في اجل قريب، شكرا للانتظار
   Basic :  عادي
   Custom : حسب الطلب
   Contact : اتصل بنا
   Free :  مجاني
-  Statistics : احصائيات
-  BI: خدمة النصائح التسوقية
-  Campaign : خدمة الاشهار الموجه
-  Collaboration : الاشتراك مع فريق
   Submit contact : ابعث الرسالة
   Monthly : شهريا
-  Limited branad count: لايمكنك اضافة اكثر من علامة تجارية مع العرض المجاني
+  Limited brand count: لايمكنك اضافة اكثر من علامة تجارية مع العرض المجاني
   Feature not available for free account: هذه الخدمة غير متوفرة مع العرض المجاني
   helpers:
     submit:
           business_profile:
             create: المرور الى العرض الاولي
+  Offers : العروض
+  Apply for business account confirmation : تأكيد طلب للحصول على حساب الأعمال
+  Apply for business account : طلب للحصول على حساب الأعمال
+
+  Feature Launches : إطلاقات اسبوعيا
+  Feature Statistics : خدمةالإحصائيات
+  Feature BI: خدمةالوصايا الموجة
+  Feature Actions: خدمةالاشعار الآني
+  Feature Subdomain: خدمةإنشاء صفحة خاصة
+  Feature Machine Learning: خدمةالتعلم الآلي
+  Feature Sponsored : خدمةالمنتوجات المدفوعة
+  Feature QR Coupons : "رمز الاستجابة السريعة "
+  Feature Collaboration : خدمةالاشتراك مع فريق
+  Feature Bot : بوت شخصي
+

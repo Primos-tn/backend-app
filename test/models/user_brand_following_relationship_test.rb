@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserBrandFollowingRelationshipTest < ActiveSupport::TestCase
+class BrandUserFollower < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

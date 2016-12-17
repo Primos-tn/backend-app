@@ -1,0 +1,76 @@
+<%= form_for([:dashboard, @store]) do |f| %>
+    <% if @store.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@store.errors.count, "error") %><%= t('prohibited this dashboard_brands_store from being saved') %>
+            :</h2>
+
+          <ul>
+            <% @store.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <%= f.hidden_field :latitude %>
+    <%= f.hidden_field :longitude %>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <%= f.label :name %><br>
+          <%= f.text_field :name, :class => 'form-control border-input' %>
+        </div>
+      </div>
+    </div>
+    <%= render 'shared/requires_map_libs' %>
+    <%= react_component('StoresEdit', latitude: @store.latitude, longitude: @store.longitude) %>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <%= f.label :country_code %><br>
+          <%= f.select :country_code,
+                       options_from_collection_for_select(Country.where(code: %w(FR TN)), 'code', 'name', selected: @store.country_code || 'TN'),
+                       {},
+                       :class => 'form-control border-input' %>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <%= f.label :city %><br>
+          <%= f.text_field :city, :class => 'form-control border-input' %>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <%= f.label :zip_code %><br>
+          <%= f.text_field :zip_code, :class => 'form-control border-input', :type => "number"  %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="form-group">
+            <%= f.label :address %><br>
+            <%= f.text_field :address, :class => 'form-control border-input'%>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="NoticeInfo">
+      <%= I18n.t('This store will be associated to') + current_brand.name %>
+    </div>
+
+    <div class="text-center">
+      <%= f.submit :class => 'btn btn-info btn-fill btn-wd' %>
+
+      <%= link_to t('Back'), dashboard_stores_path %>
+    </div>
+    <div class="clearfix"></div>
+<% end %>

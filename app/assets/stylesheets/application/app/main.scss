@@ -126,6 +126,11 @@ body{
         }
       }
     }
+    .FooterContainer {
+
+      background-color: $color-white !important;
+      z-index: 2;
+    }
   }
 
   header, footer{
@@ -152,6 +157,9 @@ body{
 }
 .AppContainer {
   margin-top: 25px;
+  .NoPadding{
+    padding: 0px;
+  }
 }
 
 .Block__Header{
@@ -159,7 +167,7 @@ body{
     color : $color-white;
     font-family: open_bold, serif;
     background-color: $primary-color;
-    text-decoration: underline;
-
+    padding: 5px;
+    border-radius: 2px;
   }
 }

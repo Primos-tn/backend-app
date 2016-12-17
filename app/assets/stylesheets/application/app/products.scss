@@ -268,9 +268,12 @@
 
 }
 .DayTimer {
-  background-color: $primary-color;
+  border: solid 1px $primary-color;
+  margin-right: -11px;
+  background-color: white;
   span {
-    font-size: 50px;
+    font-size: 25px;
+    color : $primary-color;
   }
 }
 .ProductOfDay {
@@ -278,7 +281,9 @@
   left: 0px;
   right: 0px;
   .ProductOfDay__Inner {
-    background-color: $primary-color;
+
+    border: solid 1px $primary-color;
+    background-color: white;
 
   }
 }

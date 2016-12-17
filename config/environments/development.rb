@@ -54,12 +54,13 @@ Rails.application.configure do
 
 
   CarrierWave.configure do |config|
-    config.root = '~/www/b24/'
+    config.root = Rails.application.secrets.storage['root']
   end
 
   config.after_initialize do
     Bullet.enable = true
     Bullet.alert = true
     Bullet.add_footer = true
+    Bullet.bullet_logger = true
   end
 end

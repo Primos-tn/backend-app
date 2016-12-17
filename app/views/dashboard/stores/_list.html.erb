@@ -1,0 +1,16 @@
+<div class="content table-responsive table-full-width">
+  <table class="table table-striped">
+    <% @stores.each do |store| %>
+        <tr>
+          <td><%= store.name %></td>
+          <td>
+            <%= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{store.latitude},#{store.longitude}&markers=#{store.latitude},#{store.longitude}&zoom=4&size=64x64&key=#{Rails.application.secrets.geocoder['api_key']}",
+                          class: 'img-fluid img-rounded', alt: "#{store.name} on the map"%>
+          </td>
+          <td><%= link_to t('Show'), dashboard_store_path(store) %></td>
+          <td><%= link_to t('Edit'), edit_dashboard_store_path(store) %></td>
+          <td><%= link_to t('Destroy'), dashboard_stores_path(store), method: :delete, data: {confirm: t('Are you sure?')} %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>

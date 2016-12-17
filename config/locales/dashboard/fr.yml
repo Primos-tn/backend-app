@@ -1,29 +1,31 @@
 fr:
-  app : "izzY"
-  Administration : "Administration"
-  my dashboard : "dashboard"
-  profile : Profile
-  account : Compte
-  services : Services
-  Log out : Sortir
+  Profile : Profile
+  Account : Compte
+  Log out : Déconnexion
 
-  My orders : Mes paniers
-  Scheduler : Le programme
-  Budget : Budget
-  orders history : Historique des commandes
+  System : Configuration système
+  Targetize : Viser des clients
+  Dashboard : Tableau de bord
+  Campaigns : Les compagnes
+  Hooks : Actions
+  Goods: Les produits
+  Users : Utlisateurs
+  # header nav
+  Statistics : Statistiques
 
-  Real time : Live
-  Goods: Poroduits
-  Scheduler : Calendrier
-  Provisioning : Provisionnement
-  Wait List : Liste d'attentes
-  Users : Utilisateurs
-  Listing Of users : Liste des utilisateurs
-  Loyality points : Points de fidélités
-  current balance : Compte actuel
-  Recharge  : Recharge de compte
-  Payment Details : Details de payment
-  card number : Numéro de comtpe
-  expiration date : Find de validité de carte
-  CV CODE   : Code
-  COUPON CODE : Code de coupon
+  Team : Equipe
+  Brand: Marque
+  Stores : Magazins
+  Domain : Sous domaine
+  Please select a brand to start : Merci de sélectioner la marque
+
+
+  CARD NUMBER : "رقم البطاقة"
+  EXPIRATION DATE : "تاريخ انتهاء الصلاحية"
+  Select brand : 'اختيار'
+  New Brand : Création d'une marque
+  Try Pro for month free : Essayer l'offre Pro pour 1 mois gratuitement
+
+
+  Not available in beta version : Offre non disponible pour la version beta
+

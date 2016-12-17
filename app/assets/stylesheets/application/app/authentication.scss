@@ -1,6 +1,6 @@
 // Place all the styles related to authentication section
 @import "colors";
-.AccountAuthenticationContainer{
+.AccountAuthenticationContainer, .AppUserForm{
   flex-direction: row;
   flex-grow: 1;
   justify-content: center;
@@ -16,46 +16,48 @@
       width: 100%;
     }
   }
+
+  &.AppUserForm--NoBorder {
+    border : none;
+  }
   .modal-body{
     text-align: center;
 
   }
-  article {
-    color: #262626;
-    flex-grow: 1;
-    justify-content: center;
-    border-radius: 5px;
-    width: auto;
-    input[type="text"],
-    input[type="date"],
-    input[type="email"],
-    input[type="password"]{
-      padding: 6px;
-      margin: 2px 4px;
-      border: 1px solid $primary-color;
-      width: 80%;
-      background-color: transparent;
+  color: #262626;
+  flex-grow: 1;
+  justify-content: center;
+  border-radius: 5px;
+  width: auto;
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea,
+  input[type="email"],
+  input[type="password"]{
+    padding: 6px;
+    margin: 2px 4px;
+    border: 1px solid $primary-color;
+    width: 80%;
+    background-color: transparent;
+  }
+  .Authentication__BottomLinks {
+    a, .btn {
+      color: black;
     }
-    .Authentication__BottomLinks {
-      a, .btn {
-        color: black;
-      }
 
-    }
+  }
 
-    &.modal-dialog {
-      label, h1, h2, a, input[type="submit"], button[type="submit"] {
-        color: $dark;
-      }
-    }
-    label {
-      font-size: 12px;
-    }
-    .SocialAuthenticationBtn, input[type="submit"] {
-      background-color: $primary-color;
-      color: $color-white;
-      margin: 15px 15px;
-      font-size: 15px;
-    }
+  &.modal-dialog {
+
+  }
+  label {
+    font-size: 12px;
+  }
+  .SocialAuthenticationBtn, input[type="submit"] {
+    background-color: $primary-color;
+    color: $color-white;
+    margin: 15px 15px;
+    font-size: 15px;
   }
 }

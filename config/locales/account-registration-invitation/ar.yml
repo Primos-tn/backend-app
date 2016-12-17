@@ -1,14 +1,22 @@
 ar:
   # views/dashboard/index.html
-  Edit :  تحرير
-  Show : إظهار
-  New brand : اضافة علامة جديد
-  Create Brand : اضافة علامة جديد
-  The brand : العلامة تجارية
-  Destroy : محو
-  Last launch : أحدث إطلاق
-  The products : المنتجات
+  Listing invitations : المدعوّون
   Are you sure about that :  هل انت متاكد من ذلك ?
+  New invitation: دعوة جديدة
+  First name : الاسم
+  Last name : اللقب
+  Email : البريد الالكتروني
+  Request join : طلب الانضمام
+  Validate request join : تاكيد طلب الانضمام
+  Can not create invitation : خطأ عند القيام بالطلب
+  Account is already exists !: هذا البريد الالكتروني موجود!
+  Request pending: طلب الانضمام موجود
+  We will be in touch soon : سنكون على اتصال قريبا
+  Home: الصفحة الرئيسية
+  Accept request: قبول الدعوة
+  Confirmed : مقبولة
+  Resend request: إعادة بعث
+  Request accepted: قبول طلب الانضمام
 
   activerecord:
       attributes:
@@ -23,11 +31,14 @@ ar:
               email :
                 taken : البريد الالكتروني موجود
                 blank : فارغ
+                too_short : قصير
               first_name :
                 blank: فارغة
+                too_short : قصير
               last_name :
                 taken : الاسم موجود
                 blank: فارغ
+                too_short : قصير
 
   helpers:
       submit :

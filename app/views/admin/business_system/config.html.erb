@@ -1,0 +1,35 @@
+<%- path = "admin/business_system/config/" %>
+
+<ul class="nav nav-tabs">
+  <li  class="active"> <a data-toggle="pill" href="#home"><%= t('General') %></a></li>
+  <li><a data-toggle="pill" href="#crash_mails"><%= t('Crashs emails reports') %> </a></li>
+  <li><a data-toggle="pill" href="#business_requests_mails"><%= t('Business  emails reports') %></a></li>
+  <li><a data-toggle="pill" href="#account_expires_requests_mails"><%= t('Expiration emails reports') %></a></li>
+  <li><a data-toggle="pill" href="#contact_mails"><%= t('Contact emails reports') %></a></li>
+</ul>
+
+<div class="card">
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <%= render :partial => path + "general" %>
+    </div>
+    <div id="crash_mails" class="tab-pane fade">
+      <%= render path + "crash_mails" %>
+    </div>
+
+    <div id="business_requests_mails" class="tab-pane fade">
+      <%= render path + "business_requests_mails" %>
+    </div>
+
+
+    <div id="account_expires_requests_mails" class="tab-pane fade">
+      <%= render path + "account_expires_requests_mails" %>
+    </div>
+
+
+    <div id="contact_mails" class="tab-pane fade">
+      <%= render path + "contact_mails" %>
+    </div>
+
+  </div>
+</div>

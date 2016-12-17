@@ -19,13 +19,14 @@ ar:
           submit : اضافة علامة جديد
       errors :
         models :
-          account :
+          brand :
             attributes :
-              email :
-                taken : البريد الالكتروني موجود
-                blank : فارغ
-              password :
-                blank: فارغة
-              username :
+              name :
                 taken : الاسم موجود
                 blank: فارغ
+  helpers:
+    submit :
+      brand:
+        create : اضافة علامة جديد
+        update : تحرير
+

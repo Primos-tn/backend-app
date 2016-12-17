@@ -2,8 +2,8 @@
 
 business_one_profile:
   account: business_one
-  expires : <%= Date.today.month(1) %>
+  expires : Sat, 03 Dec 2016
 
 business_two_profile:
   account: business_two
-  expires : <%= Date.today %>
+  expires : Tue, 03 Jan 2017

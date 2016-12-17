@@ -11,6 +11,12 @@ var ProductsList = React.createClass({
     /**
      *
      */
+    getInitialState: function () {
+        return {items: [], serverLoadingDone: false};
+    },
+    /**
+     *
+     */
     loadDataFromServer: function () {
         App.Stores.loadData({
             url: App.Routes.products,
@@ -34,12 +40,6 @@ var ProductsList = React.createClass({
      */
     componentWillUnmount: function () {
         App.Dispatcher.detach(this.actions.list, this.onDataChange);
-    },
-    /**
-     *
-     */
-    getInitialState: function () {
-        return {items: [], serverLoadingDone: false};
     },
     /**
      *
@@ -93,7 +93,7 @@ var ProductsList = React.createClass({
 
         }
         else {
-            items = this.state.serverLoadingDone ? '0 items ' : "Loading ....";
+            items = <div className="text-center">{ this.state.serverLoadingDone ? i18n.Empty : i18n.Loading } </div>
         }
 
         return (

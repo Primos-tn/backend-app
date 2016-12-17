@@ -2,7 +2,7 @@ class Product < ActiveRecord::Base
 
   mount_uploaders :pictures, ProductUploader
 
-  belongs_to :brand
+  belongs_to :brand, :counter_cache => :products_count
   has_one :account, :through => :brand
 
   has_many :wishes_relation, class_name: :UserProductWish

@@ -1,26 +1,13 @@
 ar:
-  activerecord:
-      attributes:
-        system_configuration:
-            with_invitation : الاسم
-            last_name : اللقب
-            email: البريد الالكتروني
-      errors :
-        models :
-          account_registration_invitation :
-            attributes :
-              email :
-                taken : البريد الالكتروني موجود
-                blank : فارغ
-              first_name :
-                blank: فارغة
-              last_name :
-                taken : الاسم موجود
-                blank: فارغ
-
-
-  helpers:
-      submit :
-        system_configuration:
-          create : استدعاء جديد
-          update : تحوير
+ System configuration : اعدادات النظام
+ activerecord:
+         attributes:
+           system_configuration:
+               with_invitation : الحسابات الجديدة بالدعوة
+         errors :
+           models :
+             account_registration_invitation :
+               attributes :
+                 name :
+                   taken: هذا الاسم موجود
+                   blank : فارغ

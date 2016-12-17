@@ -9,7 +9,12 @@ class Admin::BaseController < ApplicationController
     @total_brands = Brand.count
     @total_accounts = Account.count
     @total_categories = Category.count
+    @total_business = BusinessProfile.where(:pending => false).count
     render 'admin/index'
+  end
+
+  def info
+    render
   end
 
   protected

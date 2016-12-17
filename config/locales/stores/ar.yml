@@ -1,5 +1,21 @@
 ar:
   # views/dashboard/index.html
-  New Brand store : اضافة محل جديد
+  New store : اضافة محل جديد
+  Edit store : تحوير محل
   Store name : اسم المحلَ
   Shops : المحلات
+  This store will be associated to : " هذا المحل تابع ل "
+
+  activerecord:
+    attributes:
+      store:
+        name : الاسم
+        city : المدينة
+        country_code : البلد
+        zip_code : الرمز البريدي
+        address : العنوان
+  helpers:
+    submit :
+      store :
+        create :  اضافة محل جديد
+        update : تحوير

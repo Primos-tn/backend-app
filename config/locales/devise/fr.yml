@@ -1,4 +1,24 @@
 fr:
+  Change your password : Changez le mot de passe
+  Change my password:  Changez le mot de passe
+  New password : Nouveau mot de passe
+  Confirm new password : Confirmation de nouveau mot de passe
+  Characters minimum: Caractères minimale
+  Save : Enregistrer
+
+
   devise:
     sessions:
-      signed_in: Authenfication avec succèss
+      signed_in: Bonjour
+      signed_out : Vous avez déconnecté
+    passwords:
+      user:
+        send_instructions : Merci de confirmer ton email
+    registrations:
+      user:
+        signed_up: Vous avez déconnecté
+
+    failure:
+      user:
+        invalid: L'email ou le mot de passe est invalid
+        not_found_in_database : L'email ou le mot de passe n'existe pas

@@ -1,6 +1,4 @@
 class Dashboard::BrandTeamMembersController < Dashboard::DashboardController
-  before_filter :check_if_must_upgrade
-
 
   def index
     members = BrandTeamMember

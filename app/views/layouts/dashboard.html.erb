@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <%= t('app') %> | dashboard
+    <%= t('app') %> | dashboard > <%= controller_name %>
 <% end %>
 
 <% content_for :stylesheets do %>
@@ -20,15 +20,20 @@
                     <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb)}) %>
                 <% end %>
                 <%= link_to dashboard_main_path do %>
-                    <span class="simple-text"><%= session[:current_brand_name] %></span>
+                    <span class="simple-text"><%= current_brand.name %></span>
                 <% end %>
               </div>
 
               <ul class="nav">
                 <% $dashboard_tabs.each_with_index do |tab, index| %>
                     <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
-                      <a href="<%= get_tab_link(tab) %>">
-                        <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
+                      <a href="<%= get_tab_link(tab) %>" class="<%= get_class_active(tab) %>">
+                        <%- if $dashboard_tabs_soon.include?(tab.downcase) %>
+                            <i class="ti-lock"></i>
+                        <% else %>
+                            <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
+
+                        <% end %>
                         <p><%= I18n.t(tab) %></p>
                       </a>
                     </li>
@@ -54,16 +59,22 @@
             <div class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li>
-
-
-                  <%- if current_user.is_business_free? %>
-                      <a href="<%=  dashboard_upgrade_form_path  %>" class="btn btn-danger">Upgrade</a>
-                  <% end %>
+                  <%- unless %w(upgrade upgrade_form).include?(action_name) %>
+                      <%- if current_user.can_have_trial_business? %>
+                          <%- if action_name != 'free_trial' %>
+                              <a href="<%= dashboard_free_trial_path %>" class="btn btn-danger"><%= t('Try basic for month free') %></a>
+                          <% end -%>
+                      <%- else %>
+                          <%- if (not current_user.in_trial_mode?) && current_user.is_business_free? %>
+                              <a href="<%= dashboard_upgrade_form_path %>" class="btn btn-danger">Upgrade</a>
+                          <% end -%>
+                      <% end -%>
+                  <% end -%>
                 </li>
-                <%= react_component('DashboardNotifier', {}, {:tag => 'li', class: 'dropdown'}) %>
+                <%= react_component('DashboardNotifier', {'link_to': dashboard_notifications_path}, {:tag => 'li'}) %>
 
                 <li>
-                  <%= link_to profile_path  do %>
+                  <%= link_to profile_path do %>
                       <i class="ti-user"></i>
                   <% end %>
                 </li>
@@ -82,12 +93,11 @@
         </nav>
 
 
-        <div class="content">
+        <div class="content DashboardMainContainer">
           <div class="container-fluid">
             <div class="row">
               <%= yield %>
-
-              <%= render partial: 'dashboard/footer' %>
+              <%= render partial: 'dashboard/partials/footer' %>
             </div>
           </div>
         </div>

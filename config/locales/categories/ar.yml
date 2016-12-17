@@ -1,0 +1,22 @@
+ar:
+  Categories: الفئات
+  New Category : إضافة فئة جديدة
+  activerecord:
+        attributes:
+          category:
+              name : الاسم
+              name_fr : الاسم الفرنسي
+              name_ar : الاسم العربي
+        errors :
+          models :
+            account_registration_invitation :
+              attributes :
+                name :
+                  taken: هذا الاسم موجود
+                  blank : فارغ
+  helpers:
+        submit :
+          category:
+            create : إضافة فئة جديدة
+            update : تحديث الفئة
+

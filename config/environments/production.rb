@@ -82,7 +82,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   CarrierWave.configure do |config|
-    config.root = '~/www/b24/'
+    config.root = Rails.application.secrets.storage['root']
   end
 
 end

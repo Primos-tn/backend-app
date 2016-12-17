@@ -1,12 +1,42 @@
-<!--  About Section  -->
-<div class="container">
-  <h1><%= I18n.t('join us') %></h1>
-  <hr/>
+<h2><%= I18n.t('join us') %></h2>
+<div style="direction: ltr !important;">
+  <h3 class="AppTitle">Marketing & Sales</h3>
+  <h4 class="page-header">Our rules </h4>
 
-  <%= link_to 'The Joel Test', 'http://www.joelonsoftware.com/articles/fog0000000043.html' %>
-  <br/>
-  <%= link_to 'Basics of the Unix Philosophy', 'http://www.catb.org/esr/writings/taoup/html/ch01s06.html' %>
-  <br/>
+  <ul class="list-unstyled">
+    <li>* We really love our clients and we work hard to satisfy them .</li>
+    <li>* We don't only buy solutions, we build connections.</li>
+  </ul>
 
-  <a href="//" class="btn btn-lg"><i class="ti-github"></i></a>
+  <%= render 'web/company/jobs/sales' %>
+
+  <%= render 'web/company/jobs/community_manager' %>
+
+  <h3 class="AppTitle">Engineering</h3>
+
+  <h4 class="page-header">Our rules </h4>
+
+  <ul class="list-unstyled">
+    <li>* Re-Usability / Clean code / Testing / Optimisation, Memory management & Debugging tools / User oriented</li>
+    <li>* We use the right tools for the desired task even with ASM :)</li>
+    <li>* If it may be incorrect, it's incorrect ! </li>
+    <li>* <a href="//">Github <i class="ti-github"></i></a></li>
+    <li>* <%= link_to 'Basics of the Unix Philosophy', 'http://www.catb.org/esr/writings/taoup/html/ch01s06.html' %></li>
+    <li>* More on  <%= link_to 'The Joel Test', 'http://www.joelonsoftware.com/articles/fog0000000043.html' %></li>
+  </ul>
+
+
+  <h4 class="page-header">Open positions</h4>
+
+
+  <%= render 'web/company/jobs/android' %><br/>
+
+  <%= render 'web/company/jobs/backend' %><br/>
+
+  <%= render 'web/company/jobs/data_scientist' %><br/>
+
+  <%= render 'web/company/jobs/frontend' %>
+
+</div>
+
 </div>

@@ -2,21 +2,32 @@ require 'test_helper'
 require 'devise/test_helpers'
 
 class Dashboard::BrandsControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
 
   setup do
-    include Devise::Test::ControllerHelpers
+    @request.env["devise.mapping"] = Devise.mappings[:admin]
+
     @controller = Dashboard::BrandsController.new
     @brand = brands(:nenvi)
-    @user = accounts(:business_one)
-    sign_in @user
     puts @brand
   end
 
+
+
   test 'should get index' do
     get :index
-    assert_response :success
-    assert_not_nil assigns(:dashboard_brands_stores)
+    assert_redirected_to  select_dashboard_brands_path
   end
+
+
+
+  test 'should get index' do
+    @user = accounts(:user_one)
+    sign_in @user
+    assert_redirected_to  select_dashboard_brands_path
+  end
+
+
 =begin
   test 'should get new' do
     get :new

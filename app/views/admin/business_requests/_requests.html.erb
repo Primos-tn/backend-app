@@ -1,0 +1,31 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+
+<div class="content table-responsive table-full-width">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>
+        <% t('Name') %></th>
+      <th>
+        <% t('Email') %></th>
+      <th>
+        <% t('Phone') %></th>
+      <th>
+        <% t('Added at') %></th>
+      <th colspan="3"></th>
+    </tr>
+    </thead>
+
+    <% @requests.each do |request| %>
+        <tr>
+          <td></td>
+          <td><%= request.account.email %></td>
+          <td><%= request.business_email %></td>
+          <td><%= request.business_phone %></td>
+          <td><%= request.created_at %></td>
+          <td><%= link_to 'Show', admin_business_request_path(request) %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>

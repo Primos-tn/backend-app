@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="header">
+    <h4 class="title">
+      <%= t('Listing business accounts') %>
+    </h4>
+
+    <div class="content">
+      <%= form_tag admin_accounts_path, :method => 'get', :id => "accounts_search" do %>
+          <p>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag t("Search"), :name => nil %>
+          </p>
+          <div id="accounts"><%= render 'accounts' %></div>
+      <% end %>
+    </div>
+  </div>
+</div>

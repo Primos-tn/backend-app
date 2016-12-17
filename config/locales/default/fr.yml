@@ -1,64 +1,37 @@
 fr:
-  app : "izzY"
-  Edit : "Modifer"
-  welcome text : "Parce que vous avez qq chose à faire que des boulots !"
-  why Izzy : "Let us do it !"
-  workers : "Travailler avez nous"
+  Error when submitting your data ! : Erreur lors de traitement de requête
+  search : Recherche
+  slogon : Jamias raté
+  Update : Mettre à jour
+  Success saving :  Enregistrement avec succès
 
-  confirmation code : ""
+  # header in
+  Create a new brand :  Créer une nouvelle marque
 
-  Izribni's workers List : "Les travailleurs du izzY"
-  Error when submitting your data ! : "خطأ عند تقديم البيانات الخاصة بك!"
-  Stay connected : "Attendez nous !"
-  username : "Nom de l'utilisateur"
-  phone or email : "email ou numéro de télephone"
-  new offer : "nouvel offre"
-  search for workers : "Recherche des travailleurs"
-  your message : "Votre message"
-  contact us : "Contactez nous"
-  AllRR : "Tous droits reservés"
-  stay connected : "Alerte moi !"
-  identifier not valid : L\'email ou le téléphone est incorrecte
+  Log out : Sortir
+  
 
-  OTO : "OTO"
-  the power of SMS : "La force de la sms "
-  # request/_form
-  description : "description"
-
-  # about
-  how it works : "Comment ça marche ?"
-  #footer , header/_out
-  about us : "à props de iZZy"
-  enter : "Enter"
-  join us : "Travaillez avec nous"
-
-
-  make a request : "nouvelle demande"
-
-
-  #switch to worker view
-  switch on worker view : "Worker dashboard"
-
-  #header in
-  create a new task : Creér une nouvelle basket
-  Log out : "sign out"
-  profile : "mon profile"
-  account : "Compte"
-  services : "Services"
-
-  # request
-  service type : "Type de service"
-  sender identifer : "Votre téléphone"
-  New Request : "Nouvelle demande"
-  # wlecome
-  Business : Affaires
-
-  activerecord:
-    errors:
-      template:
-        header:
-          one:   "1 error prohibited this %{model} from being saved"
-          other: "%{count} errors prohibited this %{model} from being saved"
-        body:    "There were problems with the following fields:"
-
+  Administration: Administration
+  Dashboard : Dashboard
   Error when submitting your request : "Error when submitting your request"
+  # used for admin
+  BusinessAccounts : Comptes affaires
+  BusinessRequests : Demandes d'affaires
+  BusinessConfiguration : Configuration Affaires
+  Contacts : Contacts
+  Accounts : Comptes
+  System : Système
+  Back : Retour
+  Show : Voir
+  User : Utilsateur
+  Brands : Marques
+  # used in admin
+  Invitations : Invitations
+  Products :  Produits
+  Hottest : Les plus chaud
+  Search :  Recherche
+  map : Cartes
+  date :
+    order : ["day"]
+  Categories : Catégories
+  Are you sure? : Etes vous sure ?

@@ -5,7 +5,7 @@ class Api::V1::BaseController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   # destroy action
   before_action :destroy_session
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # destroy current session
   def destroy_session
@@ -67,20 +67,27 @@ class Api::V1::BaseController < ApplicationController
   def json_api_format(errors, action=nil)
     errors_hash = {}
     if errors.is_a? Array
-
-      errors_hash['errors'] = errors
+      errors_hash[:error] = errors
     else
       if errors.is_a? String
-        errors_hash['error'] = errors
+        errors_hash[:error] = errors
       else
-        errors.messages.each do |attribute, error|
-          array_hash = []
-          error.each do |e|
-            array_hash << {attribute: attribute, message: e}
+        if errors.has_key?(:message)
+          errors_hash[:error] = errors
+        else
+          if errors.has_key?(:message)
+            errors.messages.each do |attribute, error|
+              array_hash = []
+              error.each do |e|
+                array_hash << {attribute: attribute, message: e}
+              end
+              errors_hash.merge!({attribute => array_hash})
+            end
+          else
+            errors_hash[:error] = t('api error')
           end
-          errors_hash.merge!({attribute => array_hash})
-        end
 
+        end
       end
     end
 

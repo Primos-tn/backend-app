@@ -1,5 +1,16 @@
+<% admin_menu_links = [
+    admin_main_path,
+    admin_business_requests_path,
+    admin_invitations_path,
+    admin_business_accounts_path,
+    admin_contacts_path,
+    admin_brands_path,
+    admin_accounts_path,
+    admin_categories_path,
+    admin_business_configure_path,
+    admin_system_path
+] %>
 <% content_for :title do %>
-    <%= controller_name %>
     <%= content_for?(:title) ? yield(:title) : t('app') %>
 <% end %>
 
@@ -13,10 +24,11 @@
 
         <div class="sidebar-wrapper">
           <ul class="nav">
-            <% $admin_tabs.each_with_index do |tab, index| %>
-                <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
-                  <a href="<%= get_admin_tab_link(tab) %>">
-                    <i class="ti-<%= $admin_tabs_icons[index] %>"></i>
+            <% $admin_menu_names.each_with_index do |tab, index| %>
+                <li data-tab="<%= tab %>" class="<%= get_admin_sidebar_item(@active_tab, tab.downcase) %> ">
+                  <a href="<%= admin_menu_links[index] %>">
+                    <i class="ti-<%= $admin_menu_icons[index] %>"></i>
+
                     <p><%= I18n.t(tab) %></p>
                   </a>
                 </li>
@@ -29,15 +41,16 @@
         <div class="content">
           <div class="container-fluid">
             <div class="row">
+              <%= render partial: 'shared/locale_form' %>
               <%= content_for?(:main_content) ? yield(:main_content) : yield %>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <%= javascript_include_tag 'admin', 'data-turbolinks-track' => true %>
 <% end %>
 
 
 <%= render template: 'layouts/default' %>
+<%= react_component('AdminBaseApp') %>

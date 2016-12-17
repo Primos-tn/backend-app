@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
+gem 'rails',  '5.0.0'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -47,12 +47,14 @@ end
 
 group :test do
   gem 'factory_girl'
+  gem 'capybara'
+  gem 'rspec-rails', '~> 3.5'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 # Bundle devise
-gem 'devise', '3.5.2'
+gem 'devise'
 
 # Bundle devise
 gem 'sidekiq', '4.0.0'
@@ -73,3 +75,5 @@ gem 'passenger', '>= 5.0.25', require: 'phusion_passenger/rack_handler'
 gem 'rack-mini-profiler', require: false
 #
 gem "bullet", :group => "development"
+
+gem 'geocoder'

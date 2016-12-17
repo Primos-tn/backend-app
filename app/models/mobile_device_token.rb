@@ -1,0 +1,2 @@
+class MobileDeviceToken < ApplicationRecord
+end

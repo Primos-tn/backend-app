@@ -10,7 +10,7 @@ class Web::CompanyController < Web::BaseController
       @contact = Contact.new
       render "#{page}"
     elsif page == 'help' then
-       render 'help'
+      render 'help'
     else
       render "#{page}"
     end
@@ -23,9 +23,13 @@ class Web::CompanyController < Web::BaseController
     if @contact.save
       flash[:notice] = I18n.t('Success')
       flash[:notice_class] = 'success'
-      ContactMailer.reply_contact(@contact.email).deliver_later
-      ContactMailer.notify_admin_contact(@contact).deliver_later
+      CompanyMailer.new_contact(@contact).deliver_now
+      AdminMailer.new_contact(@contact).deliver_now
       redirect_to root_path
+
+      BrandUserFollower.new({brand:  2, account: 1})
+
+
     end
 
   end
@@ -37,6 +41,6 @@ class Web::CompanyController < Web::BaseController
 
   private
   def get_tags
-    @tags = Category.all()
+    @tags = Category.all
   end
 end

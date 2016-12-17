@@ -28,7 +28,7 @@ class Admin::CategoriesController < Admin::BaseController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to @category, notice: 'Category product was successfully created.' }
+        format.html { redirect_to admin_categories_path, notice: t('Category product was successfully created.') }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new }
@@ -56,7 +56,7 @@ class Admin::CategoriesController < Admin::BaseController
   def destroy
     @category.destroy
     respond_to do |format|
-      format.html { redirect_to admin_category_url, notice: 'Category product was successfully destroyed.' }
+      format.html { redirect_to admin_categories_path, notice: 'Category product was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -76,6 +76,6 @@ class Admin::CategoriesController < Admin::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name, :desc)
+      params.require(:category).permit(:name, :name_fr, :name_ar, :desc, :parent_id)
     end
 end

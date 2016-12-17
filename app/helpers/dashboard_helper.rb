@@ -8,24 +8,29 @@ module DashboardHelper
     end
   end
 
-  #
-  #
-  #
+
+#
+#
+#
   def get_tab_link (link)
-      link =  link.downcase
-      dashboard_url = '/dashboard/'
-      # check for stores
-      if link == 'shops'
-        dashboard_brand_brand_stores_path (session[:brand_id])
-      else
-        dashboard_url + (link != 'dashboard' ? link.downcase : '')
-      end
+    link = link.downcase
+    dashboard_url = '/dashboard/'
+    # check for stores
+    dashboard_url + (link != 'dashboard' ? link.downcase : '')
 
   end
 
-  $dashboard_tabs = %w(Dashboard  Shops Products Users Hooks Team Targetize System )
-  $dashboard_tabs_icons = %w(panel map view-list-alt user bolt user target  settings)
 
-  $dashboard_tabs_soon = %w(Api-keys)
-  $dashboard_tabs_soon_icons = %w(key)
+  def get_class_active (tab)
+    if $dashboard_tabs_soon.include?(tab.downcase)
+      'Dashboard__ComingSoonFeature'
+    end
+  end
+
+
+
+  $dashboard_tabs = %w(Dashboard Stores Products Users  Hooks Targetize Domain Team System )
+  $dashboard_tabs_icons = %w(panel map view-list-alt user bolt  target  paint-roller spray settings)
+
+  $dashboard_tabs_soon = %w(targetize domain team)
 end

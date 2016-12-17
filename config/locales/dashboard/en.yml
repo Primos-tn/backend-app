@@ -1,1 +1,29 @@
 en:
+  Profile : Profile
+  Account : Account
+  Log out : Log out
+
+  System : System Configuration
+  Targetize : Target Clients
+  Dashboard : Dashboard
+  Campaigns : Campaigns
+  Hooks : Hooks
+  Goods: Products
+  Users : Users
+  # header nav
+  Statistics : Statistics
+
+  Team : Team
+  Brand: Brand
+  Stores : Shops
+  Domain : Special domain
+  Please select a brand to start : Please select a brand to start
+
+
+  CARD NUMBER : "رقم البطاقة"
+  EXPIRATION DATE : "تاريخ انتهاء الصلاحية"
+  Select brand : 'اختيار'
+  New Brand : New Brand
+  Try Pro for month free : Try Pro for month free
+
+  Not available in beta version : Not available in beta version

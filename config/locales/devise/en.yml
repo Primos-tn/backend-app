@@ -7,3 +7,12 @@ en:
           content: content
           subject: subject
           email: email
+  devise:
+    sessions:
+      signed_in: Authenfication avec succèss
+    passwords:
+      user:
+        success sending mail : Succés d'envoie de renouvellement de mot de passe
+    registrations:
+      user:
+        updated : Mise à jour validée

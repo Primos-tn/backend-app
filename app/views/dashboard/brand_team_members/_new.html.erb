@@ -1,0 +1,15 @@
+<div class="header">
+  <h4 class="title"><%= t('Invite member') %> </h4>
+  <div class="text-center col-lg-12">
+    <div class="col-lg-4 col-lg-offset-4">
+      <%= form_for([:dashboard, @model], method: :post, url: {action: 'invite'}) do |f| %>
+          <div class="form-group">
+            <%= text_field(:member, :email, class: "form-control border-input", value: @email) %>
+          </div>
+          <div>
+            <%= f.submit class: 'btn btn-primary', disabled: 'disabled' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>

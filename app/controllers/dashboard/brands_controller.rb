@@ -1,6 +1,6 @@
 class Dashboard::BrandsController < Dashboard::DashboardController
   skip_before_filter :select_brand
-  before_filter :can_add_more?, only: [:new, :create]
+  before_action :can_add_more?, only: [:new, :create]
   before_action :set_brand, only: [:show, :edit, :update, :destroy, :upload]
   before_action :require_permission, only: [:show, :edit, :update, :destroy, :upload]
 
@@ -9,13 +9,13 @@ class Dashboard::BrandsController < Dashboard::DashboardController
   def index
     @brands = current_user.brands
   end
-
+=begin
   # GET /brands
   # GET /brands.json
   def select
     if request.post?
       brand_id = params[:brand]
-      brand = Brand.where({account: current_user, id: brand_id}).first
+      brand = Brand.includes(:acount).where({account: current_user, id: brand_id}).first
       unless brand.nil?
         set_session_brand(brand.id, brand.name)
         redirect_to dashboard_main_path
@@ -24,6 +24,7 @@ class Dashboard::BrandsController < Dashboard::DashboardController
     @brands = current_user.brands
 
   end
+=end
 
   # GET /brands/1
   # GET /brands/1.json
@@ -32,6 +33,10 @@ class Dashboard::BrandsController < Dashboard::DashboardController
 
   # GET /brands/new
   def new
+    if current_user.brands.count > 0
+      redirect_to  dashboard_main_path
+    end
+
     @brand = Brand.new
   end
 
@@ -47,7 +52,7 @@ class Dashboard::BrandsController < Dashboard::DashboardController
 
       respond_to do |format|
         if @brand.save
-          format.html { redirect_to dashboard_brand_url(@brand), notice: I18n.t('Brand was successfully created.') }
+          format.html { redirect_to dashboard_main_path, notice: I18n.t('Brand was successfully created.') }
           format.json { render :show, status: :created, location: @brand }
         else
           format.html { render :new }
@@ -102,12 +107,7 @@ class Dashboard::BrandsController < Dashboard::DashboardController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_brand
-    if params.has_key?(:id)
-      @brand = Brand.find(params[:id])
-    else
       @brand = current_brand
-    end
-
   end
 
   def set_tab
@@ -128,7 +128,7 @@ class Dashboard::BrandsController < Dashboard::DashboardController
 
   def can_add_more?
     if current_user.is_business_free? && current_user.brands.count > 0
-      check_if_must_upgrade(I18n.t('Limited branad count'))
+      check_if_must_upgrade(I18n.t('Limited brand count'))
     end
   end
 

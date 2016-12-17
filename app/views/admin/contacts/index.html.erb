@@ -1,13 +1,21 @@
-<p id="notice"><%= notice %></p>
+<div class="card">
+  <div class="header">
+    <h4 class="title">
+      <%= t('Contacts') %>
+    </h4>
+    <div class="content">
 
-<h1>Listing Users</h1>
+      <%= form_tag admin_contacts_path, :method => 'get', :id => "contacts_search" do %>
+          <p>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag t("Search"), :name => nil %>
+            <%= hidden_field_tag :direction, params[:direction] %>
+            <%= hidden_field_tag :sort, params[:sort] %>
+          </p>
+      <% end %>
 
-
-<%= form_tag admin_contacts_path, :method => 'get', :id => "contacts_search" do %>
-    <p>
-      <%= text_field_tag :search, params[:search] %>
-      <%= submit_tag "Search", :name => nil %>
-    </p>
-    <div id="contacts"><%= render 'contacts' %></div>
-<% end %>
+      <div id="contacts"><%= render 'contacts' %></div>
+    </div>
+  </div>
+</div>
 

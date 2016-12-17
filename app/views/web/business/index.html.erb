@@ -1,21 +1,17 @@
 <!--  About Section  -->
 
+<h2><%= I18n.t('Business') %></h2>
 
-<div class="container">
-  <h1><%= I18n.t('Business') %></h1>
-  <hr/>
-<%= render :partial => "web/business/partials/features" %>
+<%= render 'features' %>
 
-<%= render :partial => "web/business/partials/prices" %>
+<%= render 'prices' %>
 
-<hr/>
 <div class="text-center">
   <% if @is_logged_in %>
       <% if not @is_business %>
-          <%= link_to t('Request'),  request_business_index_path  , class: "AppButton"%>
+          <%= link_to t('Apply for business account'), request_account_business_index_path, class: "AppButton" %>
       <% end %>
   <% else %>
-      <%= link_to I18n.t('Sign up'), new_user_registration_path , class: "AppButton"%>
+      <%= link_to I18n.t('Sign up'), new_user_registration_path, class: "AppButton" %>
   <% end %>
 </div>
-  </div>

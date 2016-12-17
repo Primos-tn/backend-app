@@ -1,10 +1,17 @@
-<%= hidden_field_tag :direction, params[:direction] %>
-<%= hidden_field_tag :sort, params[:sort] %>
-<table>
+<table class="table table-striped">
+  <thead>
+  <th><%= t('Email') %></th>
+  <th><%= t('created at') %></th>
+  <th></th>
+  </thead>
+  <tbody>
 
-  <% @accounts.each do |account| %>
+  <% @contacts.each do |item| %>
       <tr>
-        <td><%= account.username %></td>
+        <td><%= item.email %></td>
+        <td><%= item.created_at %></td>
+        <td><%= link_to t('Show'), admin_contact_path(item) %></td>
       </tr>
   <% end %>
+  </tbody>
 </table>

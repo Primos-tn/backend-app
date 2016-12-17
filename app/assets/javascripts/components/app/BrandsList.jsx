@@ -3,12 +3,11 @@ var BrandsList = React.createClass({
     actions: {
         list: "BRANDS_LIST"
     },
-
     /**
      *
      */
     getInitialState: function () {
-        return {items: []};
+        return {items: [], serverLoadingDone: false};
     },
 
     /**
@@ -27,17 +26,18 @@ var BrandsList = React.createClass({
     /**
      *
      */
-    onDataChange: function (result) {
-        this.setState({items: result.brands});
-    },
-    /**
-     *
-     */
     loadDataFromServer: function () {
+        this.setState({serverLoadingDone: false});
         App.Stores.loadData({
             url: App.Routes.brands,
             action: this.actions.list
         });
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({items: result.brands, serverLoadingDone: true}, function () {});
     },
     /**
      *
@@ -50,7 +50,7 @@ var BrandsList = React.createClass({
             }.bind(this));
         }
         else {
-            items = "Loading ...."
+            items = <div className="text-center">{ this.state.serverLoadingDone ?  i18n.Empty : i18n.Loading  } </div>
         }
 
 

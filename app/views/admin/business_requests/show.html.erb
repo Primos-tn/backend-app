@@ -1,0 +1,45 @@
+<div class="card">
+  <h4 class="header">
+    <%= t('Information') %>
+  </h4>
+  <div class="content">
+
+    <%= t('Company name') %><br>
+    <%= @request.company_name %>
+    <br/>
+
+    <%= t('Business phone') %><br>
+    <%= @request.business_phone %>
+
+    <br/>
+
+    <%= t('Business Email') %><br>
+    <%= @request.business_email %>
+
+    <br/>
+    <%= t('Counrtry') %><br>
+    <%= @request.country %>
+
+    <br/>
+    <%= t('Zip code') %><br>
+    <%= @request.post_code %>
+    <br/>
+
+    <%= t('City') %><br>
+    <%= @request.city %>
+
+    <br/>
+    <%= t('Addresse') %><br>
+    <%= @request.company_address %>
+
+    <br/>
+    <div class="text-center">
+      <%= link_to t('Accept'), accept_admin_business_request_path(@request), method: :patch, data: {confirm: 'Are you sure to accept ?'}, class: 'btn btn-success' %></td>
+
+      <%= link_to t('Decline'), decline_admin_business_request_path(@request), method: :patch, data: {confirm: 'Are you sure to decline ?'}, class: 'btn btn-danger' %></td>
+      <%= link_to t('Back'), admin_business_requests_path %>
+    </div>
+
+  </div>
+
+</div>

@@ -1,6 +1,5 @@
 class Brand < ActiveRecord::Base
   mount_uploader :cover, BrandUploader
-
   belongs_to :account
   # brands stores associations
   has_many :stores, dependent: :destroy
@@ -9,23 +8,25 @@ class Brand < ActiveRecord::Base
   has_many :brand_team_members
   has_many :members, :through => :brand_team_members, class_name: :Account
 
-  # products comments associations
+  # products  associations
 
   has_many :products
 
-  # brands comments associations
+  # revoews associations
 
-  has_many :comments, class_name: :BrandComment
 
+  has_many :reviews, class_name: :BrandReview
+  #has_many :reviewss, class_name: :BrandReview
 
 
   # brands
-  has_many :users_relations, class_name: UserBrandFollowingRelationship
-  has_many :followers, :through => :users_relations, class_name: Account, source: :account
+  has_many :followers, class_name: :BrandUserFollower
+  has_many :followersDetails, :through => :user_brands_relations,  class_name: Account, source: :account
 
 
   validates :account, presence: true
-
+  validates_presence_of :name
+  validates_presence_of :cover
 
   def self.search(search)
     if search

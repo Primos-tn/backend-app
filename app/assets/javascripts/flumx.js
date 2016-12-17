@@ -1,5 +1,5 @@
 ;
-App= {};
+App = {};
 /**
  * Minimum flux implementation
  */
@@ -25,12 +25,12 @@ var dispatcher = {
     /**
      *
      */
-    detach : function (action, callback) {
-        if (callback.__dispatecherID__){
-            delete App.Dispatcher._listeners[action][callback.__dispatecherID__] ;
+    detach: function (action, callback) {
+        if (callback.__dispatecherID__) {
+            delete App.Dispatcher._listeners[action][callback.__dispatecherID__];
         }
         // remove
-        delete callback.__dispatecherID__ ;
+        delete callback.__dispatecherID__;
     },
     /**
      * @param {Object} action to be attached
@@ -46,8 +46,8 @@ var dispatcher = {
         }
     }
 };
-App.Dispatcher = dispatcher ;
-App.Dispatcher.removeListener = dispatcher.detach ;
+App.Dispatcher = dispatcher;
+App.Dispatcher.removeListener = dispatcher.detach;
 /**
  * App routes
  */
@@ -61,7 +61,7 @@ App.Stores = {
             type: 'GET',
             url: App.Helpers.formatApiUrl(options.url, options.params || {}),
             dataType: 'json',
-            data : options.query,
+            data: options.query,
             success: function (data) {
                 App.Dispatcher.dispatch(options.action || options.url, data);
             }.bind(this),
@@ -101,46 +101,57 @@ App.Helpers = {
     /**
      *
      */
-    querify : function (queryObject){
+    querify: function (queryObject) {
         var query = '';
-        for (var key in data) {
-            if (data[key]){
-                query += key + '=' + data[key];
-            }
+        for (var key in queryObject) {
+                query += key + '=' + queryObject[key];
+                query +='&'
         }
         return query;
     },
     /**
      * Format an url given a key, value object
      * foo/:bar , { bar : "alex" } will be transformed to foo/alex
-     * query , { bar : "alex" } will be transformed to foo/alex
+     * queryObject , { bar : "alex" } will be transformed to foo/alex
      */
-    formatApiUrl: function (url, data, query) {
+    formatApiUrl: function (url, data, queryObject) {
         for (var key in data) {
             url = url.replace(':' + key, data[key]);
         }
-        return url ;
+        return url +  (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
     },
     /**
      * Format an url given a key, value object
      * foo/:bar , { bar : "alex" } will be transformed to foo/alex
+     * queryObject , { bar : "alex", 'ok' : 'fine } will be transformed to ?foo=alex&ok=fine
      */
-    getAbsoluteUrl : function (url, data) {
-        return App.Helpers.formatApiUrl(url, data).replace(baseApiUrl, '/');
+    getAbsoluteUrl: function (url, data, queryObject) {
+        return App.Helpers.formatApiUrl(url, data, queryObject).replace(baseApiUrl, '/');
     },
 
     /**
      * Format an url given a key, value object
      * foo/:bar , { bar : "alex" } will be transformed to foo/alex
      */
-    getMediaUrl : function (url, data) {
-        return '/images/' + App.Helpers.getAbsoluteUrl(url, data);
+    getMediaUrl: function (url, data) {
+        return App.Constants.MEDIA_URL + App.Helpers.getAbsoluteUrl(url, data);
     }
+};
+/**
+ *
+ * @type {{info: string}}
+ */
+App.DashboradRoutes = {
+    info: '/dashboard/ajax/info',
 };
 /**
  *
  */
 var routes = {
+    categories: 'categories',
+    geoAddress: 'geo/address',
+    geoSearch: 'geo/search',
+    geoMine: 'geo/mine',
     brands: 'brands',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
@@ -175,58 +186,62 @@ var routes = {
 App.Routes = {};
 /**
  *
+ */
+for (var key in routes) {
+    App.Routes[key] = baseApiUrl + routes[key];
+}
+/**
+ *
  * @type {{}}
  */
 App.Actions = {
-    SEARCH : 'SEARCH',
-    NOTIFICATION : 'NOTIFICATION'
+    SEARCH: 'SEARCH',
+    NOTIFICATION: 'NOTIFICATION'
 };
 /**
  *
  * @type {{}}
  */
 App.Constants = {
-    AUTO_COMPLETE : 'AUTOCOMPLETE',
-    MEDIA_URL : '/images',
-    LOGIN_ACTION : 'LOGIN',
-    END_DAY : 'END_DAY'
+    AUTO_COMPLETE: 'AUTOCOMPLETE',
+    MEDIA_URL: '/media',
+    LOGIN_ACTION: 'LOGIN',
+    END_DAY: 'END_DAY'
+
 };
-/**
- *
- */
-for (var key in routes) {
-    App.Routes[key] = baseApiUrl + routes[key];
-}
+App.Configuration = {
+    MAP_TILES_URL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+};
 // error login
-$(document).ready(function (){
-    $(document).ajaxError(function(event, xhr, settings) {
+$(document).ready(function () {
+    $(document).ajaxError(function (event, xhr, settings) {
         try {
-            var response = xhr.responseJSON  || JSON.parse(xhr.responseText);
-            if (xhr.status === 401 && (response.action === App.Constants.LOGIN_ACTION)){
+            var response = xhr.responseJSON || JSON.parse(xhr.responseText);
+            if (xhr.status === 401 && (response.action === App.Constants.LOGIN_ACTION)) {
                 openLoginModal();
             }
         }
-        catch (e){
+        catch (e) {
 
         }
     });
     /**
      *
      */
-    $('#open_login_modal').click (function (){
+    $('#open_login_modal').click(function () {
         openLoginModal();
     });
     /**
      *
      */
-    var openLoginModal = function (){
+    var openLoginModal = function () {
         $('#login_modal').modal('show');
         $('#register_modal').modal('hide');
     };
     /**
      *
      */
-    $('#open_registration_modal').click (function(){
+    $('#open_registration_modal').click(function () {
         $('#register_modal').modal('show');
         $('#login_modal').modal('hide');
     });

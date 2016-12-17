@@ -14,14 +14,11 @@ ar:
     passwords:
       user:
         send_instructions : الرجاء التحقق من بريدك الالكتروني
+    registrations:
+      user:
+        signed_up: لقد خرجت للتو
 
-  activerecord:
-    attributes:
-      contact :
-          firstname:    "الاسم الاول"
-          lastname: "الاسم"
-          content: "المحتوى"
-          subject: "الموضوع"
-          email: "البريد الإلكتروني"
-
-
+    failure:
+      user:
+        invalid: البريد او اسم المستخدم غير صحيح
+        not_found_in_database : البريد او اسم المستخدم غير موجود

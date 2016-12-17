@@ -1,20 +1,19 @@
-class Dashboard::StoresController  < Dashboard::DashboardController
-  before_action :set_brand
+class Dashboard::StoresController < Dashboard::DashboardController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
 
 
   # GET /dashboard/brands_stores
   # GET /dashboard/brands_stores.json
   def index
-    if params[:style] &&  params[:style] == 'map'
+    if params[:style] && params[:style] == 'map'
       @view_style = 'map'
       @stores = Store
-                          .where({brand_id: current_brand.id})
+                    .where({brand_id: current_brand.id})
     else
-        @stores = Store
-                            .where({brand_id: current_brand.id})
-                            .page(params[:page] || 1)
-                            .per(2)
+      @stores = Store
+                    .where({brand_id: current_brand.id})
+                    .page(params[:page] || 1)
+                    .per(10)
     end
   end
 
@@ -25,9 +24,6 @@ class Dashboard::StoresController  < Dashboard::DashboardController
 
   # GET /dashboard/brands_stores/new
   def new
-    unless @brand
-      redirect_to('/422.html')
-    end
     @store = Store.new
   end
 
@@ -38,13 +34,11 @@ class Dashboard::StoresController  < Dashboard::DashboardController
   # POST /dashboard/brands_stores
   # POST /dashboard/brands_stores.json
   def create
-
     @store = Store.new(brand_store_params)
-    @store.brand = @brand
-
+    @store.brand = current_brand
     respond_to do |format|
       if @store.save
-        format.html { redirect_to  dashboard_brand_brand_stores_path(@brand,@store), notice: I18n.t('Brands store was successfully created.') }
+        format.html { redirect_to dashboard_stores_path, notice: I18n.t('Brands store was successfully created.') }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -58,7 +52,7 @@ class Dashboard::StoresController  < Dashboard::DashboardController
   def update
     respond_to do |format|
       if @store.update(brand_store_params)
-        format.html { redirect_to dashboard_brand_brand_stores_path(@brand), notice: I18n.t('Brands store was successfully updated.') }
+        format.html { redirect_to dashboard_stores_path, notice: I18n.t('Brands store was successfully updated.') }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }
@@ -81,23 +75,24 @@ class Dashboard::StoresController  < Dashboard::DashboardController
 
 
   def set_tab
-    @active_tab = 'shops'
+    @active_tab = 'stores'
   end
 
 
-  def set_brand
-    @brand = Brand.find_by({:id => params[:brand_id], :account => current_user})
-    if not @brand
-      redirect_to ('/422.html')
-    end
-  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_store
-    @store = Store.find(params[:id])
+    store = Store.find(params[:id])
+    if store.brand_id != current_brand.id
+      layout = "default"
+      render file: 'public/422', layout: layout
+    end
+    @store = store
   end
+
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def brand_store_params
-    params.require(:brand_store).permit(:name)
+    params.require(:store).permit(:name, :country_code, :address, :zip_code, :city, :latitude, :longitude)
   end
 end

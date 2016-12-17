@@ -1,13 +1,19 @@
-<p id="notice"><%= notice %></p>
+<div class="card">
+  <div class="header">
+    <h4 class="title">
+      <h4><%= t('Brands') %></h4>
+    </h4>
+    <div class="content">
+      <%= form_tag admin_brands_path, :method => 'get', :id => "products_search" do %>
+          <p>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag t("search"), :name => nil %>
+          </p>
+      <% end %>
+      <div id="brands"><%= render 'brands' %></div>
+    </div>
+  </div>
+</div>
 
-<h1>Listing Brands</h1>
 
-
-<%= form_tag admin_brands_path, :method => 'get', :id => "products_search" do %>
-    <p>
-      <%= text_field_tag :search, params[:search] %>
-      <%= submit_tag "Search", :name => nil %>
-    </p>
-    <div id="products"><%= render 'brands' %></div>
-<% end %>
 

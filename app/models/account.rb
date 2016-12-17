@@ -9,6 +9,9 @@ class Account < ActiveRecord::Base
   has_one :profile
   has_one :business_profile
 
+  # notifications
+  has_many :notifications
+
   # business
   has_many :brands
   has_many :apiKeys
@@ -19,7 +22,7 @@ class Account < ActiveRecord::Base
   has_many :favorite_products, :through => :whishes_relations, class_name: Product, source: :product
 
   # brands
-  has_many :brands_relations, class_name: UserBrandFollowingRelationship
+  has_many :brands_relations, class_name: BrandUserFollower
   has_many :favorite_brands, :through => :brands_relations, class_name: Brand, source: :brand
 
 
@@ -56,7 +59,7 @@ class Account < ActiveRecord::Base
 
   # Given a list of brands ids, will check all brands that follow in this list
   scope :brands_followed_from_brands_list, -> (account, brands_ids) do
-    UserBrandFollowingRelationship.where({account: account, brand: brands_ids}).all
+    BrandUserFollower.where({account: account, brand: brands_ids}).all
   end
 
   # Given a list of products ids, will check all products that follow in this list
@@ -104,7 +107,7 @@ class Account < ActiveRecord::Base
   end
 
   def is_business?
-    not self.business_profile.nil? or (self.account_type == Account.accounts_types[:business])
+    (not self.business_profile.nil? or (self.account_type == Account.accounts_types[:business])) && self.business_profile.is_confirmed
   end
 
 
@@ -113,6 +116,7 @@ class Account < ActiveRecord::Base
         (self.business_profile.plan_type == BusinessProfile.plans_types[:basic])
   end
 
+
   def is_business_free?
     self.business_profile.nil? or
         (self.business_profile.plan_type != BusinessProfile.plans_types[:free] && self.business_profile.expires < Date.today)
@@ -120,11 +124,28 @@ class Account < ActiveRecord::Base
   end
 
 
-  def is_plan_expired?
+  def in_trial_mode?
+      self.business_profile.has_free_account && (Date.today < self.business_profile.free_account_started_at + 30.day)
+  end
+
+  def can_have_trial_business?
+    # check if no business profile or it has a business profile  but has expires
+    # has already a free_account
+    !in_trial_mode? && (self.business_profile.plan_type == BusinessProfile.plans_types[:free])
+  end
+
+
+  def has_expired?
     # check if no business profile or it has a business profile  but has expires
     self.business_profile.nil? or
-        ((self.business_profile.plan_type == BusinessProfile.plans_types[:basic]) and self.business_profile.expires < Date.today)
+        ((self.business_profile.plan_type != BusinessProfile.plans_types[:free]) and self.business_profile.expires < Date.today)
   end
+
+  def is_business_blocked?
+    self.business_profile.nil? or
+        (self.business_profile.is_blocked)
+  end
+
 
   def is_admin?
     self.is_super_admin or self.account_type == Account.accounts_types[:admin]

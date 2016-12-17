@@ -1,8 +1,46 @@
 Hello <%= current_user.username %>
 <br/>
-<h4><%= t('Brands') %></h4>
-<%= @total_brands %>
-<h4><%= t('Users') %></h4>
-<%= @total_brands %>
-<h4><%= t('Categories') %> </h4>
+<div class="col-lg-4">
+  <div class="card ">
+
+    <h4 class="header"><%= t('Brands') %></h4>
+    <div class="content">
+      <span class="stats">
+  <%= @total_brands %>
+  </span>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-4">
+  <div class="card ">
+    <h4 class="header"><%= t('Business') %></h4>
+    <div class="content">
+      <span class="stats">
+  <%= @total_business %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-4">
+  <div class="card ">
+    <h4 class="header"><%= t('Users') %></h4>
+    <div class="content">
+      <span class="stats">
+  <%= @total_accounts %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-4">
+  <div class="card ">
+    <h4 class="header"><%= t('Categories') %> </h4>
+    <div class="content">
+      <span class="stats">
 <%= @total_categories %>
+      </span>
+    </div>
+  </div>
+</div>

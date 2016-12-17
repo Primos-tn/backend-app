@@ -2,7 +2,7 @@
 
 
 business_one_profile:
-  username: Business one  first name
+  first_name: Business one  first name
   last_name: Business one last name
   account: business_one
 

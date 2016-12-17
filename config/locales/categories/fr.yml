@@ -1,0 +1,22 @@
+fr:
+  Categories: Catégories
+  New Category : Nouvelle catégorie
+  activerecord:
+        attributes:
+          category:
+              name : Nom
+              name_fr : Nom en francais
+              name_ar : Nom en arabe
+        errors :
+          models :
+            category :
+              taken: Ce nom existe déja
+              blank : Vide
+
+
+  helpers:
+        submit :
+          category:
+            create : Ajouter une nouvelle catégorie
+            update : Metter à jour la catégorie
+

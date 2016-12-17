@@ -11,7 +11,12 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'accounts/settings', :to => 'devise/registrations#edit'
   end
-  devise_for :accounts, singular: :user, :controllers => {:passwords => "account/passwords", :registrations => "account/registrations"}
+  devise_for :accounts, singular: :user,
+             :controllers => {
+                 :passwords => 'account/passwords',
+                 :registrations => 'account/registrations',
+                 :sessions => 'account/sessions'
+             }
 
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -23,6 +28,7 @@ Rails.application.routes.draw do
   # Example of regular route:
 
   scope :module => 'web' do
+
     resources :products, only: %w(index show) do
       member do
         get 'stores'
@@ -31,6 +37,7 @@ Rails.application.routes.draw do
         get 'coupons'
       end
     end
+
     resources :brands, only: %w(index show) do
       member do
         get 'stores'
@@ -42,30 +49,52 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :business, path: "business", only: :index do
+    resources :business, path: "business", only: [:index] do
       collection do
-        post 'request'
-        get 'request'
+        get 'request-account'
+        post 'create-request-account'
       end
     end
+
+
     get 'map', to: 'map#index'
     post 'company/contact'
     get 'company/:page', to: 'company#show', as: 'company_page'
     # check for not authenticated
     get 'profile', to: 'profiles#show'
     post 'profile', to: 'profiles#update'
+
+    post 'request-join', to: 'home#create_request_join'
+    get 'request-join', to: 'home#request_join'
+    get 'request-pending', to: 'home'
+    get 'request-join', to: 'home'
+
+    scope :media, :controller => 'media' do
+      get '/*path', to: 'media#index',  :format => false
+    end
+
   end
 
 
   # Route
   namespace :dashboard do
 
+
+    get '/' => 'dashboard#index', as: 'main'
     scope :account, controller: "accounts" do
+      get 'free_trial'
+      post 'free_trial'
       post 'go-free'
       get 'expired'
-      post 'upgrade'
+      get 'blocked'
       get 'upgrade-form'
-      post 'pay'
+      post 'upgrade'
+      post 'feedback'
+    end
+
+
+    scope 'domain', controller: 'domain' do
+      get '/' => 'domain#index'
     end
 
     resources :products do
@@ -92,16 +121,27 @@ Rails.application.routes.draw do
       member do
         post 'upload'
       end
-      resources :stores, :path => '/brand-stores'
     end
+    resources :stores
     resources :users
     resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
     resources :hooks
 
-    get '/' => 'dashboard#index', as: 'main'
+    resources :system, only: ['index'] do
+      collection do
+        patch 'update'
+      end
+    end
 
-    resources :targetize, only: ['index']
-    resources :system, only: ['index']
+    scope :targetize, controller: 'targetize' do
+      get '/(*)' => 'targetize#index'
+    end
+
+    scope :ajax, controller: 'ajax' do
+      get 'info'
+    end
+
+    resources :notifications, only: %w(index show patch)
 
   end
 
@@ -110,13 +150,33 @@ Rails.application.routes.draw do
   namespace :admin do
     get '/' => 'base#index', as: 'main'
     get '/system' => 'system#index'
-    get '/business/configure' => 'business#index'
-    post '/business/configure' => 'business#update'
-    resources :account_registration_invitations, :path => '/invitations', :controller => 'invitations', as: 'invitations'
-    resources :business_profiles, :path => '/business', :controller => 'business'
+    # business configure
+    get '/business/configure' => 'business_system#index'
+    post '/business/configure' => 'business_system#update'
+    resources :account_registration_invitations, :path => '/invitations', :controller => 'invitations', as: 'invitations' do
+      member do
+        patch 'confirm'
+        patch 'resend'
+      end
+    end
+    resources :business_profiles,
+              only: %w(index show accept decline),
+              :path => '/business-requests',
+              :controller => 'business_requests',
+              as: 'business_requests' do
+      member do
+        patch 'accept'
+        patch 'decline'
+      end
+    end
+    resources :accounts, :path => '/business', :controller => 'business_accounts', as: 'business_accounts'
     resources :categories
+    resources :contacts, only: %w(index show)
     resources :brands, only: %w(index show)
     resources :accounts, only: %w(index show)
+    scope :ajax, controller: 'ajax' do
+      get 'info'
+    end
 
   end
 
@@ -127,6 +187,12 @@ Rails.application.routes.draw do
       resources :categories, only: :index
 
       get '/search' => 'search#index'
+      scope 'geo', :controller => 'geo' do
+        get 'search'
+        get 'address'
+        get 'mine'
+      end
+
 
       resources :products do
         collection do

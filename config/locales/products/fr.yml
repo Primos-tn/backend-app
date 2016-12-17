@@ -1,29 +1,24 @@
 fr:
-  app : "izzY"
-  Administration : "Administration"
-  my dashboard : "dashboard"
-  profile : Profile
-  account : Compte
-  services : Services
-  Log out : Sortir
+  # views/dashboard/index.html
+  Launch : Lancer
+  Edit :  Mettre à jour
+  Show : Voir
+  New Product : Nouveau produit
+  Product name : Nom de produit
+  Brand : Marque
+  Destroy : Supprimer
+  Last launch : Dernier lancement
+  The products : Liste des produits
+  Are you sure about that : Etes vous sur ?
 
-  My orders : Mes paniers
-  Scheduler : Le programme
-  Budget : Budget
-  orders history : Historique des commandes
-
-  Real time : Live
-  Goods: Poroduits
-  Scheduler : Calendrier
-  Provisioning : Provisionnement
-  Wait List : Liste d'attentes
-  Users : Utilisateurs
-  Listing Of users : Liste des utilisateurs
-  Loyality points : Points de fidélités
-  current balance : Compte actuel
-  Recharge  : Recharge de compte
-  Payment Details : Details de payment
-  card number : Numéro de comtpe
-  expiration date : Find de validité de carte
-  CV CODE   : Code
-  COUPON CODE : Code de coupon
+  activerecord:
+      attributes:
+        product :
+            name : Nom
+            brand_id : Marque
+            pictures : Photos
+  helpers:
+     submit :
+      product:
+        create : Nouveau produit
+        update : Modifier

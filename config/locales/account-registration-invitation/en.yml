@@ -1,1 +1,49 @@
-en:
+ar:
+  # views/dashboard/index.html
+  Listing invitations : Invitees
+  Are you sure about that :  Are you sure about that ?
+  New invitation: New invitation
+  First name : First name
+  Last name :  Last name
+  Email : Email
+  Request join : Request join
+  Validate request join : Validate request join
+  Can not create invitation : Can not create invitation
+  Account is already exists !: Account is already exists !
+  Request pending: طRequest pending
+  We will be in touch soon : We will be in touch soon
+  Home: Home
+  Accept request: Accept request
+  Confirmed : Confirmed
+  Resend request: Resend request
+  Request accepted:  Request accepted
+
+  activerecord:
+      attributes:
+        account_registration_invitation:
+            first_name : First name
+            last_name : Last Name
+            email: Email
+      errors :
+        models :
+          account_registration_invitation :
+
+            attributes :
+              email :
+                taken : already taken
+                blank : blank
+                too_short : too short
+              first_name :
+                taken : already taken
+                blank : blank
+                too_short : too short
+              last_name :
+                taken : already taken
+                blank : blank
+                too_short : too short
+
+  helpers:
+      submit :
+        account_registration_invitation:
+          create : Create
+          update : Edit

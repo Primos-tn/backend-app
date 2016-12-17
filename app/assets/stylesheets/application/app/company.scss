@@ -1,13 +1,32 @@
 @import "colors";
 .SectionPrices {
-    .col-lg-4, .col-md-4 , .col-sm-12{
-      float: right;
+  .SectionPrices__Item {
+    padding: 7px ;
+    .SectionPrices__ItemContainer {
+      padding: 7px;
+      position: relative;
+      border : solid 1px $primary-color;
+      border-radius: 4px;
+      .SectionPrices--Disabled {
+        color : #ccc;
+      }
+      .SectionPrices__ItemContainerSoon {
+        position: absolute;
+        height: 80%;
+        width: 100%;
+        left: 0px;
+        background-color: rgba(255, 178, 73, 0.29);
+        bottom: 0px;
+        text-align: center;
+        font-size: 50px;
+        color : white;
+      }
+    }
     }
   .SectionPrices__Title{
-
-    margin: 40px 0px;
+    text-align: center;
+    margin: 20px 0px;
     & , small{
-      text-decoration: underline;
       color :$primary-color;
 
     }

@@ -1,21 +1,22 @@
-<div>
+<div class="FooterContainer">
 
   <!--  End Footer Section  -->
   <footer>
     <div class="container">
       <div class="col-lg-12 row text-center">
         <div class="Footer__CompanyLinksContainer">
-          <%= link_to I18n.t('Business'), business_index_path %>
+          <%= link_to I18n.t('Business'), business_index_path, class: 'businessLink' %>
           <%= link_to I18n.t('About'), company_page_path('about') %>
           <%= link_to I18n.t('join us'), company_page_path('jobs') %>
-          <%= link_to I18n.t('privacy'), company_page_path('privacy') %>
+          <%= link_to I18n.t('privacy'), company_page_path('terms_privacy') %>
           <!--<%= link_to I18n.t('api'), company_page_path('api') %>-->
           <%= link_to I18n.t('help'), company_page_path('help') %>
-
           <a href="#" class="Footer__SocialLink"><i class="ti-facebook"></i></a>
           <a href="#" class="Footer__SocialLink"><i class="ti-linkedin"></i></a>
           <a href="#" class="Footer__SocialLink"><i class="ti-twitter"></i></a>
           <a href="#" class="Footer__SocialLink"><i class="ti-github"></i></a>
+          /
+          <%= render partial: 'shared/locale_form' %>
         </div>
       </div>
     </div>

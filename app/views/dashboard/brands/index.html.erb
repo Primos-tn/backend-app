@@ -10,11 +10,11 @@
           <div class="content table-responsive table-full-width">
             <table class="table table-striped">
               <thead>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Salary</th>
-              <th>Country</th>
-              <th>City</th>
+              <th><%= t('ID') %></th>
+              <th><%= t('Name') %></th>
+              <th><%= t('Salary') %></th>
+              <th><%= t('Country') %></th>
+              <th><%= t('City') %></th>
               </thead>
               <tbody>
 
@@ -22,9 +22,9 @@
                   <tr>
                     <td><%= brand.account_id %></td>
                     <td><%= brand.name %></td>
-                    <td><%= link_to 'Show', dashboard_brand_path(brand) %></td>
-                    <td><%= link_to 'Edit', edit_dashboard_brand_path(brand) %></td>
-                    <td><%= link_to 'Destroy', dashboard_brand_path(brand), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                    <td><%= link_to t('Show'), dashboard_brand_path(brand) %></td>
+                    <td><%= link_to t('Edit'), edit_dashboard_brand_path(brand) %></td>
+                    <td><%= link_to t('Destroy'), dashboard_brand_path(brand), method: :delete, data: {confirm: 'Are you sure?'} %></td>
                   </tr>
               <% end %>
               </tbody>

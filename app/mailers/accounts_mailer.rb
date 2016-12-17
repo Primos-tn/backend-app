@@ -5,6 +5,7 @@ class  AccountsMailer < ApplicationMailer
     mail(template_path: 'mailers', to: @account.email, subject: I18n.t('Welcome'))
   end
 
+
   def new_user_notify_system(account)
     @account = account
     admin_mail = Rails.application.secrets.admin['email']

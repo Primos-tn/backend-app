@@ -1,0 +1,42 @@
+
+<!--  login Section  -->
+<div class="AccountAuthenticationContainer text-center">
+
+  <%= render 'shared/beta' %>
+  <article>
+    <!-- -->
+    <h1><%= t('Request join') %></h1>
+    <br/>
+    <%= form_for(@invitation, url:   request_join_path ) do |f| %>
+        <% if @invitation.errors.any? %>
+            <div id="error_explanation">
+              <h2><!--<%= pluralize(@invitation.errors.count, "error") %>--><%= t('Can not create invitation') %></h2>
+              <ul>
+                <% @invitation.errors.full_messages.each do |message| %>
+                    <li>* <%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+        <div class="row">
+          <div class="field">
+            <%= f.text_field :last_name , placeholder: true %>
+          </div>
+
+          <div class="field">
+            <%= f.text_field :first_name, placeholder: true %>
+          </div>
+
+          <div class="field">
+            <%= f.text_field :email, placeholder: true, value: params[:email] || @email %>
+          </div>
+        </div>
+        <div class="text-center">
+          <%= f.submit  t('Validate request join'), class: 'btn' %>
+        </div>
+
+        <div class="clearfix"></div>
+    <% end %>
+  </article>
+</div>
+

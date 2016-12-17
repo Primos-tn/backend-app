@@ -25,7 +25,7 @@
           <ul class="nav navbar-nav navbar-right">
              <% if @is_business %>
                 <li>
-                  <%= link_to dashboard_main_path do %>
+                  <%= link_to dashboard_main_path , class: 'businessLink' do %>
                       <span class="visible-lg-inline  NavMainLinks__TextLink "><%= t("dashboard") %></span>
                       <i class="visible-xs-inline visible-sm-inline  ti-settings"></i>
                   <% end %>

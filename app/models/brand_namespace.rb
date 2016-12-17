@@ -1,0 +1,2 @@
+class BrandNamespace < ApplicationRecord
+end

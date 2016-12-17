@@ -1,29 +1,47 @@
 fr:
-  app : "izzY"
-  Administration : "Administration"
-  my dashboard : "dashboard"
-  profile : Profile
-  account : Compte
-  services : Services
-  Log out : Sortir
+  # views/dashboard/index.html
+  Listing invitations : Liste des invités
+  Are you sure about that :  Etes-vous sur ?
+  New invitation: Nouvelle invitation
+  First name : Nom
+  Last name : Prénom
+  Email : Address éléctronique
+  Request join : Démande de creation de compte
+  Validate request join : Confirmation de demande
+  Can not create invitation : Erreur lors de création de l'invitation
+  Account is already exists !: Ce compte existe déja
+  Request pending: Demande déja crée !
+  We will be in touch soon : Nous serons en contact le plûtot possible
+  Home: Index
+  Accept request: Ok
+  Confirmed : Confirmé
+  Resend request: Re-envoie de demande
+  Request accepted: Acceptation de demande
 
-  My orders : Mes paniers
-  Scheduler : Le programme
-  Budget : Budget
-  orders history : Historique des commandes
+  activerecord:
+      attributes:
+        account_registration_invitation:
+            first_name : Prénom
+            last_name : Nom
+            email: Address éléctronique
+      errors :
+        models :
+          account_registration_invitation :
+            attributes :
+              email :
+                taken : Cet email existe déja
+                blank : Vide
+                too_short : Courte
+              first_name :
+                blank: Vide
+                too_short : Courte
+              last_name :
+                taken : Nom existe
+                blank: Vide
+                too_short : Courte
 
-  Real time : Live
-  Goods: Poroduits
-  Scheduler : Calendrier
-  Provisioning : Provisionnement
-  Wait List : Liste d'attentes
-  Users : Utilisateurs
-  Listing Of users : Liste des utilisateurs
-  Loyality points : Points de fidélités
-  current balance : Compte actuel
-  Recharge  : Recharge de compte
-  Payment Details : Details de payment
-  card number : Numéro de comtpe
-  expiration date : Find de validité de carte
-  CV CODE   : Code
-  COUPON CODE : Code de coupon
+  helpers:
+      submit :
+        account_registration_invitation:
+          create : Nouvelle invitation
+          update : Modifier

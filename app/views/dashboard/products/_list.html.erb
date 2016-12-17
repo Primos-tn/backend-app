@@ -1,7 +1,7 @@
 <table class="table table-striped">
   <thead>
   <th><%= I18n.t('Product name') %></th>
-  <th><%= I18n.t('Brand')  %></th>
+  <th><%= I18n.t('Brand') %></th>
   <th><%= I18n.t('Last launch') %></th>
   <th colspan="4"></th>
   </thead>
@@ -9,6 +9,9 @@
   <% @products.each do |product| %>
       <tr>
         <td>
+          <%- if ((Time.now - product.last_launch).to_i / 1.day) < 1  %>
+              <i class="ti-alert"></i>
+          <% end -%>
           <%= product.name %>
           <%- if product.pictures.length < 1 %>
               <i class="ti-alert"></i>
@@ -16,9 +19,12 @@
         </td>
         <td><%= product.brand.name %></td>
         <td><%= product.last_launch %></td>
-        <td ><%= link_to I18n.t('Show'), dashboard_product_path(product) %></td>
-        <td><%= link_to I18n.t('Edit'), edit_dashboard_product_path(product) %></td>
-        <td><%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn' %></td>
+        <td><%= link_to I18n.t('Show'), dashboard_product_path(product) %></td>
+        <td><%= link_to I18n.t('Edit'), edit_dashboard_product_path(product) %>
+        <%- if product.last_launch.nil? or product.last_launch < 1.week.ago %>
+             <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger' %>
+        <% end -%>
+        </td>
         <td><%= link_to I18n.t('Destroy'), dashboard_product_path(product), method: :delete, data: {confirm: I18n.t('Are you sure about that')} %></td>
       </tr>
   <% end %>

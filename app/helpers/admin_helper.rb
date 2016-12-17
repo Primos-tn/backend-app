@@ -1,6 +1,5 @@
 module AdminHelper
-
-  def get_active_sidebar_item(active, current='none')
+  def get_admin_sidebar_item(active, current='none')
     if current.to_s == active.to_s
       'active'
     else
@@ -11,12 +10,10 @@ module AdminHelper
   #
   #
   #
-  def get_admin_tab_link (link)
-      link =  link.downcase
-      dashboard_url = '/admin/'
-      dashboard_url + (link != 'dashboard' ? link.downcase : '')
+  def get_admin_tab_link (index)
+    $admin_menu_links[index]
   end
 
-  $admin_tabs = %w(Dashboard  Invitations Brands Categories Accounts Business  System)
-  $admin_tabs_icons = %w(panel user map view-list-alt user settings settings)
+  $admin_menu_names = %w(Dashboard  BusinessRequests Invitations BusinessAccounts Contacts  Brands Accounts Categories BusinessConfiguration System)
+  $admin_menu_icons = %w(panel flag  email briefcase  email map user view-list-alt settings  settings)
 end

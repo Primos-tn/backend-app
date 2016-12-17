@@ -1,0 +1,70 @@
+<!--  App Features Section  -->
+<%- offers = [t('Free'), t('Basic'), t('ProOffer')] %>
+
+<%- offers_titles = ['', ' 10 $' + I18n.t('Monthly'), '*'] %>
+
+<%- offers_titles = ['', I18n.t('Monthly'), '*'] %>
+
+
+<%- launches_counts = %w(2 4 7) %>
+
+<section>
+  <h4 class="sectionTitle"> <%= t('Offers') %> </h4>
+
+  <div class="row SectionPrices">
+    <% offers.each_with_index do |item, index| %>
+        <div class="col-sm-12 col-md-4 col-lg-4 SectionPrices__Item">
+          <div class="SectionPrices__ItemContainer <%= "ProOffer" if index == 2 %>">
+            <h4 class="text-uppercase SectionPrices__Title">
+              <%= item %>
+              <br/>
+              <small>&nbsp; <%= offers_titles[index] %></small>
+            </h4>
+            <ul>
+              <li>
+                &nbsp;  <%= launches_counts[index] %> <i class="ti-timer"></i>  <%= I18n.t('Feature Launches') %>
+              </li>
+              <li>
+                <i class="ti-pulse"></i>  <%= I18n.t('Feature Statistics') %>
+              </li>
+
+              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
+                <i class="ti-layout-cta-left"></i>  <%= I18n.t('Feature QR Coupons') %>
+              </li>
+              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
+                <i class="ti-target"></i>  <%= I18n.t('Feature BI') %>
+              </li>
+              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
+                <i class="ti-bell"></i>  <%= I18n.t('Feature Actions') %>
+              </li>
+
+              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                <i class="ti-star"></i>   <%= I18n.t('Feature Sponsored') %>
+              </li>
+
+              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                <i class="ti-layout-cta-left"></i>   <%= I18n.t('Feature Subdomain') %>
+              </li>
+              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                <i class="ti-user"></i>  <%= I18n.t('Feature Collaboration') %>
+              </li>
+              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                <i class="ti-loop"></i>   <%= I18n.t('Feature Machine Learning') %>
+              </li>
+
+              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                <i class="ti-comments-smiley"></i>   <%= I18n.t('Feature Bot') %>
+              </li>
+
+            </ul>
+            <%- if index == 2 %>
+                <div class="SectionPrices__ItemContainerSoon">
+                 <%= t('Not available in beta version') %>
+                </div>
+            <% end -%>
+          </div>
+        </div>
+    <%- end %>
+  </div>
+</section>
+<br/>
