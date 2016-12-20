@@ -1,3 +1,3 @@
 <% render partial: 'shared/requires_map_libs' %>
 <% render partial: 'shared/requires_heat_map' %>
-<%= react_component('DashboardBoard') %>
+<%= react_component('DashboardBoard', stores: @stores.as_json) %>

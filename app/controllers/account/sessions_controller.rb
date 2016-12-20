@@ -1,5 +1,5 @@
 class Account::SessionsController < Devise::SessionsController
-  before_filter :check_is_invited_and_confirmed, only: [:create]
+  before_action :check_is_invited_and_confirmed, only: [:create]
 
   # GET /resource/sign_in
   # def new
@@ -25,9 +25,10 @@ class Account::SessionsController < Devise::SessionsController
   private
 
   def check_is_invited_and_confirmed
-    email = new_session_params[:email]
+    email = new_session_params[:login]
     # check
-    if SystemConfiguration.first.with_invitation? && !Account.exists?(:email => email)
+    if SystemConfiguration.first.with_invitation? &&
+        !(Account.where(email: email).or( Account.where(username: email)).exists?)
       # check for admin
       if email && AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => false)
         redirect_to request_pending_path + '?email=' + email
@@ -40,8 +41,7 @@ class Account::SessionsController < Devise::SessionsController
   end
 
   def new_session_params
-    params.require(:user).permit(:email)
-
+    params.require(:user).permit(:login, :password, :remember_me)
   end
 
 end

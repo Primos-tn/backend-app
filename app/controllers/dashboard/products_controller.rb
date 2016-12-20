@@ -7,7 +7,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # GET /products.json
   def index
     # select all products within current selected brand
-    @products = current_user.products.where({brand: current_brand})
+    @products = current_user.products.includes(:categories, :account).where({brand: current_brand})
   end
 
   # GET /products/1

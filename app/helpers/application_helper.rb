@@ -11,7 +11,7 @@ module ApplicationHelper
 
 
   def get_assets_url(url)
-     '/images/'.concat(url)
+     '/media/'.concat(url)
   end
 
 

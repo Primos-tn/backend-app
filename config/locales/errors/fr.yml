@@ -1,0 +1,11 @@
+fr:
+  api error : Erreur api
+  geo :
+    no address provided : Erreur d'addresse
+    no coordinates provided : Erreurs des coordonnées
+  errors :
+    messages :
+      not_saved : Opération non valide
+      blank: Vide
+      invalid : Invalide
+      not_found : Non trouvé

@@ -25,12 +25,16 @@ body {
   position:relative;
 }
 .DashboardFooter {
+  height: 50px;
   .DashboardFooter__SelectLanguages {
     float: left;
   }
   .DashboardFooter__Feedback {
     display: inline-block;
     border : solid 1px #ccc;
+    padding: 10px;
+    color : #fff;
+    background-color: #ffb249;
   }
 
   .DashboardFooter__PlanType {
@@ -41,7 +45,7 @@ body {
   }
   position:absolute;
   width:100%;
-  padding: 15px;
+  padding: 10px;
   bottom: 0px;
   margin: 0px;
   left: 0px;

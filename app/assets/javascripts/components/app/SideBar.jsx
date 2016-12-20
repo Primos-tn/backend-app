@@ -5,11 +5,22 @@ var SideBar = React.createClass({
      *
      */
     render: function () {
+        var profile = this.props.is_logged_in ;
+        var profileBlock = null ;
+        if  (profile ){
+            profileBlock = <div>profile</div>;
+        }
         return (
             <div className="AppSideBar">
-                <UserProfile id={this.props.id}/>
-                <span>{i18n['Brands'] }</span>
-                <UserBrands id={this.props.id}/>
+                {profileBlock}
+                <div className="Block__Header">
+                    <span>{i18n['Similar products'] }</span>
+                </div>
+
+                <div className="Block__Header">
+                    <span>{i18n['Similar brands'] }</span>
+                </div>
+
                 <SideBarFooter />
             </div>
 

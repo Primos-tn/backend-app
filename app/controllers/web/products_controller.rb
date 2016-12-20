@@ -1,5 +1,6 @@
 class Web::ProductsController < Web::BaseController
   before_action :set_id, only: [:show, :reviews, :stores, :wishers, :coupons]
+  before_action :can_be_viewed?, only: [:show, :reviews, :stores, :wishers, :coupons]
 
   def index
 
@@ -35,5 +36,11 @@ class Web::ProductsController < Web::BaseController
   def set_id
     @product = Product.includes([:brand]).find(params[:id])
     @id = params[:id]
+  end
+
+  def can_be_viewed?
+      if not @product.in_launch_mode?
+        render file: 'public/404.html'
+      end
   end
 end

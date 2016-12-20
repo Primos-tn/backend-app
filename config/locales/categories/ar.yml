@@ -7,6 +7,7 @@ ar:
               name : الاسم
               name_fr : الاسم الفرنسي
               name_ar : الاسم العربي
+              icon_class_name : الصورة
         errors :
           models :
             account_registration_invitation :

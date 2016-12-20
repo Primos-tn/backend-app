@@ -57,14 +57,17 @@ class Product < ActiveRecord::Base
     _where
   end
 
+  def in_launch_mode?
+    not last_launch.nil? and  Time.now - last_launch < 24.hours
+  end
 
   #
   # Check if the product can be launched
   #
   def can_be_launched?
-    # the product is nil or empty
+    # the product last launch is nil or empty
     # or last launch < 3
-    !self.last_launch? or (self.last_launch - Time.now).to_i > 3
+    last_launch.nil? or last_launch < 1.week.ago
   end
 
 
@@ -74,7 +77,9 @@ class Product < ActiveRecord::Base
   # This is on of most query for browsing items, please use all effort to reduce it's time
   # Please check how to reduce the cross all table
   # it takes 1.2 ms , is't normal ?
-  def self.with_n_wishers(limit=2, offset=0)
+  def self.with_n_wishers(limit=2, offset=0, args= {today:  true})
+    today_query = " WHERE  current_timestamp > products.last_launch AND current_timestamp < products.last_launch   + interval '1 day' "
+    query_on_products = "select id from products #{today_query} LIMIT #{limit} offset #{offset} " ;
     <<-SELECT
        select
         p.pid as id,
@@ -86,12 +91,13 @@ class Product < ActiveRecord::Base
               a.id as user_id,
               a.username as username
             FROM products AS ps
-              JOIN (select id from products LIMIT #{limit} offset #{offset} ) as ps_2
+              JOIN (#{query_on_products}) as ps_2
               on ps.id = ps_2.id
             LEFT JOIN user_product_wishes AS apv
               on apv.product_id = ps.id
               LEFT  JOIN accounts as a
               on apv.account_id = a.id
+
             GROUP BY ps.id, a.id
             ORDER BY ps.id
            ) as p

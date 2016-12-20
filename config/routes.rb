@@ -187,6 +187,7 @@ Rails.application.routes.draw do
       resources :categories, only: :index
 
       get '/search' => 'search#index'
+
       scope 'geo', :controller => 'geo' do
         get 'search'
         get 'address'

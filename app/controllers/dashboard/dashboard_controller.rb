@@ -18,6 +18,8 @@ class Dashboard::DashboardController < ApplicationController
   @show_sidebar = true
 
   def index
+    @stores = Store
+                  .where({brand_id: current_brand.id})
     render 'dashboard/index'
   end
 

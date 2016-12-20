@@ -5,6 +5,7 @@ fr:
   Confirm new password : Confirmation de nouveau mot de passe
   Characters minimum: Caractères minimale
   Save : Enregistrer
+  Username or email : Nom d'utlisateur ou email
 
 
   devise:
@@ -14,6 +15,7 @@ fr:
     passwords:
       user:
         send_instructions : Merci de confirmer ton email
+        success sending mail : Envoie de mail de recouvrement OK
     registrations:
       user:
         signed_up: Vous avez déconnecté

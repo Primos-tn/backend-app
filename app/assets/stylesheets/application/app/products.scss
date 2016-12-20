@@ -60,6 +60,13 @@
       position: absolute;
       left: 10px;
       bottom: 10px;
+      .DayTimer{
+        background-color: transparent;
+        border: none;
+        #pageTimer{
+          font-size: 10px;
+        }
+      }
 
     }
   }
@@ -277,7 +284,6 @@
   }
 }
 .ProductOfDay {
-  width: 100%;
   left: 0px;
   right: 0px;
   .ProductOfDay__Inner {

@@ -7,9 +7,9 @@ fr:
     attributes:
       account :
           username : Surnom
-          email: Surnom ou address électronique
+          email: Addresse électronique
           password: Mot de passe
-          password_confirmation : Confirmation de mots de passe
+          password_confirmation : Confirmation de mot  de passe
           remember_me : Se souvenir de moi
     errors :
       models :
@@ -19,6 +19,8 @@ fr:
               taken : L'addresse email déja existe
             username :
               taken : Le surnom existe déja
+            reset_password_token :
+              invalid : invalid token !
   # devise/shared_links
   Forgot your password? : J'ai oublié le mots de passe
   Send me reset password instructions  : Envoie moi les instruction de renouvellment de mots de passe

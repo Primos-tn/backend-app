@@ -30,8 +30,13 @@ class Account < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :authentication_keys => {email: true, login: false}
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable
+         #:authentication_keys => {email: true, login: false}
 
 
   # @see https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
@@ -47,6 +52,7 @@ class Account < ActiveRecord::Base
   def is_brand_admin
     @is_brand_admin
   end
+
 
   def login=(login)
     @login = login
@@ -76,13 +82,19 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def self.find_for_database_authentication(warden_conditions)
+  def self.find_for_authentication(warden_conditions)
     conditions = warden_conditions.dup
+    puts '######################################################'
+    puts '######################################################'
+    puts '######################################################'
+    puts '######################################################'
+    puts conditions
+
     if login = conditions.delete(:login)
       # when allowing distinct User records with, e.g., "username" and "UserName"...
-      where(conditions).where(["username = :value OR lower(email) = lower(:value)", {:value => login}]).first
-    else
-      where(conditions.to_hash).first
+      where(conditions).where([" lower (username) = :value OR lower (email) = :value", {:value => login.downcase }]).first
+    elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+      where(conditions.to_h).first
     end
   end
 

@@ -98,7 +98,7 @@ var ProductShow = React.createClass({
                             {item.name || ''}
                         </span>
                         <span className="ProductDetails__Stats">
-                            {item.wishers_count + " ends " + " 2 min"  }
+                            <DayTimer/>
                         </span>
 
                         <ProductShowGallery pictures={item.pictures || [] }

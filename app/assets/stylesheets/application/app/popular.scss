@@ -6,8 +6,9 @@
   margin-left: 6px;
   direction: ltr !important;
   .item {
+    cursor: pointer;
     background: $color-white;
-    padding: 30px 0px;
+    padding: 20px 0px;
     border : solid 1px $primary-color;
     margin: 10px;
     color: $primary-color;
@@ -19,6 +20,10 @@
       color: white;
       background: $primary-color;
 
+    }
+    text-transform: lowercase;
+    i {
+      font-size: 25px;
     }
   }
   .owl-wrapper-outer {

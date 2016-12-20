@@ -1,4 +1,6 @@
 en:
+
+  Username or email : Username or email
   activerecord:
     attributes:
       contact :

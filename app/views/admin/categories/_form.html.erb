@@ -24,6 +24,11 @@
       <%= f.label :name_ar %><br>
       <%= f.text_field :name_ar, class: input_class %>
     </div>
+
+    <div class="form-group">
+      <%= f.label :icon_class_name %><br>
+      <%= f.text_field :icon_class_name, class: input_class %>
+    </div>
     <div class="form-group">
       <%= f.label :parent_id %><br>
       <%= f.select :parent_id, Category.all.collect{ |p| [ p.name, p.id ] }, include_blank: true, class: input_class %>
@@ -32,6 +37,9 @@
       <%= f.label :desc %><br>
       <%= f.text_area :desc, class: input_class %>
     </div>
+
+
+
     <div class="text-center">
       <%= f.submit :class => 'btn btn-info btn-fill btn-wd' %>
       <%= link_to t('Back'), admin_categories_path %>
