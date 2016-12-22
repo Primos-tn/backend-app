@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # nginx
 sudo service service nginx start
 # $GOPATH/bin/main
