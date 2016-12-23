@@ -40,6 +40,10 @@ var DayTimer = React.createClass({
     /**
      */
     componentDidMount: function () {
+        var locale= i18n.countdown ;
+        if (locale){
+            countdown.setLabels(locale.singular, locale.multiple, locale.and, locale.comma, locale.now);
+        }
         this._update();
     },
     /**

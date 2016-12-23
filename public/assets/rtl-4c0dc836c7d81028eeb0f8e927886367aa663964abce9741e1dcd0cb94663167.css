@@ -1,0 +1,125 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= include_self
+ */
+/* line 17, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+body {
+  direction: rtl;
+}
+/* line 19, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+body .pull-left {
+  float: right !important;
+}
+/* line 23, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+body .pull-right {
+  float: left !important;
+}
+
+/* line 28, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.nav-wrapper {
+  direction: ltr;
+}
+
+/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.row .col {
+  float: right !important;
+}
+
+/* line 36, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.main-panel {
+  float: left;
+}
+
+/* line 40, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.sidebar {
+  right: 0;
+}
+
+/* line 44, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.sidebar .nav li.active > a::after, .off-canvas-sidebar .nav li.active > a::after {
+  left: -1px;
+  border-left: 17px solid #f4f3ef;
+  right: auto;
+  border-right: 0px;
+}
+
+/* line 51, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.sidebar .nav li.active > a::before, .off-canvas-sidebar .nav li.active > a::before {
+  left: -1px;
+  border-left: 17px solid #f4f3ef;
+  right: auto;
+  border-right: 0px;
+}
+
+/* line 58, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.navbar-right {
+  float: left !important;
+  right: auto;
+}
+
+/* line 63, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.navbar-header {
+  float: right;
+}
+
+/* line 70, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.navbar-nav li {
+  float: right;
+  direction: ltr;
+}
+
+/* line 76, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.NavMainLinks {
+  direction: rtl;
+}
+
+/* line 82, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+table thead th {
+  text-align: right;
+}
+
+/* line 88, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+  float: right;
+}
+
+/* line 92, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+  float: right;
+}
+
+/* line 96, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.card form [class*="col-"]:first-child {
+  padding-right: 15px;
+}
+
+/* line 100, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.card form [class*="col-"]:last-child {
+  padding-left: 15px;
+}
+
+/* line 104, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.col-lg-offset-4 {
+  margin-right: 33.33333%;
+}
+
+/* line 108, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.navbar-right .dropdown-menu {
+  right: -12px;
+}
+
+/* line 112, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.DayTimer {
+  margin-right: 1px;
+  margin-left: -12px;
+}

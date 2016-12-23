@@ -52,6 +52,11 @@ Things you may want to cover:
 * ...
 
 
+### precompile
+
+### git ls-files --deleted -z | xargs -0 git rm 
+
+
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
 # Secrets 
@@ -66,6 +71,3 @@ env :
 ### database url
 
 ### rails migrate
-
-### precompile
-

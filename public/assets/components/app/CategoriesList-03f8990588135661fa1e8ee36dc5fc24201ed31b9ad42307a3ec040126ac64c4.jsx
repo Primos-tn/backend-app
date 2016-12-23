@@ -68,7 +68,10 @@ var PopularEmbedList = React.createClass({
         var items = [];
         this.state.items.forEach(function (item) {
             items.push(
-                <div className="item"><h1>{item.name}</h1></div>
+                <div className="item">
+                    <i className={item.icon_class_name} ></i>
+                    <h6>{item.name}</h6>
+                </div>
             );
         });
         return (

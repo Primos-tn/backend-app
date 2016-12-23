@@ -42,7 +42,7 @@ var DashboardBoard = React.createClass({
 
                     </div>
                     <div className="content">
-                        <StoresMapView/>
+                        <StoresMapView stores={this.props.stores}/>
                     </div>
                 </div>
                 <div className="row">

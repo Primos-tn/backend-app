@@ -74,7 +74,7 @@ var DashboardBoardSideBarBrandBlock = React.createClass({
     render: function () {
         var link = <i className="ti-camera"></i>;
         if (this.props.image){
-            link = <img src={['' , App.Constants.MEDIA_URL , this.props.image ].join('/')} />
+            link = <img src={App.Helpers.getMediaUrl(this.props.image)} />
         }
         return (
             <div>
