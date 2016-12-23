@@ -20,13 +20,13 @@ class Web::HomeController < Web::CompanyController
     @invitation = AccountRegistrationInvitation.new(invitation_params)
     email = @invitation.email
     if not Account.exists?(:email => email)
-
       # confirmed by the admin
       @invitation.is_confirmed = false
       @invitation.invitation_source = AccountRegistrationInvitation.invitation_sources[:request]
       if @invitation.save
         InvitationMailer.send_join_request_user(@invitation).deliver_now
         redirect_to root_path
+        return
       else
         @email = @invitation.email
       end
