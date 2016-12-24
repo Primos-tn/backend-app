@@ -12,7 +12,7 @@ var DayTimer = React.createClass({
      */
     _update (){
         var tomorrow = new Date();
-        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24  * 1000);
+        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
         tomorrow.setHours(0);
         tomorrow.setMinutes(0);
         tomorrow.setSeconds(0);
@@ -40,8 +40,8 @@ var DayTimer = React.createClass({
     /**
      */
     componentDidMount: function () {
-        var locale= i18n.countdown ;
-        if (locale){
+        var locale = i18n.countdown;
+        if (locale) {
             countdown.setLabels(locale.singular, locale.multiple, locale.and, locale.comma, locale.now);
         }
         this._update();
@@ -56,12 +56,8 @@ var DayTimer = React.createClass({
      */
     render: function () {
         return (
-            <div className="col-lg-12 text-center NoPadding">
-                <div className="col-lg-12">
-                    <div className=" DayTimer">
-                        <span id="pageTimer">{this.state.tomorrow}</span>
-                    </div>
-                </div>
+            <div className="DayTimer">
+                <span id="pageTimer">{this.state.tomorrow}</span>
             </div>
         );
     },

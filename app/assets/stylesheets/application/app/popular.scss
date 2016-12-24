@@ -2,23 +2,19 @@
 @import "colors";
 
 #categories_carousel {
-  margin-right: 6px;
-  margin-left: 6px;
   direction: ltr !important;
   .item {
     cursor: pointer;
-    background: $color-white;
     padding: 20px 0px;
-    border : solid 1px $primary-color;
     margin: 10px;
-    color: $primary-color;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     text-align: center;
+    color: white;
     &.clicked {
-      color: white;
-      background: $primary-color;
+      color: $primary-color;
+      background: $color-white;
 
     }
     text-transform: lowercase;
@@ -27,6 +23,7 @@
     }
   }
   .owl-wrapper-outer {
+    background-color: $primary-color;
   }
   .owl-page {
     span {

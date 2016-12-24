@@ -17,7 +17,7 @@
     <%- else -%>
         <%= render :partial => 'header/header' %>
     <% end -%>
-    <%- if not @is_logged_in and (%w(welcome).include?(controller_name)) %>
+    <%- if not @is_logged_in and (%w(welcome products).include?(controller_name)) %>
         <div class="Cover">
 
         </div>

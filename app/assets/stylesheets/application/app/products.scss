@@ -276,8 +276,10 @@
 }
 .DayTimer {
   border: solid 1px $primary-color;
-  margin-right: -11px;
+  text-align: center;
   background-color: white;
+  margin-bottom: 15px;
+
   span {
     font-size: 25px;
     color : $primary-color;

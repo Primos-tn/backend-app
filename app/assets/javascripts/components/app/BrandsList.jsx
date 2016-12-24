@@ -55,7 +55,7 @@ var BrandsList = React.createClass({
 
 
         return (
-            <div className="row col-lg-12">
+            <div>
                 <PopularEmbedList type="Product"/>
                 {items}
             </div>
