@@ -1,1 +1,19 @@
 en:
+  # views/dashboard/index.html
+  Launch : Launch
+  Edit :  Edit
+  Show : Show
+  Product name : Product name
+  New Product : New Product
+  Brand : Brand
+  Destroy : Destroy
+  Last launch : Last launch
+  The products : Products
+  Are you sure about that :  Are you sure about that ?
+
+  activerecord:
+      attributes:
+        product :
+            name : name
+            brand_id : brand
+            pictures : pictures

@@ -94,16 +94,16 @@ class Dashboard::ProductsController < Dashboard::DashboardController
     @brands = current_user.brands
   end
 
-  # Only product of user
-  def require_permission
-    redirect_to '/422.html' if @brand.account.id != current_user.id
-
-  end
-
   # Use callbacks to share common setup or constraints between actions.
   def set_product_and_brand
     @product = Product.joins(:brand).where({id: params[:id], brands: {:account_id => current_user}}).first
     @brand = @product.brand
+  end
+
+  # Only product of user
+  def require_permission
+    redirect_to '/422.html' if @product.account.id != current_user.id
+
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
+  namespace :dashboard do
+    get 'coupons/index'
+  end
+
+  namespace :dashboard do
+    get 'coupons/show'
+  end
+
+  namespace :dashboard do
+    get 'coupons/edit'
+  end
+
+  namespace :dashboard do
+    get 'coupons/new'
+  end
+
   # You can have the root of your site routed with "root"
   authenticated do
     root :to => 'web/home#index'
@@ -101,6 +117,7 @@ Rails.application.routes.draw do
       member do
         post 'launch'
       end
+      resources :coupons
       resources :targetize, only: :index
     end
 
@@ -215,6 +232,8 @@ Rails.application.routes.draw do
           post 'review'
           #
           get 'coupons'
+          #
+          get 'stores'
           # notify me
           post 'notify'
         end

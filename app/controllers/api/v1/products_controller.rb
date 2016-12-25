@@ -1,7 +1,8 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   #
-  skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
-  before_action :set_product, only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
+  skip_before_action :authenticate_user!, only: [ :index, :show, :reviews, :wishers, :product_of_day]
+  before_action :set_product, except: [:index] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
+  before_action :register_view, except: [:index, :unwish]
 
 
   # TODO , fix the search
@@ -11,7 +12,10 @@ class Api::V1::ProductsController < Api::V1::BaseController
     search = {}
     search[:brand] = params[:brand]
     search[:categories] = params[:categories]
-    products = Product.includes(:account).search(search).top_wishers(10, 0, params[:search])
+    products = Product
+                   .includes(:account)
+                   .search(search)
+                   .top_wishers(10, 0, params[:search])
     @products = {}
     # get the first element to get information
     # then push element
@@ -39,7 +43,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   def show
     @product = Product.includes(:stores, :comments).find(params[:id])
-    render 'show.jbuilder'
   end
 
   #
@@ -61,23 +64,25 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   def wishers
     @items = UserProductWish.includes(:account).where({product: @product}).all
-    render 'wishers.jbuilder'
   end
 
   # get a product reviews
 
   def reviews
     @items = ProductComment.includes(:account).where({product: @product}).all
-    render 'reviews.jbuilder'
   end
 
   # get a product coupon
 
   def coupons
-    @items = Coupon.where({product: @product}).all
-    render 'coupons.jbuilder'
+    @items = @product.product_coupons
   end
 
+
+
+  def stores
+    @items = @product.stores
+  end
   #
   # Wish list
   #
@@ -94,6 +99,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   def product_of_day
 
   end
+
   #
   # Wish list
   #
@@ -109,8 +115,19 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   private
+
   def set_product
     @product = Product.find(params[:id])
+  end
+
+
+  def register_view
+    account_id = current_user.id if current_user
+    view = UserProductView
+               .where(:ip_address => request.ip, :product => @product, :account_id => account_id)
+               .first_or_create
+    view. increment_user_view
+    view.save
   end
 
 end

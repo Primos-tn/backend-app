@@ -1,6 +1,6 @@
 var ProductShowCouponsListItem = React.createClass({
-    shareCoupon : function (){
-        alert ("coupon");
+    shareCoupon: function () {
+        alert("coupon");
     },
     /**
      *
@@ -8,8 +8,9 @@ var ProductShowCouponsListItem = React.createClass({
     render: function () {
         return (
             <div className="ProductCouponsList__Item">
-                 <div>
-                    <Button onClick={this.shareCoupon}/>
+                <div>
+                    <img src={this.props.item.image_qr_code}/>
+                    <button className="AppButton" onClick={this.shareCoupon}>{i18n.Share}</button>
                 </div>
             </div>
         )
@@ -57,15 +58,16 @@ var ProductShowCouponsList = React.createClass({
      *
      */
     render: function () {
-        var items;
+        var items = [];
         //
         if (this.state.items.length) {
             //
-            let clone = this.state.items[0];
-            items = [];
-            for (let i = 0; i < 50; i++) {
-                items.push(<ProductShowCouponsListItem item={clone} key={i}/>)
-            }
+            this.state.items.forEach(function (entry, index) {
+                if (entry.image_qr_code){
+                    items.push(<ProductShowCouponsListItem item={entry} key={index}/>);
+                }
+            });
+
             /*
              items = this.state.items.map(function (item, index) {
              return (<ProductCouponListItem item={item} key={index}/>);

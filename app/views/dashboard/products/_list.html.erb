@@ -9,8 +9,8 @@
   <% @products.each do |product| %>
       <tr>
         <td>
-          <%- if product.in_launch_mode?  %>
-              <%= link_to I18n.t('View'), product_path(product), :class => 'btn btn-danger' %>
+          <%- if product.in_launch_mode? %>
+              <%= link_to I18n.t('Show in action'), product_path(product), :class => 'btn btn-danger' %>
           <% end -%>
           <%= product.name %>
 
@@ -18,10 +18,11 @@
         <td><%= product.brand.name %></td>
         <td><%= product.last_launch %></td>
         <td><%= link_to I18n.t('Show'), dashboard_product_path(product) %></td>
+        <td><%= link_to I18n.t('Coupons'), dashboard_product_coupons_path(product) %>
         <td><%= link_to I18n.t('Edit'), edit_dashboard_product_path(product) %>
-        <%- if product.can_be_launched? %>
-             <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger' %>
-        <% end -%>
+          <%- if product.can_be_launched? %>
+              <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger' %>
+          <% end -%>
         </td>
         <td><%= link_to I18n.t('Destroy'), dashboard_product_path(product), method: :delete, data: {confirm: I18n.t('Are you sure about that')} %></td>
       </tr>

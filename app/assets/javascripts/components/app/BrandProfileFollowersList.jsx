@@ -70,7 +70,7 @@ var BrandProfileFollowersList = React.createClass({
                 items = <Fetching />
             }
             else {
-                items = <Empty />
+                items = <EmptyFollowersList />
             }
         }
 

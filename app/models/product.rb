@@ -25,8 +25,11 @@ class Product < ActiveRecord::Base
 
   has_many :comments, class_name: :ProductComment
 
+  has_many :product_coupons
+
 
   validates :brand, presence: true
+
 
   #
   # scope that return list of products with with the first 3 followers
@@ -57,6 +60,15 @@ class Product < ActiveRecord::Base
     _where
   end
 
+
+  # Returns the model id
+  def media_store_dir
+    "#{brand.media_store_dir}/products/#{id}"
+  end
+
+  #
+  #
+  #
   def in_launch_mode?
     not last_launch.nil? and  Time.now - last_launch < 24.hours
   end

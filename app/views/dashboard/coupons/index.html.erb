@@ -1,0 +1,35 @@
+<div class="col-md-12">
+  <div class="card">
+
+    <div class="header">
+      <h4 class="title">
+        <%= I18n.t('Coupons') %>
+
+      </h4>
+    </div>
+
+    <div class="content">
+
+      <%= render partial: "form", locals: {hide_back: true} %>
+
+      <div class="content table-responsive table-full-width">
+        <table class="table table-striped">
+        <% @coupons.each do |coupon| %>
+            <tr>
+              <td>
+                <%= coupon.value %>
+              </td>
+              <td><%= link_to I18n.t('Edit'), edit_dashboard_product_coupon_path(@product, coupon) %>
+
+              <td><%= link_to I18n.t('Destroy'), dashboard_product_coupon_path(@product, coupon), method: :delete, data: {confirm: I18n.t('Are you sure about that')} %></td>
+            </tr>
+        <% end %>
+          </table>
+
+        <div class="text-center">
+          <%= link_to t('New Coupon'), new_dashboard_product_coupon_path(@product), class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

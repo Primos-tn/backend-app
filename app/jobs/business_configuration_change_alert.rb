@@ -4,10 +4,9 @@ class BusinessConfigurationChangeAlert < ApplicationJob
   queue_as :default
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-
+  # http://stackoverflow.com/questions/37871943/activejob-deliver-later-not-sending
 
   def perform(*args)
-    # http://stackoverflow.com/questions/37871943/activejob-deliver-later-not-sending
     BusinessMailer.notify_business_admin.deliver_later
   end
 

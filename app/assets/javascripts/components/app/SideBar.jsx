@@ -13,11 +13,11 @@ var SideBar = React.createClass({
         return (
             <div className="AppSideBar">
                 {profileBlock}
-                <div className="Block__Header">
+                <div className="AppSideBar__Header AppSideBar__Header--top">
                     <span>{i18n['Similar products'] }</span>
                 </div>
 
-                <div className="Block__Header">
+                <div className="AppSideBar__Header">
                     <span>{i18n['Similar brands'] }</span>
                 </div>
 

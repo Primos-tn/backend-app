@@ -94,7 +94,7 @@ var ProductsList = React.createClass({
 
         }
         else {
-            items = <div className="text-center">{ this.state.serverLoadingDone ? i18n.Empty : i18n.Loading } </div>
+            items =  this.state.serverLoadingDone ?  <EmptyProductsList/> :  <Loading/>;
         }
 
         return (

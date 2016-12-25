@@ -36,5 +36,9 @@ class Brand < ActiveRecord::Base
     end
   end
 
+  # Returns the model id
+  def media_store_dir
+    "#{account.id}/brands/#{id}"
+  end
 
 end

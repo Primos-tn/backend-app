@@ -1,6 +1,7 @@
 class Web::ProductsController < Web::BaseController
   before_action :set_id, only: [:show, :reviews, :stores, :wishers, :coupons]
   before_action :can_be_viewed?, only: [:show, :reviews, :stores, :wishers, :coupons]
+  before_action :set_tab, only: [:stores, :coupons, :reviews, :wishers]
 
   def index
 
@@ -11,23 +12,19 @@ class Web::ProductsController < Web::BaseController
   end
 
   def stores
-    @active_tab = __method__
     render 'show'
   end
 
   def coupons
-    @active_tab = __method__
     render 'show'
   end
 
   def reviews
-    @active_tab = __method__
     render 'show'
   end
 
 
   def wishers
-    @active_tab = __method__
     render 'show'
   end
 
@@ -38,9 +35,15 @@ class Web::ProductsController < Web::BaseController
     @id = params[:id]
   end
 
+  def set_tab
+    @active_tab = action_name
+    @product = Product.includes([:brand]).find(params[:id])
+    @id = params[:id]
+  end
+
   def can_be_viewed?
-      if not @product.in_launch_mode?
-        render file: 'public/404.html'
-      end
+    unless @product.in_launch_mode?
+      render file: 'public/404.html'
+    end
   end
 end

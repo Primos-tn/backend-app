@@ -1,7 +1,8 @@
 class BrandUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+
   def store_dir
-    "#{model.account.id}/brand/#{model.id}"
+    "#{model.media_store_dir}"
   end
 
   version :thumb do

@@ -1,4 +1,3 @@
-ruby '2.3.3'
 source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails',  '5.0.0'
@@ -39,7 +38,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
+  gem 'rspec-rails', '~> 3.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
@@ -47,7 +46,6 @@ end
 group :test do
   gem 'factory_girl'
   gem 'capybara'
-  gem 'rspec-rails', '~> 3.5'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
@@ -77,3 +75,6 @@ gem "bullet", :group => "development"
 
 gem 'geocoder'
 
+gem 'rqrcode'
+
+ruby '2.3.3'

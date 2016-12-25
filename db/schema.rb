@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161217184948) do
+ActiveRecord::Schema.define(version: 20161225053938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,8 +219,9 @@ ActiveRecord::Schema.define(version: 20161217184948) do
     t.integer  "product_id"
     t.string   "value"
     t.datetime "expires"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "image_qr_code"
   end
 
   create_table "product_stores", force: :cascade do |t|
@@ -242,6 +243,7 @@ ActiveRecord::Schema.define(version: 20161217184948) do
     t.integer  "available_in_count",        default: 0
     t.integer  "comments_count",            default: 0
     t.json     "pictures"
+    t.integer  "coupons_counts",            default: 0
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -300,6 +302,8 @@ ActiveRecord::Schema.define(version: 20161217184948) do
     t.datetime "updated_at", null: false
     t.float    "latitude"
     t.float    "longitude"
+    t.inet     "ip_address"
+    t.integer  "count"
   end
 
   create_table "user_product_wishes", force: :cascade do |t|

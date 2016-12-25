@@ -111,6 +111,13 @@
   position: relative;
   margin-top: 22px;
   height: 100%;
+  .ProductCardLisContainerEmpty {
+    height: 50px;
+    color : $color-white ;
+    text-align: center;
+    background: $primary-color ;
+
+  }
 }
 
 .ProductCardContainer {
