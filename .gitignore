@@ -21,7 +21,7 @@ config/initializers/secret_token.rb
 
 # remove environment variables can be committed
 /env
-
+env.yml
 ## Environment normalization:
 /.bundle
 /vendor/bundle

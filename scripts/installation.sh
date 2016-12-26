@@ -9,3 +9,20 @@ sudo apt-get install postgresql postgresql-contrib
 -test sudo -i -u postgres
 - psql
 - \q
+
+# go works
+# GET Repos
+git clone https://github.com/tbouraoui/Primos.git -b master --single-branch
+# install bundler
+gem install bundler
+# install native postgres
+sudo apt-get install libpq-dev
+#
+bunlde install
+
+# copy env files
+scp /home/hassenfath/work/pingo/server/env/.env.staging  root@vps242181.ovh.net:/home/Primos/.env.staging
+# get secret key
+copy key to env file
+
+#  sudo -u postgres psql

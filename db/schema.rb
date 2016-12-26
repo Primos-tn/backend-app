@@ -298,12 +298,12 @@ ActiveRecord::Schema.define(version: 20161225053938) do
   create_table "user_product_views", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.float    "latitude"
     t.float    "longitude"
     t.inet     "ip_address"
-    t.integer  "count"
+    t.integer  "count",      default: 0
   end
 
   create_table "user_product_wishes", force: :cascade do |t|
