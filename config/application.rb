@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Primos
   class Application < Rails::Application
-    puts "env.#{Rails.env}.yml"
+    #puts "env.#{Rails.env}.yml"
     config.before_configuration do
       env_file = File.join(Rails.root, 'env', "#{Rails.env}.yml")
       YAML.load(File.open(env_file)).each do |key, value|

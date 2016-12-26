@@ -23,6 +23,12 @@ bunlde install
 # copy env files
 scp /home/hassenfath/work/pingo/server/env/.env.staging  root@vps242181.ovh.net:/home/Primos/.env.staging
 # get secret key
-copy key to env file
+copy key to env/<env>.yml file
 
 #  sudo -u postgres psql
+
+# clear and set
+RAILS_ENV=staging rake db:drop db:create db:migrate
+
+#
+RAILS_ENV=staging rake configure:all
