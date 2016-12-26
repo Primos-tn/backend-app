@@ -122,3 +122,11 @@ table thead th {
 .DayTimer {
   margin-right: 1px;
 }
+
+/* line 116, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.ProductOfDay .Block__Header {
+  right: -48px;
+  top: -13px;
+  transform: rotate(49deg);
+  left: auto;
+}
