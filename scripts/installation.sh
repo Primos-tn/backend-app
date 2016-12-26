@@ -32,3 +32,6 @@ RAILS_ENV=staging rake db:drop db:create db:migrate
 
 #
 RAILS_ENV=staging rake configure:all
+
+# run now , -p 3001 for staging
+RAILS_ENV=staging rails s
