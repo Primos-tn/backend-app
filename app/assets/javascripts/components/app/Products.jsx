@@ -40,7 +40,7 @@ var Products = React.createClass({
 
                 <div>
                     <DayTimer/>
-                    <PopularEmbedList type="Product"/>
+                    <CategoriesList type="Product"/>
                     <div>
                         <div className="Block__Header">
                             <span>{i18n['Products of day']}</span>

@@ -56,7 +56,7 @@ var BrandsList = React.createClass({
 
         return (
             <div>
-                <PopularEmbedList type="Product"/>
+                <CategoriesList type="Brand"/>
                 {items}
             </div>
         );

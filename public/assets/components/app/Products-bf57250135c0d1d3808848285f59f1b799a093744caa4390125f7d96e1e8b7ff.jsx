@@ -13,6 +13,12 @@ var Products = React.createClass({
     },
     /**
      *
+     */
+    filter : function (){
+        alert('x')
+    },
+    /**
+     *
      * @private
      */
     _endDay (){
@@ -32,15 +38,14 @@ var Products = React.createClass({
         if (!this.state.endDay) {
             component = (
 
-                <div className="NoPadding col-lg-12">
+                <div>
                     <DayTimer/>
-                    <PopularEmbedList type="Product"/>
-                    <div className="col-lg-12">
+                    <CategoriesList type="Product"/>
+                    <div>
                         <div className="Block__Header">
                             <span>{i18n['Products of day']}</span>
                             <div className="pull-right">
-                                <span>{i18n['Filter']}<i className="ti-plus"></i></span>
-
+                                <span onClick={this.filter}>{i18n['Filter']}<i className="ti-plus"></i></span>
                             </div>
                         </div>
                         <ProductsList />

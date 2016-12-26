@@ -1,3 +1,5 @@
 json.result do
-  json.name "hello"
+  json.array!(0..4) do |i|
+    json.name i
+  end
 end

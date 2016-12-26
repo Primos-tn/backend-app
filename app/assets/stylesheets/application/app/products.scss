@@ -60,10 +60,10 @@
       position: absolute;
       left: 10px;
       bottom: 10px;
-      .DayTimer{
+      .DayTimer {
         background-color: transparent;
         border: none;
-        #pageTimer{
+        #pageTimer {
           font-size: 10px;
         }
       }
@@ -113,9 +113,9 @@
   height: 100%;
   .ProductCardLisContainerEmpty {
     height: 50px;
-    color : $color-white ;
+    color: $color-white;
     text-align: center;
-    background: $primary-color ;
+    background: $primary-color;
 
   }
 }
@@ -189,14 +189,14 @@
       color: $color-red;
     }
   }
-  .ProductCard__WishButton, .ProductCard__ShareButton{
+  .ProductCard__WishButton, .ProductCard__ShareButton {
     position: absolute;
     border: none;
     background-color: transparent;
     font-size: 20px;
     text-align: center;
     padding-top: 1px;
-    top : 5px;
+    top: 5px;
 
   }
   .ProductCard__ShareButton {
@@ -262,7 +262,6 @@
   }
 }
 
-
 .ProductWishersList {
   .ProductWishersList__Item {
     min-height: 30px;
@@ -281,6 +280,7 @@
   }
 
 }
+
 .DayTimer {
   border: solid 1px $primary-color;
   text-align: center;
@@ -289,16 +289,40 @@
 
   span {
     font-size: 25px;
-    color : $primary-color;
+    color: $primary-color;
   }
 }
+
 .ProductOfDay {
+  border-radius: 4px;
+  margin-bottom: 10px;
   left: 0px;
   right: 0px;
-  .ProductOfDay__Inner {
-
-    border: solid 1px $primary-color;
-    background-color: white;
-
+  border: solid 1px $primary-color;
+  background-color: white;
+  padding: 15px 20px;
+  position: relative;
+  overflow: hidden;
+  .Block__Header{
+    left: -48px;
+    top: -13px;
+    position: absolute;
+    transform: rotate(-45deg);
+    padding-top: 15px;
+    span{
+      padding: 10px 43px 5px;
+    }
+  }
+  .ProductOfDay__Item {
+    width: 20%;
+    text-align: center;
+    display: inline-block;
+    .ProductOfDay__InnerItem {
+      width: 80px;
+      height: 80px;
+      margin: auto;
+      border-radius: 50%;
+      border: solid 2px $primary-color;
+    }
   }
 }

@@ -5210,6 +5210,29 @@ textarea.form-control {
 .ChartLabel.text-danger {
   background-color: red;
 }
+/* line 5, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/coupons.scss */
+.QRCode table {
+  border-width: 0;
+  border-style: none;
+  border-color: #0000ff;
+  border-collapse: collapse;
+}
+/* line 12, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/coupons.scss */
+.QRCode td {
+  border-left: solid 10px #000;
+  padding: 0;
+  margin: 0;
+  width: 0px;
+  height: 10px;
+}
+/* line 20, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/coupons.scss */
+.QRCode td.black {
+  border-color: #000;
+}
+/* line 21, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/coupons.scss */
+.QRCode td.white {
+  border-color: #fff;
+}
 /**
  * Define app main colors
  */

@@ -1,5 +1,5 @@
 // app/assets/javascripts/components/article.js.jsx
-var PopularEmbedList = React.createClass({
+var CategoriesList = React.createClass({
     actions: {
         list: "Categories_LIST"
     },
@@ -66,9 +66,9 @@ var PopularEmbedList = React.createClass({
      */
     render: function () {
         var items = [];
-        this.state.items.forEach(function (item) {
+        this.state.items.forEach(function (item, index) {
             items.push(
-                <div className="item">
+                <div className="item" key={index}>
                     <i className={item.icon_class_name} ></i>
                     <h6>{item.name}</h6>
                 </div>

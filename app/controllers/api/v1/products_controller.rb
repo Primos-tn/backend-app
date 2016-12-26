@@ -1,8 +1,8 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   #
   skip_before_action :authenticate_user!, only: [ :index, :show, :reviews, :wishers, :product_of_day]
-  before_action :set_product, except: [:index] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
-  before_action :register_view, except: [:index, :unwish]
+  before_action :set_product, except: [:index, :product_of_day] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
+  before_action :register_view, except: [:index, :unwish, :product_of_day]
 
 
   # TODO , fix the search

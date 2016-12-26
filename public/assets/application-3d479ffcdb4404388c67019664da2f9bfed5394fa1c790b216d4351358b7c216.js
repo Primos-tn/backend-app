@@ -33403,7 +33403,7 @@ var BrandProfileFollowersList = React.createClass({
             if (this.state.isFetching) {
                 items = React.createElement(Fetching, null);
             } else {
-                items = React.createElement(Empty, null);
+                items = React.createElement(EmptyFollowersList, null);
             }
         }
 
@@ -33537,8 +33537,8 @@ var BrandsList = React.createClass({
 
         return React.createElement(
             "div",
-            { className: "row col-lg-12" },
-            React.createElement(PopularEmbedList, { type: "Product" }),
+            null,
+            React.createElement(CategoriesList, { type: "Brand" }),
             items
         );
     }
@@ -33672,8 +33672,8 @@ var BrandsListItem = React.createClass({
     }
 });
 // app/assets/javascripts/components/article.js.jsx
-var PopularEmbedList = React.createClass({
-    displayName: "PopularEmbedList",
+var CategoriesList = React.createClass({
+    displayName: "CategoriesList",
 
     actions: {
         list: "Categories_LIST"
@@ -33741,10 +33741,10 @@ var PopularEmbedList = React.createClass({
      */
     render: function () {
         var items = [];
-        this.state.items.forEach(function (item) {
+        this.state.items.forEach(function (item, index) {
             items.push(React.createElement(
                 "div",
-                { className: "item" },
+                { className: "item", key: index },
                 React.createElement("i", { className: item.icon_class_name }),
                 React.createElement(
                     "h6",
@@ -33763,6 +33763,50 @@ var PopularEmbedList = React.createClass({
             )
         );
     }
+});
+
+var EmptyFollowersList = React.createClass({
+    displayName: "EmptyFollowersList",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 text-center" },
+            "Empty"
+        );
+    }
+});
+
+/**
+ *
+ * @type {*|Function}
+ */
+var Loading = React.createClass({
+    displayName: "Loading",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 text-center" },
+            i18n.Loading
+        );
+    }
+});
+/**
+ *
+ * @type {*|Function}
+ */
+var EmptyProductsList = React.createClass({
+    displayName: "EmptyProductsList",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 ProductCardLisContainerEmpty" },
+            i18n.Empty
+        );
+    }
+
 });
 //
 var DayTimer = React.createClass({
@@ -33817,32 +33861,12 @@ var DayTimer = React.createClass({
     render: function () {
         return React.createElement(
             "div",
-            { className: "col-lg-12 text-center NoPadding" },
+            { className: "DayTimer" },
             React.createElement(
-                "div",
-                { className: "col-lg-12" },
-                React.createElement(
-                    "div",
-                    { className: " DayTimer" },
-                    React.createElement(
-                        "span",
-                        { id: "pageTimer" },
-                        this.state.tomorrow
-                    )
-                )
+                "span",
+                { id: "pageTimer" },
+                this.state.tomorrow
             )
-        );
-    }
-});
-
-var Empty = React.createClass({
-    displayName: "Empty",
-
-    render: function () {
-        return React.createElement(
-            "div",
-            { className: "col-lg-12 text-center" },
-            "Empty"
         );
     }
 });
@@ -33945,76 +33969,6 @@ var Map = React.createClass({
             'div',
             { className: 'MapContainer' },
             React.createElement('div', { id: 'map' })
-        );
-    }
-});
-// app/assets/javascripts/components/article.js.jsx
-var ProductOfDay = React.createClass({
-    displayName: "ProductOfDay",
-
-    /**
-     *
-     */
-    actions: {
-        PRODUCT_OF_DAY: 'PRODUCT_OF_DAY'
-    },
-
-    /**
-     *
-     */
-    getInitialState: function () {
-        return { item: null };
-    },
-
-    /**
-     *
-     */
-    componentDidMount: function () {
-        App.Dispatcher.attach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
-        this.loadDataFromServer();
-    },
-    /**
-     *
-     */
-    componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
-    },
-    /**
-     *
-     */
-    onDataChange: function (response) {
-        this.setState({ item: response.result });
-    },
-    /**
-     *
-     */
-    loadDataFromServer: function () {
-        App.Stores.loadData({
-            url: App.Routes.productOfDay,
-            action: this.actions.PRODUCT_OF_DAY
-        });
-    },
-
-    /**
-     *
-     */
-    render: function () {
-        var component = null;
-        if (this.state.item) {
-            component = React.createElement(
-                "div",
-                { className: "jumbotron ProductOfDay__Inner" },
-                this.state.item.name
-            );
-        }
-        return React.createElement(
-            "div",
-            { className: "ProductOfDay" },
-            React.createElement(
-                "div",
-                null,
-                component
-            )
         );
     }
 });
@@ -34198,7 +34152,12 @@ var ProductShowCouponsListItem = React.createClass({
             React.createElement(
                 "div",
                 null,
-                React.createElement(Button, { onClick: this.shareCoupon })
+                React.createElement("img", { src: this.props.item.image_qr_code }),
+                React.createElement(
+                    "button",
+                    { className: "AppButton", onClick: this.shareCoupon },
+                    i18n.Share
+                )
             )
         );
     }
@@ -34246,15 +34205,16 @@ var ProductShowCouponsList = React.createClass({
      *
      */
     render: function () {
-        var items;
+        var items = [];
         //
         if (this.state.items.length) {
             //
-            var clone = this.state.items[0];
-            items = [];
-            for (var i = 0; i < 50; i++) {
-                items.push(React.createElement(ProductShowCouponsListItem, { item: clone, key: i }));
-            }
+            this.state.items.forEach(function (entry, index) {
+                if (entry.image_qr_code) {
+                    items.push(React.createElement(ProductShowCouponsListItem, { item: entry, key: index }));
+                }
+            });
+
             /*
              items = this.state.items.map(function (item, index) {
              return (<ProductCouponListItem item={item} key={index}/>);
@@ -34561,6 +34521,12 @@ var Products = React.createClass({
     },
     /**
      *
+     */
+    filter: function () {
+        alert('x');
+    },
+    /**
+     *
      * @private
      */
     _endDay: function () {
@@ -34580,12 +34546,12 @@ var Products = React.createClass({
         if (!this.state.endDay) {
             component = React.createElement(
                 "div",
-                { className: "NoPadding col-lg-12" },
+                null,
                 React.createElement(DayTimer, null),
-                React.createElement(PopularEmbedList, { type: "Product" }),
+                React.createElement(CategoriesList, { type: "Product" }),
                 React.createElement(
                     "div",
-                    { className: "col-lg-12" },
+                    null,
                     React.createElement(
                         "div",
                         { className: "Block__Header" },
@@ -34599,7 +34565,7 @@ var Products = React.createClass({
                             { className: "pull-right" },
                             React.createElement(
                                 "span",
-                                null,
+                                { onClick: this.filter },
                                 i18n['Filter'],
                                 React.createElement("i", { className: "ti-plus" })
                             )
@@ -34723,12 +34689,7 @@ var ProductsList = React.createClass({
                 items.push(React.createElement(ProductsListItem, { item: item, index: i, key: index + i++ }));
             }).bind(this));
         } else {
-            items = React.createElement(
-                'div',
-                { className: 'text-center' },
-                this.state.serverLoadingDone ? i18n.Empty : i18n.Loading,
-                ' '
-            );
+            items = this.state.serverLoadingDone ? React.createElement(EmptyProductsList, null) : React.createElement(Loading, null);
         }
 
         return React.createElement(
@@ -35054,7 +35015,7 @@ var SideBar = React.createClass({
             profileBlock,
             React.createElement(
                 "div",
-                { className: "Block__Header" },
+                { className: "AppSideBar__Header AppSideBar__Header--top" },
                 React.createElement(
                     "span",
                     null,
@@ -35063,7 +35024,7 @@ var SideBar = React.createClass({
             ),
             React.createElement(
                 "div",
-                { className: "Block__Header" },
+                { className: "AppSideBar__Header" },
                 React.createElement(
                     "span",
                     null,
@@ -35120,6 +35081,109 @@ var SideBarFooter = React.createClass({
                     "© 2016"
                 )
             )
+        );
+    }
+});
+/**
+ *
+ */
+
+var TopOfDayItem = React.createClass({
+    displayName: "TopOfDayItem",
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // attribute the width
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductOfDay__Item" },
+            React.createElement(
+                "div",
+                { className: "ProductOfDay__InnerItem" },
+                this.props.item.name
+            )
+        );
+    }
+
+});
+// app/assets/javascripts/components/article.js.jsx
+var TopOfDay = React.createClass({
+    displayName: "TopOfDay",
+
+    /**
+     *
+     */
+    actions: {
+        PRODUCT_OF_DAY: 'PRODUCT_OF_DAY'
+    },
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [] };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
+    },
+    /**
+     *
+     */
+    onDataChange: function (response) {
+        this.setState({ items: response.result });
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productOfDay,
+            action: this.actions.PRODUCT_OF_DAY
+        });
+    },
+
+    /**
+     *
+     */
+    render: function () {
+        var components = null;
+        if (this.state.items.length) {
+            components = [];
+            this.state.items.forEach(function (entry, index) {
+                components.push(React.createElement(TopOfDayItem, { key: index, item: entry }));
+            });
+        }
+        return React.createElement(
+            "div",
+            { className: "ProductOfDay" },
+            React.createElement(
+                "div",
+                { className: "Block__Header" },
+                React.createElement(
+                    "span",
+                    null,
+                    "***"
+                )
+            ),
+            components
         );
     }
 });
