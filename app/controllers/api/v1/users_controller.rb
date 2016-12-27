@@ -7,8 +7,14 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   end
 
+
   def show
     render 'info'
+  end
+
+
+  def me
+      @profile = current_user.profile
   end
 
   private

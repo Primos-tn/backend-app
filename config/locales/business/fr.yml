@@ -22,6 +22,39 @@ fr:
     Offers : Les offres
     Apply for business account confirmation : Confirmation de demande business
     Apply for business account : Demande de compte business
+
+    activerecord:
+          attributes:
+            business_profile :
+                company_name : Nom de société
+                business_phone : Numéro téléphonique professionnel
+                business_email :  Email professionnel
+                country : Pays
+                post_code : Code postale
+                city : Ville
+                company_address : Addresse
+
+          actions :
+            brand :
+              submit : اضافة علامة جديد
+          errors :
+            models :
+              brand :
+                attributes :
+                  name :
+                    taken : الاسم موجود
+                    blank: فارغ
+
+
+
+    Company name : اسم الشركة
+    Business phone : هاتف العمل
+    Business Email : البريد الالكتروني
+    Counrtry : البلد
+    Zip code : الرمز البريدي
+    City : المدينة
+    Address : العنوان
+
     Feature Launches : Lancements
     Feature Statistics : Statistiques
     Feature BI: Rappels d'actions
@@ -33,3 +66,4 @@ fr:
     Feature Collaboration : Collaboration
     Feature Bot : brand bot
     Monthly : Mensuel
+

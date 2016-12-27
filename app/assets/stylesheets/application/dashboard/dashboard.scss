@@ -1,7 +1,6 @@
 @import "../app/mixins";
 @import "../app/colors";
 
-.sidebar-wrapper {
 
   .DashboardSideBar__uploadIcon {
     i {
@@ -17,7 +16,7 @@
     position: absolute;
     cursor: pointer;
   }
-}
+
 
 .NoticeInfo {
   margin: 5px 0px;

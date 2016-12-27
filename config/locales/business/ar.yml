@@ -19,6 +19,38 @@ ar:
   Apply for business account confirmation : تأكيد طلب للحصول على حساب الأعمال
   Apply for business account : طلب للحصول على حساب الأعمال
 
+  activerecord:
+      attributes:
+        business_profile :
+            company_name : اسم الشركة
+            business_phone : هاتف العمل
+            business_email :  البريد الالكتروني
+            country : البلد
+            post_code : الرمز البريدي
+            city : المدينة
+            company_address : العنوان
+
+      actions :
+        brand :
+          submit : اضافة علامة جديد
+      errors :
+        models :
+          brand :
+            attributes :
+              name :
+                taken : الاسم موجود
+                blank: فارغ
+
+
+
+  Company name : اسم الشركة
+  Business phone : هاتف العمل
+  Business Email : البريد الالكتروني
+  Counrtry : البلد
+  Zip code : الرمز البريدي
+  City : المدينة
+  Address : العنوان
+
   Feature Launches : إطلاقات اسبوعيا
   Feature Statistics : خدمةالإحصائيات
   Feature BI: خدمةالوصايا الموجة

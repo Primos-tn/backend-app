@@ -140,7 +140,7 @@ Rails.application.routes.draw do
       end
     end
     resources :stores
-    resources :users
+    resources :users, only: [:index, :show]
     resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
     resources :hooks
 
@@ -239,7 +239,10 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :users do
+      resources :users, only: [:index, :show] do
+        collection do
+          get 'me'
+        end
         member do
           get 'followers'
           get 'brands'

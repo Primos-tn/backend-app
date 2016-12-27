@@ -1,4 +1,5 @@
 class Brand < ActiveRecord::Base
+  mount_uploader :picture, BrandUploader
   mount_uploader :cover, BrandUploader
   belongs_to :account
   # brands stores associations

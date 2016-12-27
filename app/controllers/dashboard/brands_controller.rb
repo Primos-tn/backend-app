@@ -123,7 +123,7 @@ class Dashboard::BrandsController < Dashboard::DashboardController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def brand_pictures_params
-    params.require(:brand).permit(:cover)
+    params.require(:brand).permit(:cover, :picture)
   end
 
   def can_add_more?

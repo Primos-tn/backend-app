@@ -17,7 +17,7 @@
             <div class="sidebar-wrapper">
               <div class="logo">
                 <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
-                    <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb)}) %>
+                    <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.picture.url(:thumb), :type => 'picture'}) %>
                 <% end %>
                 <%= link_to dashboard_main_path do %>
                     <span class="simple-text"><%= current_brand.name %></span>
@@ -46,6 +46,9 @@
       <% end %>
       <div class="main-panel">
         <nav class="navbar navbar-default">
+          <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
+              <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb), :type => 'cover'}) %>
+          <% end %>
           <div class="container-fluid">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle">
