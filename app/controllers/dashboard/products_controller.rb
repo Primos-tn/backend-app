@@ -1,7 +1,7 @@
 class Dashboard::ProductsController < Dashboard::DashboardController
   before_action :set_product_and_brand, only: [:show, :edit, :update, :destroy, :launch]
   before_action :require_permission, only: [:show, :edit, :update, :destroy, :launch]
-  before_action :set_user_brands, only: [:new, :edit]
+  before_action :set_user_brands, only: [:new, :edit, :create]
 
   # GET /products
   # GET /products.json
@@ -28,7 +28,6 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # POST /products.json
   def create
     @product = Product.new(product_params)
-
     respond_to do |format|
       if @product.save
         format.html { redirect_to dashboard_product_path(@product), notice: 'Product was successfully created.' }
