@@ -5,7 +5,7 @@ class Api::V1::BaseController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   # destroy action
   before_action :destroy_session
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:not_found]
 
   # destroy current session
   def destroy_session
@@ -13,8 +13,8 @@ class Api::V1::BaseController < ApplicationController
   end
 
   # handle RecordNotFound exception
-  def not_found
-    api_error(404, 'Not found')
+  def not_found(error='Not found')
+    api_error(404, error)
   end
 
   # api error pretty
@@ -22,34 +22,24 @@ class Api::V1::BaseController < ApplicationController
     unless Rails.env.production?
       puts errors.full_messages if errors.respond_to? :full_messages
     end
-    head status: status and return if errors.empty?
-
+    head(status: status) and return if errors.empty?
     render json: json_api_format(errors, action), status: status
   end
 
   # Once the client has the token it sends both token and email
   # to the API for each subsequent request.
   def authenticate_user!
-    #FIXME , please filter your source
     if current_user
       return current_user
     end
     # get token and options
-    options = create_authentication_params
-    user_email = options[:email]
-    token = options[:token]
-    print "token is #{token}>>> \n"
-    user = user_email && Account.find_by(email: user_email)
-    access_token = user && AccessToken.find_by(value: token, account: user)
-    # check if user exists and
-    if user && access_token
-      logger.info user
-      print "access token is >>> \n"
-      print access_token
-      @access_token = access_token
-      @current_user = user
-    else
-      unauthenticated!
+    authenticate_or_request_with_http_token do |token, options|
+      access_token = AccountAccessToken.find_by(token_value: token)
+      if access_token #&& !access_token.expires_at < Date.now
+        @current_user = access_token.account
+      else
+        unauthenticated!
+      end
     end
   end
 
@@ -100,10 +90,6 @@ class Api::V1::BaseController < ApplicationController
 
   private
 
-  # extract params , we need token and email
-  def create_authentication_params
-    params.permit([:email, :token])
-  end
 
   protected
   #

@@ -56,7 +56,7 @@ class Dashboard::DashboardController < ApplicationController
 
   protected
 
-
+  # FIXME
   def check_if_must_upgrade(message=t('Feature not available for free account'))
     if current_user.is_business_free? and not current_user.in_trial_mode?
       flash["upgrade_message"] = message

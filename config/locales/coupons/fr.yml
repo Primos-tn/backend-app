@@ -1,0 +1,20 @@
+fr:
+  Coupons: Coupons
+  New Coupon :  Nouveau Coupon
+  activerecord:
+        attributes:
+          product_coupon:
+              value : coupon
+        errors :
+          models :
+            product_coupon :
+              attributes :
+                name :
+                  taken: Déja existe
+                  blank : Vide
+  helpers:
+        submit :
+          product_coupon:
+            create : Créer un nouveau coupon
+            update : Mettre à jour le coupon
+

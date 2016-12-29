@@ -2,13 +2,15 @@ class Account < ActiveRecord::Base
 
   enum accounts_type: {user: 0, business: 2, system: -2, admin: -1, business_request: 1}
 
-  before_validation :beta_invited?
+  after_validation :beta_invited?
   after_create :add_profile
 
 
   has_one :profile
   has_one :business_profile
 
+  # mobile access and others
+  has_many :account_access_tokens
   # notifications
   has_many :notifications
 
@@ -111,9 +113,9 @@ class Account < ActiveRecord::Base
 
 
   def beta_invited?
-    if not self.is_admin? and SystemConfiguration.first.with_invitation?
+    if self.new_record?  && SystemConfiguration.first.with_invitation?
       unless AccountRegistrationInvitation.exists?(:email => email)
-        errors.add :email, t("Sorry, you are not allowed to registrer, please contact us !")
+        errors.add :email, I18n.t("Require invitation")
       end
     end
   end

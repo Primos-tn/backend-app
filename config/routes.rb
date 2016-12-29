@@ -1,19 +1,4 @@
 Rails.application.routes.draw do
-  namespace :dashboard do
-    get 'coupons/index'
-  end
-
-  namespace :dashboard do
-    get 'coupons/show'
-  end
-
-  namespace :dashboard do
-    get 'coupons/edit'
-  end
-
-  namespace :dashboard do
-    get 'coupons/new'
-  end
 
   # You can have the root of your site routed with "root"
   authenticated do
@@ -86,7 +71,7 @@ Rails.application.routes.draw do
     get 'request-join', to: 'home'
 
     scope :media, :controller => 'media' do
-      get '/*path', to: 'media#index',  :format => false
+      get '/*path', to: 'media#index', :format => false
     end
 
   end
@@ -130,7 +115,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :brands do
+    resources :brands, only: [:new, :create, :update] do
       collection do
         get 'select'
         post 'select'
@@ -201,6 +186,14 @@ Rails.application.routes.draw do
   # api routes
   namespace :api do
     namespace :v1 do
+
+      scope :accounts, as: :accounts, controller: :accounts do
+        post 'create'
+        post 'login'
+        post 'register_push'
+        put 'destory'
+      end
+
       resources :categories, only: :index
 
       get '/search' => 'search#index'
@@ -270,6 +263,8 @@ Rails.application.routes.draw do
       end
 
     end
+
+    match '(*any)', :to => "v1/base#not_found", via: [:all]
   end
 
 

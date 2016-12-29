@@ -26,16 +26,18 @@ class Account::SessionsController < Devise::SessionsController
 
   def check_is_invited_and_confirmed
     email = new_session_params[:login]
-    # check
-    if SystemConfiguration.first.with_invitation? &&
-        !(Account.where(email: email).or( Account.where(username: email)).exists?)
-      # check for admin
-      if email && AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => false)
-        redirect_to request_pending_path + '?email=' + email
-      end
+    exists = Account.find_for_authentication(login: new_session_params[:login])
+    unless exists
+      # check
+      if SystemConfiguration.first.with_invitation?
+        # check for admin
+        if email && AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => false)
+          redirect_to request_pending_path + '?email=' + email
+        end
 
-      if email && !AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => true )
-        redirect_to request_join_path + '?email=' + email
+        if email && !AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => true)
+          redirect_to request_join_path + '?email=' + email
+        end
       end
     end
   end

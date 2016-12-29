@@ -11,6 +11,10 @@ class Dashboard::HooksController  < Dashboard::DashboardController
     @hook = Hook.new
   end
 
+  def create
+
+  end
+
   private
   def set_tab
     @active_tab = 'hooks'

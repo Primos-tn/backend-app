@@ -31,10 +31,11 @@ body {
   }
   .DashboardFooter__Feedback {
     display: inline-block;
-    border : solid 1px #ccc;
-    padding: 10px;
+    border : solid 1px #fff;
+    padding: 4px 8px;
     color : #fff;
     background-color: #ffb249;
+    border-radius: 20px;
   }
 
   .DashboardFooter__PlanType {

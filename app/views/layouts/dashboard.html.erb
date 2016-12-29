@@ -42,12 +42,14 @@
             </div>
           </div>
       <% else %>
-          <div class="sidebar" data-background-color="black" data-active-color="danger"></div>
+          <div class="sidebar" data-background-color="#ff5" data-active-color="warning"></div>
       <% end %>
       <div class="main-panel">
         <nav class="navbar navbar-default">
-          <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
-              <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb), :type => 'cover'}) %>
+          <% if @show_sidebar %>
+              <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
+                  <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb), :type => 'cover'}) %>
+              <% end %>
           <% end %>
           <div class="container-fluid">
             <div class="navbar-header">
@@ -65,7 +67,7 @@
                   <%- unless %w(upgrade upgrade_form).include?(action_name) %>
                       <%- if current_user.can_have_trial_business? %>
                           <%- if action_name != 'free_trial' %>
-                              <a href="<%= dashboard_free_trial_path %>" class="btn btn-danger"><%= t('Try basic for month free') %></a>
+                              <!--<a href="<%= dashboard_free_trial_path %>" class="btn btn-danger"><%= t('Try basic for month free') %></a>-->
                           <% end -%>
                       <%- else %>
                           <%- if (not current_user.in_trial_mode?) && current_user.is_business_free? %>

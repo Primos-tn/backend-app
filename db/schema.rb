@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161225053938) do
+ActiveRecord::Schema.define(version: 20161228043548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,18 @@ ActiveRecord::Schema.define(version: 20161225053938) do
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "account_access_tokens", force: :cascade do |t|
+    t.integer  "account_id"
+    t.string   "type"
+    t.string   "expires"
+    t.string   "uuid"
+    t.json     "info"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "push_token_value"
+    t.string   "token_value"
   end
 
   create_table "account_registration_invitations", force: :cascade do |t|
@@ -180,16 +192,6 @@ ActiveRecord::Schema.define(version: 20161225053938) do
     t.string   "real_name"
   end
 
-  create_table "mobile_device_tokens", force: :cascade do |t|
-    t.integer  "user"
-    t.string   "type"
-    t.string   "expires"
-    t.string   "uuid"
-    t.json     "info"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "notifications", force: :cascade do |t|
     t.integer  "to_user"
     t.string   "type"
@@ -298,12 +300,12 @@ ActiveRecord::Schema.define(version: 20161225053938) do
   create_table "user_product_views", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "product_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.float    "latitude"
     t.float    "longitude"
     t.inet     "ip_address"
-    t.integer  "count",      default: 0
+    t.integer  "count"
   end
 
   create_table "user_product_wishes", force: :cascade do |t|

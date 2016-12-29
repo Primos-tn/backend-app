@@ -122,7 +122,7 @@ var ProductsListItem = React.createClass({
                         <a className="ProductCard__BrandImageContainer"
                            href={App.Helpers.getAbsoluteUrl(App.Routes.brand, {id : item.brand.id})}>
                             <img
-                                src={App.Helpers.getMediaUrl(item.brand.cover.thumb.url)}
+                                src={App.Helpers.getMediaUrl(item.brand.picture.thumb.url)}
                                 alt={item.brand.name}/>
                         </a>
                         <button

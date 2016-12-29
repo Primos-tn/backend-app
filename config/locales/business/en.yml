@@ -1,5 +1,6 @@
 en:
 
+  Pending request : Your request is pending
   Apply for business account confirmation : Confirm your business request
   Apply for business account : Business account application
 
@@ -14,3 +15,11 @@ en:
   Feature Collaboration : Collaboration
   Feature Bot : brand bot
   Monthly : Monthly
+
+  Company name : Company name
+  Business phone : Business phone
+  Business Email : Business Email
+  Counrtry : Counrtry
+  Zip code : Zip code
+  City : City
+  Address : Address

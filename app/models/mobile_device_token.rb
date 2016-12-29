@@ -1,2 +1,0 @@
-class MobileDeviceToken < ApplicationRecord
-end

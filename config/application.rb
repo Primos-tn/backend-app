@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Primos
   class Application < Rails::Application
+    config.middleware.use Rack::Attack
     #puts "env.#{Rails.env}.yml"
     config.before_configuration do
       env_file = File.join(Rails.root, 'env', "#{Rails.env}.yml")

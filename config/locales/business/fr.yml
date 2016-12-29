@@ -1,69 +1,71 @@
 fr:
   # views/dashboard/index.html
-    Confirm Pro : Confirmer le passage en mode Pro
-    Confirm Trial Pro : Confirmer l'essai gratuitement de mode Pro
-    Basic : Basique
-    Monthly : Par mois
-    Features phrase : You know how market will be tomorrow, try it !
-    Basic :  Basique
-    Pro: Professionnel
-    Contact : Contactez nous
-    Free :  Gratuit
-    Statistics : Statistiques
-    BI: Services de recommandation
-    Campaign : Publicité ciblé
-    Collaboration : Coopération avec d'autes utlisateurs
-    Submit contact : Enoyer le message
-    Feature not available for free account: Ce service n'est pas valable pour la version gratuite
-    helpers:
-      submit:
-            business_profile:
-              create: Créer mon compte business
-    Offers : Les offres
-    Apply for business account confirmation : Confirmation de demande business
-    Apply for business account : Demande de compte business
+  Pending request : Demande en cours de traitement
+  We are working hard to validate your request:  Merci pour votre patiente !
+  Confirm Pro : Confirmer le passage en mode Pro
+  Confirm Trial Pro : Confirmer l'essai gratuitement de mode Pro
+  Basic : Basique
+  Monthly : Par mois
+  Features phrase : You know how market will be tomorrow, try it !
+  Basic :  Basique
+  Pro: Professionnel
+  Contact : Contactez nous
+  Free :  Gratuit
+  Statistics : Statistiques
+  BI: Services de recommandation
+  Campaign : Publicité ciblé
+  Collaboration : Coopération avec d'autes utlisateurs
+  Submit contact : Enoyer le message
+  Feature not available for free account: Ce service n'est pas valable pour la version gratuite
+  helpers:
+    submit:
+          business_profile:
+            create: Créer mon compte business
+  Offers : Les offres
+  Apply for business account confirmation : Confirmation de demande business
+  Apply for business account : Demande de compte business
 
-    activerecord:
-          attributes:
-            business_profile :
-                company_name : Nom de société
-                business_phone : Numéro téléphonique professionnel
-                business_email :  Email professionnel
-                country : Pays
-                post_code : Code postale
-                city : Ville
-                company_address : Addresse
+  activerecord:
+        attributes:
+          business_profile :
+              company_name : Raison sociale
+              business_phone : Numéro téléphonique professionnel
+              business_email :  Email professionnel
+              country : Pays
+              post_code : Code postale
+              city : Ville
+              company_address : Addresse
 
-          actions :
+        actions :
+          brand :
+            submit : اضافة علامة جديد
+        errors :
+          models :
             brand :
-              submit : اضافة علامة جديد
-          errors :
-            models :
-              brand :
-                attributes :
-                  name :
-                    taken : الاسم موجود
-                    blank: فارغ
+              attributes :
+                name :
+                  taken : الاسم موجود
+                  blank: فارغ
 
 
 
-    Company name : اسم الشركة
-    Business phone : هاتف العمل
-    Business Email : البريد الالكتروني
-    Counrtry : البلد
-    Zip code : الرمز البريدي
-    City : المدينة
-    Address : العنوان
+  Company name : Raison sociale
+  Business phone : Téléphone professionnel
+  Business Email : Courriel d'entreprise
+  Counrtry : Pays
+  Zip code : Code postal
+  City : Ville
+  Address : Adresse
 
-    Feature Launches : Lancements
-    Feature Statistics : Statistiques
-    Feature BI: Rappels d'actions
-    Feature Actions: Actions callbacks
-    Feature Subdomain: Sous-domaine
-    Feature Machine Learning: Apprentissage automatique
-    Feature Sponsored : Produits sponsorisés
-    Feature QR Coupons : Code QR Coupons
-    Feature Collaboration : Collaboration
-    Feature Bot : brand bot
-    Monthly : Mensuel
+  Feature Launches : Lancements
+  Feature Statistics : Statistiques
+  Feature BI: Rappels d'actions
+  Feature Actions: Actions callbacks
+  Feature Subdomain: Sous-domaine
+  Feature Machine Learning: Apprentissage automatique
+  Feature Sponsored : Produits sponsorisés
+  Feature QR Coupons : Code QR Coupons
+  Feature Collaboration : Collaboration
+  Feature Bot : brand bot
+  Monthly : Mensuel
 

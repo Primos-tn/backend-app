@@ -52,7 +52,7 @@ var UserProfile = React.createClass({
      */
     render: function () {
         if (this.state.loading) {
-            return <div>Loading</div>
+            return  <Loading/> ;
         }
         var info = this.state.info;
         // "http://feelgrafix.com/data_images/out/24/944648-nature.jpg"

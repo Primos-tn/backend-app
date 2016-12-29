@@ -1,19 +1,3 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-
-
-
-;
 /*!
  * jQuery JavaScript Library v1.12.4
  * http://jquery.com/
@@ -34840,7 +34824,7 @@ var ProductsListItem = React.createClass({
                         { className: "ProductCard__BrandImageContainer",
                             href: App.Helpers.getAbsoluteUrl(App.Routes.brand, { id: item.brand.id }) },
                         React.createElement("img", {
-                            src: App.Helpers.getMediaUrl(item.brand.cover.thumb.url),
+                            src: App.Helpers.getMediaUrl(item.brand.picture.thumb.url),
                             alt: item.brand.name })
                     ),
                     React.createElement(
@@ -35316,11 +35300,7 @@ var UserProfile = React.createClass({
      */
     render: function () {
         if (this.state.loading) {
-            return React.createElement(
-                "div",
-                null,
-                "Loading"
-            );
+            return React.createElement(Loading, null);
         }
         var info = this.state.info;
         // "http://feelgrafix.com/data_images/out/24/944648-nature.jpg"
@@ -35335,3 +35315,19 @@ var UserProfile = React.createClass({
         );
     }
 });
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file.
+//
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+
+
+
+;

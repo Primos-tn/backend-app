@@ -2,8 +2,15 @@
 <div>
   <%= react_component('ProductShow', props={'id' => params[:id], 'activeTab' => @active_tab}) %>
 </div>
-<% content_for :outside_main do %>
-    <img class="ProductDetails__BrandImage"
-         src="<%= get_assets_url(@product.brand.cover.to_s) %>"
-         alt="Free HTML5 template by FREEHTML5.co"/>
-<% end %>
+<% unless @product.brand.cover.file.nil? %>
+    <% content_for :outside_main do %>
+        <img class="ProductDetails__BrandImage"
+             src="<%= get_assets_url(@product.brand.cover.to_s) %>"
+        />
+    <% end %>
+    <style>
+      header {
+        background-color: transparent !important;
+      }
+    </style>
+<% end -%>

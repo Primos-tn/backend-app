@@ -1,14 +1,10 @@
 class Dashboard::BrandsController < Dashboard::DashboardController
   skip_before_filter :select_brand
   before_action :can_add_more?, only: [:new, :create]
-  before_action :set_brand, only: [:show, :edit, :update, :destroy, :upload]
-  before_action :require_permission, only: [:show, :edit, :update, :destroy, :upload]
+  before_action :set_brand, only: [:show, :edit, :update,  :upload]
+  before_action :require_permission, only: [:show, :edit, :update, :upload]
 
-  # GET /brands
-  # GET /brands.json
-  def index
-    @brands = current_user.brands
-  end
+
 =begin
   # GET /brands
   # GET /brands.json
@@ -49,7 +45,6 @@ class Dashboard::BrandsController < Dashboard::DashboardController
   def create
       @brand = Brand.new(brand_params)
       @brand.account = current_user
-
       respond_to do |format|
         if @brand.save
           format.html { redirect_to dashboard_main_path, notice: I18n.t('Brand was successfully created.') }
@@ -90,19 +85,19 @@ class Dashboard::BrandsController < Dashboard::DashboardController
       end
     end
   end
-
-  # DELETE /brands/1
-  # DELETE /brands/1.json
-  def destroy
-    if @brand.account == current_user
-      if @brand.destroy
-        respond_to do |format|
-          format.html { redirect_to dashboard_brands_url, notice: I18n.t('Brand was successfully destroyed.') }
-          format.json { head :no_content }
-        end
-      end
-    end
-  end
+  #
+  # # DELETE /brands/1
+  # # DELETE /brands/1.json
+  # def destroy
+  #   if @brand.account == current_user
+  #     if @brand.destroy
+  #       respond_to do |format|
+  #         format.html { redirect_to dashboard_brands_url, notice: I18n.t('Brand was successfully destroyed.') }
+  #         format.json { head :no_content }
+  #       end
+  #     end
+  #   end
+  # end
 
   private
   # Use callbacks to share common setup or constraints between actions.

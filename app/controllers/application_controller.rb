@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       # TODO check for supported locales
       cookies.permanent[:locale] = params[:locale]
     end
-    I18n.locale = cookies.permanent[:locale] || 'ar'
+    I18n.locale = cookies.permanent[:locale] || 'en'
     cookies.permanent[:locale] = I18n.locale
   end
 

@@ -1,6 +1,3 @@
-
-
-
 /*!
  * jQuery JavaScript Library v1.12.4
  * http://jquery.com/
@@ -33438,94 +33435,110 @@ var DashboardBoardSales = React.createClass({
 });
 // app/assets/javascripts/components/article.js.jsx
 var DashboardBoardSideBarBrandBlock = React.createClass({
-  displayName: 'DashboardBoardSideBarBrandBlock',
+    displayName: 'DashboardBoardSideBarBrandBlock',
 
-  /**
-   *
-   */
-  _ids: {
-    COVER_INPUT_ID: 'cover_input'
+    /**
+     *
+     */
+    _ids: {
+        COVER_INPUT_ID: 'cover_input'
 
-  },
-  /**
-   *
-   */
-  componentDidMount: function () {},
-  /**
-   *
-   */
-  componentWillUnmount: function () {},
-  /**
-   *
-   */
-  _$file: null,
-  /**
-   *
-   */
-  loadDataFromServer: function () {},
-  /**
-   *
-   * @private
-   */
-  _ajaxUploadBrandCover: function () {
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {},
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    _$file: null,
+    /**
+     *
+     */
+    loadDataFromServer: function () {},
+    /**
+     *
+     * @private
+     */
+    _ajaxUploadBrandCover: function () {
 
-    //var fd = new FormData();
-    //fd.append('file', input.files[0] );
-    var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
-    $form.trigger('sumbit');
-    /*
-     $.ajax({
-     url: 'http://example.com/script.php',
-     data: fd,
-     processData: false,
-     contentType: false,
-     type: 'POST',
-     success: function(data){
-     alert(data);
-     }
-     });*/
-  },
-  /**
-   *
-   * @private
-   */
-  _uploadBrandCover: function () {
-    //var file = $(ReactDOM.findDOMNode(this)).find('form')[0];
-    var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
-    $form.trigger('submit');
-  },
-  /**
-   *
-   * @private
-   */
-  _triggerInput: function (e) {
-    e.preventDefault();
-    $(this.refs[this._ids.COVER_INPUT_ID]).trigger('click');
-  },
-  /**
-   *
-   */
-  render: function () {
-    var link = React.createElement('i', { className: 'ti-camera' });
-    if (this.props.image) {
-      link = React.createElement('img', { src: App.Helpers.getMediaUrl(this.props.image) });
+        //var fd = new FormData();
+        //fd.append('file', input.files[0] );
+        var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
+        $form.trigger('sumbit');
+        /*
+         $.ajax({
+         url: 'http://example.com/script.php',
+         data: fd,
+         processData: false,
+         contentType: false,
+         type: 'POST',
+         success: function(data){
+         alert(data);
+         }
+         });*/
+    },
+    /**
+     *
+     * @private
+     */
+    _uploadBrandCover: function () {
+        //var file = $(ReactDOM.findDOMNode(this)).find('form')[0];
+        var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
+        $form.trigger('submit');
+    },
+    /**
+     *
+     * @private
+     */
+    _triggerInput: function (e) {
+        e.preventDefault();
+        $(this.refs[this._ids.COVER_INPUT_ID]).trigger('click');
+    },
+    /**
+     *
+     */
+    render: function () {
+        var link = React.createElement('i', { className: 'ti-camera' });
+        var style = {};
+        var onClick = undefined;
+
+        if (this.props.image) {
+            if (this.props.type == "cover") {
+                style = {
+                    background: "url(" + App.Helpers.getMediaUrl(this.props.image) + ") ",
+                    backgroundAttachment: "fixed",
+                    backgroundPosition: "center",
+                    height: "200px",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover"
+                };
+            } else {
+                link = React.createElement('img', { src: App.Helpers.getMediaUrl(this.props.image) });
+            }
+        }
+        var formName = "brand[" + this.props.type + "]";
+        var className = "DashboardSideBar__uploadIcon " + this.props.type;
+        return React.createElement(
+            'div',
+            { style: style },
+            React.createElement('input', { name: formName,
+                type: 'file',
+                ref: this._ids.COVER_INPUT_ID,
+                id: this._ids.COVER_INPUT_ID,
+                onChange: this._uploadBrandCover,
+                style: { width: '0px', height: '0px' } }),
+            React.createElement(
+                'div',
+                { className: className, onClick: this._triggerInput },
+                link
+            )
+        );
     }
-    return React.createElement(
-      'div',
-      null,
-      React.createElement('input', { name: 'brand[cover]',
-        type: 'file',
-        ref: this._ids.COVER_INPUT_ID,
-        id: this._ids.COVER_INPUT_ID,
-        onChange: this._uploadBrandCover,
-        style: { width: '0px', height: '0px' } }),
-      React.createElement(
-        'div',
-        { className: 'DashboardSideBar__uploadIcon', onClick: this._triggerInput },
-        link
-      )
-    );
-  }
 });
 // app/assets/javascripts/components/article.js.jsx
 var DashboardBoardSmallWidgetsBlock = React.createClass({
@@ -34151,4 +34164,13 @@ var StoresMapView = React.createClass({
             React.createElement('div', { id: 'map_stores' })
         );
     }
+});
+
+
+
+// body
+$(document).ready(function (){
+    $('.main-panel').on('scroll', function (){
+        console.log('#################"');
+    });
 });

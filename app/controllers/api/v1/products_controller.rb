@@ -1,7 +1,8 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   #
-  skip_before_action :authenticate_user!, only: [ :index, :show, :reviews, :wishers, :product_of_day]
+  skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
   before_action :set_product, except: [:index, :product_of_day] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
+  before_action :in_launch_mode?, only: [:show, :reviews, :stores, :wishers, :coupons]
   before_action :register_view, except: [:index, :unwish, :product_of_day]
 
 
@@ -120,7 +121,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
     @product = Product.find(params[:id])
   end
 
-
   def register_view
     account_id = current_user.id if current_user
     view = UserProductView
@@ -128,6 +128,12 @@ class Api::V1::ProductsController < Api::V1::BaseController
                .first_or_create
     view. increment_user_view
     view.save
+  end
+
+  def in_launch_mode?
+    unless @product.in_launch_mode?
+      render json: {:response => t('Oh no! back yesterday')}, status: 401
+    end
   end
 
 end

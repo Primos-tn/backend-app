@@ -15,7 +15,7 @@ fr:
   Home: Index
   Accept request: Ok
   Confirmed : Confirmé
-  Resend request: Re-envoie de demande
+  Resend request: Re-envoie la demande
   Request accepted: Acceptation de demande
 
   activerecord:

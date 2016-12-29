@@ -5236,19 +5236,29 @@ textarea.form-control {
 /**
  * Define app main colors
  */
-/* line 6, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
-.sidebar-wrapper .DashboardSideBar__uploadIcon {
+/* line 5, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardSideBar__uploadIcon {
   top: 10px;
   right: 15px;
   position: absolute;
   cursor: pointer;
 }
-/* line 7, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
-.sidebar-wrapper .DashboardSideBar__uploadIcon i {
+/* line 6, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardSideBar__uploadIcon.cover {
+  background-color: rgba(255, 255, 255, 0.47);
+  padding: 3px;
+  border-radius: 50%;
+  width: 47px;
+  height: 47px;
+  text-align: center;
+  color: white;
+}
+/* line 15, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardSideBar__uploadIcon i {
   font-size: 30px;
 }
-/* line 12, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
-.sidebar-wrapper .DashboardSideBar__uploadIcon img {
+/* line 20, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardSideBar__uploadIcon img {
   width: 50px;
   height: 50px;
   -webkit-border-radius: 50px;
@@ -5257,7 +5267,7 @@ textarea.form-control {
   border-radius: 50px;
 }
 
-/* line 22, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 30, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .NoticeInfo {
   margin: 5px 0px;
   text-align: center;
@@ -5266,12 +5276,12 @@ textarea.form-control {
   color: #ffb249;
 }
 
-/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 40, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .wrapper .sidebar .nav li > a {
   margin: 5px 0px;
 }
 
-/* line 37, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 45, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .SideBarTabNotification {
   position: absolute;
   border-radius: 50%;
@@ -5285,12 +5295,12 @@ textarea.form-control {
   color: #fff;
 }
 
-/* line 51, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 59, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .MapContainer #map, .MapContainer #map_stores {
   min-height: 265px;
 }
 
-/* line 56, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 64, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .Dashboard__ComingSoonFeature * {
   color: rgba(122, 158, 159, 0.18);
 }
@@ -5341,12 +5351,13 @@ body .container {
 /* line 33, /home/hassenfath/work/pingo/server/app/assets/stylesheets/dashboard.scss */
 .DashboardFooter .DashboardFooter__Feedback {
   display: inline-block;
-  border: solid 1px #ccc;
-  padding: 10px;
+  border: solid 1px #fff;
+  padding: 4px 8px;
   color: #fff;
   background-color: #ffb249;
+  border-radius: 20px;
 }
-/* line 41, /home/hassenfath/work/pingo/server/app/assets/stylesheets/dashboard.scss */
+/* line 42, /home/hassenfath/work/pingo/server/app/assets/stylesheets/dashboard.scss */
 .DashboardFooter .DashboardFooter__PlanType {
   float: right;
   opacity: 0.5;

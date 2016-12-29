@@ -6,6 +6,7 @@ json.products @products do |id, product|
     json.id product[:brand].id
     json.followers product[:brand].followers.size
     json.cover product[:brand].cover
+    json.picture product[:brand].picture
   end
   json.wishers product[:wishers] do |entry|
     unless entry.user_id.blank?

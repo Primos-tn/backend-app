@@ -19,13 +19,13 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-      :from => "support@li",
-      :address => 'smtp.gmail.com',
-      :port => 587,
-      :authentication => :plain,
-      :enable_starttls_auto => true,
-      :user_name => Rails.application.secrets.smtp_settings_address_user_name,
-      :password => Rails.application.secrets.smtp_settings_address_password
+      :from => ENV['MAILER_SMTP_FROM'],
+      :address => ENV['MAILER_SMTP_ADDRESS'],
+      :port => ENV['MAILER_SMTP_PORT'],
+      :authentication => ENV['MAILER_SMTP_AUTHENTICATION'],
+      :enable_starttls_auto => ENV['MAILER_SMTP_ENABLE_STARTTLS_AUTO'],
+      :user_name => ENV['MAILER_SMTP_USERNAME'],
+      :password => ENV['MAILER_SMTP_PASSWORD']
   }
 
   # Print deprecation notices to the Rails logger.

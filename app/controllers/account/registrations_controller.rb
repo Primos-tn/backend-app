@@ -53,7 +53,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
     super(resource)
     AccountsMailer.welcome_user_and_validation(resource).deliver_later
     AccountsMailer.new_user_notify_system(resource).deliver_later
-    profile_path
+    redirect profile_path
   end
 
 #
@@ -62,8 +62,8 @@ class Account::RegistrationsController < Devise::RegistrationsController
   def check_is_invited_and_confirmed
     email = new_registration_params[:email]
     # check
-    unless SystemConfiguration.first.with_invitation? &&
-        email &&
+    unless  email &&
+        SystemConfiguration.first.with_invitation? &&
         AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => true)
       redirect_to request_join_path + '?email=' + email
     end

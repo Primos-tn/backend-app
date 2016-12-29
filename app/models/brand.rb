@@ -13,11 +13,10 @@ class Brand < ActiveRecord::Base
 
   has_many :products
 
-  # revoews associations
+  # reviews associations
 
 
   has_many :reviews, class_name: :BrandReview
-  #has_many :reviewss, class_name: :BrandReview
 
 
   # brands
@@ -27,7 +26,6 @@ class Brand < ActiveRecord::Base
 
   validates :account, presence: true
   validates_presence_of :name
-  validates_presence_of :cover
 
   def self.search(search)
     if search

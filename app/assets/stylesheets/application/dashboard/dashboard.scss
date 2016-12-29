@@ -3,6 +3,15 @@
 
 
   .DashboardSideBar__uploadIcon {
+    &.cover {
+      background-color: rgba(255, 255, 255, 0.47);
+      padding: 3px;
+      border-radius: 50%;
+      width: 47px;
+      height: 47px;
+      text-align: center;
+      color: white;
+    }
     i {
       font-size: 30px;
     }

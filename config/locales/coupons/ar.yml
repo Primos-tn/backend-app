@@ -1,0 +1,20 @@
+ar:
+  Coupons: كوبونات
+  New Coupon : إضافة كوبون جديدة
+  activerecord:
+        attributes:
+          product_coupon:
+              value : كوبون
+        errors :
+          models :
+            product_coupon :
+              attributes :
+                name :
+                  taken: كوبون موجود
+                  blank : فارغ
+  helpers:
+        submit :
+          category:
+            create : إضافة كوبون جديدة
+            update : تحديث كوبون
+

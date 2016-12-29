@@ -1,5 +1,6 @@
 class Web::ProductsController < Web::BaseController
   before_action :set_id, only: [:show, :reviews, :stores, :wishers, :coupons]
+  # move this to api in
   before_action :can_be_viewed?, only: [:show, :reviews, :stores, :wishers, :coupons]
   before_action :set_tab, only: [:stores, :coupons, :reviews, :wishers]
 
