@@ -14,7 +14,7 @@ var Products = React.createClass({
     /**
      *
      */
-    filter : function (){
+    filter: function () {
         alert('x')
     },
     /**
@@ -61,7 +61,10 @@ var Products = React.createClass({
         }
         return (
             <div>
-                {component}
+                <div>
+                    {component}
+                </div>
+                <div className="clearfix"></div>
             </div>
         );
     },
