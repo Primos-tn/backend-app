@@ -1,9 +1,10 @@
 class Api::V1::ProductsController < Api::V1::BaseController
+  include StatisticsUtils
   #
   skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
   before_action :set_product, except: [:index, :product_of_day] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
   before_action :in_launch_mode?, only: [:show, :reviews, :stores, :wishers, :coupons]
-  before_action :register_view, except: [:index, :unwish, :product_of_day]
+  before_action :register_static_view, except: [:index, :unwish, :product_of_day]
 
 
   # TODO , fix the search
@@ -121,13 +122,14 @@ class Api::V1::ProductsController < Api::V1::BaseController
     @product = Product.find(params[:id])
   end
 
-  def register_view
+  def register_static_view
     account_id = current_user.id if current_user
     view = UserProductView
-               .where(:ip_address => request.ip, :product => @product, :account_id => account_id)
+               .where(:ip_address => ip(), :product => @product, :account_id => account_id)
                .first_or_create
-    view. increment_user_view
-    view.save
+    view.increment_user_view
+    puts view.errors.to_h
+    view.save!
   end
 
   def in_launch_mode?

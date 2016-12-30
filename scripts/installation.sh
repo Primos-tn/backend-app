@@ -10,6 +10,9 @@ sudo apt-get install postgresql postgresql-contrib
 - psql
 - \q
 
+#
+sudo apt-get install imagemagick
+
 # go works
 # GET Repos
 git clone https://github.com/tbouraoui/Primos.git -b master --single-branch
