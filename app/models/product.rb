@@ -8,8 +8,8 @@ class Product < ActiveRecord::Base
   has_many :wishes_relation, class_name: :UserProductWish
   has_many :wishers, through: :wishes_relation, source: :account, class_name: Account
 
-  has_many :views_relation, class_name: :UserProductView
-  has_many :viewers, through: :views_relation, source: :account
+  has_many :views, class_name: :UserProductView
+  has_many :viewers, through: :views, source: :account, class_name: Account
 
 
   has_many :shares_relation, class_name: :UserProductShare

@@ -19,7 +19,7 @@
       <div class="col-md-12">
         <div class="form-group">
           <%= f.label :name %><br>
-          <%= f.text_field :name, :class => 'form-control border-input' %>
+          <%= f.text_field :name, :class => 'form-control border-input', :placeholder => current_brand.name + ' ... ' %>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
       <div class="col-md-4">
         <div class="form-group">
           <%= f.label :zip_code %><br>
-          <%= f.text_field :zip_code, :class => 'form-control border-input', :type => "number"  %>
+          <%= f.text_field :zip_code, :class => 'form-control border-input', :type => "number" %>
         </div>
       </div>
 
@@ -57,7 +57,7 @@
         <div class="form-group">
           <div class="form-group">
             <%= f.label :address %><br>
-            <%= f.text_field :address, :class => 'form-control border-input'%>
+            <%= f.text_field :address, :class => 'form-control border-input' %>
           </div>
         </div>
       </div>

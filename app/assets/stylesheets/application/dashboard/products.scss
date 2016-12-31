@@ -1,0 +1,11 @@
+.DashboardProductsList__ItemPicture{
+  &:first-child {
+    margin: 1px;
+  }
+  img {
+    display: inline-block;
+    height: 20px;
+    width : 20px;
+    border-radius: 2px;
+  }
+}

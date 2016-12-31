@@ -86,13 +86,20 @@
   -moz-box-shadow: -2px 0 5px 0px rgba(153, 156, 137, 1);
   box-shadow: -2px 0 5px 0 rgba(153, 156, 137, 0.5);
   z-index: 2;
+  width: 100%;
   position: absolute;
   bottom: 0;
   right: 0;
   box-shadow: #1b6d85;
+  padding: 6px;
+  text-align: center;
   img {
     height: 50px;
     width: 50px;
+    border-radius: 2px;
+    margin: 2px;
+
+    cursor: pointer;
     border-top: solid 1px $color-white;
   }
   img:last-child {
@@ -294,6 +301,7 @@
 }
 
 .ProductOfDay {
+  height: 115px;
   border-radius: 4px;
   margin-bottom: 10px;
   left: 0px;

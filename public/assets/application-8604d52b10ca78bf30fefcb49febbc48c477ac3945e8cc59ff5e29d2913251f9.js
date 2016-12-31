@@ -33242,7 +33242,7 @@ var BrandProfile = React.createClass({
         var container = tabClassInstance;
         return React.createElement(
             "div",
-            { className: "col-lg-12" },
+            null,
             React.createElement(
                 "div",
                 { className: "BrandDetails" },
@@ -33599,7 +33599,7 @@ var BrandsListItem = React.createClass({
         var entry = this.props.entry;
         return React.createElement(
             "div",
-            { className: "col-lg-6 col-sm-6", key: entry.id },
+            { className: "col-lg-6 col-sm-6 NoPadding", key: entry.id },
             React.createElement(
                 "div",
                 { className: "BrandCard" },
@@ -34572,7 +34572,12 @@ var Products = React.createClass({
         return React.createElement(
             "div",
             null,
-            component
+            React.createElement(
+                "div",
+                null,
+                component
+            ),
+            React.createElement("div", { className: "clearfix" })
         );
     }
 });

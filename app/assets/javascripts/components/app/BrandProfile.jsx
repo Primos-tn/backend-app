@@ -81,9 +81,9 @@ var BrandProfile = React.createClass({
             default:
                 tabClassInstance = <BrandProfileInfo id={this.props.id}/>;
         }
-        let container =  tabClassInstance;
+        let container = tabClassInstance;
         return (
-            <div className="col-lg-12">
+            <div >
                 <div className="BrandDetails">
                     <div>
                         <div className="BrandDetails__ImageContainer">

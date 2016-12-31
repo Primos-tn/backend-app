@@ -1,7 +1,7 @@
 module BusinessHelper
 
-  def is_feature_active?(feature)
-    offer_type = @business_profile.plan_type
+  def is_feature_active?(business, feature)
+    offer_type = business.plan_type
     case feature
       when 'team'
         return offer_type == BusinessProfile.plans_types[:pro]

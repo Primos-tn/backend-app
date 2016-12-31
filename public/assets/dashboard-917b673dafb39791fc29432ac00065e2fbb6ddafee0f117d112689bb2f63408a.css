@@ -5304,6 +5304,17 @@ textarea.form-control {
 .Dashboard__ComingSoonFeature * {
   color: rgba(122, 158, 159, 0.18);
 }
+/* line 2, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
+.DashboardProductsList__ItemPicture:first-child {
+  margin: 1px;
+}
+/* line 5, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
+.DashboardProductsList__ItemPicture img {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 2px;
+}
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.

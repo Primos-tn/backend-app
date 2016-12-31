@@ -68,7 +68,7 @@ var BrandsListItem = React.createClass({
     render: function () {
         var entry = this.props.entry;
         return (
-            <div className="col-lg-6 col-sm-6" key={entry.id}>
+            <div className="col-lg-6 col-sm-6 NoPadding" key={entry.id}>
                 <div className="BrandCard">
                     <div className="BrandCard__Verified">
                         <div className="icon icon-verified"></div>

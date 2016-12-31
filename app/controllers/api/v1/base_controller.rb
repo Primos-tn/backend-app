@@ -38,7 +38,8 @@ class Api::V1::BaseController < ApplicationController
       if access_token #&& !access_token.expires_at < Date.now
         @current_user = access_token.account
       else
-        unauthenticated!
+
+        #unauthenticated!
       end
     end
   end
@@ -99,4 +100,8 @@ class Api::V1::BaseController < ApplicationController
     api_error(401, 'Not authorized', 'LOGIN')
   end
 
+  def request_http_token_authentication(realm = "Application", message =t("HTTP Token: Access denied. You did not provide an valid API key."))
+    self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, "")}")
+    api_error(401, 'Not authorized', 'LOGIN')
+  end
 end

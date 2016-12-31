@@ -13,6 +13,11 @@
               <%= link_to I18n.t('Show in action'), product_path(product), :class => 'btn btn-danger' %>
           <% end -%>
           <%= product.name %>
+          <span class="DashboardProductsList__ItemPicture">
+        <% product.pictures.each do |pic| %>
+            <%= image_tag get_assets_url(pic.small_thumb.to_s) %>
+        <% end %>
+          </span>
 
         </td>
         <td><%= product.brand.name %></td>

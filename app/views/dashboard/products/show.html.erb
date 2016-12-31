@@ -1,16 +1,7 @@
 <% render partial: 'shared/requires_map_libs' %>
-<p>
-  <strong>Name:</strong>
-  <%= @product.name %>
-</p>
-<p>
-  <strong>Brand:</strong>
-  <%= @product.brand.name %>
-</p>
 
-<% @product.pictures.each do |pic| %>
-    <%= image_tag  "/images/#{pic.url(:small_thumb)}" %>
-<% end %>
+<% content_for :body do %><%= @product.name %> <% end %>
+
 
 <%= react_component('DashboardBoard', props={'id' => @product.id}) %>
 
