@@ -30,7 +30,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
     @product = Product.new(product_params)
     respond_to do |format|
       if @product.save
-        format.html { redirect_to dashboard_product_path(@product), notice: 'Product was successfully created.' }
+        format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully created.') }
         format.json { render :show, status: :created, location: @product }
       else
         format.html { render :new }
@@ -48,7 +48,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
       if @product.can_be_launched?
         @product.last_launch = Time.now
         @product.save
-        format.html { redirect_to dashboard_product_path(@product), notice: 'Product was successfully launched.' }
+        format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
         format.json { render :show, status: :launched, location: @product }
       else
         format.html { redirect_to dashboard_product_path(@product), notice: 'Productcan not be launched launched.' }
@@ -62,7 +62,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+        format.html { redirect_to @product, notice: t('Product was successfully updated.') }
         format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit }
@@ -76,7 +76,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   def destroy
     @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+      format.html { redirect_to products_url, notice: t('Product was successfully destroyed.') }
       format.json { head :no_content }
     end
   end
@@ -102,11 +102,10 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # Only product of user
   def require_permission
     redirect_to '/422.html' if @product.account.id != current_user.id
-
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def product_params
-    params.require(:product).permit(:name, :brand_id, {pictures: []})
+    params.require(:product).permit(:name, :brand_id, {pictures: []}, store_ids: [])
   end
 end

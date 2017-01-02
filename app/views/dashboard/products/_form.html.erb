@@ -11,21 +11,37 @@
         </div>
     <% end %>
     <div class="row">
-      <div class="form-group col-lg-6">
+      <div class="row col-lg-6">
         <%= f.label :name %><br>
         <%= f.text_field :name, class: "form-control border-input" %>
       </div>
+      <!--
 
       <div class="field input-field col-lg-6">
         <%= f.label :brand_id %><br>
         <%= f.collection_select :brand_id, @brands, :id, :name, include_blank: false, class: "form-control border-input" %>
       </div>
+      -->
     </div>
     <div class="row">
-
-      <div class="form-group col-lg-6">
+      <div>
         <%= f.label :pictures %><br>
-        <%= f.file_field :pictures, multiple: true, class: "form-control border-input" %>
+        <%= f.file_field :pictures, multiple: true %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <%= f.label :stores %><br>
+        <%= f.collection_check_boxes(:store_ids, current_brand.stores, :id, :name) do |fcb| %>
+            <div class="col-lg-4">
+
+              <%= fcb.label { fcb.check_box + fcb.text } %>
+              <%= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{fcb.object.latitude},#{fcb.object.longitude}&markers=#{fcb.object.latitude},#{fcb.object.longitude}&zoom=4&size=64x64&key=#{Rails.application.secrets.geocoder['api_key']}",
+                            class: 'img-fluid img-rounded', alt: "#{fcb.object.name} on the map" %>
+            </div>
+
+        <% end %>
       </div>
     </div>
 

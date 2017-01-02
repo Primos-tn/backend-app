@@ -123,7 +123,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   def register_static_view
-    account_id = current_user.id if current_user
+    account_id = current_user.id if current_user else nil
     view = UserProductView
                .where(:ip_address => ip(), :product => @product, :account_id => account_id)
                .first_or_create
@@ -134,7 +134,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   def in_launch_mode?
     unless @product.in_launch_mode?
-      render json: {:response => t('Oh no! back yesterday')}, status: 401
+      render json: {:response => t('Oh no! product can\'t be shown')}, status: 401
     end
   end
 

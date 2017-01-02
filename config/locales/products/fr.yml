@@ -10,6 +10,7 @@ fr:
   Last launch : Dernier lancement
   The products : Liste des produits
   Are you sure about that : Etes vous sur ?
+  Oh no! product can't be shown : Ohh, non ! Vous ne pouvez pas voir ce produit hors la journée de lancement.
 
   activerecord:
       attributes:

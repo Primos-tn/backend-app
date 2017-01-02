@@ -61,7 +61,7 @@ App.Stores = {
             type: 'GET',
             url: App.Helpers.formatApiUrl(options.url, options.params || {}),
             dataType: 'json',
-            data: options.query,
+            data: options.query || {},
             success: function (data) {
                 App.Dispatcher.dispatch(options.action || options.url, data);
             }.bind(this),

@@ -196,7 +196,7 @@
       color: $color-red;
     }
   }
-  .ProductCard__WishButton, .ProductCard__ShareButton {
+  .ProductCard__WishButton, .ProductCard__ShareButton, .ProductCard__ShowQrCodesButton {
     position: absolute;
     border: none;
     background-color: transparent;
@@ -206,11 +206,15 @@
     top: 5px;
 
   }
-  .ProductCard__ShareButton {
+  .ProductCard__ShareButton, .ProductCard__ShowQrCodesButton {
     right: 5px;
     i {
       color: $primary-color
     }
+  }
+  .ProductCard__ShowQrCodesButton {
+    right: 30px;
+
   }
   .ProductCard__Details {
     border: solid 1px $primary-color;
@@ -331,6 +335,23 @@
       margin: auto;
       border-radius: 50%;
       border: solid 2px $primary-color;
+    }
+  }
+}
+.ProductOut {
+  border-radius: 3px;
+  border: solid 1px $primary-color;
+  height: 100%;
+  text-align: center;
+  .title {
+    margin : 4px ;
+    color : $primary-color;
+  }
+  background-color: $color-white;
+  .ProductOut__Brand {
+    margin: 8px;
+    image {
+
     }
   }
 }

@@ -39,7 +39,7 @@ class Dashboard::CouponsController < Dashboard::DashboardController
   def destroy
     @coupon.destroy
     respond_to do |format|
-      format.html { redirect_to dashboard_product_coupons_path(@product), notice: 'Product was successfully destroyed.' }
+      format.html { redirect_to dashboard_product_coupons_path(@product), notice: 'Coupon was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

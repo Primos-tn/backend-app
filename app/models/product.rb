@@ -20,8 +20,12 @@ class Product < ActiveRecord::Base
   has_many :categories, through: :categories_relations, source: :category
 
 
-  has_many :stores, class_name: :ProductStore
 
+
+  has_many :product_stores
+  has_many :stores, through: :product_stores
+  accepts_nested_attributes_for :stores,
+                                :allow_destroy => true
 
   has_many :comments, class_name: :ProductComment
 
@@ -29,7 +33,6 @@ class Product < ActiveRecord::Base
 
 
   validates :brand, presence: true
-
 
   #
   # scope that return list of products with with the first 3 followers
@@ -79,7 +82,7 @@ class Product < ActiveRecord::Base
   def can_be_launched?
     # the product last launch is nil or empty
     # or last launch < 3
-    last_launch.nil? or last_launch < 1.week.ago
+    last_launch.nil? or last_launch < 1.day.ago
   end
 
 

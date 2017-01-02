@@ -10,6 +10,7 @@ ar:
   Last launch : أحدث إطلاق
   The products : المنتجات
   Are you sure about that :  هل انت متاكد من ذلك ?
+  Oh no! product can't be shown : اوه لا !  لا يمكنك رؤية المنتج خارج يوم الإطلاق.
 
   activerecord:
       attributes:
@@ -17,3 +18,4 @@ ar:
             name : الاسم
             brand_id : العلامة تجارية
             pictures : المنتجات
+            stores : المحلات

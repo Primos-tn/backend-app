@@ -1,9 +1,35 @@
 @import "colors";
+
 .Cover {
   width: 100%;
   background: $primary-color-transparent asset-url("pexels-photo-186613.jpeg") no-repeat center center;
-  z-index:0 ;
+  z-index: 0;
   min-height: 100%;
   position: absolute;
   background-size: cover;
+}
+
+.BusinessCover {
+  width: 100%;
+  background-image: asset-url("pexels-photo-68561.jpeg");
+  /* Set a specific height */
+  height: 500px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .BusinessCover__TextContainer {
+    position: relative;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: 200px;
+    background-image: asset-url("pexels-photo-68561.jpeg");
+    .BusinessCover__Text {
+      font-size: 50px;
+      color: $color-white;
+    }
+  }
 }

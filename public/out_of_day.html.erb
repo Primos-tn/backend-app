@@ -1,0 +1,19 @@
+<!--  login Section  -->
+<div class="ProductOut">
+  <h3 class="title"><%= t('Oh no! product can\'t be shown') %></h3>
+  <div class="ProductOut__Brand" %>
+
+    <%= link_to brand_path(@product.brand) do %>
+        <%= t('go') %> <%= @product.brand.name %>
+        <%= image_tag get_assets_url(@product.brand.picture.small_thumb.to_s),
+                      class: 'img-fluid img-rounded', alt: ('Brand') %>
+
+
+    <% end %>
+  </div>
+  <div class="ProductOut__Similar" %>
+    <h3 class="title"><%= t('Similar products') %></h3>
+
+  </div>
+
+</div>

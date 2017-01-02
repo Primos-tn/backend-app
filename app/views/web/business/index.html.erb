@@ -1,8 +1,9 @@
 <!--  About Section  -->
 
 <h2><%= I18n.t('Business') %></h2>
-
-<%= render 'features' %>
+<% if not @is_logged_in or (@is_logged_in and not  @is_business) %>
+    <%= render 'business_cover' %>
+<% end %>
 
 <%= render 'prices' %>
 

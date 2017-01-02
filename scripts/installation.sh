@@ -10,9 +10,13 @@ sudo apt-get install postgresql postgresql-contrib
 - psql
 - \q
 
-#
+# Imagemagick
 sudo apt-get install imagemagick
 
+# Redis See redis.installation.sh
+!!!!
+
+# sudo
 # go works
 # GET Repos
 git clone https://github.com/tbouraoui/Primos.git -b master --single-branch

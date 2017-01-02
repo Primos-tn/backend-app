@@ -10,10 +10,12 @@ en:
   Last launch : Last launch
   The products : Products
   Are you sure about that :  Are you sure about that ?
+  Oh no! product can't be shown : Oh no! you can't see the product out of launch day.
 
   activerecord:
       attributes:
         product :
-            name : name
-            brand_id : brand
-            pictures : pictures
+            name : Name
+            brand_id : Brand
+            pictures : Pictures
+            stores : Stores

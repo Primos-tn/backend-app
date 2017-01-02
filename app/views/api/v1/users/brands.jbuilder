@@ -1,4 +1,6 @@
-json.followers @followers do |entry|
-  json.name entry.account.username
-  json.id entry.account.id
+json.list @brands do |entry|
+  json.name entry.name
+  json.id entry.id
+  json.picture entry.picture
+  json.cover entry.cover
 end

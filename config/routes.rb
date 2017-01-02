@@ -50,6 +50,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :users, only: %w(show)
+
     resources :business, path: "business", only: [:index] do
       collection do
         get 'request-account'
@@ -61,15 +63,19 @@ Rails.application.routes.draw do
     get 'map', to: 'map#index'
     post 'company/contact'
     get 'company/:page', to: 'company#show', as: 'company_page'
+
+
     # check for not authenticated
     get 'profile', to: 'profiles#show'
     post 'profile', to: 'profiles#update'
 
+    # pending requests and business requests
     post 'request-join', to: 'home#create_request_join'
     get 'request-join', to: 'home#request_join'
     get 'request-pending', to: 'home'
     get 'request-join', to: 'home'
 
+    # all media url
     scope :media, :controller => 'media' do
       get '/*path', to: 'media#index', :format => false
     end

@@ -44,7 +44,7 @@ class Web::ProductsController < Web::BaseController
 
   def can_be_viewed?
     unless @product.in_launch_mode?
-      render file: 'public/404.html'
+      render file: 'public/out_of_day.html'
     end
   end
 end

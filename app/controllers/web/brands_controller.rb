@@ -1,7 +1,5 @@
 class  Web::BrandsController < Web::BaseController
   before_action :set_id, except: [:index]
-
-
   def info
     @active_tab = 'info'
     render 'show'
@@ -25,13 +23,15 @@ class  Web::BrandsController < Web::BaseController
 
   def stores
     @active_tab = 'stores'
+
+    @stores = @brand.stores.collect {|entry| { id: entry.id , position: { longitude: entry.longitude,  latitude: entry.latitude } } }
     render 'show'
   end
 
   private
 
-  def set_id
-    @brand = Brand.find(params[:id])
+  def set_id(includes=[])
+    @brand = Brand.includes(includes).find(params[:id])
     @id = params[:id]
   end
 end
