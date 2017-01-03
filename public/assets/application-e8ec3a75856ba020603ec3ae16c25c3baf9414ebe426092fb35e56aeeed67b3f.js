@@ -34635,7 +34635,7 @@ var ProductsList = React.createClass({
      */
     onDataChange: function (result) {
         this.setState({ items: result.products, serverLoadingDone: true }, function () {
-            this._recalculateGrid();
+            //this._recalculateGrid();
         });
     },
     /**
@@ -34738,6 +34738,16 @@ var ProductsListItem = React.createClass({
             url: App.Helpers.formatApiUrl(App.Routes.shareProduct, { id: this.props.item.id })
         });
     },
+
+    /**
+     * Share action
+     */
+    _viewCouponAction: function (e) {
+        e.preventDefault();
+        App.Stores.loadData({
+            url: App.Helpers.formatApiUrl(App.Routes.productCoupons, { id: this.props.item.id })
+        });
+    },
     /**
      * Wish action
      */
@@ -34751,7 +34761,6 @@ var ProductsListItem = React.createClass({
             }
         });
     },
-
     /**
      * Callback to change current image
      */
@@ -34774,7 +34783,7 @@ var ProductsListItem = React.createClass({
         }
         return React.createElement(
             "div",
-            { className: "ProductCardContainer" },
+            { className: "ProductCardContainer NoPadding col-lg-6 col-sm-12" },
             React.createElement(
                 "div",
                 { className: "ProductCard" },
@@ -34784,7 +34793,11 @@ var ProductsListItem = React.createClass({
                     React.createElement(
                         "a",
                         { href: 'products/' + info.id },
-                        React.createElement("img", { className: "ProductCard__Image", src: baseImageUrl })
+                        React.createElement(
+                            "div",
+                            { className: "sixteen-nine" },
+                            React.createElement("div", { className: "content", style: { 'backgroundImage': 'url(' + baseImageUrl + ')' } })
+                        )
                     ),
                     React.createElement(ProductShowGallery, { pictures: pictures || [],
                         onImageThumbnailClicked: this.onImageThumbnailClicked }),
@@ -34812,7 +34825,7 @@ var ProductsListItem = React.createClass({
                     ),
                     React.createElement(
                         "button",
-                        { className: "ProductCard__ShowQrCodesButton", onClick: this._shareAction },
+                        { className: "ProductCard__ShowQrCodesButton", onClick: this._viewCouponAction },
                         React.createElement("i", { className: "ti-layout-grid3" })
                     )
                 ),
@@ -34860,7 +34873,8 @@ var ProductsListItemWishersList = React.createClass({
             React.createElement(
                 "div",
                 { className: "ProductCard__WishersListMore" },
-                "... ",
+                React.createElement("i", { className: "ti-eye" }),
+                " ",
                 items.length
             )
         );

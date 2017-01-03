@@ -45,6 +45,18 @@
       </div>
     </div>
 
+    <div class="row">
+      <div>
+        <%= f.label :stores %><br>
+        <%= f.collection_check_boxes(:category_ids, Category.all, :id, 'name' + (locale.equal?(:en) ? '' : '_' + locale.to_s) ) do |fcb| %>
+            <div class="col-lg-4">
+              <%= fcb.label { fcb.check_box + fcb.text } %>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+
     <div class="clearfix"></div>
     <div class="text-center">
       <%= f.submit :class => 'btn btn-info btn-fill btn-wd' %>

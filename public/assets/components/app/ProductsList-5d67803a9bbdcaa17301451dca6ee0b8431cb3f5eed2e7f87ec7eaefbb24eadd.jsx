@@ -76,7 +76,7 @@ var ProductsList = React.createClass({
      */
     onDataChange: function (result) {
         this.setState({items: result.products, serverLoadingDone: true}, function () {
-            this._recalculateGrid();
+            //this._recalculateGrid();
         });
     },
     /**

@@ -62,10 +62,20 @@ var ProductsListItem = React.createClass({
     /**
      * Share action
      */
-    _shareAction: function (e) {
+    _shareAction (e) {
         e.preventDefault();
         App.Stores.post({
             url: App.Helpers.formatApiUrl(App.Routes.shareProduct, {id: this.props.item.id})
+        });
+    },
+
+    /**
+     * Share action
+     */
+    _viewCouponAction  (e) {
+        e.preventDefault();
+        App.Stores.loadData({
+            url: App.Helpers.formatApiUrl(App.Routes.productCoupons, {id: this.props.item.id})
         });
     },
     /**
@@ -81,7 +91,6 @@ var ProductsListItem = React.createClass({
             }
         });
     },
-
     /**
      * Callback to change current image
      */
@@ -103,14 +112,17 @@ var ProductsListItem = React.createClass({
             baseImageUrl = App.Constants.MEDIA_URL + pictures[0].url;
         }
         return (
-            <div className="ProductCardContainer">
+            <div className="ProductCardContainer NoPadding col-lg-6 col-sm-12">
 
                 <div className="ProductCard">
 
                     <div className="ProductCard__ImageContainer">
 
                         <a href={'products/' + info.id}>
-                            <img className="ProductCard__Image" src={baseImageUrl}/>
+                            <div className="sixteen-nine">
+                                <div className="content" style={{ 'backgroundImage' : 'url(' + baseImageUrl + ')'}}>
+                                </div>
+                            </div>
                         </a>
 
 
@@ -128,7 +140,7 @@ var ProductsListItem = React.createClass({
                         <button className="ProductCard__ShareButton" onClick={this._shareAction}>
                             <i className="ti-sharethis"></i>
                         </button>
-                        <button className="ProductCard__ShowQrCodesButton" onClick={this._shareAction}>
+                        <button className="ProductCard__ShowQrCodesButton" onClick={this._viewCouponAction}>
                             <i className="ti-layout-grid3"></i>
                         </button>
                     </div>

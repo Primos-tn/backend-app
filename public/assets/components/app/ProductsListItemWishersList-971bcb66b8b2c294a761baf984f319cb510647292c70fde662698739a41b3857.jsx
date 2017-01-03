@@ -27,7 +27,7 @@ var ProductsListItemWishersList = React.createClass({
             <div className="ProductCard__WishersList">
                 {items}
                 <div className="ProductCard__WishersListMore">
-                   ... {items.length}
+                   <i className="ti-eye"></i> {items.length}
                 </div>
             </div>
         )

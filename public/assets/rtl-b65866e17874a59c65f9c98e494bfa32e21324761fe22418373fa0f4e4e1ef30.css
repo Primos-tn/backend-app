@@ -130,3 +130,8 @@ table thead th {
   transform: rotate(49deg);
   left: auto;
 }
+
+/* line 122, /home/hassenfath/work/pingo/server/app/assets/stylesheets/rtl.scss */
+.BrandCard .BrandCard__Followers {
+  right: -10px;
+}

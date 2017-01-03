@@ -36,12 +36,12 @@ class Product < ActiveRecord::Base
 
   #
   # scope that return list of products with with the first 3 followers
-  def self.top_wishers (limit, offset=3, search)
+  def self.top_wishers (limit=10, offset=0, search)
     if search.nil?
       search = ''
     end
     select('products.*, t.*, brands.name as brand_name')
-        .from(Arel.sql("(#{with_n_wishers(limit, offset)}) as t join products on t.id = products.id"))
+        .from(Arel.sql("(#{with_n_wishers(limit, offset)}) as t left join products on t.id = products.id"))
         .joins(:brand)
         .where('rn <= 3 or rn is null')
         .where('lower(products.name) LIKE ?', "%#{search.downcase}%")
@@ -57,6 +57,7 @@ class Product < ActiveRecord::Base
     end
     _where = where(search_object)
     if options.has_key?(:categories) && !options[:categories].nil?
+
       _where = _where.joins(:categories)
                    .where(:categories => {:id => options[:categories].split(',')})
     end
@@ -93,8 +94,8 @@ class Product < ActiveRecord::Base
   # Please check how to reduce the cross all table
   # it takes 1.2 ms , is't normal ?
   def self.with_n_wishers(limit=2, offset=0, args= {today:  true})
-    today_query = " WHERE  current_timestamp > products.last_launch AND current_timestamp < products.last_launch   + interval '1 day' "
-    query_on_products = "select id from products #{today_query} LIMIT #{limit} offset #{offset} " ;
+    today_query = " WHERE current_timestamp > ps.last_launch AND current_timestamp < (ps.last_launch + interval '1 day') "
+    today_query = "WHERE age (ps.last_launch) < '1 day' "
     <<-SELECT
        select
         p.pid as id,
@@ -105,13 +106,14 @@ class Product < ActiveRecord::Base
               ps.id as pid,
               a.id as user_id,
               a.username as username
-            FROM products AS ps
-              JOIN (#{query_on_products}) as ps_2
-              on ps.id = ps_2.id
+            FROM products as ps
             LEFT JOIN user_product_wishes AS apv
               on apv.product_id = ps.id
               LEFT  JOIN accounts as a
               on apv.account_id = a.id
+
+            #{today_query}
+
 
             GROUP BY ps.id, a.id
             ORDER BY ps.id
