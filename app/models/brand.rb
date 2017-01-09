@@ -19,6 +19,10 @@ class Brand < ActiveRecord::Base
   has_many :reviews, class_name: :BrandReview
 
 
+
+  # brands
+  has_many :gallery, class_name: :BrandGallery, dependent: :destroy
+
   # brands
   has_many :followers, class_name: :BrandUserFollower
   has_many :followersDetails, :through => :user_brands_relations,  class_name: Account, source: :account
@@ -26,6 +30,8 @@ class Brand < ActiveRecord::Base
 
   validates :account, presence: true
   validates_presence_of :name
+
+
 
   def self.search(search)
     if search

@@ -27,10 +27,11 @@ module DashboardHelper
     end
   end
 
+  $dashboard_tabs = %w(Dashboard Stores Products Gallery Users  System Hooks Targetize Domain   )
+  $dashboard_tabs_icons = %w(panel map view-list-alt spray user settings bolt   target  paint-roller )
 
+  # $dashboard_tabs = %w(Dashboard Stores Products Gallery Users  Hooks Targetize Domain Team System  )
+  # $dashboard_tabs_icons = %w(panel map view-list-alt spray user bolt   target  paint-roller spray settings)
 
-  $dashboard_tabs = %w(Dashboard Stores Products Users  Hooks Targetize Domain Team System )
-  $dashboard_tabs_icons = %w(panel map view-list-alt user bolt  target  paint-roller spray settings)
-
-  $dashboard_tabs_soon = %w(targetize domain team)
+  $dashboard_tabs_soon = %w(targetize domain team hooks)
 end

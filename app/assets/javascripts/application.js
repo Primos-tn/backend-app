@@ -11,5 +11,6 @@
 // about supported directives.
 //
 //= require vendor
+//= require ./modules/jquery-ui.min
 //= require_tree ./components/app
 //= require_self

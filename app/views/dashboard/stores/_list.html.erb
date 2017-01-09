@@ -1,5 +1,12 @@
 <div class="content table-responsive table-full-width">
   <table class="table table-striped">
+    <thead>
+    <th><%= I18n.t('Store name') %></th>
+    <!--<th><%= I18n.t('Brand') %></th>-->
+    <th><%= I18n.t('position') %></th>
+    <th colspan="4"></th>
+    </thead>
+    <tbody>
     <% @stores.each do |store| %>
         <tr>
           <td><%= store.name %></td>

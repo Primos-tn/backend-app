@@ -1,5 +1,6 @@
-json.result do
-  json.array!(0..4) do |i|
-    json.name i
-  end
+json.result @products do |product|
+  json.name product.name
+  json.id product.id
+  json.wishers product.wishers.size
+  json.pictures product.pictures.all
 end

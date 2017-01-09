@@ -1,6 +1,5 @@
 <% render partial: 'shared/requires_map_libs' %>
 
-<% content_for :body do %><%= @product.name %> <% end %>
 
 
 <%= react_component('DashboardBoard', props={'id' => @product.id}) %>

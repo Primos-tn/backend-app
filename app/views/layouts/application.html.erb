@@ -1,11 +1,12 @@
 
 <% content_for :title do %>
-    <%= content_for?(:title) ? yield(:title) : t('app') %>
+    <%= content_for?(:title) ? yield(:title) : t('app') + action_name %>
 <% end %>
 
 <% content_for :stylesheets do %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 <% end %>
+<% isProductsView = %w(welcome products home).include?(controller_name) %>
 
 <% full_template = with_full_header? %>
 
@@ -17,7 +18,7 @@
     <%- else -%>
         <%= render :partial => 'header/header' %>
     <% end -%>
-    <%- if not @is_logged_in and (%w(welcome products).include?(controller_name)) %>
+    <%- if not @is_logged_in and isProductsView %>
         <div class="Cover">
 
         </div>
@@ -35,7 +36,7 @@
         </div>
         <div class="<%= full_template ? '' : 'col-lg-4' %>">
           <%- if not full_template %>
-                <%= react_component('SideBar', {is_logged_in: @is_logged_in}) %>
+                <%= render partial: 'shared/sidebar' %>
           <%- end %>
         </div>
       </div>

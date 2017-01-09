@@ -14,5 +14,6 @@
       <% end %>
   <% else %>
       <%= link_to I18n.t('Sign up'), new_user_registration_path, class: "AppButton" %>
+      <%= link_to I18n.t('Already have an account ?'), new_user_session_path, class: "AppButton" %>
   <% end %>
 </div>

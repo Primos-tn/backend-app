@@ -3,9 +3,25 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "colors";
 @import "mixins";
-
+.ProductDetails__Menu {
+  position: absolute;
+  z-index: 2;
+  padding: 7px;
+  right: 0px;
+  .i {
+    color : orange;
+  }
+}
 .ProductDetails {
   position: relative;
+  .ProductCard__BrandImageContainer {
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+
+    }
+  }
   .nav-tabs {
 
     background-color: $color-white;
@@ -61,7 +77,8 @@
       left: 10px;
       bottom: 10px;
       .DayTimer {
-        background-color: transparent;
+        background-color: $color-white;
+        padding: 0px 10px;
         border: none;
         #pageTimer {
           font-size: 10px;
@@ -129,17 +146,22 @@
 
 .ProductCardContainer {
   margin-top: 5px;
-
+  padding: 5px;
 }
 
 .ProductCard {
   position: relative;
-  margin: 5px 1px;
+  margin: 10px 1px;
+
   background: #FFF none repeat scroll 0% 0%;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);
   min-height: 200px;
+  .ProductCard__Header{
+    position: relative;
+    height: 50px;
+  }
   .icon {
     font-size: 25px;
   }
@@ -148,7 +170,7 @@
     left: 10px;
     bottom: 10px;
     font-size: 25px;
-    color: $color-white;
+    color: $primary-color;
     &:hover {
       text-decoration: underline;
     }
@@ -232,14 +254,17 @@
 
   }
   .ProductCard__Details {
-    border: solid 1px $primary-color;
+    .Product_GalleryThumbnails {
+      img {
+        border: solid 1px $primary-color ;
+      }
+    }
     border-top: 0;
     border-radius: 0px 0px 6px 6px;
     min-height: 51px;
     .ProductCard__WishersList {
       padding: 6px;
       .ProductCard__WisherListItem {
-
         img {
           border: 1px solid $primary-color;
           @include rounded(50%);
@@ -345,11 +370,27 @@
     text-align: center;
     display: inline-block;
     .ProductOfDay__InnerItem {
+      position: relative;
       width: 80px;
       height: 80px;
       margin: auto;
       border-radius: 50%;
       border: solid 2px $primary-color;
+      .ProductOfDay__InnerItemVoteNumber{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        background-color: $primary-color;
+        border-radius: 50%;
+        height: 25px;
+        width: 25px;
+        border : solid 1px $color-white;
+      }
+      .ProductOfDay__InnerItemName{
+        position: absolute;
+        background-color: $primary-color;
+        color : $color-white;
+      }
     }
   }
 }

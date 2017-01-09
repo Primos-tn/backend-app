@@ -1,0 +1,10 @@
+
+<% isProductsView = %w(welcome products home).include?(controller_name) %>
+<% isBrandsView = %w(brands).include?(controller_name) %>
+<% isItemView = !%w(index).include?(action_name) %>
+
+<%= render partial: 'shared/requires_map_libs' %>
+<%= react_component('SideBar', {isLoggedIn: @is_logged_in,
+                                isProductsView: isProductsView,
+                                isItemView: isItemView,
+                                isBrandsView: isBrandsView }) %>

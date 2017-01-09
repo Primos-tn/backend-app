@@ -5,15 +5,4 @@ class UserProductView < ActiveRecord::Base
   validates_presence_of :ip_address
   validates_uniqueness_of :account_id, scope: [:ip_address, :product_id]
 
-
-  def increment_user_view(by=1)
-    self[:count] ||= 0
-    self[:count] += by
-    self
-  end
-
-
-  private
-
-
 end

@@ -7,7 +7,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # GET /products.json
   def index
     # select all products within current selected brand
-    @products = current_user.products.includes(:categories, :account).where({brand: current_brand})
+    @products = current_user.products.includes(:pictures).where({brand: current_brand})
   end
 
   # GET /products/1
@@ -27,7 +27,8 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # POST /products
   # POST /products.json
   def create
-    @product = Product.new(product_params)
+    @product = Product.new(product_create_params)
+    @product.brand = current_brand
     respond_to do |format|
       if @product.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully created.') }
@@ -40,13 +41,21 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   end
 
 
-
   # POST /products
   # POST /products.json
   def launch
     respond_to do |format|
       if @product.can_be_launched?
-        @product.last_launch = Time.now
+        launch_form_params = params.has_key?(:product) ? launch_params : {}
+        at = launch_form_params[:last_launch]
+        if not at.nil? and Time.strptime(at, '%m/%d/%Y')
+          at = Time.strptime(at, '%m/%d/%Y')
+        else
+          at = Date.tomorrow
+        end
+
+        @product.last_launch = at
+
         @product.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
         format.json { render :show, status: :launched, location: @product }
@@ -61,8 +70,8 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # PATCH/PUT /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to @product, notice: t('Product was successfully updated.') }
+      if @product.update(product_update_params)
+        format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully updated.') }
         format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit }
@@ -105,7 +114,18 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def product_params
+  def product_create_params
     params.require(:product).permit(:name, :brand_id, {pictures: []}, store_ids: [], category_ids: [])
   end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def product_update_params
+    params.require(:product).permit(:name, :brand_id, :old_price, :new_price, store_ids: [], picture_ids: [], category_ids: [])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def launch_params
+    params.require(:product).permit(:last_launch)
+  end
+
 end

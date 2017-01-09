@@ -1,6 +1,5 @@
 class Product < ActiveRecord::Base
 
-  mount_uploaders :pictures, ProductUploader
 
   belongs_to :brand, :counter_cache => :products_count
   has_one :account, :through => :brand
@@ -19,7 +18,8 @@ class Product < ActiveRecord::Base
   has_many :categories_relations, class_name: :CategoryProduct
   has_many :categories, through: :categories_relations, source: :category
 
-
+  has_many :gallerys_pictures_products_relations, class_name: :GalleryPictureProduct
+  has_many :pictures, through: :gallerys_pictures_products_relations, source: :brand_gallery
 
 
   has_many :product_stores
@@ -33,37 +33,84 @@ class Product < ActiveRecord::Base
 
 
   validates :brand, presence: true
+  validates :name, presence: true
+
+  def self.get_search_query ()
+
+  end
 
   #
   # scope that return list of products with with the first 3 followers
-  def self.top_wishers (limit=10, offset=0, search)
-    if search.nil?
-      search = ''
-    end
-    select('products.*, t.*, brands.name as brand_name')
-        .from(Arel.sql("(#{with_n_wishers(limit, offset)}) as t left join products on t.id = products.id"))
-        .joins(:brand)
-        .where('rn <= 3 or rn is null')
-        .where('lower(products.name) LIKE ?', "%#{search.downcase}%")
+  def self.get_sql_query (limit, offset, options={})
+    join_top_wishers(get_base_products_query(limit, offset, options))
+  end
+  #
+  # TODO , fix sql injections
+
+  def self.get_base_products_query(limit, offset, options)
+    limit ||= 10
+    offset ||= 0
+    today_query = 'date (last_launch) = current_date'
+    name_query = options[:search] ? " and lower(name) like '%#{options[:search].downcase}%'" : ''
+    categories_query = options[:categories] ? include_categories(options[:categories]) : ''
+    store_query = options[:stores] ? include_stores(options[:stores]) : ''
+    brands_query = options[:brands] ? "and brand_id in (#{options[:brands].split(',').join(',')})" : ''
+    query = [today_query, name_query, categories_query, store_query, brands_query].join(' ')
+    "select id,  brand_id  FROM products  WHERE  #{query} LIMIT #{limit} OFFSET #{offset}"
   end
 
-  #
-  #
-  #
-  def self.search(options={})
-    search_object = {}
-    if options.has_key?(:brand) && !options[:brand].nil?
-      search_object[:brand] = options[:brand]
-    end
-    _where = where(search_object)
-    if options.has_key?(:categories) && !options[:categories].nil?
-
-      _where = _where.joins(:categories)
-                   .where(:categories => {:id => options[:categories].split(',')})
-    end
-    _where
+  def self.include_categories(categories)
+    "and id in
+          (select DISTINCT  products.id from products
+              join categories_products on categories_products.product_id = products.id
+            where categories_products.category_id in (#{categories.split(',').join(',')})
+      )"
   end
 
+  def self.include_stores(stores)
+    "and id in
+          (select DISTINCT  products.id from products
+              join  product_stores on product_stores.product_id = products.id
+            where product_stores.store_id in (#{stores.split(',').join(',')})
+      )"
+  end
+
+  # FIXME,
+  # TODO
+  # This is on of most query for browsing items, please use all effort to reduce it's time
+  # Please check how to reduce the cross all table
+  # it takes 1.2 ms , is't normal ?
+  def self.join_top_wishers(product_query)
+    <<-SELECT
+      select  products.*,
+          t.*,
+          brands.name AS brand_name
+        FROM (
+                 select
+        p.pid                     AS id,
+                                     p.username,
+                                     p.user_id,
+                                     ROW_NUMBER()
+        OVER (PARTITION BY p.pid) AS rn
+        FROM (select
+        ps.id      AS pid,
+                      a.id       AS user_id,
+                                    a.username AS username
+        FROM (#{product_query}) AS ps
+        LEFT JOIN user_product_wishes AS apv
+        ON apv.product_id = ps.id
+        LEFT JOIN accounts AS a
+        ON apv.account_id = a.id
+
+
+        GROUP BY ps.id, a.id
+        ORDER BY ps.id
+        ) AS p
+        ) AS t
+        JOIN products ON t.id = products.id
+        INNER JOIN "brands" ON "brands"."id" = "products"."brand_id"
+    SELECT
+  end
 
   # Returns the model id
   def media_store_dir
@@ -74,51 +121,27 @@ class Product < ActiveRecord::Base
   #
   #
   def in_launch_mode?
-    not last_launch.nil? and  Time.now - last_launch < 24.hours
+    !last_launch.nil? and (last_launch.to_date == Date.today)
   end
+
 
   #
   # Check if the product can be launched
   #
   def can_be_launched?
-    # the product last launch is nil or empty
-    # or last launch < 3
-    last_launch.nil? or last_launch < 1.day.ago
+    !in_launch_mode? and !scheduled_for_launch?
+  end
+
+
+  #
+  # Check if the product can be launched
+  #
+  def scheduled_for_launch?
+    !last_launch.nil? and Date.today < last_launch.to_date
   end
 
 
   private
-  # FIXME,
-  # TODO
-  # This is on of most query for browsing items, please use all effort to reduce it's time
-  # Please check how to reduce the cross all table
-  # it takes 1.2 ms , is't normal ?
-  def self.with_n_wishers(limit=2, offset=0, args= {today:  true})
-    today_query = " WHERE current_timestamp > ps.last_launch AND current_timestamp < (ps.last_launch + interval '1 day') "
-    today_query = "WHERE age (ps.last_launch) < '1 day' "
-    <<-SELECT
-       select
-        p.pid as id,
-        p.username,
-        p.user_id,
-        ROW_NUMBER()  OVER (PARTITION BY p.pid) AS rn
-        FROM (SELECT
-              ps.id as pid,
-              a.id as user_id,
-              a.username as username
-            FROM products as ps
-            LEFT JOIN user_product_wishes AS apv
-              on apv.product_id = ps.id
-              LEFT  JOIN accounts as a
-              on apv.account_id = a.id
 
-            #{today_query}
-
-
-            GROUP BY ps.id, a.id
-            ORDER BY ps.id
-           ) as p
-    SELECT
-  end
 
 end

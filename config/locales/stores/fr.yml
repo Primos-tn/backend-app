@@ -4,6 +4,7 @@ fr:
   Store name : Nom de boutique
   Shops : Liste de stores
   This store will be associated to : "Ce boutique sera associé au "
+  position : Position
   activerecord:
           attributes:
             store:

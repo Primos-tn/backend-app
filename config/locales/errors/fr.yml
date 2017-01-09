@@ -6,6 +6,7 @@ fr:
   errors :
     messages :
       not_saved : Opération non valide
+      record_invalid : Opération non valide
       blank: Vide
       invalid : Invalide
       not_found : Non trouvé

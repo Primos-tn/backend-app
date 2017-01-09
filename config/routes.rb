@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       end
       resources :coupons
       resources :targetize, only: :index
+      resources :pictures, :only => [:create, :destroy], controller: :product_pictures
     end
 
     resources :brand_team_members, as: 'team', path: 'team' do
@@ -131,6 +132,9 @@ Rails.application.routes.draw do
       end
     end
     resources :stores
+
+    resources :brand_galleries, :path => '/gallery'
+
     resources :users, only: [:index, :show]
     resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
     resources :hooks
@@ -219,6 +223,7 @@ Rails.application.routes.draw do
         member do
           # share
           get 'share'
+          post 'share'
           # wishers api
           get 'wishers'
           # product reviews api

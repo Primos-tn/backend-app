@@ -1,13 +1,12 @@
 @import "colors";
-
+@import "mixins";
 .AppSideBar {
   position: relative;
   background-color: $color-white;
   border: solid 1px $primary-color;
-  min-height: 470px;
   border-radius: 4px;
-  .AppSideBar__Header{
-    color : $color-white;
+  .AppSideBar__Header {
+    color: $color-white;
     font-family: open_bold, serif;
     background-color: $primary-color;
     padding: 5px;
@@ -26,10 +25,7 @@
     }
   }
   .AppSideBar__Footer {
-
     .SideBarFooter__Company {
-      border: solid 1px $primary-color;
-      position: relative;
       bottom: -7px;
       padding-top: 4px;
       height: 40px;
@@ -41,19 +37,18 @@
         color: $color-white;
         font-style: normal;
 
-        &:hover{
+        &:hover {
           text-decoration: none;
         }
       }
-      span{
+      span {
         font-weight: bold;
         float: right;
       }
-      a, span{
+      a, span {
         margin: 6px;
       }
     }
-    position: absolute;
     bottom: 0px;
     text-align: center;
     left: 0px;
@@ -61,6 +56,99 @@
     img {
       width: auto;
       height: 60px;
+    }
+  }
+}
+
+.FilterBlock {
+  .FilterBlock__ColorChoicesContainer {
+    padding-top: 5px;
+    margin: 0px 46px;
+    padding: 2px;
+
+    .FilterBlock__ColorChoice {
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+      &.FilterBlock__ColorChoice--Selected {
+        width: 23px;
+        height: 23px;
+        border: solid 2px $primary-color;
+      }
+      margin: 0px 3px 3px 0px;
+      display: inline-block;
+      border-radius: 50%;
+    }
+  }
+  .FilterBlock__CategoriesSelector {
+    margin: 0px 3px 3px 0px;
+    display: inline-block;
+    border-radius: 50%;
+
+    .FilterBlock__CategoriesSelectorContainer {
+      &.owl-carousel {
+        direction: ltr !important;
+        .item {
+          cursor: pointer;
+          padding: 20px 0px;
+          margin: 10px;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          text-align: center;
+          color: white;
+          &.clicked {
+            color: $primary-color;
+            background: $color-white;
+
+          }
+          text-transform: lowercase;
+          i {
+            font-size: 25px;
+          }
+        }
+        .owl-wrapper-outer {
+          background-color: $primary-color;
+        }
+        .owl-page {
+          span {
+            background-color: $primary-color;
+          }
+        }
+      }
+      //display: inline-block;
+      .FilterBlock__CategoriesSelectorInner {
+        display: inline-block;
+        border : solid 1px $primary-color;
+        background-color : $color-white;
+        color : $primary-color;
+        @include rounded(15px);
+        font-size: 10px;
+        margin: 2px;
+        padding: 2px;
+      }
+    }
+    .FilterBlock__CategoriesSelectorContainerTitle {
+      width: 20%;
+      padding: 4px;
+      background-color: $primary-color;
+      color : $color-white;
+      font-weight: bold;
+    }
+
+
+  }
+
+  .FilterBlock__PriceRange {
+    input[type="text"]  {
+      width: 142px;
+    }
+    .ui-slider-range, .ui-slider-handle {
+      background-color: $primary-color;
+      border-color : $color-white;
+    }
+    .FilterBlock__PriceRangeBody {
+      padding: 20px;
     }
   }
 }

@@ -46,11 +46,7 @@
       <% end %>
       <div class="main-panel">
         <nav class="navbar navbar-default">
-          <% if @show_sidebar %>
-              <%= form_for [@dashboard, current_brand], :html => {:multipart => true}, method: 'POST', url: upload_dashboard_brand_path(current_brand) do |f| %>
-                  <%= react_component('DashboardBoardSideBarBrandBlock', {:image => current_brand.cover.url(:thumb), :type => 'cover'}) %>
-              <% end %>
-          <% end %>
+
           <div class="container-fluid">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle">
@@ -102,16 +98,25 @@
           <div class="container-fluid">
             <div class="row">
               <%= yield %>
-              <%= render partial: 'dashboard/partials/footer' %>
+
             </div>
           </div>
+
         </div>
+
+        <%= render partial: 'dashboard/partials/footer' %>
       </div>
     </div>
+    <%= content_for?(:out_wrapper) ? yield(:out_wrapper) : '' %>
     <%= javascript_include_tag 'dashboard', 'data-turbolinks-track' => true %>
+    <%- if flash[:notice] %>
+        <div class="flash" data-type="success" data-text="<%= flash[:notice] %>"></div>
+    <% end -%>
+    <%- if flash[:error] %>
+          <div class="flash" data-type="danger" data-text="<%= flash[:error] %>"></div>
+    <% end -%>
     <script>
       <%= content_for?(:scripts) ? yield(:scripts) : '' %>
-
     </script>
 <% end %>
 

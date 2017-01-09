@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228043548) do
+ActiveRecord::Schema.define(version: 20170109044438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(version: 20161228043548) do
     t.datetime "updated_at", null: false
     t.string   "title"
     t.integer  "brand_id"
+  end
+
+  create_table "brand_galleries", force: :cascade do |t|
+    t.integer  "brand_id"
+    t.string   "name"
+    t.string   "file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "brand_namespaces", force: :cascade do |t|
@@ -192,6 +200,13 @@ ActiveRecord::Schema.define(version: 20161228043548) do
     t.string   "real_name"
   end
 
+  create_table "gallery_pictures_products", force: :cascade do |t|
+    t.integer  "picture_id"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.integer  "to_user"
     t.string   "type"
@@ -244,8 +259,11 @@ ActiveRecord::Schema.define(version: 20161228043548) do
     t.integer  "user_product_wishes_count", default: 0
     t.integer  "available_in_count",        default: 0
     t.integer  "comments_count",            default: 0
-    t.json     "pictures"
+    t.json     "properties"
     t.integer  "coupons_counts",            default: 0
+    t.float    "old_price"
+    t.float    "new_price"
+    t.string   "currrency"
   end
 
   create_table "profiles", force: :cascade do |t|

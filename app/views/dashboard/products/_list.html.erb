@@ -1,7 +1,7 @@
 <table class="table table-striped">
   <thead>
   <th><%= I18n.t('Product name') %></th>
-  <th><%= I18n.t('Brand') %></th>
+  <!--<th><%= I18n.t('Brand') %></th>-->
   <th><%= I18n.t('Last launch') %></th>
   <th colspan="4"></th>
   </thead>
@@ -10,26 +10,52 @@
       <tr>
         <td>
           <%- if product.in_launch_mode? %>
-              <%= link_to I18n.t('Show in action'), product_path(product), :class => 'btn btn-danger' %>
+              <%= link_to I18n.t('Show in action'), product_path(product), :class => 'btn btn-success' %>
+          <% else %>
+              <%- if product.scheduled_for_launch? %>
+                  <span class="ti-bolt"></span>
+              <% end -%>
           <% end -%>
           <%= product.name %>
           <span class="DashboardProductsList__ItemPicture">
         <% product.pictures.each do |pic| %>
-            <%= image_tag get_assets_url(pic.small_thumb.to_s) %>
+            <%= image_tag get_assets_url(pic.file.small_thumb.to_s) %>
         <% end %>
           </span>
 
         </td>
-        <td><%= product.brand.name %></td>
+
         <td><%= product.last_launch %></td>
-        <td><%= link_to I18n.t('Show'), dashboard_product_path(product) %></td>
-        <td><%= link_to I18n.t('Coupons'), dashboard_product_coupons_path(product) %>
-        <td><%= link_to I18n.t('Edit'), edit_dashboard_product_path(product) %>
+        <td>
           <%- if product.can_be_launched? %>
-              <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger' %>
+              <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
+
+              <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
+                  <%= f.date_field :last_launch, value: '', placeholder: 'MM/DD/YYYY', type: 'time' %>
+                  <%= f.submit t('Schedule'), :class => 'btn btn-danger btn-fill' %>
+              <% end %>
+
           <% end -%>
         </td>
-        <td><%= link_to I18n.t('Destroy'), dashboard_product_path(product), method: :delete, data: {confirm: I18n.t('Are you sure about that')} %></td>
+        <td>
+          <%= link_to dashboard_product_coupons_path(product) , class: "btn btn-icon  btn-fill btn-default"  do %>
+              <span class="ti-layout-grid4"></span>
+          <% end %>
+        </td>
+        <td><%= link_to  dashboard_product_path(product), class: "btn btn-icon btn-fill btn-default"  do %>
+              <span class="ti-dashboard"></span>
+          <% end %>
+             <%= link_to  edit_dashboard_product_path(product) , class: "btn btn-icon btn-fill btn-default"  do %>
+              <span class="ti-pencil-alt"></span>
+          <% end %>
+
+          <%= link_to dashboard_product_path(product), class: "btn btn-icon btn-fill btn-danger", method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
+              <span class="ti-trash"></span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+
       </tr>
   <% end %>
   </tbody>

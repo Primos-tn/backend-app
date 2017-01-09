@@ -11,7 +11,7 @@ ar:
   The products : المنتجات
   Are you sure about that :  هل انت متاكد من ذلك ?
   Oh no! product can't be shown : اوه لا !  لا يمكنك رؤية المنتج خارج يوم الإطلاق.
-
+  Schedule : Schedule
   activerecord:
       attributes:
         product :

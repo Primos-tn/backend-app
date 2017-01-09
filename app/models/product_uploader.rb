@@ -6,10 +6,22 @@ class ProductUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    @name = "#{secure_token}.#{file.extension}" if original_filename.present?
+    @name ||= "#{timestamp}-#{super}" if original_filename.present? and super.present?
+  end
+
+
+  # Add a white list of extensions which are allowed to be uploaded.
+  def extension_white_list
+    %w(jpg jpeg gif png)
   end
 
   protected
+
+  def timestamp
+    var = :"@#{mounted_as}_timestamp"
+    model.instance_variable_get(var) or model.instance_variable_set(var, Time.now.to_i)
+  end
+
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)

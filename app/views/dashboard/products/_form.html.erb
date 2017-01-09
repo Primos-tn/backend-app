@@ -15,18 +15,51 @@
         <%= f.label :name %><br>
         <%= f.text_field :name, class: "form-control border-input" %>
       </div>
-      <!--
 
-      <div class="field input-field col-lg-6">
-        <%= f.label :brand_id %><br>
-        <%= f.collection_select :brand_id, @brands, :id, :name, include_blank: false, class: "form-control border-input" %>
+    </div>
+    <div class="row">
+      <div class="row col-lg-6">
+        <%= f.label :old_price %><br>
+        <%= f.text_field :old_price, class: "form-control border-input" %>
       </div>
-      -->
+
+    </div>
+    <div class="row">
+      <div class="row col-lg-6">
+        <%= f.label :new_price %><br>
+        <%= f.text_field :new_price, class: "form-control border-input" %>
+      </div>
+
     </div>
     <div class="row">
       <div>
         <%= f.label :pictures %><br>
-        <%= f.file_field :pictures, multiple: true %>
+        <div class="row" id="product_pictures_containers">
+
+          <%= f.collection_check_boxes(:picture_ids, @product.pictures, :id, :name) do |fcb| %>
+              <div class="col-lg-4 ProductPictureItem">
+                <%= fcb.label { fcb.check_box + '  ' + (fcb.text || '').capitalize } %>
+                <%= image_tag get_assets_url(fcb.object.file.thumb.url),  class: 'img-fluid img-rounded'%>
+              </div>
+          <% end %>
+          <div class="col-lg-4 ProductPictureItem" style="display:none">
+            <label>
+              <input type="checkbox" name="product[picture_ids][]" />
+            </label>
+            <img />
+          </div>
+          <div class="col-lg-4">
+            <%= react_component('DashboardGalleryModalManager', { :upload_url => dashboard_brand_galleries_path,
+                                                                  :authenticity_token => form_authenticity_token }) %>
+          </div>
+
+        </div>
+        <!-- Trigger the modal with a button -->
+
+
+        <!--<button type="button" class="btn btn-info col-lg-6" style="display: inline">
+                data-toggle="modal" data-target="#myModal"> <%= t('From Gallery') %>
+         </button>-->
       </div>
     </div>
 
@@ -36,7 +69,7 @@
         <%= f.collection_check_boxes(:store_ids, current_brand.stores, :id, :name) do |fcb| %>
             <div class="col-lg-4">
 
-              <%= fcb.label { fcb.check_box + fcb.text } %>
+              <%= fcb.label { fcb.check_box + '  ' + fcb.text.capitalize } %>
               <%= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{fcb.object.latitude},#{fcb.object.longitude}&markers=#{fcb.object.latitude},#{fcb.object.longitude}&zoom=4&size=64x64&key=#{Rails.application.secrets.geocoder['api_key']}",
                             class: 'img-fluid img-rounded', alt: "#{fcb.object.name} on the map" %>
             </div>
@@ -48,9 +81,9 @@
     <div class="row">
       <div>
         <%= f.label :stores %><br>
-        <%= f.collection_check_boxes(:category_ids, Category.all, :id, 'name' + (locale.equal?(:en) ? '' : '_' + locale.to_s) ) do |fcb| %>
+        <%= f.collection_check_boxes(:category_ids, Category.all, :id, 'name' + (locale.equal?(:en) ? '' : '_' + locale.to_s)) do |fcb| %>
             <div class="col-lg-4">
-              <%= fcb.label { fcb.check_box + fcb.text } %>
+              <%= fcb.label { fcb.check_box + ' ' + fcb.text.capitalize } %>
             </div>
 
         <% end %>
@@ -64,4 +97,8 @@
     </div>
 
     <div class="clearfix"></div>
+<% end %>
+
+<% content_for :out_wrapper do %>
+    <%= react_component('DashboardGalleryModal') %>
 <% end %>

@@ -1,6 +1,6 @@
 en:
   # views/dashboard/index.html
-  Launch : Launch
+  Launch : Launch now
   Edit :  Edit
   Show : Show
   Product name : Product name
@@ -11,7 +11,7 @@ en:
   The products : Products
   Are you sure about that :  Are you sure about that ?
   Oh no! product can't be shown : Oh no! you can't see the product out of launch day.
-
+  Schedule : Schedule
   activerecord:
       attributes:
         product :

@@ -14,38 +14,34 @@ class Api::V1::ProductsController < Api::V1::BaseController
     search = {}
     search[:brand] = params[:brand]
     search[:categories] = params[:categories]
-    products = Product
-                   .includes(:account)
-                   .search(search)
-                   .top_wishers(params[:limit] || 10, params[:page] || 0, params[:q])
+    _products_with_wishers = Product.connection.select_all(Product.get_sql_query(params[:limit], params[:page], params))
+    puts _products_with_wishers
+    products_ids = _products_with_wishers.map { |c| c['id'] }
+    # render json: products_ids
+    products = Product.where(id: products_ids)
     @products = {}
-
+    @top_wishers = {}
+    _products_with_wishers.each { |c|
+      unless @top_wishers.has_key?(c['id'])
+        @top_wishers[c['id']] = []
+      end
+      @top_wishers[c['id']].append({:user_id => c['user_id'], :username => c['username']})
+    }
     # get the first element to get information
     # then push element
     products.each { |entry|
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts entry
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       # if the key does't exist
       unless @products.has_key? entry.id
         @products[entry.id] = {
             :item => entry,
             :brand => entry.brand,
+            :pictures => entry.pictures,
+            :wishers_count => entry.wishers.size,
             :wishers => []
         }
       end
-      @products[entry.id][:wishers].append(entry)
     }
+
     ## check all current user like
     @me_and_products = {}
     if current_user
@@ -56,6 +52,9 @@ class Api::V1::ProductsController < Api::V1::BaseController
     end
   end
 
+  def product_of_day
+    @products = Product.where('date (last_launch) = current_date').order(:user_product_wishes_count).page(0).per(5)
+  end
 
   def show
     @product = Product.includes(:stores, :comments).find(params[:id])
@@ -95,10 +94,10 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
 
-
   def stores
     @items = @product.stores
   end
+
   #
   # Wish list
   #
@@ -112,9 +111,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   end
 
-  def product_of_day
-
-  end
 
   #
   # Wish list
@@ -137,13 +133,13 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   def register_static_view
-    account_id = current_user.id if current_user else nil
+    account_id = current_user.id if current_user
+  else
+    nil
     view = UserProductView
-               .where(:ip_address => ip(), :product => @product, :account_id => account_id)
-               .first_or_create
-    view.increment_user_view
-    puts view.errors.to_h
-    view.save!
+               .where(:ip_address => ip, :product => @product, :account_id => account_id)
+               .first_or_create(:count => 1)
+    view.increment!(:count, by = 1)
   end
 
   def in_launch_mode?

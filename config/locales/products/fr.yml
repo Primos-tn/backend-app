@@ -1,6 +1,6 @@
 fr:
   # views/dashboard/index.html
-  Launch : Lancer
+  Launch : Lancer maintenant
   Edit :  Mettre à jour
   Show : Voir
   New Product : Nouveau produit
@@ -11,11 +11,13 @@ fr:
   The products : Liste des produits
   Are you sure about that : Etes vous sur ?
   Oh no! product can't be shown : Ohh, non ! Vous ne pouvez pas voir ce produit hors la journée de lancement.
-
+  Schedule : Schedule
   activerecord:
       attributes:
         product :
             name : Nom
+            new_price : Nouveau prix
+            old_price : Ancien prix
             brand_id : Marque
             pictures : Photos
   helpers:

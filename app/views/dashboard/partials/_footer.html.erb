@@ -1,21 +1,48 @@
-<div class="DashboardFooter">
-  <div class="DashboardFooter__SelectLanguages">
-    <%= render partial: 'shared/locale_form' %>
+<!--<div class="DashboardFooter">-->
+<!--<div class="DashboardFooter__SelectLanguages">-->
+<!--<%= render partial: 'shared/locale_form' %>-->
+<!--</div>-->
+
+<!--<%= form_tag(dashboard_feedback_path, method: :post, class: 'DashboardFooter__Feedback') do %>-->
+    <!--<label>Feedback</label>-->
+    <!--<label>-->
+
+    <!--<i class="ti-face-smile "></i><input type="radio" name="feedback">-->
+    <!--</label>-->
+    <!--&nbsp;&nbsp;-->
+    <!--<label>-->
+    <!--<i class="ti-face-sad "></i><input type="radio" name="feedback">-->
+
+    <!--</label>-->
+    <!--
+<% end %>-->
+<!--<div class="DashboardFooter__PlanType">-->
+<!--<%= get_plan_type %>-->
+<!--</div>-->
+<!--</div>-->
+<footer class="footer">
+  <div class="container-fluid">
+    <nav class="pull-left">
+      <ul>
+
+        <li>
+          <a href="http://www.creative-tim.com">
+            Creative Tim
+          </a>
+        </li>
+        <li>
+          <%= render partial: 'shared/locale_form' %>
+        </li>
+        <li>
+          <a href="http://www.creative-tim.com/license">
+            Licenses
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="copyright pull-right">
+      ©
+      <script>document.write(new Date().getFullYear())</script> made with <i class="ti-heart"></i> at Sousse</a>
+    </div>
   </div>
-
-  <%= form_tag(dashboard_feedback_path, method: :post, class:  'DashboardFooter__Feedback') do %>
-      <label>Feedback</label>
-      <label>
-
-        <i class="ti-face-smile "></i><input type="radio" name="feedback">
-      </label>
-      &nbsp;&nbsp;
-      <label>
-        <i class="ti-face-sad "></i><input type="radio" name="feedback">
-
-      </label>
-  <% end %>
-  <div class="DashboardFooter__PlanType">
-      <%= get_plan_type %>
-  </div>
-</div>
+</footer>

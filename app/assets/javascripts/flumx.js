@@ -88,6 +88,8 @@ App.Stores = {
         });
     }
 };
+// alias
+App.Stores.get = App.Stores.loadData;
 
 /**
  *
@@ -143,6 +145,7 @@ App.Helpers = {
  */
 App.DashboradRoutes = {
     info: '/dashboard/ajax/info',
+    galleryList: '/dashboard/gallery',
 };
 /**
  *
@@ -196,7 +199,9 @@ for (var key in routes) {
  */
 App.Actions = {
     SEARCH: 'SEARCH',
-    NOTIFICATION: 'NOTIFICATION'
+    NOTIFICATION: 'NOTIFICATION',
+    FILTER_CHANGED : 'FILTER_CHANGED',
+    TAB_CHANGED : ''
 };
 /**
  *
@@ -212,6 +217,7 @@ App.Constants = {
 App.Configuration = {
     MAP_TILES_URL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 };
+
 // error login
 $(document).ready(function () {
     $(document).ajaxError(function (event, xhr, settings) {

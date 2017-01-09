@@ -3,9 +3,10 @@
 
 #categories_carousel {
   direction: ltr !important;
+  border-top: solid 2px $color-white;
   .item {
     cursor: pointer;
-    padding: 20px 0px;
+    padding: 5px 0px;
     margin: 10px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -15,8 +16,8 @@
     &.clicked {
       color: $primary-color;
       background: $color-white;
-
     }
+    font-size: 6px;
     text-transform: lowercase;
     i {
       font-size: 25px;
@@ -31,6 +32,8 @@
     }
   }
 }
+
+
 
 .customNavigation {
   text-align: center;
