@@ -16,6 +16,9 @@ sudo apt-get install imagemagick
 # Redis See redis.installation.sh
 !!!!
 
+# Nginx see nginx folder
+!!!!
+
 # sudo
 # go works
 # GET Repos
@@ -42,3 +45,8 @@ RAILS_ENV=staging rake configure:all
 
 # run now , -p 3001 for staging
 RAILS_ENV=staging rails s
+
+# db migrate
+RAILS_ENV=staging rake db:migrate
+
+

@@ -1,5 +1,5 @@
 class Dashboard::BrandGalleriesController < Dashboard::DashboardController
-  include FilesUtils
+  include FilesUtilsHelper
   before_action :calculate_gallery_folder_size, only: [:create, :index]
   before_action :check_allowed_to_create, only: [:create]
 
