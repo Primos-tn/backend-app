@@ -116,7 +116,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def product_form_params
-    params.require(:product).permit(:name, :brand_id, :old_price, :new_price, store_ids: [], picture_ids: [], category_ids: [])
+    params.require(:product).permit(:name, :properties, :brand_id, :old_price, :new_price, store_ids: [], picture_ids: [], category_ids: [])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

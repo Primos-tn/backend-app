@@ -9,3 +9,11 @@
     border-radius: 2px;
   }
 }
+.ProductPropertiesEdit__PropertyContainer {
+  label.key, .value {
+    width: 150px;
+  }
+  div.value {
+    display: inline-block;
+  }
+}

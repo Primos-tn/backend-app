@@ -135,10 +135,8 @@ var ProductShow = React.createClass({
                     <div className="ProductDetails__Cover">
                         <div className="ProductDetails__Menu">
                             <div className="btn-group">
-                                <button type="button" onClick={this._shareAction} className="btn btn-warning"><i
-                                    className="ti-share"></i></button>
-                                <button type="button" onClick={this._wishAction} className="btn btn-warning"><i
-                                    className="ti-heart"></i></button>
+                                <button type="button" onClick={this._shareAction} className="btn"> <span className="ti-signal"></span></button>
+                                <button type="button" onClick={this._wishAction} className="btn"> <span className="ti-heart"></span></button>
                             </div>
                         </div>
 
