@@ -19,3 +19,9 @@ en:
             brand_id : Brand
             pictures : Pictures
             stores : Stores
+  default_propeties:
+      height: height
+      color: color
+      weight : wheight
+      made : made
+      width : width

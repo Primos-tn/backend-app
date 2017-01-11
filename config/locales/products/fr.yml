@@ -25,3 +25,10 @@ fr:
       product:
         create : Nouveau produit
         update : Modifier
+
+  default_propeties:
+      height: Hauteur
+      color: Coloeur
+      weight : Poid
+      made : Fabriqué
+      width : Largeur

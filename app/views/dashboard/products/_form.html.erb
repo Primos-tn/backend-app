@@ -11,46 +11,58 @@
         </div>
     <% end %>
     <div class="row">
-      <div class="row col-lg-6">
+      <div class=" col-lg-6">
         <%= f.label :name %><br>
         <%= f.text_field :name, class: "form-control border-input" %>
       </div>
 
     </div>
     <div class="row">
-      <div class="row col-lg-6">
+      <div class="col-lg-6">
         <%= f.label :old_price %><br>
         <%= f.text_field :old_price, class: "form-control border-input" %>
       </div>
-
-    </div>
-    <div class="row">
-      <div class="row col-lg-6">
+      <div class="col-lg-6">
         <%= f.label :new_price %><br>
         <%= f.text_field :new_price, class: "form-control border-input" %>
       </div>
 
+
     </div>
+
+
+
     <div class="row">
-      <div>
+      <div class="col-lg-12">
+        <%= f.label :properties %><br>
+        <%= f.hidden_field :properties %>
+        <div class="btn-group">
+          <%= react_component('ProductPropertiesEdit', {:properties => @product.properties, :defaults => get_defaults_product_properties }) %>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
         <%= f.label :pictures %><br>
-        <div class="row" id="product_pictures_containers">
+        <div id="product_pictures_containers">
 
           <%= f.collection_check_boxes(:picture_ids, @product.pictures, :id, :name) do |fcb| %>
               <div class="col-lg-4 ProductPictureItem">
                 <%= fcb.label { fcb.check_box + '  ' + (fcb.text || '').capitalize } %>
-                <%= image_tag get_assets_url(fcb.object.file.thumb.url),  class: 'img-fluid img-rounded'%>
+                <%= image_tag get_assets_url(fcb.object.file.thumb.url), class: 'img-fluid img-rounded' %>
               </div>
           <% end %>
           <div class="col-lg-4 ProductPictureItem" style="display:none">
             <label>
-              <input type="checkbox" name="product[picture_ids][]" />
+              <input type="checkbox" name="product[picture_ids][]"/>
             </label>
-            <img />
+            <img/>
           </div>
           <div class="col-lg-4">
-            <%= react_component('DashboardGalleryModalManager', { :upload_url => dashboard_brand_galleries_path,
-                                                                  :authenticity_token => form_authenticity_token }) %>
+            <%= react_component('DashboardGalleryModalManager', {:upload_url => dashboard_brand_galleries_path,
+                                                                 :authenticity_token => form_authenticity_token}) %>
           </div>
 
         </div>
@@ -64,7 +76,7 @@
     </div>
 
     <div class="row">
-      <div>
+      <div class="col-lg-12">
         <%= f.label :stores %><br>
         <%= f.collection_check_boxes(:store_ids, current_brand.stores, :id, :name) do |fcb| %>
             <div class="col-lg-4">
@@ -79,8 +91,8 @@
     </div>
 
     <div class="row">
-      <div>
-        <%= f.label :stores %><br>
+      <div class="col-lg-12">
+        <%= f.label :categories %><br>
         <%= f.collection_check_boxes(:category_ids, Category.all, :id, 'name' + (locale.equal?(:en) ? '' : '_' + locale.to_s)) do |fcb| %>
             <div class="col-lg-4">
               <%= fcb.label { fcb.check_box + ' ' + fcb.text.capitalize } %>

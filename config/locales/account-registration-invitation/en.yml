@@ -17,6 +17,7 @@ en:
   Confirmed : Confirmed
   Resend request: Resend request
   Request accepted:  Request accepted
+  Already have an account ? : Already have an account ?
 
   activerecord:
       attributes:

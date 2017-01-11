@@ -33045,7 +33045,7 @@ App.Helpers = {
  * @type {{info: string}}
  */
 App.DashboradRoutes = {
-    info: '/dashboard/ajax/info',
+    stats: '/dashboard/ajax/stats',
     galleryList: '/dashboard/gallery',
 };
 /**
@@ -33161,45 +33161,2654 @@ $(document).ready(function () {
 
 
 
+/*! jQuery UI - v1.12.1 - 2017-01-08
+* http://jqueryui.com
+* Includes: widget.js, keycode.js, unique-id.js, widgets/accordion.js, widgets/mouse.js, widgets/slider.js
+* Copyright jQuery Foundation and other contributors; Licensed MIT */
+
+
+(function(t){"function"==typeof define&&define.amd?define(["jquery"],t):t(jQuery)})(function(t){t.ui=t.ui||{},t.ui.version="1.12.1";var e=0,i=Array.prototype.slice;t.cleanData=function(e){return function(i){var s,n,o;for(o=0;null!=(n=i[o]);o++)try{s=t._data(n,"events"),s&&s.remove&&t(n).triggerHandler("remove")}catch(a){}e(i)}}(t.cleanData),t.widget=function(e,i,s){var n,o,a,r={},l=e.split(".")[0];e=e.split(".")[1];var h=l+"-"+e;return s||(s=i,i=t.Widget),t.isArray(s)&&(s=t.extend.apply(null,[{}].concat(s))),t.expr[":"][h.toLowerCase()]=function(e){return!!t.data(e,h)},t[l]=t[l]||{},n=t[l][e],o=t[l][e]=function(t,e){return this._createWidget?(arguments.length&&this._createWidget(t,e),void 0):new o(t,e)},t.extend(o,n,{version:s.version,_proto:t.extend({},s),_childConstructors:[]}),a=new i,a.options=t.widget.extend({},a.options),t.each(s,function(e,s){return t.isFunction(s)?(r[e]=function(){function t(){return i.prototype[e].apply(this,arguments)}function n(t){return i.prototype[e].apply(this,t)}return function(){var e,i=this._super,o=this._superApply;return this._super=t,this._superApply=n,e=s.apply(this,arguments),this._super=i,this._superApply=o,e}}(),void 0):(r[e]=s,void 0)}),o.prototype=t.widget.extend(a,{widgetEventPrefix:n?a.widgetEventPrefix||e:e},r,{constructor:o,namespace:l,widgetName:e,widgetFullName:h}),n?(t.each(n._childConstructors,function(e,i){var s=i.prototype;t.widget(s.namespace+"."+s.widgetName,o,i._proto)}),delete n._childConstructors):i._childConstructors.push(o),t.widget.bridge(e,o),o},t.widget.extend=function(e){for(var s,n,o=i.call(arguments,1),a=0,r=o.length;r>a;a++)for(s in o[a])n=o[a][s],o[a].hasOwnProperty(s)&&void 0!==n&&(e[s]=t.isPlainObject(n)?t.isPlainObject(e[s])?t.widget.extend({},e[s],n):t.widget.extend({},n):n);return e},t.widget.bridge=function(e,s){var n=s.prototype.widgetFullName||e;t.fn[e]=function(o){var a="string"==typeof o,r=i.call(arguments,1),l=this;return a?this.length||"instance"!==o?this.each(function(){var i,s=t.data(this,n);return"instance"===o?(l=s,!1):s?t.isFunction(s[o])&&"_"!==o.charAt(0)?(i=s[o].apply(s,r),i!==s&&void 0!==i?(l=i&&i.jquery?l.pushStack(i.get()):i,!1):void 0):t.error("no such method '"+o+"' for "+e+" widget instance"):t.error("cannot call methods on "+e+" prior to initialization; "+"attempted to call method '"+o+"'")}):l=void 0:(r.length&&(o=t.widget.extend.apply(null,[o].concat(r))),this.each(function(){var e=t.data(this,n);e?(e.option(o||{}),e._init&&e._init()):t.data(this,n,new s(o,this))})),l}},t.Widget=function(){},t.Widget._childConstructors=[],t.Widget.prototype={widgetName:"widget",widgetEventPrefix:"",defaultElement:"<div>",options:{classes:{},disabled:!1,create:null},_createWidget:function(i,s){s=t(s||this.defaultElement||this)[0],this.element=t(s),this.uuid=e++,this.eventNamespace="."+this.widgetName+this.uuid,this.bindings=t(),this.hoverable=t(),this.focusable=t(),this.classesElementLookup={},s!==this&&(t.data(s,this.widgetFullName,this),this._on(!0,this.element,{remove:function(t){t.target===s&&this.destroy()}}),this.document=t(s.style?s.ownerDocument:s.document||s),this.window=t(this.document[0].defaultView||this.document[0].parentWindow)),this.options=t.widget.extend({},this.options,this._getCreateOptions(),i),this._create(),this.options.disabled&&this._setOptionDisabled(this.options.disabled),this._trigger("create",null,this._getCreateEventData()),this._init()},_getCreateOptions:function(){return{}},_getCreateEventData:t.noop,_create:t.noop,_init:t.noop,destroy:function(){var e=this;this._destroy(),t.each(this.classesElementLookup,function(t,i){e._removeClass(i,t)}),this.element.off(this.eventNamespace).removeData(this.widgetFullName),this.widget().off(this.eventNamespace).removeAttr("aria-disabled"),this.bindings.off(this.eventNamespace)},_destroy:t.noop,widget:function(){return this.element},option:function(e,i){var s,n,o,a=e;if(0===arguments.length)return t.widget.extend({},this.options);if("string"==typeof e)if(a={},s=e.split("."),e=s.shift(),s.length){for(n=a[e]=t.widget.extend({},this.options[e]),o=0;s.length-1>o;o++)n[s[o]]=n[s[o]]||{},n=n[s[o]];if(e=s.pop(),1===arguments.length)return void 0===n[e]?null:n[e];n[e]=i}else{if(1===arguments.length)return void 0===this.options[e]?null:this.options[e];a[e]=i}return this._setOptions(a),this},_setOptions:function(t){var e;for(e in t)this._setOption(e,t[e]);return this},_setOption:function(t,e){return"classes"===t&&this._setOptionClasses(e),this.options[t]=e,"disabled"===t&&this._setOptionDisabled(e),this},_setOptionClasses:function(e){var i,s,n;for(i in e)n=this.classesElementLookup[i],e[i]!==this.options.classes[i]&&n&&n.length&&(s=t(n.get()),this._removeClass(n,i),s.addClass(this._classes({element:s,keys:i,classes:e,add:!0})))},_setOptionDisabled:function(t){this._toggleClass(this.widget(),this.widgetFullName+"-disabled",null,!!t),t&&(this._removeClass(this.hoverable,null,"ui-state-hover"),this._removeClass(this.focusable,null,"ui-state-focus"))},enable:function(){return this._setOptions({disabled:!1})},disable:function(){return this._setOptions({disabled:!0})},_classes:function(e){function i(i,o){var a,r;for(r=0;i.length>r;r++)a=n.classesElementLookup[i[r]]||t(),a=e.add?t(t.unique(a.get().concat(e.element.get()))):t(a.not(e.element).get()),n.classesElementLookup[i[r]]=a,s.push(i[r]),o&&e.classes[i[r]]&&s.push(e.classes[i[r]])}var s=[],n=this;return e=t.extend({element:this.element,classes:this.options.classes||{}},e),this._on(e.element,{remove:"_untrackClassesElement"}),e.keys&&i(e.keys.match(/\S+/g)||[],!0),e.extra&&i(e.extra.match(/\S+/g)||[]),s.join(" ")},_untrackClassesElement:function(e){var i=this;t.each(i.classesElementLookup,function(s,n){-1!==t.inArray(e.target,n)&&(i.classesElementLookup[s]=t(n.not(e.target).get()))})},_removeClass:function(t,e,i){return this._toggleClass(t,e,i,!1)},_addClass:function(t,e,i){return this._toggleClass(t,e,i,!0)},_toggleClass:function(t,e,i,s){s="boolean"==typeof s?s:i;var n="string"==typeof t||null===t,o={extra:n?e:i,keys:n?t:e,element:n?this.element:t,add:s};return o.element.toggleClass(this._classes(o),s),this},_on:function(e,i,s){var n,o=this;"boolean"!=typeof e&&(s=i,i=e,e=!1),s?(i=n=t(i),this.bindings=this.bindings.add(i)):(s=i,i=this.element,n=this.widget()),t.each(s,function(s,a){function r(){return e||o.options.disabled!==!0&&!t(this).hasClass("ui-state-disabled")?("string"==typeof a?o[a]:a).apply(o,arguments):void 0}"string"!=typeof a&&(r.guid=a.guid=a.guid||r.guid||t.guid++);var l=s.match(/^([\w:-]*)\s*(.*)$/),h=l[1]+o.eventNamespace,c=l[2];c?n.on(h,c,r):i.on(h,r)})},_off:function(e,i){i=(i||"").split(" ").join(this.eventNamespace+" ")+this.eventNamespace,e.off(i).off(i),this.bindings=t(this.bindings.not(e).get()),this.focusable=t(this.focusable.not(e).get()),this.hoverable=t(this.hoverable.not(e).get())},_delay:function(t,e){function i(){return("string"==typeof t?s[t]:t).apply(s,arguments)}var s=this;return setTimeout(i,e||0)},_hoverable:function(e){this.hoverable=this.hoverable.add(e),this._on(e,{mouseenter:function(e){this._addClass(t(e.currentTarget),null,"ui-state-hover")},mouseleave:function(e){this._removeClass(t(e.currentTarget),null,"ui-state-hover")}})},_focusable:function(e){this.focusable=this.focusable.add(e),this._on(e,{focusin:function(e){this._addClass(t(e.currentTarget),null,"ui-state-focus")},focusout:function(e){this._removeClass(t(e.currentTarget),null,"ui-state-focus")}})},_trigger:function(e,i,s){var n,o,a=this.options[e];if(s=s||{},i=t.Event(i),i.type=(e===this.widgetEventPrefix?e:this.widgetEventPrefix+e).toLowerCase(),i.target=this.element[0],o=i.originalEvent)for(n in o)n in i||(i[n]=o[n]);return this.element.trigger(i,s),!(t.isFunction(a)&&a.apply(this.element[0],[i].concat(s))===!1||i.isDefaultPrevented())}},t.each({show:"fadeIn",hide:"fadeOut"},function(e,i){t.Widget.prototype["_"+e]=function(s,n,o){"string"==typeof n&&(n={effect:n});var a,r=n?n===!0||"number"==typeof n?i:n.effect||i:e;n=n||{},"number"==typeof n&&(n={duration:n}),a=!t.isEmptyObject(n),n.complete=o,n.delay&&s.delay(n.delay),a&&t.effects&&t.effects.effect[r]?s[e](n):r!==e&&s[r]?s[r](n.duration,n.easing,o):s.queue(function(i){t(this)[e](),o&&o.call(s[0]),i()})}}),t.widget,t.ui.keyCode={BACKSPACE:8,COMMA:188,DELETE:46,DOWN:40,END:35,ENTER:13,ESCAPE:27,HOME:36,LEFT:37,PAGE_DOWN:34,PAGE_UP:33,PERIOD:190,RIGHT:39,SPACE:32,TAB:9,UP:38},t.fn.extend({uniqueId:function(){var t=0;return function(){return this.each(function(){this.id||(this.id="ui-id-"+ ++t)})}}(),removeUniqueId:function(){return this.each(function(){/^ui-id-\d+$/.test(this.id)&&t(this).removeAttr("id")})}}),t.widget("ui.accordion",{version:"1.12.1",options:{active:0,animate:{},classes:{"ui-accordion-header":"ui-corner-top","ui-accordion-header-collapsed":"ui-corner-all","ui-accordion-content":"ui-corner-bottom"},collapsible:!1,event:"click",header:"> li > :first-child, > :not(li):even",heightStyle:"auto",icons:{activeHeader:"ui-icon-triangle-1-s",header:"ui-icon-triangle-1-e"},activate:null,beforeActivate:null},hideProps:{borderTopWidth:"hide",borderBottomWidth:"hide",paddingTop:"hide",paddingBottom:"hide",height:"hide"},showProps:{borderTopWidth:"show",borderBottomWidth:"show",paddingTop:"show",paddingBottom:"show",height:"show"},_create:function(){var e=this.options;this.prevShow=this.prevHide=t(),this._addClass("ui-accordion","ui-widget ui-helper-reset"),this.element.attr("role","tablist"),e.collapsible||e.active!==!1&&null!=e.active||(e.active=0),this._processPanels(),0>e.active&&(e.active+=this.headers.length),this._refresh()},_getCreateEventData:function(){return{header:this.active,panel:this.active.length?this.active.next():t()}},_createIcons:function(){var e,i,s=this.options.icons;s&&(e=t("<span>"),this._addClass(e,"ui-accordion-header-icon","ui-icon "+s.header),e.prependTo(this.headers),i=this.active.children(".ui-accordion-header-icon"),this._removeClass(i,s.header)._addClass(i,null,s.activeHeader)._addClass(this.headers,"ui-accordion-icons"))},_destroyIcons:function(){this._removeClass(this.headers,"ui-accordion-icons"),this.headers.children(".ui-accordion-header-icon").remove()},_destroy:function(){var t;this.element.removeAttr("role"),this.headers.removeAttr("role aria-expanded aria-selected aria-controls tabIndex").removeUniqueId(),this._destroyIcons(),t=this.headers.next().css("display","").removeAttr("role aria-hidden aria-labelledby").removeUniqueId(),"content"!==this.options.heightStyle&&t.css("height","")},_setOption:function(t,e){return"active"===t?(this._activate(e),void 0):("event"===t&&(this.options.event&&this._off(this.headers,this.options.event),this._setupEvents(e)),this._super(t,e),"collapsible"!==t||e||this.options.active!==!1||this._activate(0),"icons"===t&&(this._destroyIcons(),e&&this._createIcons()),void 0)},_setOptionDisabled:function(t){this._super(t),this.element.attr("aria-disabled",t),this._toggleClass(null,"ui-state-disabled",!!t),this._toggleClass(this.headers.add(this.headers.next()),null,"ui-state-disabled",!!t)},_keydown:function(e){if(!e.altKey&&!e.ctrlKey){var i=t.ui.keyCode,s=this.headers.length,n=this.headers.index(e.target),o=!1;switch(e.keyCode){case i.RIGHT:case i.DOWN:o=this.headers[(n+1)%s];break;case i.LEFT:case i.UP:o=this.headers[(n-1+s)%s];break;case i.SPACE:case i.ENTER:this._eventHandler(e);break;case i.HOME:o=this.headers[0];break;case i.END:o=this.headers[s-1]}o&&(t(e.target).attr("tabIndex",-1),t(o).attr("tabIndex",0),t(o).trigger("focus"),e.preventDefault())}},_panelKeyDown:function(e){e.keyCode===t.ui.keyCode.UP&&e.ctrlKey&&t(e.currentTarget).prev().trigger("focus")},refresh:function(){var e=this.options;this._processPanels(),e.active===!1&&e.collapsible===!0||!this.headers.length?(e.active=!1,this.active=t()):e.active===!1?this._activate(0):this.active.length&&!t.contains(this.element[0],this.active[0])?this.headers.length===this.headers.find(".ui-state-disabled").length?(e.active=!1,this.active=t()):this._activate(Math.max(0,e.active-1)):e.active=this.headers.index(this.active),this._destroyIcons(),this._refresh()},_processPanels:function(){var t=this.headers,e=this.panels;this.headers=this.element.find(this.options.header),this._addClass(this.headers,"ui-accordion-header ui-accordion-header-collapsed","ui-state-default"),this.panels=this.headers.next().filter(":not(.ui-accordion-content-active)").hide(),this._addClass(this.panels,"ui-accordion-content","ui-helper-reset ui-widget-content"),e&&(this._off(t.not(this.headers)),this._off(e.not(this.panels)))},_refresh:function(){var e,i=this.options,s=i.heightStyle,n=this.element.parent();this.active=this._findActive(i.active),this._addClass(this.active,"ui-accordion-header-active","ui-state-active")._removeClass(this.active,"ui-accordion-header-collapsed"),this._addClass(this.active.next(),"ui-accordion-content-active"),this.active.next().show(),this.headers.attr("role","tab").each(function(){var e=t(this),i=e.uniqueId().attr("id"),s=e.next(),n=s.uniqueId().attr("id");e.attr("aria-controls",n),s.attr("aria-labelledby",i)}).next().attr("role","tabpanel"),this.headers.not(this.active).attr({"aria-selected":"false","aria-expanded":"false",tabIndex:-1}).next().attr({"aria-hidden":"true"}).hide(),this.active.length?this.active.attr({"aria-selected":"true","aria-expanded":"true",tabIndex:0}).next().attr({"aria-hidden":"false"}):this.headers.eq(0).attr("tabIndex",0),this._createIcons(),this._setupEvents(i.event),"fill"===s?(e=n.height(),this.element.siblings(":visible").each(function(){var i=t(this),s=i.css("position");"absolute"!==s&&"fixed"!==s&&(e-=i.outerHeight(!0))}),this.headers.each(function(){e-=t(this).outerHeight(!0)}),this.headers.next().each(function(){t(this).height(Math.max(0,e-t(this).innerHeight()+t(this).height()))}).css("overflow","auto")):"auto"===s&&(e=0,this.headers.next().each(function(){var i=t(this).is(":visible");i||t(this).show(),e=Math.max(e,t(this).css("height","").height()),i||t(this).hide()}).height(e))},_activate:function(e){var i=this._findActive(e)[0];i!==this.active[0]&&(i=i||this.active[0],this._eventHandler({target:i,currentTarget:i,preventDefault:t.noop}))},_findActive:function(e){return"number"==typeof e?this.headers.eq(e):t()},_setupEvents:function(e){var i={keydown:"_keydown"};e&&t.each(e.split(" "),function(t,e){i[e]="_eventHandler"}),this._off(this.headers.add(this.headers.next())),this._on(this.headers,i),this._on(this.headers.next(),{keydown:"_panelKeyDown"}),this._hoverable(this.headers),this._focusable(this.headers)},_eventHandler:function(e){var i,s,n=this.options,o=this.active,a=t(e.currentTarget),r=a[0]===o[0],l=r&&n.collapsible,h=l?t():a.next(),c=o.next(),u={oldHeader:o,oldPanel:c,newHeader:l?t():a,newPanel:h};e.preventDefault(),r&&!n.collapsible||this._trigger("beforeActivate",e,u)===!1||(n.active=l?!1:this.headers.index(a),this.active=r?t():a,this._toggle(u),this._removeClass(o,"ui-accordion-header-active","ui-state-active"),n.icons&&(i=o.children(".ui-accordion-header-icon"),this._removeClass(i,null,n.icons.activeHeader)._addClass(i,null,n.icons.header)),r||(this._removeClass(a,"ui-accordion-header-collapsed")._addClass(a,"ui-accordion-header-active","ui-state-active"),n.icons&&(s=a.children(".ui-accordion-header-icon"),this._removeClass(s,null,n.icons.header)._addClass(s,null,n.icons.activeHeader)),this._addClass(a.next(),"ui-accordion-content-active")))},_toggle:function(e){var i=e.newPanel,s=this.prevShow.length?this.prevShow:e.oldPanel;this.prevShow.add(this.prevHide).stop(!0,!0),this.prevShow=i,this.prevHide=s,this.options.animate?this._animate(i,s,e):(s.hide(),i.show(),this._toggleComplete(e)),s.attr({"aria-hidden":"true"}),s.prev().attr({"aria-selected":"false","aria-expanded":"false"}),i.length&&s.length?s.prev().attr({tabIndex:-1,"aria-expanded":"false"}):i.length&&this.headers.filter(function(){return 0===parseInt(t(this).attr("tabIndex"),10)}).attr("tabIndex",-1),i.attr("aria-hidden","false").prev().attr({"aria-selected":"true","aria-expanded":"true",tabIndex:0})},_animate:function(t,e,i){var s,n,o,a=this,r=0,l=t.css("box-sizing"),h=t.length&&(!e.length||t.index()<e.index()),c=this.options.animate||{},u=h&&c.down||c,d=function(){a._toggleComplete(i)};return"number"==typeof u&&(o=u),"string"==typeof u&&(n=u),n=n||u.easing||c.easing,o=o||u.duration||c.duration,e.length?t.length?(s=t.show().outerHeight(),e.animate(this.hideProps,{duration:o,easing:n,step:function(t,e){e.now=Math.round(t)}}),t.hide().animate(this.showProps,{duration:o,easing:n,complete:d,step:function(t,i){i.now=Math.round(t),"height"!==i.prop?"content-box"===l&&(r+=i.now):"content"!==a.options.heightStyle&&(i.now=Math.round(s-e.outerHeight()-r),r=0)}}),void 0):e.animate(this.hideProps,o,n,d):t.animate(this.showProps,o,n,d)},_toggleComplete:function(t){var e=t.oldPanel,i=e.prev();this._removeClass(e,"ui-accordion-content-active"),this._removeClass(i,"ui-accordion-header-active")._addClass(i,"ui-accordion-header-collapsed"),e.length&&(e.parent()[0].className=e.parent()[0].className),this._trigger("activate",null,t)}}),t.ui.ie=!!/msie [\w.]+/.exec(navigator.userAgent.toLowerCase());var s=!1;t(document).on("mouseup",function(){s=!1}),t.widget("ui.mouse",{version:"1.12.1",options:{cancel:"input, textarea, button, select, option",distance:1,delay:0},_mouseInit:function(){var e=this;this.element.on("mousedown."+this.widgetName,function(t){return e._mouseDown(t)}).on("click."+this.widgetName,function(i){return!0===t.data(i.target,e.widgetName+".preventClickEvent")?(t.removeData(i.target,e.widgetName+".preventClickEvent"),i.stopImmediatePropagation(),!1):void 0}),this.started=!1},_mouseDestroy:function(){this.element.off("."+this.widgetName),this._mouseMoveDelegate&&this.document.off("mousemove."+this.widgetName,this._mouseMoveDelegate).off("mouseup."+this.widgetName,this._mouseUpDelegate)},_mouseDown:function(e){if(!s){this._mouseMoved=!1,this._mouseStarted&&this._mouseUp(e),this._mouseDownEvent=e;var i=this,n=1===e.which,o="string"==typeof this.options.cancel&&e.target.nodeName?t(e.target).closest(this.options.cancel).length:!1;return n&&!o&&this._mouseCapture(e)?(this.mouseDelayMet=!this.options.delay,this.mouseDelayMet||(this._mouseDelayTimer=setTimeout(function(){i.mouseDelayMet=!0},this.options.delay)),this._mouseDistanceMet(e)&&this._mouseDelayMet(e)&&(this._mouseStarted=this._mouseStart(e)!==!1,!this._mouseStarted)?(e.preventDefault(),!0):(!0===t.data(e.target,this.widgetName+".preventClickEvent")&&t.removeData(e.target,this.widgetName+".preventClickEvent"),this._mouseMoveDelegate=function(t){return i._mouseMove(t)},this._mouseUpDelegate=function(t){return i._mouseUp(t)},this.document.on("mousemove."+this.widgetName,this._mouseMoveDelegate).on("mouseup."+this.widgetName,this._mouseUpDelegate),e.preventDefault(),s=!0,!0)):!0}},_mouseMove:function(e){if(this._mouseMoved){if(t.ui.ie&&(!document.documentMode||9>document.documentMode)&&!e.button)return this._mouseUp(e);if(!e.which)if(e.originalEvent.altKey||e.originalEvent.ctrlKey||e.originalEvent.metaKey||e.originalEvent.shiftKey)this.ignoreMissingWhich=!0;else if(!this.ignoreMissingWhich)return this._mouseUp(e)}return(e.which||e.button)&&(this._mouseMoved=!0),this._mouseStarted?(this._mouseDrag(e),e.preventDefault()):(this._mouseDistanceMet(e)&&this._mouseDelayMet(e)&&(this._mouseStarted=this._mouseStart(this._mouseDownEvent,e)!==!1,this._mouseStarted?this._mouseDrag(e):this._mouseUp(e)),!this._mouseStarted)},_mouseUp:function(e){this.document.off("mousemove."+this.widgetName,this._mouseMoveDelegate).off("mouseup."+this.widgetName,this._mouseUpDelegate),this._mouseStarted&&(this._mouseStarted=!1,e.target===this._mouseDownEvent.target&&t.data(e.target,this.widgetName+".preventClickEvent",!0),this._mouseStop(e)),this._mouseDelayTimer&&(clearTimeout(this._mouseDelayTimer),delete this._mouseDelayTimer),this.ignoreMissingWhich=!1,s=!1,e.preventDefault()},_mouseDistanceMet:function(t){return Math.max(Math.abs(this._mouseDownEvent.pageX-t.pageX),Math.abs(this._mouseDownEvent.pageY-t.pageY))>=this.options.distance},_mouseDelayMet:function(){return this.mouseDelayMet},_mouseStart:function(){},_mouseDrag:function(){},_mouseStop:function(){},_mouseCapture:function(){return!0}}),t.widget("ui.slider",t.ui.mouse,{version:"1.12.1",widgetEventPrefix:"slide",options:{animate:!1,classes:{"ui-slider":"ui-corner-all","ui-slider-handle":"ui-corner-all","ui-slider-range":"ui-corner-all ui-widget-header"},distance:0,max:100,min:0,orientation:"horizontal",range:!1,step:1,value:0,values:null,change:null,slide:null,start:null,stop:null},numPages:5,_create:function(){this._keySliding=!1,this._mouseSliding=!1,this._animateOff=!0,this._handleIndex=null,this._detectOrientation(),this._mouseInit(),this._calculateNewMax(),this._addClass("ui-slider ui-slider-"+this.orientation,"ui-widget ui-widget-content"),this._refresh(),this._animateOff=!1},_refresh:function(){this._createRange(),this._createHandles(),this._setupEvents(),this._refreshValue()},_createHandles:function(){var e,i,s=this.options,n=this.element.find(".ui-slider-handle"),o="<span tabindex='0'></span>",a=[];for(i=s.values&&s.values.length||1,n.length>i&&(n.slice(i).remove(),n=n.slice(0,i)),e=n.length;i>e;e++)a.push(o);this.handles=n.add(t(a.join("")).appendTo(this.element)),this._addClass(this.handles,"ui-slider-handle","ui-state-default"),this.handle=this.handles.eq(0),this.handles.each(function(e){t(this).data("ui-slider-handle-index",e).attr("tabIndex",0)})},_createRange:function(){var e=this.options;e.range?(e.range===!0&&(e.values?e.values.length&&2!==e.values.length?e.values=[e.values[0],e.values[0]]:t.isArray(e.values)&&(e.values=e.values.slice(0)):e.values=[this._valueMin(),this._valueMin()]),this.range&&this.range.length?(this._removeClass(this.range,"ui-slider-range-min ui-slider-range-max"),this.range.css({left:"",bottom:""})):(this.range=t("<div>").appendTo(this.element),this._addClass(this.range,"ui-slider-range")),("min"===e.range||"max"===e.range)&&this._addClass(this.range,"ui-slider-range-"+e.range)):(this.range&&this.range.remove(),this.range=null)},_setupEvents:function(){this._off(this.handles),this._on(this.handles,this._handleEvents),this._hoverable(this.handles),this._focusable(this.handles)},_destroy:function(){this.handles.remove(),this.range&&this.range.remove(),this._mouseDestroy()},_mouseCapture:function(e){var i,s,n,o,a,r,l,h,c=this,u=this.options;return u.disabled?!1:(this.elementSize={width:this.element.outerWidth(),height:this.element.outerHeight()},this.elementOffset=this.element.offset(),i={x:e.pageX,y:e.pageY},s=this._normValueFromMouse(i),n=this._valueMax()-this._valueMin()+1,this.handles.each(function(e){var i=Math.abs(s-c.values(e));(n>i||n===i&&(e===c._lastChangedValue||c.values(e)===u.min))&&(n=i,o=t(this),a=e)}),r=this._start(e,a),r===!1?!1:(this._mouseSliding=!0,this._handleIndex=a,this._addClass(o,null,"ui-state-active"),o.trigger("focus"),l=o.offset(),h=!t(e.target).parents().addBack().is(".ui-slider-handle"),this._clickOffset=h?{left:0,top:0}:{left:e.pageX-l.left-o.width()/2,top:e.pageY-l.top-o.height()/2-(parseInt(o.css("borderTopWidth"),10)||0)-(parseInt(o.css("borderBottomWidth"),10)||0)+(parseInt(o.css("marginTop"),10)||0)},this.handles.hasClass("ui-state-hover")||this._slide(e,a,s),this._animateOff=!0,!0))},_mouseStart:function(){return!0},_mouseDrag:function(t){var e={x:t.pageX,y:t.pageY},i=this._normValueFromMouse(e);return this._slide(t,this._handleIndex,i),!1},_mouseStop:function(t){return this._removeClass(this.handles,null,"ui-state-active"),this._mouseSliding=!1,this._stop(t,this._handleIndex),this._change(t,this._handleIndex),this._handleIndex=null,this._clickOffset=null,this._animateOff=!1,!1},_detectOrientation:function(){this.orientation="vertical"===this.options.orientation?"vertical":"horizontal"},_normValueFromMouse:function(t){var e,i,s,n,o;return"horizontal"===this.orientation?(e=this.elementSize.width,i=t.x-this.elementOffset.left-(this._clickOffset?this._clickOffset.left:0)):(e=this.elementSize.height,i=t.y-this.elementOffset.top-(this._clickOffset?this._clickOffset.top:0)),s=i/e,s>1&&(s=1),0>s&&(s=0),"vertical"===this.orientation&&(s=1-s),n=this._valueMax()-this._valueMin(),o=this._valueMin()+s*n,this._trimAlignValue(o)},_uiHash:function(t,e,i){var s={handle:this.handles[t],handleIndex:t,value:void 0!==e?e:this.value()};return this._hasMultipleValues()&&(s.value=void 0!==e?e:this.values(t),s.values=i||this.values()),s},_hasMultipleValues:function(){return this.options.values&&this.options.values.length},_start:function(t,e){return this._trigger("start",t,this._uiHash(e))},_slide:function(t,e,i){var s,n,o=this.value(),a=this.values();this._hasMultipleValues()&&(n=this.values(e?0:1),o=this.values(e),2===this.options.values.length&&this.options.range===!0&&(i=0===e?Math.min(n,i):Math.max(n,i)),a[e]=i),i!==o&&(s=this._trigger("slide",t,this._uiHash(e,i,a)),s!==!1&&(this._hasMultipleValues()?this.values(e,i):this.value(i)))},_stop:function(t,e){this._trigger("stop",t,this._uiHash(e))},_change:function(t,e){this._keySliding||this._mouseSliding||(this._lastChangedValue=e,this._trigger("change",t,this._uiHash(e)))},value:function(t){return arguments.length?(this.options.value=this._trimAlignValue(t),this._refreshValue(),this._change(null,0),void 0):this._value()},values:function(e,i){var s,n,o;if(arguments.length>1)return this.options.values[e]=this._trimAlignValue(i),this._refreshValue(),this._change(null,e),void 0;if(!arguments.length)return this._values();if(!t.isArray(arguments[0]))return this._hasMultipleValues()?this._values(e):this.value();for(s=this.options.values,n=arguments[0],o=0;s.length>o;o+=1)s[o]=this._trimAlignValue(n[o]),this._change(null,o);this._refreshValue()},_setOption:function(e,i){var s,n=0;switch("range"===e&&this.options.range===!0&&("min"===i?(this.options.value=this._values(0),this.options.values=null):"max"===i&&(this.options.value=this._values(this.options.values.length-1),this.options.values=null)),t.isArray(this.options.values)&&(n=this.options.values.length),this._super(e,i),e){case"orientation":this._detectOrientation(),this._removeClass("ui-slider-horizontal ui-slider-vertical")._addClass("ui-slider-"+this.orientation),this._refreshValue(),this.options.range&&this._refreshRange(i),this.handles.css("horizontal"===i?"bottom":"left","");break;case"value":this._animateOff=!0,this._refreshValue(),this._change(null,0),this._animateOff=!1;break;case"values":for(this._animateOff=!0,this._refreshValue(),s=n-1;s>=0;s--)this._change(null,s);this._animateOff=!1;break;case"step":case"min":case"max":this._animateOff=!0,this._calculateNewMax(),this._refreshValue(),this._animateOff=!1;break;case"range":this._animateOff=!0,this._refresh(),this._animateOff=!1}},_setOptionDisabled:function(t){this._super(t),this._toggleClass(null,"ui-state-disabled",!!t)},_value:function(){var t=this.options.value;return t=this._trimAlignValue(t)},_values:function(t){var e,i,s;if(arguments.length)return e=this.options.values[t],e=this._trimAlignValue(e);if(this._hasMultipleValues()){for(i=this.options.values.slice(),s=0;i.length>s;s+=1)i[s]=this._trimAlignValue(i[s]);return i}return[]},_trimAlignValue:function(t){if(this._valueMin()>=t)return this._valueMin();if(t>=this._valueMax())return this._valueMax();var e=this.options.step>0?this.options.step:1,i=(t-this._valueMin())%e,s=t-i;return 2*Math.abs(i)>=e&&(s+=i>0?e:-e),parseFloat(s.toFixed(5))},_calculateNewMax:function(){var t=this.options.max,e=this._valueMin(),i=this.options.step,s=Math.round((t-e)/i)*i;t=s+e,t>this.options.max&&(t-=i),this.max=parseFloat(t.toFixed(this._precision()))},_precision:function(){var t=this._precisionOf(this.options.step);return null!==this.options.min&&(t=Math.max(t,this._precisionOf(this.options.min))),t},_precisionOf:function(t){var e=""+t,i=e.indexOf(".");return-1===i?0:e.length-i-1},_valueMin:function(){return this.options.min},_valueMax:function(){return this.max},_refreshRange:function(t){"vertical"===t&&this.range.css({width:"",left:""}),"horizontal"===t&&this.range.css({height:"",bottom:""})},_refreshValue:function(){var e,i,s,n,o,a=this.options.range,r=this.options,l=this,h=this._animateOff?!1:r.animate,c={};this._hasMultipleValues()?this.handles.each(function(s){i=100*((l.values(s)-l._valueMin())/(l._valueMax()-l._valueMin())),c["horizontal"===l.orientation?"left":"bottom"]=i+"%",t(this).stop(1,1)[h?"animate":"css"](c,r.animate),l.options.range===!0&&("horizontal"===l.orientation?(0===s&&l.range.stop(1,1)[h?"animate":"css"]({left:i+"%"},r.animate),1===s&&l.range[h?"animate":"css"]({width:i-e+"%"},{queue:!1,duration:r.animate})):(0===s&&l.range.stop(1,1)[h?"animate":"css"]({bottom:i+"%"},r.animate),1===s&&l.range[h?"animate":"css"]({height:i-e+"%"},{queue:!1,duration:r.animate}))),e=i}):(s=this.value(),n=this._valueMin(),o=this._valueMax(),i=o!==n?100*((s-n)/(o-n)):0,c["horizontal"===this.orientation?"left":"bottom"]=i+"%",this.handle.stop(1,1)[h?"animate":"css"](c,r.animate),"min"===a&&"horizontal"===this.orientation&&this.range.stop(1,1)[h?"animate":"css"]({width:i+"%"},r.animate),"max"===a&&"horizontal"===this.orientation&&this.range.stop(1,1)[h?"animate":"css"]({width:100-i+"%"},r.animate),"min"===a&&"vertical"===this.orientation&&this.range.stop(1,1)[h?"animate":"css"]({height:i+"%"},r.animate),"max"===a&&"vertical"===this.orientation&&this.range.stop(1,1)[h?"animate":"css"]({height:100-i+"%"},r.animate))},_handleEvents:{keydown:function(e){var i,s,n,o,a=t(e.target).data("ui-slider-handle-index");switch(e.keyCode){case t.ui.keyCode.HOME:case t.ui.keyCode.END:case t.ui.keyCode.PAGE_UP:case t.ui.keyCode.PAGE_DOWN:case t.ui.keyCode.UP:case t.ui.keyCode.RIGHT:case t.ui.keyCode.DOWN:case t.ui.keyCode.LEFT:if(e.preventDefault(),!this._keySliding&&(this._keySliding=!0,this._addClass(t(e.target),null,"ui-state-active"),i=this._start(e,a),i===!1))return}switch(o=this.options.step,s=n=this._hasMultipleValues()?this.values(a):this.value(),e.keyCode){case t.ui.keyCode.HOME:n=this._valueMin();break;case t.ui.keyCode.END:n=this._valueMax();break;case t.ui.keyCode.PAGE_UP:n=this._trimAlignValue(s+(this._valueMax()-this._valueMin())/this.numPages);break;case t.ui.keyCode.PAGE_DOWN:n=this._trimAlignValue(s-(this._valueMax()-this._valueMin())/this.numPages);break;case t.ui.keyCode.UP:case t.ui.keyCode.RIGHT:if(s===this._valueMax())return;n=this._trimAlignValue(s+o);break;case t.ui.keyCode.DOWN:case t.ui.keyCode.LEFT:if(s===this._valueMin())return;n=this._trimAlignValue(s-o)}this._slide(e,a,n)},keyup:function(e){var i=t(e.target).data("ui-slider-handle-index");this._keySliding&&(this._keySliding=!1,this._stop(e,i),this._change(e,i),this._removeClass(t(e.target),null,"ui-state-active"))}}})});
 /**
  *
- * @private
  */
 
-function _appendNotification(name, value) {
-    var $notification = $('<div class="SideBarTabNotification"></div>').html(value);
-    $('[data-tab="' + name + '"]').find('a').prepend($notification);
-}
-/**
- *
- */
-function _displayNotifications(data) {
-    // {"business_pending_count":1,"invitations_pending_count":2,"business_accounts_count":1,"brands":0}
-    _appendNotification('BusinessRequests', data.business_pending_count);
-    _appendNotification('Invitations', data.invitations_pending_count);
-    _appendNotification('BusinessAccounts', data.business_accounts_count);
-    _appendNotification('Brands', data.brands_count);
-}
-/**
- * Get server info
- */
-function getInfo() {
-    $.get('/admin/ajax/info', _displayNotifications);
-}
-/**
- *
- */
-AdminBaseApp = React.createClass({
-    displayName: 'AdminBaseApp',
+var ACTIVE_CLASS = "active";
 
-    componentDidMount: function () {
-        getInfo();
+var WISHERS_TAB = "wishers";
+var STORES_TAB = "stores";
+var PRODUCTS_TAB = "products";
+var INFO_TAB = "info";
+var FOLLOWERS_TAB = "followers";
+var REVIEWS_TAB = "reviews";
+
+var BrandProfile = React.createClass({
+    displayName: "BrandProfile",
+
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.brand,
+            params: { id: this.props.id }
+        });
     },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // attach events on brand
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        // attach events on brand
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { item: null, serverLoadingDone: false };
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({ serverLoadingDone: true });
+    },
+    /**
+     *
+     */
     render: function () {
-        return null;
+        var items;
+        var activeTab = this.props.activeTab;
+        //
+        if (this.state.item) {
+            items = this.state.items.map((function (item, index) {
+                return React.createElement(ProductsListItem, { item: item, key: index });
+            }).bind(this));
+        } else {
+            items = this.state.serverLoadingDone ? '0 items ' : "Loading ....";
+        }
+        // FIXME , make this dynamic
+        var tabClassInstance = null;
+        switch (activeTab) {
+            case STORES_TAB:
+                tabClassInstance = React.createElement(BrandProfileStoresInfo, { positions: this.props.stores });
+                break;
+            case PRODUCTS_TAB:
+                tabClassInstance = React.createElement(ProductsList, { id: this.props.id, brand: this.props.id });
+                break;
+            case REVIEWS_TAB:
+                tabClassInstance = React.createElement(BrandProfileReviewsList, { id: this.props.id });
+                break;
+            case FOLLOWERS_TAB:
+                tabClassInstance = React.createElement(BrandProfileFollowersList, { id: this.props.id });
+                break;
+            case INFO_TAB:
+            default:
+                tabClassInstance = React.createElement(BrandProfileInfo, { id: this.props.id });
+        }
+        var container = tabClassInstance;
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { className: "BrandDetails" },
+                React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                        "div",
+                        { className: "BrandDetails__ImageContainer" },
+                        React.createElement("img", { className: "BrandDetails__ImageCover", src: this.props.cover })
+                    ),
+                    React.createElement(
+                        "ul",
+                        { className: "nav nav-tabs" },
+                        React.createElement(
+                            "li",
+                            { className: activeTab == STORES_TAB ? ACTIVE_CLASS : '' },
+                            React.createElement(
+                                "a",
+                                { href: App.Helpers.getAbsoluteUrl(App.Routes.brandStores, { id: this.props.id }) },
+                                React.createElement("i", { className: "fa fa-circle" }),
+                                " Stores"
+                            )
+                        ),
+                        React.createElement(
+                            "li",
+                            { className: activeTab == PRODUCTS_TAB ? ACTIVE_CLASS : '' },
+                            React.createElement(
+                                "a",
+                                { href: App.Helpers.getAbsoluteUrl(App.Routes.brandProducts, { id: this.props.id }) },
+                                React.createElement("i", { className: "fa fa-circle" }),
+                                " Products"
+                            )
+                        ),
+                        React.createElement(
+                            "li",
+                            { className: activeTab == INFO_TAB || !activeTab ? ACTIVE_CLASS : '' },
+                            React.createElement(
+                                "a",
+                                { href: App.Helpers.getAbsoluteUrl(App.Routes.brandInfo, { id: this.props.id }) },
+                                React.createElement("i", { className: "fa fa-circle" }),
+                                " Info"
+                            )
+                        ),
+                        React.createElement(
+                            "li",
+                            { className: activeTab == REVIEWS_TAB ? ACTIVE_CLASS : '' },
+                            React.createElement(
+                                "a",
+                                { href: App.Helpers.getAbsoluteUrl(App.Routes.brandReviews, { id: this.props.id }) },
+                                React.createElement("i", { className: "fa fa-circle" }),
+                                " Reviews"
+                            )
+                        ),
+                        React.createElement(
+                            "li",
+                            { className: activeTab == FOLLOWERS_TAB ? ACTIVE_CLASS : '' },
+                            React.createElement(
+                                "a",
+                                { href: App.Helpers.getAbsoluteUrl(App.Routes.brandFollowers, { id: this.props.id }) },
+                                React.createElement("i", { className: "fa fa-circle" }),
+                                " Followers"
+                            )
+                        )
+                    )
+                ),
+                container
+            )
+        );
+    }
+});
+var BRAND_FOLLOWERS_ACTION = "BRAND_FOLLOWERS_ACTION";
+var BrandProfileFollowersListItem = React.createClass({
+    displayName: "BrandProfileFollowersListItem",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "BrandCard__Follower" },
+            React.createElement("img", { src: "https://s-media-cache-ak0.pinimg.com/avatars/tatianamamaeva_1382583329_30.jpg" })
+        );
+    }
+});
+/**
+ *
+ */
+var BrandProfileFollowersList = React.createClass({
+    displayName: "BrandProfileFollowersList",
+
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        //
+        this.setState({ isFetching: true });
+        //
+        App.Stores.loadData({
+            url: App.Routes.brandFollowers,
+            action: BRAND_FOLLOWERS_ACTION,
+            params: { id: this.props.id }
+        });
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(BRAND_FOLLOWERS_ACTION, this.onDataChange);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(BRAND_FOLLOWERS_ACTION, this.onDataChange);
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], isFetching: false };
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({ items: result.followers, isFetching: false });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items;
+        if (this.state.items.length) {
+            items = this.state.items.map((function (item, index) {
+                return React.createElement(BrandProfileFollowersListItem, { entry: item, key: index });
+            }).bind(this));
+        } else {
+            if (this.state.isFetching) {
+                items = React.createElement(Fetching, null);
+            } else {
+                items = React.createElement(EmptyFollowersList, null);
+            }
+        }
+
+        return React.createElement(
+            "div",
+            null,
+            items
+        );
     }
 });
 
 
+var BrandProfileInfo = React.createClass({
+    displayName: "BrandProfileInfo",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            "Info"
+        );
+    }
+});
+var BrandProfileReviewsListItem = React.createClass({
+    displayName: "BrandProfileReviewsListItem",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "BrandCard__Follower" },
+            React.createElement("img", { src: "https://s-media-cache-ak0.pinimg.com/avatars/tatianamamaeva_1382583329_30.jpg" })
+        );
+    }
+});
+var BrandProfileReviewsList = React.createClass({
+    displayName: "BrandProfileReviewsList",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            "reviews List"
+        );
+    }
+});
 
 
+var BrandProfileStoresInfo = React.createClass({
+    displayName: "BrandProfileStoresInfo",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(Map, { positions: this.props.positions })
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var BrandsList = React.createClass({
+    displayName: "BrandsList",
+
+    actions: {
+        list: "BRANDS_LIST"
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataChange);
+        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    filterChanged: function (state) {
+        alert('listen');
+        console.log(state);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.list, this.onDataChange);
+        App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        this.setState({ serverLoadingDone: false });
+        App.Stores.loadData({
+            url: App.Routes.brands,
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({ items: result.brands, serverLoadingDone: true }, function () {});
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items;
+        if (this.state.items.length) {
+            items = this.state.items.map((function (item, index) {
+                return React.createElement(BrandsListItem, { entry: item, key: index });
+            }).bind(this));
+        } else {
+            items = React.createElement(
+                "div",
+                { className: "text-center" },
+                this.state.serverLoadingDone ? i18n.Empty : i18n.Loading,
+                " "
+            );
+        }
+
+        return React.createElement(
+            "div",
+            null,
+            items
+        );
+    }
+});
+var BrandsListItem = React.createClass({
+    displayName: "BrandsListItem",
+
+    /**
+     *
+     */
+    actions: {
+        follow: "FOLLOW"
+    },
+    /**
+     *
+     * @returns {{isFollowing: boolean}}
+     */
+    getInitialState: function () {
+        return {
+            isFollowing: this.props.entry.is_following,
+            followersCount: this.props.entry.followers
+        };
+    },
+    /**
+     */
+    componentDidMount: function () {
+        var element = ReactDOM.findDOMNode(this);
+        App.Dispatcher.attach(this.actions.follow, this.itemChanged);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.follow, this.itemChanged);
+    },
+    /**
+     *
+     * @param data
+     * @param event
+     */
+    itemChanged: function (data, event) {
+        if (event.id == this.props.entry.id && data.ok) {
+            var isFollowing = this.state.isFollowing;
+            var addFollowersCount = isFollowing ? -1 : 1;
+            var followersCount = this.state.followersCount + addFollowersCount;
+            this.setState({ isFollowing: !isFollowing, followersCount: followersCount });
+        }
+    },
+    /**
+     *
+     * @param isFollowing
+     * @private
+     */
+    _getFollowActionUrl: function (isFollowing) {
+        var url = isFollowing ? App.Routes.unFollowBrand : App.Routes.followBrand;
+        return App.Helpers.formatApiUrl(url, { id: this.props.entry.id });
+    },
+    /**
+     *
+     */
+    toggleFollowing: function () {
+        App.Stores.post({
+            url: this._getFollowActionUrl(this.state.isFollowing),
+            action: this.actions.follow,
+            event: {
+                id: this.props.entry.id
+            }
+        });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var entry = this.props.entry;
+        return React.createElement(
+            "div",
+            { className: "col-lg-6 col-sm-6 col-xs-12 NoPadding", key: entry.id },
+            React.createElement(
+                "div",
+                { className: "BrandCard" },
+                React.createElement(
+                    "div",
+                    { className: "BrandCard__Verified" },
+                    React.createElement("div", { className: "icon icon-verified" })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "BrandCard__ImageContainer" },
+                    React.createElement(
+                        "a",
+                        { href: App.Helpers.getAbsoluteUrl(App.Routes.brand, { id: this.props.entry.id }) },
+                        React.createElement("img", {
+                            className: "BrandCard__Image",
+                            src: App.Helpers.getMediaUrl(entry.cover.thumb.url) })
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "BrandCard__Title" },
+                    React.createElement(
+                        "span",
+                        null,
+                        entry.name
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "BrandCard__Actions" },
+                    React.createElement(
+                        "div",
+                        { className: "pull-right brand-btn-action center" },
+                        React.createElement(
+                            "div",
+                            { className: "BrandCard__Followers" },
+                            React.createElement("i", { className: "ti-user" }),
+                            "  ",
+                            entry.followers_count
+                        )
+                    ),
+                    React.createElement(
+                        "button",
+                        {
+                            className: "BrandCard__FollowButton BrandCard__FollowButton--" + (this.state.isFollowing ? "on" : "off"),
+                            onClick: this.toggleFollowing },
+                        React.createElement("i", { className: "ti-heart" })
+                    ),
+                    React.createElement("div", { className: "clearfix" })
+                )
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var CategoriesList = React.createClass({
+    displayName: "CategoriesList",
+
+    actions: {
+        list: "Categories_LIST"
+    },
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], selectedItems: [] };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataChange);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.list, this.onDataChange);
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        console.log(result);
+        this.setState({ items: result.categories }, this._renderCarousel);
+    },
+
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.categories,
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     * @private
+     */
+    _renderCarousel: function () {
+        var owl = $("#categories_carousel");
+        owl.owlCarousel({
+            itemsDesktop: [1000, 5], //5 items between 1000px and 901px
+            itemsDesktopSmall: [900, 3], // betweem 900px and 601px
+            itemsTablet: [600, 2], //2 items between 600 and 0
+            itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
+        });
+        owl.find('.item').on('click', (function (event) {
+            var $this = $(event.currentTarget);
+            var selectedItems = this.state.selectedItems;
+            var id = $this.data('filter');
+            if ($this.hasClass('clicked')) {
+                selectedItems = selectedItems.filter(function (entry) {
+                    return id != entry;
+                });
+                $this.removeAttr('style').removeClass('clicked');
+            } else {
+                selectedItems.push(id);
+                $this.addClass('clicked');
+            }
+            this.setState({ selectedItems: selectedItems });
+            console.log(selectedItems);
+            this.props.onCategoriesSelected(selectedItems);
+        }).bind(this));
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items = [];
+        this.state.items.forEach(function (item, index) {
+            items.push(React.createElement(
+                "div",
+                { className: "item", key: index, "data-filter": item.id },
+                React.createElement("i", { className: item.icon_class_name }),
+                React.createElement(
+                    "h6",
+                    null,
+                    item.name
+                )
+            ));
+        });
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { id: "categories_carousel", className: "owl-carousel owl-theme" },
+                items
+            )
+        );
+    }
+});
+
+var EmptyFollowersList = React.createClass({
+    displayName: "EmptyFollowersList",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 text-center" },
+            "Empty"
+        );
+    }
+});
+
+/**
+ *
+ * @type {*|Function}
+ */
+var Loading = React.createClass({
+    displayName: "Loading",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 text-center" },
+            i18n.Loading
+        );
+    }
+});
+/**
+ *
+ * @type {*|Function}
+ */
+var EmptyProductsList = React.createClass({
+    displayName: "EmptyProductsList",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 ProductCardLisContainerEmpty" },
+            i18n.Empty
+        );
+    }
+
+});
+//
+var DayTimer = React.createClass({
+    displayName: "DayTimer",
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { tomorrow: this.props.tomorrow };
+    },
+    /**
+     *
+     * @private
+     */
+    _update: function () {
+        var tomorrow = new Date();
+        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        var timerId = countdown(tomorrow, function (ts) {
+            //if (ts.value > 0){
+            if (ts.hours == 0 && ts.minutes == 0 && ts.seconds == 0) {
+                window.clearInterval(timerId);
+                App.Dispatcher.dispatch(App.Constants.END_DAY);
+            }
+            document.getElementById('pageTimer').innerHTML = ts.toHTML("strong");
+            //}
+            /*else {
+              }*/
+        }, countdown.HOURS | countdown.MINUTES | countdown.SECONDS);
+        //
+        //this.setState({'tomorrow': this.state.tomorrow - 1000});
+        //setTimeout(this._update.bind(this), 1000);
+    },
+    /**
+     */
+    componentDidMount: function () {
+        var locale = i18n.countdown;
+        if (locale) {
+            countdown.setLabels(locale.singular, locale.multiple, locale.and, locale.comma, locale.now);
+        }
+        this._update();
+    },
+    /**
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "DayTimer" },
+            React.createElement(
+                "span",
+                { id: "pageTimer" },
+                this.state.tomorrow
+            )
+        );
+    }
+});
+
+var Fetching = React.createClass({
+    displayName: "Fetching",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "col-lg-12 text-center" },
+            "Loading server data"
+        );
+    }
+});
+//
+var Map = React.createClass({
+    displayName: 'Map',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { searchResults: [], searchFor: 'products' };
+    },
+    /**
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.attach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+        var $map = $('#map');
+        var $main = $('main');
+        var top = $map.offset().top;
+        $main.css('paddingBottom', '0px');
+        if (this.props.height) {
+            $map.css('height', this.props.height);
+        } else {
+            $map.css('height', $(window).height() - top);
+            $('body').addClass('map');
+        }
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        this._map = map;
+        this._placeMarkers();
+        if (this.props.onMapAreaChanged) {
+            this._map.on('moveend', this.props.onMapAreaChanged);
+        }
+    },
+    _parsePosition: function (entry) {
+        var position = entry.position || entry;
+        if (position.latitude) {
+            position = [position.latitude, position.longitude];
+        }
+        return position;
+    },
+    /**
+     *
+     * @private
+     */
+    _placeMarkers: function () {
+        if (this.props.positions) {
+            this.props.positions.forEach((function (entry) {
+                console.log(entry);
+                L.marker(this._parsePosition(entry), {
+                    icon: L.divIcon({
+                        html: '<div class="pin"></div>\
+            <div class="pulse"></div>'
+                    })
+                }).addTo(this._map);
+            }).bind(this));
+        }
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.detach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     *
+     * @private
+     */
+    _searchTypeChanged: function (data) {
+        this.setState({ searchFor: data.tab });
+    },
+    /**
+     *
+     */
+    _searchChanged: function (data) {
+        this.setState({ searchResults: data.results });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'MapContainer' },
+            React.createElement('div', { id: 'map' })
+        );
+    }
+});
+/**
+ *
+ */
+
+
+var ACTIVE_CLASS = "active";
+
+var WISHERS_TAB = "wishers";
+var STORES_TAB = "stores";
+var REVIEWS_TAB = "reviews";
+var COUPON_TAB = "coupons";
+/**
+ *
+ */
+var ProductShow = React.createClass({
+    displayName: "ProductShow",
+
+    /**
+     *
+     */
+    actions: {
+        show: "SHOW_PRODUCT"
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.showProduct,
+            action: this.actions.show,
+            params: { id: this.props.id }
+        });
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.show, this.onDataChange);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.list, this.onDataChange);
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { item: {}, serverLoadingDone: false, baseImageUrl: null, isWishing: false };
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({ serverLoadingDone: true, item: result, isWishing: result.is_wishing });
+    },
+
+    /**
+     * Callback to change current image
+     */
+    onImageThumbnailClicked: function (image, e) {
+        e.preventDefault();
+        this.setState({ baseImageUrl: App.Constants.MEDIA_URL + image.file.url });
+    },
+    /**
+     * Share action
+     */
+    _shareAction: function (e) {
+        e.preventDefault();
+        App.Stores.get({
+            url: App.Helpers.formatApiUrl(App.Routes.shareProduct, { id: this.state.item.id })
+        });
+    },
+
+    /**
+     *
+     * @param isWishing
+     * @private
+     */
+    _getFollowActionUrl: function (isWishing) {
+        var url = isWishing ? App.Routes.unWishProduct : App.Routes.wishProduct;
+        return App.Helpers.formatApiUrl(url, { id: this.state.item.id });
+    },
+    /**
+     * Wish action
+     */
+    _wishAction: function (e) {
+        e.preventDefault();
+        App.Stores.post({
+            url: this._getFollowActionUrl(this.state.isWishing),
+            action: this.actions.wish,
+            event: {
+                id: this.state.item.id
+            }
+        });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var activeTab = this.props.activeTab;
+        var item = this.state.item;
+        var baseImageUrl = this.state.baseImageUrl;
+        if (!baseImageUrl && item.pictures && item.pictures.length) {
+            baseImageUrl = App.Constants.MEDIA_URL + item.pictures[0].file.url;
+        }
+        var container = null;
+        switch (activeTab) {
+            case STORES_TAB:
+                container = React.createElement(ProductShowStoresList, { id: this.props.id });
+                break;
+            case WISHERS_TAB:
+                container = React.createElement(ProductShowWishersList, { id: this.props.id });
+                break;
+            case COUPON_TAB:
+                container = React.createElement(ProductShowCouponsList, { id: this.props.id });
+                break;
+            case REVIEWS_TAB:
+            default:
+                container = React.createElement(ProductShowReviewsList, { id: this.props.id });
+        }
+        var brand = null;
+        if (item.brand) {
+            brand = React.createElement(
+                "a",
+                { className: "ProductCard__BrandImageContainer",
+                    href: App.Helpers.getAbsoluteUrl(App.Routes.brand, { id: item.brand.id }) },
+                React.createElement("img", {
+                    src: App.Helpers.getMediaUrl(item.brand.picture.thumb.url),
+                    alt: item.brand.name })
+            );
+        }
+        return React.createElement(
+            "div",
+            { className: "col-lg-12" },
+            React.createElement(
+                "div",
+                { className: "ProductDetails col-lg-12" },
+                React.createElement(
+                    "div",
+                    { className: "ProductDetails__Cover" },
+                    React.createElement(
+                        "div",
+                        { className: "ProductDetails__Menu" },
+                        React.createElement(
+                            "div",
+                            { className: "btn-group" },
+                            React.createElement(
+                                "button",
+                                { type: "button", onClick: this._shareAction, className: "btn btn-warning" },
+                                React.createElement("i", {
+                                    className: "ti-share" })
+                            ),
+                            React.createElement(
+                                "button",
+                                { type: "button", onClick: this._wishAction, className: "btn btn-warning" },
+                                React.createElement("i", {
+                                    className: "ti-heart" })
+                            )
+                        )
+                    ),
+                    React.createElement("img", { className: "ProductDetails__BaseImage", src: baseImageUrl }),
+                    React.createElement(
+                        "span",
+                        { className: "ProductDetails__Name" },
+                        item.name || '',
+                        " by ",
+                        brand
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "ProductDetails__Stats" },
+                        React.createElement(DayTimer, null)
+                    ),
+                    React.createElement(ProductShowGallery, { pictures: item.pictures || [],
+                        onImageThumbnailClicked: this.onImageThumbnailClicked })
+                ),
+                React.createElement(
+                    "ul",
+                    { className: "nav nav-tabs" },
+                    React.createElement(
+                        "li",
+                        { className: activeTab == STORES_TAB ? ACTIVE_CLASS : '' },
+                        React.createElement(
+                            "a",
+                            { href: App.Helpers.getAbsoluteUrl(App.Routes.productStores, { id: this.props.id }) },
+                            React.createElement("i", { className: "ti-align-justify" }),
+                            " Info"
+                        )
+                    ),
+                    React.createElement(
+                        "li",
+                        { className: activeTab == COUPON_TAB ? ACTIVE_CLASS : '' },
+                        React.createElement(
+                            "a",
+                            { href: App.Helpers.getAbsoluteUrl(App.Routes.productStores, { id: this.props.id }) },
+                            React.createElement("i", { className: "ti-map" }),
+                            " Stores"
+                        )
+                    ),
+                    React.createElement(
+                        "li",
+                        { className: activeTab == COUPON_TAB ? ACTIVE_CLASS : '' },
+                        React.createElement(
+                            "a",
+                            { href: App.Helpers.getAbsoluteUrl(App.Routes.productCoupons, { id: this.props.id }) },
+                            React.createElement("i", { className: "ti-agenda" }),
+                            " Coupons"
+                        )
+                    )
+                ),
+                container
+            )
+        );
+    }
+});
+var ProductShowCouponsListItem = React.createClass({
+    displayName: "ProductShowCouponsListItem",
+
+    shareCoupon: function () {
+        alert("coupon");
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductCouponsList__Item" },
+            React.createElement(
+                "div",
+                null,
+                React.createElement("img", { src: this.props.item.image_qr_code }),
+                React.createElement(
+                    "button",
+                    { className: "AppButton", onClick: this.shareCoupon },
+                    i18n.Share
+                )
+            )
+        );
+    }
+});
+var ProductShowCouponsList = React.createClass({
+    displayName: "ProductShowCouponsList",
+
+    /**
+     *
+     */
+    actions: {
+        list: "PRODUCT_COUPONS_LIST"
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productCoupons,
+            params: { id: this.props.id },
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataServerLoaded);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    onDataServerLoaded: function (response) {
+        this.setState({ items: response.result.coupons, serverLoadingDone: true });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items = [];
+        //
+        if (this.state.items.length) {
+            //
+            this.state.items.forEach(function (entry, index) {
+                if (entry.image_qr_code) {
+                    items.push(React.createElement(ProductShowCouponsListItem, { item: entry, key: index }));
+                }
+            });
+
+            /*
+             items = this.state.items.map(function (item, index) {
+             return (<ProductCouponListItem item={item} key={index}/>);
+             }.bind(this));*/
+        } else {
+                items = this.state.serverLoadingDone ? '0 items ' : "Loading ....";
+            }
+
+        return React.createElement(
+            "div",
+            { className: "ProductCouponsList" },
+            items
+        );
+    }
+});
+/**
+ *
+ */
+
+var ProductShowGallery = React.createClass({
+    displayName: "ProductShowGallery",
+
+    /**
+     *
+     */
+    render: function () {
+        var pictures = [];
+        var i = 0;
+        this.props.pictures.forEach((function (item) {
+            pictures.push(React.createElement("img", { key: i++,
+                onClick: this.props.onImageThumbnailClicked.bind(this, item),
+                src: App.Constants.MEDIA_URL + item.file.thumb.url }));
+        }).bind(this));
+
+        return React.createElement(
+            "div",
+            { className: "Product_GalleryThumbnails" },
+            pictures
+        );
+    }
+});
+var ProductShowReviewsListItem = React.createClass({
+    displayName: "ProductShowReviewsListItem",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductCard__Wisher" },
+            React.createElement("img", { src: "https://s-media-cache-ak0.pinimg.com/avatars/tatianamamaeva_1382583329_30.jpg" })
+        );
+    }
+});
+var ProductShowReviewsList = React.createClass({
+    displayName: "ProductShowReviewsList",
+
+    actions: {
+        list: "PRODUCT_WISHERS_LIST"
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productReviews,
+            params: { id: this.props.id },
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataServerLoaded);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    onDataServerLoaded: function (response) {
+        this.setState({ items: response.result.reviews, serverLoadingDone: true });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items;
+        //
+        if (this.state.items.length) {
+            items = this.state.items.map((function (item, index) {
+                return React.createElement(ProductShowReviewsListItem, { item: item, key: index });
+            }).bind(this));
+        } else {
+            items = this.state.serverLoadingDone ? '0 items ' : "Loading ....";
+        }
+
+        return React.createElement(
+            "div",
+            { className: "ProductCard__WishersList" },
+            items
+        );
+    }
+});
+var ProductShowStoresListItem = React.createClass({
+    displayName: "ProductShowStoresListItem",
+
+    shareCoupon: function () {
+        alert("coupon");
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductCouponsList__Item" },
+            React.createElement(
+                "div",
+                null,
+                React.createElement(Button, { onClick: this.shareCoupon })
+            )
+        );
+    }
+});
+var ProductShowStoresList = React.createClass({
+    displayName: "ProductShowStoresList",
+
+    /**
+     *
+     */
+    actions: {
+        list: "PRODUCT_STORES_LIST"
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productStores,
+            params: { id: this.props.id },
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataServerLoaded);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    onDataServerLoaded: function (response) {
+        this.setState({ items: response.result.stores, serverLoadingDone: true });
+    },
+    /**
+     *
+     */
+    render: function () {
+
+        return React.createElement(
+            "div",
+            { className: "ProductCouponsList" },
+            React.createElement(Map, { positions: [[51.5, -0.09], [52.5, -0.2]] })
+        );
+    }
+});
+var ProductShowWishersListItem = React.createClass({
+    displayName: "ProductShowWishersListItem",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductWishersList__Item" },
+            React.createElement("img", { src: "https://s-media-cache-ak0.pinimg.com/avatars/tatianamamaeva_1382583329_30.jpg" }),
+            React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "span",
+                    null,
+                    "favorites"
+                ),
+                " : ",
+                React.createElement(
+                    "span",
+                    null,
+                    this.props.item.products_count
+                ),
+                React.createElement(
+                    "span",
+                    null,
+                    "brands"
+                ),
+                " : ",
+                React.createElement(
+                    "span",
+                    null,
+                    this.props.item.brands_count
+                )
+            )
+        );
+    }
+});
+var ProductShowWishersList = React.createClass({
+    displayName: "ProductShowWishersList",
+
+    actions: {
+        list: "PRODUCT_WISHERS_LIST"
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productWishers,
+            params: { id: this.props.id },
+            action: this.actions.list
+        });
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.list, this.onDataServerLoaded);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    onDataServerLoaded: function (response) {
+        this.setState({ items: response.result.wishers, serverLoadingDone: true });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items;
+        //
+        if (this.state.items.length) {
+            //
+            var clone = this.state.items[0];
+            items = [];
+            for (var i = 0; i < 50; i++) {
+                items.push(React.createElement(ProductShowWishersListItem, { item: clone, key: i }));
+            }
+            /*
+             items = this.state.items.map(function (item, index) {
+             return (<ProductWishersListItem item={item} key={index}/>);
+             }.bind(this));*/
+        } else {
+                items = this.state.serverLoadingDone ? '0 items ' : "Loading ....";
+            }
+
+        return React.createElement(
+            "div",
+            { className: "ProductWishersList" },
+            items
+        );
+    }
+});
+/**
+ *
+ */
+
+var Products = React.createClass({
+    displayName: "Products",
+
+    /**
+     *
+     */
+    actions: {
+        list: "PRODUCTS_LIST"
+    },
+    /**
+     * 
+     * @returns {{endDay: boolean}}
+     */
+    getInitialState: function () {
+        return { endDay: false };
+    },
+    /**
+     *
+     */
+    filter: function () {
+        alert('x');
+    },
+    /**
+     *
+     * @private
+     */
+    _endDay: function () {
+        this.setState({ endDay: true });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Constants.END_DAY, this._endDay);
+    },
+    /**
+     *
+     */
+    render: function () {
+        var component = undefined;
+        if (!this.state.endDay) {
+            component = React.createElement(
+                "div",
+                null,
+                React.createElement(DayTimer, null),
+                React.createElement(ProductsList, null)
+            );
+        } else {
+            component = React.createElement(
+                "div",
+                { className: "text-center col-lg-12" },
+                React.createElement(
+                    "span",
+                    null,
+                    "Next Day !!"
+                )
+            );
+        }
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                null,
+                component
+            ),
+            React.createElement("div", { className: "clearfix" })
+        );
+    }
+});
+/**
+ *
+ */
+
+var ProductsList = React.createClass({
+    displayName: "ProductsList",
+
+    /**
+     *
+     */
+    actions: {
+        list: "PRODUCTS_LIST"
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], serverLoadingDone: false };
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.products,
+            action: this.actions.list,
+            query: {
+                brands: this.props.brand
+            }
+        });
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        //
+        App.Dispatcher.attach(this.actions.list, this.onDataChange);
+        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.list, this.onDataChange);
+        App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+    },
+    /**
+     *
+     */
+    filterChanged: function (state) {
+        alert('listen');
+        console.log(state);
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        this.setState({ items: result.products, serverLoadingDone: true }, function () {});
+    },
+    /**
+     *
+     */
+    render: function () {
+        var items;
+        //
+        if (this.state.items.length) {
+            items = [];
+            var i = 0;
+            this.state.items.forEach((function (item, index) {
+                items.push(React.createElement(ProductsListItem, { item: item, index: i, key: index + i++ }));
+            }).bind(this));
+        } else {
+            items = this.state.serverLoadingDone ? React.createElement(EmptyProductsList, null) : React.createElement(Loading, null);
+        }
+
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { className: "ProductCardLisContainer" },
+                items
+            )
+        );
+    }
+});
+var ProductsListItem = React.createClass({
+    displayName: "ProductsListItem",
+
+    /**
+     *
+     */
+    actions: {
+        follow: "FOLLOW",
+        wish: "WISH"
+    },
+    /**
+     *
+     * @returns {{isWishing: boolean}}
+     */
+    getInitialState: function () {
+        return {
+            isWishing: this.props.item.is_wishing,
+            wishersCount: this.props.item.wishers_count
+        };
+    },
+    /**
+     *
+     * @param withSelect
+     * @returns {string}
+     */
+    getProgressId: function () {
+        var withSelect = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+        return withSelect + 'progress_' + this.props.index;
+    },
+    /**
+     */
+    componentDidMount: function () {
+        var element = ReactDOM.findDOMNode(this);
+        App.Dispatcher.attach(this.actions.wish, this.itemChangedListener);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.wish, this.itemChangedListener);
+    },
+    /**
+     *
+     * @param data
+     * @param event
+     */
+    itemChangedListener: function (data, event) {
+        if (event.id == this.props.item.id && data.ok) {
+            var isWishing = this.state.isWishing;
+            var addFollowersCount = isWishing ? -1 : 1;
+            var wishersCount = this.state.wishersCount + addFollowersCount;
+            this.setState({ isWishing: !isWishing, wishersCount: wishersCount });
+        }
+    },
+    /**
+     *
+     * @param isWishing
+     * @private
+     */
+    _getFollowActionUrl: function (isWishing) {
+        var url = isWishing ? App.Routes.unWishProduct : App.Routes.wishProduct;
+        return App.Helpers.formatApiUrl(url, { id: this.props.item.id });
+    },
+    /**
+     * Share action
+     */
+    _shareAction: function (e) {
+        e.preventDefault();
+        App.Stores.get({
+            url: App.Helpers.formatApiUrl(App.Routes.shareProduct, { id: this.props.item.id })
+        });
+    },
+    /**
+     * Wish action
+     */
+    _wishAction: function (e) {
+        e.preventDefault();
+        App.Stores.post({
+            url: this._getFollowActionUrl(this.state.isWishing),
+            action: this.actions.wish,
+            event: {
+                id: this.props.item.id
+            }
+        });
+    },
+
+    /**
+     * Share action
+     */
+    _viewCouponAction: function (e) {
+        e.preventDefault();
+        App.Stores.loadData({
+            url: App.Helpers.formatApiUrl(App.Routes.productCoupons, { id: this.props.item.id })
+        });
+    },
+    /**
+     * Callback to change current image
+     */
+    onImageThumbnailClicked: function (image, event) {
+        event.preventDefault();
+        this.setState({ baseImageUrl: App.Constants.MEDIA_URL + image.file.url }, function () {
+            this.props.recalculate();
+        });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var item = this.props.item;
+        var info = item.info;
+        var pictures = item.pictures || [];
+        var baseImageUrl = this.state.baseImageUrl;
+        if (!baseImageUrl && pictures.length) {
+            baseImageUrl = App.Constants.MEDIA_URL + pictures[0].file.url;
+        }
+        return React.createElement(
+            "div",
+            { className: "ProductCardContainer NoPadding col-lg-6 col-sm-12" },
+            React.createElement(
+                "div",
+                { className: "ProductCard" },
+                React.createElement(
+                    "div",
+                    { className: "ProductDetails__Menu" },
+                    React.createElement(
+                        "div",
+                        { className: "btn-group" },
+                        React.createElement(
+                            "button",
+                            { type: "button", onClick: this._shareAction, className: "btn btn-warning" },
+                            " ",
+                            React.createElement("i", { className: "ti-share" })
+                        ),
+                        React.createElement(
+                            "button",
+                            { type: "button", onClick: this._wishAction, className: "btn btn-warning" },
+                            " ",
+                            React.createElement("i", { className: "ti-heart" })
+                        )
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "ProductCard__ImageContainer" },
+                    React.createElement(
+                        "a",
+                        { href: '/products/' + info.id },
+                        React.createElement(
+                            "div",
+                            { className: "sixteen-nine" },
+                            React.createElement("div", { className: "content", style: { 'backgroundImage': 'url(' + baseImageUrl + ')' } })
+                        )
+                    ),
+                    React.createElement(
+                        "a",
+                        { className: "ProductCard__BrandImageContainer",
+                            href: App.Helpers.getAbsoluteUrl(App.Routes.brand, { id: item.brand.id }) },
+                        React.createElement("img", {
+                            src: App.Helpers.getMediaUrl(item.brand.picture.thumb.url),
+                            alt: item.brand.name })
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "ProductCard__Details" },
+                    React.createElement(
+                        "div",
+                        { className: "ProductCard__Name" },
+                        React.createElement(
+                            "span",
+                            { className: "card-title" },
+                            info.name
+                        )
+                    ),
+                    React.createElement(ProductShowGallery, { pictures: pictures || [],
+                        onImageThumbnailClicked: this.onImageThumbnailClicked }),
+                    React.createElement(ProductsListItemWishersList, { list: item.wishers })
+                )
+            )
+        );
+    }
+});
+var ProductsListItemWishersListItem = React.createClass({
+    displayName: "ProductsListItemWishersListItem",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "ProductCard__WisherListItem" },
+            React.createElement("img", { src: "https://s-media-cache-ak0.pinimg.com/avatars/tatianamamaeva_1382583329_30.jpg" })
+        );
+    }
+});
+var ProductsListItemWishersList = React.createClass({
+    displayName: "ProductsListItemWishersList",
+
+    /**
+     *
+     */
+    render: function () {
+        /**
+         *
+         * @type {Array}
+         */
+        var items = this.props.list.map(function (entry) {
+            return React.createElement(ProductsListItemWishersListItem, { item: { id: entry } });
+        });
+        return React.createElement(
+            "div",
+            { className: "ProductCard__WishersList" },
+            items,
+            React.createElement(
+                "div",
+                { className: "ProductCard__WishersListMore" },
+                React.createElement("i", { className: "ti-eye" }),
+                " ",
+                items.length
+            )
+        );
+    }
+});
+//
+var Search = React.createClass({
+    displayName: 'Search',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { searchResults: [], searchFor: 'products' };
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function (query) {
+        App.Stores.loadData({
+            url: App.Routes.search,
+            action: App.Actions.SEARCH,
+            data: { query: query, searchType: App.Actions.AUTO_COMPLETE }
+        });
+    },
+
+    /**
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.attach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.detach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     * 
+     * @private
+     */
+    _searchTypeChanged: function (data) {
+        this.setState({ searchFor: data.tab });
+    },
+    /**
+     *
+     * @private
+     */
+    _inputChanged: function (e) {
+        var $i = $(ReactDOM.findDOMNode(this)).find('i');
+        var value = e.currentTarget.value;
+        if (!value.length) {
+            $i.show();
+            return;
+        } else {
+            $i.hide();
+            this.loadDataFromServer(value);
+        }
+    },
+    /**
+     *
+     */
+    _searchChanged: function (data) {
+        this.setState({ searchResults: data.results });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'span',
+            { className: 'SearchContainer' },
+            React.createElement('i', { className: 'ti-search' }),
+            React.createElement('input', { onChange: this._inputChanged })
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var ShareModal = React.createClass({
+    displayName: "ShareModal",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement("div", { className: "modal" });
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBar = React.createClass({
+    displayName: "SideBar",
+
+    /**
+     *
+     */
+    render: function () {
+        /**
+         * NEXT_VERSION
+         * <div className="AppSideBar__Header AppSideBar__Header--top">
+         <span>{i18n['Similar products'] }</span>
+         </div>
+          <div className="AppSideBar__Header">
+         <span>{i18n['Similar brands'] }</span>
+         </div>
+         */
+        var profile = this.props.isLoggedIn;
+        var profileBlock = null;
+        if (profile) {
+            profileBlock = React.createElement(UserProfileSideBar, null);
+        }
+        var isProductsView = this.props.isProductsView;
+        var isItemView = this.props.isItemView;
+        var components = undefined;
+        if (isProductsView) {
+            components = isItemView ? React.createElement(SideBarProduct, null) : React.createElement(SideBarProducts, null);
+        } else {
+            components = isItemView ? React.createElement(SideBarBrand, null) : React.createElement(SideBarBrands, null);
+        }
+        return React.createElement(
+            "div",
+            { className: "AppSideBar" },
+            profileBlock,
+            components,
+            React.createElement(SideBarFooter, null)
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBarBrand = React.createClass({
+    displayName: "SideBarBrand",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            "Similar brands"
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBarBrands = React.createClass({
+    displayName: "SideBarBrands",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(SideBarFilter, { shwoPriceRange: false, showColors: false });
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+var ColorsSelector = React.createClass({
+    displayName: "ColorsSelector",
+
+    /**
+     *
+     * @returns {{selectedColors: Array}}
+     */
+    getInitialState: function () {
+        return {
+            selectedColors: []
+        };
+    },
+    /**
+     *
+     */
+    _reset: function () {
+        this._updateSelectedColors([]);
+    },
+    /**
+     *
+     * @param color
+     */
+    _selectColor: function (color) {
+        var selectedColors = this.state.selectedColors;
+        // exists
+        if (selectedColors.indexOf(color) > -1) {
+            selectedColors = selectedColors.filter(function (item) {
+                return item != color;
+            });
+        } else {
+            selectedColors.push(color);
+        }
+        console.log(selectedColors);
+        this._updateSelectedColors(selectedColors);
+    },
+    /**
+     *
+     * @param selectedColors
+     * @private
+     */
+    _updateSelectedColors: function (selectedColors) {
+        this.setState({ 'selectedColors': selectedColors });
+        this.props.onColorSelectedChange(selectedColors);
+    },
+    /**
+     *
+     * @private
+     * Used to handle out of closure in forEach loop
+     */
+    _addColorItem: function (color, className) {
+        return React.createElement("div", { className: className, href: "?default=true", key: color,
+            onClick: this._selectColor.bind(this, color),
+            style: { "background": color } });
+    },
+    /**
+     *
+     * @returns {XML}
+     */
+    render: function () {
+        var colors = ["#F1002D", "#0EBCF2", "#B66672", '#12A641', '#4F96B6', '#E45E66', '#96AA66', '#5B84AA', '#74C683', '#30BBB1', '#7646B8', '#1A5AE4', '#966650', '#FF1D13', '#cf315a'];
+        var items = [];
+        var selectedColors = this.state.selectedColors;
+        var className = 'FilterBlock__ColorChoice';
+        var currentClassName = className;
+        colors.forEach((function (color) {
+            currentClassName = className;
+            if (selectedColors.indexOf(color) > -1) {
+                currentClassName += ' FilterBlock__ColorChoice--Selected';
+            }
+
+            items.push(this._addColorItem(color, currentClassName));
+        }).bind(this));
+        return React.createElement(
+            "div",
+            { className: "FilterBlock" },
+            React.createElement(
+                "div",
+                { className: "AppSideBar__Header" },
+                "Color",
+                React.createElement("input", { type: "checkbox", className: "pull-left", onClick: this._reset })
+            ),
+            React.createElement(
+                "div",
+                { className: "FilterBlock__ColorChoicesContainer" },
+                items
+            ),
+            React.createElement("div", { className: "line" })
+        );
+    }
+});
+
+/**
+ * Range slider
+ */
+var RangeSlider = React.createClass({
+    displayName: "RangeSlider",
+
+    componentDidMount: function () {
+        var $slider = $("#slider-range");
+        $slider.slider({
+            range: true,
+            min: 0,
+            max: 3000,
+            values: [75, 300],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            },
+            change: (function (args) {
+                this.props.onSliderChanged(args);
+            }).bind(this)
+        });
+        $("#amount").val("$" + $slider.slider("values", 0) + " - $" + $slider.slider("values", 1));
+    },
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "FilterBlock" },
+            React.createElement(
+                "div",
+                { className: "FilterBlock__PriceRange" },
+                React.createElement(
+                    "div",
+                    { className: "AppSideBar__Header" },
+                    React.createElement("input", { type: "checkbox", className: "pull-left", onclick: this._reset }),
+                    React.createElement(
+                        "span",
+                        null,
+                        "Price range:"
+                    ),
+                    React.createElement("input", { type: "text", id: "amount", readonly: true,
+                        style: { border: 0, color: '#f6931f', 'display': 'inline-block' } })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "FilterBlock__PriceRangeBody" },
+                    React.createElement("div", { id: "slider-range" })
+                )
+            )
+        );
+    }
+});
+var SideBarFilter = React.createClass({
+    displayName: "SideBarFilter",
+
+    /**
+     *
+     * @returns {{map: null, color: null, categoriesList: null, range: null}}
+     */
+    getInitialState: function () {
+        return {
+            map: null,
+            color: null,
+            categoriesList: null,
+            range: null
+        };
+    },
+    /**
+     *
+     */
+    componentWillUpdate: function (current, next) {
+        // FILTER_CHANGED
+        App.Dispatcher.dispatch(App.Actions.FILTER_CHANGED, next);
+    },
+    /**
+     *
+     */
+    onMapAreaChanged: function (map) {
+        this.setState({ map: map });
+    },
+    /***
+     *
+     */
+    onColorSelectedChange: function (color) {
+        this.setState({ color: color });
+    },
+    /**
+     *
+     * @param categoriesList
+     */
+    onCategoriesSelected: function (categoriesList) {
+        this.setState({ categoriesList: categoriesList });
+    },
+    /**
+     *
+     */
+    onSliderChanged: function (range) {
+        this.setState({ range: range });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var profile = this.props.is_logged_in;
+        var profileBlock = null;
+        if (profile) {
+            profileBlock = React.createElement(UserProfileSideBar, null);
+        }
+        var colorsFilter = [];
+        if (this.props.showColors) {
+            colorsFilter.push(React.createElement(ColorsSelector, { onColorSelectedChange: this.onColorSelectedChange }));
+        }
+        var priceRange = [];
+        if (this.props.shwoPriceRange) {
+            priceRange.push(React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged }));
+        }
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { className: "AppSideBar__Header AppSideBar__Header--top" },
+                React.createElement("input", { type: "checkbox", className: "pull-left", onclick: this._reset }),
+                React.createElement(
+                    "span",
+                    null,
+                    "Map"
+                )
+            ),
+            React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged, height: "200px" }),
+            React.createElement(
+                "div",
+                { className: "AppSideBar__Header" },
+                React.createElement("input", { type: "checkbox", className: "pull-left", onclick: this._reset }),
+                React.createElement(
+                    "span",
+                    null,
+                    "Categories"
+                )
+            ),
+            React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: "Product" }),
+            priceRange,
+            colorsFilter,
+            React.createElement("div", { className: "clearfix" })
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBarFooter = React.createClass({
+    displayName: "SideBarFooter",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "AppSideBar__Footer" },
+            React.createElement(
+                "div",
+                { className: "AppAndroidStoreLink" },
+                React.createElement(
+                    "a",
+                    { href: "http://play.google.com/store?utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" },
+                    React.createElement("img", { alt: "undefined",
+                        src: "https://play.google.com/intl/en_us/badges/images/generic/ar_badge_web_generic.png" })
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "SideBarFooter__Company" },
+                React.createElement(
+                    "a",
+                    { href: "#" },
+                    React.createElement("i", { className: "  ti-facebook" })
+                ),
+                React.createElement(
+                    "a",
+                    { href: "#" },
+                    React.createElement("i", { className: "ti-linkedin" })
+                ),
+                React.createElement(
+                    "a",
+                    { href: "#" },
+                    React.createElement("i", { className: "ti-twitter" })
+                ),
+                React.createElement(
+                    "span",
+                    null,
+                    "© 2016"
+                )
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBarProduct = React.createClass({
+    displayName: "SideBarProduct",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            "SimilarProducts"
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var SideBarProducts = React.createClass({
+    displayName: "SideBarProducts",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(SideBarFilter, { shwoPriceRange: true, showColors: true });
+    }
+});
+/**
+ *
+ */
+
+var TopOfDayItem = React.createClass({
+    displayName: "TopOfDayItem",
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // attribute the width
+    },
+    /**
+     *
+     */
+    render: function () {
+        var bg = '';
+        var item = this.props.item;
+        if (item.pictures && item.pictures.length && item.pictures[0].file) {
+            bg = App.Helpers.getMediaUrl(item.pictures[0].file.thumb.url);
+        }
+        return React.createElement(
+            "div",
+            { className: "ProductOfDay__Item" },
+            React.createElement(
+                "div",
+                { className: "ProductOfDay__InnerItem", style: { "backgroundImage": 'url(' + bg + ')' } },
+                React.createElement(
+                    "div",
+                    { className: "ProductOfDay__InnerItemName" },
+                    this.props.item.name
+                ),
+                React.createElement(
+                    "div",
+                    { className: "ProductOfDay__InnerItemVoteNumber" },
+                    "15"
+                )
+            )
+        );
+    }
+
+});
+// app/assets/javascripts/components/article.js.jsx
+var TopOfDay = React.createClass({
+    displayName: "TopOfDay",
+
+    /**
+     *
+     */
+    actions: {
+        PRODUCT_OF_DAY: 'PRODUCT_OF_DAY'
+    },
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [] };
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.PRODUCT_OF_DAY, this.onDataChange);
+    },
+    /**
+     *
+     */
+    onDataChange: function (response) {
+        this.setState({ items: response.result });
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.productOfDay,
+            action: this.actions.PRODUCT_OF_DAY
+        });
+    },
+
+    /**
+     *
+     */
+    render: function () {
+        var components = null;
+        if (this.state.items.length) {
+            components = [];
+            this.state.items.forEach(function (entry, index) {
+                components.push(React.createElement(TopOfDayItem, { key: index, item: entry }));
+            });
+        }
+        return React.createElement(
+            "div",
+            { className: "ProductOfDay" },
+            React.createElement(
+                "div",
+                { className: "Block__Header" },
+                React.createElement(
+                    "span",
+                    null,
+                    "***"
+                )
+            ),
+            components
+        );
+    }
+});
+/**
+ *
+ */
+
+var UserProfile = React.createClass({
+    displayName: "UserProfile",
+
+    /**
+     *
+     */
+    actions: {
+        USER_DATA: "USER_DATA"
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { loading: false, userInformation: {} };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // attach events on brand
+        App.Dispatcher.attach(this.actions.USER_DATA, this.onUserDataFetched);
+        this.setState({ loading: true });
+        this._loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.USER_DATA, this.onUserDataFetched);
+        // attach events on brand
+    },
+
+    /**
+     *
+     */
+    _loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.userProfile,
+            params: { id: this.props.id },
+            action: this.actions.USER_DATA
+        });
+    },
+    /**
+     *
+     */
+    onUserDataFetched: function (response) {
+        this.setState({ loading: false, userInformation: response.result });
+    },
+    /**
+     *
+     */
+    render: function () {
+        if (this.state.loading) {
+            return React.createElement(Loading, null);
+        }
+        var info = this.state.info;
+        return React.createElement(
+            "div",
+            { className: "UserProfilePage" },
+            React.createElement(
+                "div",
+                { "class": "UserProfilePage__UserName" },
+                this.state.userInformation.username
+            ),
+            React.createElement(
+                "h4",
+                null,
+                i18n.Brands,
+                " : ",
+                this.state.userInformation.brands
+            ),
+            React.createElement(UserProfileBrands, { id: this.props.id })
+        );
+    }
+});
+/**
+ *
+ */
+
+var UserProfileBrandsItem = React.createClass({
+    displayName: "UserProfileBrandsItem",
+
+    render: function () {
+        var item = this.props.item;
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "a",
+                { href: App.Helpers.getAbsoluteUrl(App.Routes.brand, { id: item.id }) },
+                React.createElement(
+                    "h6",
+                    null,
+                    item.name
+                ),
+                React.createElement("img", { src: App.Helpers.getMediaUrl(item.picture.small_thumb.url) })
+            )
+        );
+    }
+});
+/**
+ *
+ */
+var UserProfileBrands = React.createClass({
+    displayName: "UserProfileBrands",
+
+    /**
+     *
+     */
+    actions: {
+        USER_BRANDS: "USER_BRANDS"
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { loading: false, items: [] };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // attach events on brand
+        App.Dispatcher.attach(this.actions.USER_BRANDS, this.onUserBrandsFetched);
+        this.setState({ loading: true });
+        this._loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.USER_BRANDS, this.onUserBrandsFetched);
+        // attach events on brand
+    },
+
+    /**
+     *
+     */
+    _loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.userBrands,
+            params: { id: this.props.id },
+            action: this.actions.USER_BRANDS
+        });
+    },
+    /**
+     *
+     */
+    onUserBrandsFetched: function (response) {
+        this.setState({ loading: false, items: response.list });
+    },
+    /**
+     *
+     */
+    render: function () {
+        if (this.state.loading) {
+            return React.createElement(Loading, null);
+        }
+        var items = [];
+        var i = 0;
+        this.state.items.forEach((function (item, index) {
+            items.push(React.createElement(UserProfileBrandsItem, { item: item, key: index + i++ }));
+        }).bind(this));
+        // "http://feelgrafix.com/data_images/out/24/944648-nature.jpg"
+        return React.createElement(
+            "div",
+            { className: "UserProfilePage_BrandsList" },
+            items
+        );
+    }
+});
+// app/assets/javascripts/components/header.js.jsx
+
+var UserProfileSideBar = React.createClass({
+    displayName: "UserProfileSideBar",
+
+    /**
+     *
+     */
+    /**
+     *
+     */
+    actions: {
+        me: "USER_PROFILE_ME"
+    },
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { profile: null, loading: false };
+    },
+    /**
+     *
+     */
+    loadDataFromServer: function () {
+        App.Stores.loadData({
+            url: App.Routes.userProfile,
+            params: { id: 'me' },
+            action: this.actions.me
+        });
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        //
+        App.Dispatcher.attach(this.actions.me, this.onDataLoaded);
+        this.setState({ loading: true });
+        this.loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.me, this.onDataLoaded);
+    },
+    /**
+     *
+     * @param response
+     */
+    onDataLoaded: function (response) {
+        this.setState({ profile: response.result, loading: false });
+    },
+    /**
+     *
+     */
+    render: function () {
+        if (this.state.loading) {
+            return React.createElement(Loading, null);
+        }
+        var container = null;
+        if (this.state.profile) {
+            var me = this.state.profile;
+            container = React.createElement(
+                "div",
+                { className: "AppSideBar__ProfileCover" },
+                React.createElement("i", { className: "ti-user" }),
+                me.username
+            );
+        }
+        return React.createElement(
+            "div",
+            { className: "AppSideBar__Profile" },
+            container
+        );
+    }
+});
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file.
+//
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+
+
+
+
+;

@@ -144,7 +144,7 @@ App.Helpers = {
  * @type {{info: string}}
  */
 App.DashboradRoutes = {
-    info: '/dashboard/ajax/info',
+    stats: '/dashboard/ajax/stats',
     galleryList: '/dashboard/gallery',
 };
 /**

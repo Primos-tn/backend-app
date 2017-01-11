@@ -27,7 +27,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # POST /products
   # POST /products.json
   def create
-    @product = Product.new(product_create_params)
+    @product = Product.new(product_form_params)
     @product.brand = current_brand
     respond_to do |format|
       if @product.save
@@ -70,7 +70,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # PATCH/PUT /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_update_params)
+      if @product.update(product_form_params)
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully updated.') }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -113,13 +113,9 @@ class Dashboard::ProductsController < Dashboard::DashboardController
     redirect_to '/422.html' if @product.account.id != current_user.id
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def product_create_params
-    params.require(:product).permit(:name, :brand_id, {pictures: []}, store_ids: [], category_ids: [])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def product_update_params
+  def product_form_params
     params.require(:product).permit(:name, :brand_id, :old_price, :new_price, store_ids: [], picture_ids: [], category_ids: [])
   end
 

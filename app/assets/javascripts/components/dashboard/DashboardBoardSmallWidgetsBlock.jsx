@@ -4,9 +4,35 @@ var DashboardBoardSmallWidgetsBlock = React.createClass({
      *
      */
     getInitialState (){
-        return {followers_count: null, views_count: null, interested_count: null, similar_count: null};
+        return {
+            followers_count: null,
+            views_count: null,
+            interested_count: null,
+            similar_count: null
+        };
     },
+    /**
+     *
+     */
+    componentDidMount () {
+        this._loadData();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
 
+    },
+    /**
+     *
+     */
+    _loadData() {
+        let url = App.DashboradRoutes.stats;
+        if (this.props.id) {
+            url += '?product_id=' + this.props.id;
+        }
+        $.get(url, this._displayStats)
+    },
     /**
      *
      */
@@ -18,25 +44,6 @@ var DashboardBoardSmallWidgetsBlock = React.createClass({
             stores_count: data.stores_count
         })
 
-    },
-    /**
-     *
-     */
-    componentDidMount () {
-        this._loadDataFromServer();
-    },
-    /**
-     *
-     */
-    componentWillUnmount: function () {
-
-    },
-    /**
-     *
-     */
-    _loadDataFromServer() {
-
-        $.get(App.DashboradRoutes.info, this._displayStats)
     },
     /**
      *

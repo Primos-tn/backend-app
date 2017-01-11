@@ -11,7 +11,7 @@ var DashboardBoardUsersBlock = React.createClass({
      *
      */
     componentDidMount () {
-        this._loadDataFromServer();
+        this._loadData();
     },
     /**
      *
@@ -22,7 +22,7 @@ var DashboardBoardUsersBlock = React.createClass({
     /**
      *
      */
-    _loadDataFromServer() {
+    _loadData() {
         // after data loaded from server
         this._dataLoaded()
     },

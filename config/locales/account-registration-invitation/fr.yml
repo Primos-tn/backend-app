@@ -17,7 +17,7 @@ fr:
   Confirmed : Confirmé
   Resend request: Re-envoie la demande
   Request accepted: Acceptation de demande
-
+  Already have an account ? : J'ai déja un compte
   activerecord:
       attributes:
         account_registration_invitation:

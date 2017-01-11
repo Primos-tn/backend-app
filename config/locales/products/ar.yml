@@ -19,3 +19,10 @@ ar:
             brand_id : العلامة تجارية
             pictures : المنتجات
             stores : المحلات
+
+  default_propeties:
+    height:
+    color:
+    weight :
+    made :
+    width :

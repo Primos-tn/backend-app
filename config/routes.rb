@@ -150,7 +150,7 @@ Rails.application.routes.draw do
     end
 
     scope :ajax, controller: 'ajax' do
-      get 'info'
+      get 'stats'
     end
 
     resources :notifications, only: %w(index show patch)
