@@ -10,6 +10,9 @@ var ProductPropertiesEdit = React.createClass({
         catch (e){
             // pass
         }
+        if (!properties){
+            properties = {};
+        }
         return {
             properties: properties,
             defaults: this.props.defaults

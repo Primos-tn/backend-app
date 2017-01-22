@@ -32884,21 +32884,58 @@ if (typeof Object.create !== "function") {
         afterLazyLoad: false
     };
 }(jQuery, window, document));
-var serversocket = new WebSocket("wss://localhost:8080/echo", false);
+$(document).ready(function () {
+    var $wsConfig = $('#ws_config');
+    var host = $wsConfig.data('host');
+    var userId = $wsConfig.data('user');
+    var isDashboard = $wsConfig.data('connection');
+    var retry = 0;
+    var wsUrl = host + '?user_id=' + userId;
+    var serversocket;
 
-serversocket.onopen = function() {
-    serversocket.send("Connection init");
-};
+    /**
+     *
+     */
+    function createWs() {
+        serversocket = new WebSocket(wsUrl, false);
+        //
+        serversocket.onopen = function () {
+            retry = 0;
+            console.log('success wss');
+            App.Dispatcher.dispatch(App.Actions.WS_CONNECTION_ESTABLISHED);
+        };
+        // Write message on receive
+        serversocket.onmessage = function (e) {
+            console.log(JSON.parse(e.data));
+            try {
+                var notification = JSON.parse(e.data);
+                //App.Dispatcher.notifyAll(notification);
+                if (isDashboard) {
+                    alert('will notify');
+                    App.Dispatcher.dispatch(App.Actions.ADMIN_NOTIFICATION, {count: 1});
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
+        };
 
-// Write message on receive
-serversocket.onmessage = function(e) {
-   // alert('data');
-};
+        // Write message on receive
+        serversocket.onerror = function (e) {
+            retry++;
+            // retry connection after 1 sec
+        };
 
-// Write message on receive
-serversocket.onerror = function(e) {
-    //alert("error");
-};
+        // Write message on receive
+        serversocket.onclose = function (e) {
+            retry++;
+            App.Dispatcher.dispatch(App.Actions.WS_CONNECTION_LOST);
+            setTimeout(createWs, 1000);
+        };
+    }
+    //
+    createWs();
+});
 ;
 App = {};
 /**
@@ -32939,11 +32976,31 @@ var dispatcher = {
      * @param {Object} event to execute
      */
     dispatch: function (action, data, event) {
+        // local notification
+        // lookup , when you send notification from current interface
         if (App.Dispatcher._listeners[action]) {
-            var listeners = App.Dispatcher._listeners[action];
-            for (var entry in listeners) {
-                listeners[entry](data, event);
-            }
+            App.Dispatcher._dispatchToListener(action, data, event)
+        }
+    },
+    /**
+     *
+     * @private
+     */
+    _dispatchToListener: function (action, data, eventSource) {
+        var listeners = App.Dispatcher._listeners[action];
+        for (var entry in listeners) {
+            listeners[entry](data, eventSource);
+        }
+    },
+    /**
+     * Future usage
+     */
+    notifyAll: function (notification) {
+        // server notification
+        var actionName = (notification || {}).action ;
+        var data = notification.data ;
+        if (actionName  &&  App.Dispatcher._listeners[actionName]) {
+            App.Dispatcher._dispatchToListener(actionName, data);
         }
     }
 };
@@ -33007,8 +33064,8 @@ App.Helpers = {
     querify: function (queryObject) {
         var query = '';
         for (var key in queryObject) {
-                query += key + '=' + queryObject[key];
-                query +='&'
+            query += key + '=' + queryObject[key];
+            query += '&'
         }
         return query;
     },
@@ -33021,7 +33078,7 @@ App.Helpers = {
         for (var key in data) {
             url = url.replace(':' + key, data[key]);
         }
-        return url +  (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
+        return url + (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
     },
     /**
      * Format an url given a key, value object
@@ -33057,18 +33114,20 @@ var routes = {
     geoSearch: 'geo/search',
     geoMine: 'geo/mine',
     brands: 'brands',
-    followBrand: 'brands/:id/follow',
-    unFollowBrand: 'brands/:id/unfollow',
-    brand: 'brands/:id',
+    showBrand: 'brands/:id',
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
     brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
+    followBrand: 'brands/:id/follow',
+    unFollowBrand: 'brands/:id/unfollow',
     products: 'products',
     productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',
     unWishProduct: 'products/:id/unwish',
+    voteProduct: 'products/:id/vote',
+    unVoteProduct: 'products/:id/unvote',
     showProduct: 'products/:id/',
     notifyProduct: 'products/:id/notify',
     productWishers: 'products/:id/wishers',
@@ -33094,29 +33153,8 @@ App.Routes = {};
 for (var key in routes) {
     App.Routes[key] = baseApiUrl + routes[key];
 }
-/**
- *
- * @type {{}}
- */
-App.Actions = {
-    SEARCH: 'SEARCH',
-    NOTIFICATION: 'NOTIFICATION',
-    FILTER_CHANGED : 'FILTER_CHANGED',
-    TAB_CHANGED : ''
-};
-/**
- *
- * @type {{}}
- */
-App.Constants = {
-    AUTO_COMPLETE: 'AUTOCOMPLETE',
-    MEDIA_URL: '/media',
-    LOGIN_ACTION: 'LOGIN',
-    END_DAY: 'END_DAY'
-
-};
 App.Configuration = {
-    MAP_TILES_URL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    MAP_TILES_URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 };
 
 // error login
@@ -33153,6 +33191,43 @@ $(document).ready(function () {
         $('#login_modal').modal('hide');
     });
 });
+
+/**
+ *
+ * @type {{}}
+ */
+
+App.Actions = {
+    'WS_CONNECTION_ESTABLISHED': 'WS_CONNECTION_ESTABLISHED',
+    'WS_CONNECTION_LOST': 'WS_CONNECTION_LOST',
+    SEARCH: 'SEARCH',
+    NOTIFICATION: 'NOTIFICATION',
+    ADMIN_NOTIFICATION: 'ADMIN_NOTIFICATION',
+    FILTER_CHANGED: 'FILTER_CHANGED',
+
+
+    TAB_CHANGED: '',
+    PRODUCT_VOTE: 'PRODUCT_VOTE',
+    PRODUCT_VOTE_UP: 'PRODUCT_VOTE_UP',
+    PRODUCT_VOTE_DOWN: 'PRODUCT_VOTE_DOWN',
+
+    BRAND_FOLLOWING: 'BRAND_FOLLOWING',
+    BRAND_INOFO_CHANGED: 'BRAND_INOFO_CHANGED',
+    BRAND_FOLLOW: 'BRAND_FOLLOW',
+    BRAND_UNFOLLOW: 'BRAND_UNFOLLOW'
+
+};
+/**
+ *
+ * @type {{}}
+ */
+App.Constants = {
+    AUTO_COMPLETE: 'AUTOCOMPLETE',
+    MEDIA_URL: '/media',
+    LOGIN_ACTION: 'LOGIN',
+    END_DAY: 'END_DAY'
+
+};
 
 
 

@@ -11,7 +11,7 @@ var DashboardBoardSales = React.createClass({
      *
      */
     componentDidMount: function () {
-        this._loadData()
+        this._loadDataFromServer()
     },
     /**
      *

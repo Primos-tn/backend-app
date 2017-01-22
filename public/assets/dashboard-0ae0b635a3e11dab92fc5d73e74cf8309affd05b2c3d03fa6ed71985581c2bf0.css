@@ -5260,14 +5260,14 @@ textarea.form-control {
   color: #307980;
 }
 
-/* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 14, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .DashboardSideBar__uploadIcon {
   top: 10px;
   right: 15px;
   position: absolute;
   cursor: pointer;
 }
-/* line 14, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 15, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .DashboardSideBar__uploadIcon.cover {
   position: absolute;
   background-color: rgba(147, 151, 255, 0.04);
@@ -5280,11 +5280,11 @@ textarea.form-control {
   text-align: center;
   color: white;
 }
-/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 27, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .DashboardSideBar__uploadIcon i {
   font-size: 30px;
 }
-/* line 31, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .DashboardSideBar__uploadIcon img {
   width: 50px;
   height: 50px;
@@ -5326,10 +5326,33 @@ textarea.form-control {
 .MapContainer #map, .MapContainer #map_stores {
   min-height: 265px;
 }
+/* line 73, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.MapContainer #users_map {
+  height: 100%;
+}
 
-/* line 75, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+/* line 79, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
 .Dashboard__ComingSoonFeature * {
   color: rgba(122, 158, 159, 0.18);
+}
+
+/* line 84, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardRT__Indicator {
+  position: absolute;
+  z-index: 5;
+  width: 10px;
+  height: 10px;
+  right: 0;
+  border-radius: 50%;
+  margin: 11px;
+}
+/* line 92, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardRT__Indicator.DashboardRT__Indicator--on {
+  background-color: green;
+}
+/* line 95, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/dashboard.scss */
+.DashboardRT__Indicator.DashboardRT__Indicator--off {
+  background-color: red;
 }
 /* line 5, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/gallery.scss */
 .DashboardGallery__DropZone {

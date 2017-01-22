@@ -7,7 +7,7 @@ var DashboardStoresMapView = React.createClass({
             $('#map_stores').css({'height': this.props.minHeight});
         }
         var map = L.map('map_stores').setView([51.505, -0.09], 3);
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        L.tileLayer(App.Configuration.MAP_TILES_URL, {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         /**

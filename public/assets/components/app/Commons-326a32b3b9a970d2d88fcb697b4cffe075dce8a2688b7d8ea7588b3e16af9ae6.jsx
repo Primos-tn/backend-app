@@ -30,3 +30,16 @@ var EmptyProductsList = React.createClass({
     }
 
 })
+
+/**
+ *
+ * @type {*|Function}
+ */
+var EmptyList = React.createClass({
+    render : function () {
+        return (
+            <div className="col-lg-12">{i18n.Empty}</div>
+        )
+    }
+
+})

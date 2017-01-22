@@ -1,4 +1,4 @@
-var ProductShowWishersListItem = React.createClass({
+var ProductsListItemWishersListItem = React.createClass({
     /**
      *
      */
@@ -15,7 +15,7 @@ var ProductShowWishersListItem = React.createClass({
 
     }
 });
-var ProductShowWishersList = React.createClass({
+var ProductsListItemWishersList = React.createClass({
 
     actions: {
         list: "PRODUCT_WISHERS_LIST"
@@ -48,7 +48,7 @@ var ProductShowWishersList = React.createClass({
      *
      */
     onDataServerLoaded: function (response) {
-        this.setState({items: response.result.wishers, serverLoadingDone: true});
+        this.setState({items: response.result.voters, serverLoadingDone: true});
     },
     /**
      *
@@ -61,7 +61,7 @@ var ProductShowWishersList = React.createClass({
             let clone = this.state.items[0];
             items = [];
             for (let i = 0; i < 50; i++) {
-                items.push(<ProductShowWishersListItem item={clone} key={i}/>)
+                items.push(<ProductsListItemWishersListItem item={clone} key={i}/>)
             }
             /*
              items = this.state.items.map(function (item, index) {
