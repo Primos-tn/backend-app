@@ -1,64 +1,69 @@
 var BrandsListItem = React.createClass({
     /**
      *
-     */
-    actions: {
-        follow: "FOLLOW"
-    },
-    /**
-     *
      * @returns {{isFollowing: boolean}}
      */
     getInitialState: function () {
         return {
-            isFollowing: this.props.entry.is_following,
-            followersCount: this.props.entry.followers
+            isFollowing: this.props.item.is_following,
+            followersCount: this.props.item.followers_count
         }
     },
     /**
      */
     componentDidMount: function () {
-        var element = ReactDOM.findDOMNode(this);
-        App.Dispatcher.attach(this.actions.follow, this.itemChanged);
+        App.Dispatcher.attach(App.Actions.BRAND_FOLLOWING, this.onFollowingChanged);
     },
     /**
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.follow, this.itemChanged);
+        App.Dispatcher.detach(App.Actions.BRAND_FOLLOWING, this.onFollowingChanged);
     },
     /**
      *
      * @param data
-     * @param event
      */
-    itemChanged: function (data, event) {
-        if ((event.id == this.props.entry.id) && data.ok) {
-            var isFollowing = this.state.isFollowing;
-            var addFollowersCount = isFollowing ? -1 : 1;
-            var followersCount = this.state.followersCount + addFollowersCount;
-            this.setState({isFollowing: !isFollowing, followersCount: followersCount});
+    onFollowingChanged: function (payload) {
+        if (payload.action && payload.data && payload.data.brand_id == this.props.item.id) {
+            let increment = 0;
+            let isFollowing;
+            if (payload.action  == App.Actions.BRAND_FOLLOW) {
+                increment = 1;
+                isFollowing = true;
+            }
+            else if (payload.action == App.Actions.BRAND_UNFOLLOW) {
+                increment = -1;
+                isFollowing = false;
+            }
+            if (increment !== 0 && isFollowing != this.state.isFollowing) {
+                var followersCount = this.state.followersCount + increment;
+                this.setState({isFollowing: isFollowing, followersCount: followersCount});
+            }
+
         }
 
     },
     /**
      *
      * @param isFollowing
-     * @private
+     * @param id
+ * @private
      */
-    _getFollowActionUrl (isFollowing){
+    _getFollowActionUrl (isFollowing, id){
         var url = isFollowing ? App.Routes.unFollowBrand : App.Routes.followBrand;
-        return App.Helpers.formatApiUrl(url, {id: this.props.entry.id});
+        return App.Helpers.formatApiUrl(url, {id: id});
     },
     /**
      *
      */
     toggleFollowing: function () {
+        let id = this.props.item.id;
         App.Stores.post({
-            url: this._getFollowActionUrl(this.state.isFollowing),
-            action: this.actions.follow,
+            url: this._getFollowActionUrl(this.state.isFollowing, id),
+            action: App.Actions.BRAND_FOLLOWING,
             event: {
-                id: this.props.entry.id
+                id: id
             }
         });
     },
@@ -66,37 +71,38 @@ var BrandsListItem = React.createClass({
      *
      */
     render: function () {
-        var entry = this.props.entry;
+        var item = this.props.item;
+        let followingClass  = this.state.isFollowing ? "ti-unlink" : "ti-link" ;
         return (
-            <div className="col-lg-6 col-sm-6 col-xs-12 NoPadding" key={entry.id}>
+            <div className="col-lg-6 col-sm-6 col-xs-12 NoPadding" key={item.id}>
                 <div className="BrandCard">
                     <div className="BrandCard__Verified">
-                        <div className="icon icon-verified"></div>
+                        <span className="ti-shield"></span>
                     </div>
                     <div className="BrandCard__ImageContainer">
-                        <a href={App.Helpers.getAbsoluteUrl(App.Routes.brand, {id: this.props.entry.id})}>
+                        <a href={App.Helpers.getAbsoluteUrl(App.Routes.showBrand, {id: this.props.item.id})}>
                             <img
                                 className="BrandCard__Image"
-                                src={App.Helpers.getMediaUrl(entry.cover.thumb.url)}/>
+                                src={App.Helpers.getMediaUrl(item.cover.thumb.url)}/>
                         </a>
 
                     </div>
 
 
                     <div className="BrandCard__Title">
-                        <span>{entry.name}</span>
+                        <span>{item.name}</span>
                     </div>
                     <div className="BrandCard__Actions">
 
                         <div className="pull-right brand-btn-action center">
                             <div className="BrandCard__Followers">
-                               <i className="ti-user"></i>  {entry.followers_count}
+                                <i className="ti-user"></i> {this.state.followersCount}
                             </div>
                         </div>
                         <button
                             className={"BrandCard__FollowButton BrandCard__FollowButton--"  + (this.state.isFollowing ? "on" : "off")}
                             onClick={this.toggleFollowing}>
-                            <i className="ti-heart"></i>
+                            <i className={followingClass}></i>
                         </button>
                         <div className="clearfix"></div>
                     </div>

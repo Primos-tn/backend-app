@@ -226,14 +226,15 @@ Rails.application.routes.draw do
           post 'share'
           # wishers api
           get 'wishers'
-          # product reviews api
-          get 'reviews'
           # wish a product
           post 'wish'
           # unwish
           post 'unwish'
+
+          # wish a product
+          post 'vote'
           # unwish
-          post 'review'
+          post 'unvote'
           #
           get 'coupons'
           #

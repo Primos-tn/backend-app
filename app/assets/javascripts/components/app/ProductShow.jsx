@@ -3,8 +3,6 @@
  */
 
 const ACTIVE_CLASS = "active";
-
-
 const WISHERS_TAB = "wishers";
 const STORES_TAB = "stores";
 const REVIEWS_TAB = "reviews";
@@ -13,6 +11,13 @@ const COUPON_TAB = "coupons";
  *
  */
 var ProductShow = React.createClass({
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return {item: {}, serverLoadingDone: false, baseImageUrl: null, isVoted: false, votesCount: 0};
+    },
     /**
      *
      */
@@ -29,33 +34,32 @@ var ProductShow = React.createClass({
             params: {id: this.props.id}
         });
     },
-
     /**
      *
      */
     componentDidMount: function () {
-        App.Dispatcher.attach(this.actions.show, this.onDataChange);
+        App.Dispatcher.attach(App.Actions.PRODUCT_VOTE, this.onVotedListener);
+        App.Dispatcher.attach(this.actions.show, this.onDataChanged);
         this.loadDataFromServer();
     },
     /**
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.list, this.onDataChange);
+        App.Dispatcher.detach(App.Actions.PRODUCT_VOTE, this.onVotedListener);
+        App.Dispatcher.detach(this.actions.list, this.onDataChanged);
     },
     /**
      *
      */
-    getInitialState: function () {
-        return {item: { }, serverLoadingDone: false, baseImageUrl: null, isWishing: false};
+    onDataChanged: function (result) {
+        this.setState({
+            serverLoadingDone: true,
+            item: result,
+            isVoted: result.is_voted,
+            votesCount: result.votes_count
+        });
     },
-    /**
-     *
-     */
-    onDataChange: function (result) {
-        this.setState({serverLoadingDone: true, item: result, isWishing : result.is_wishing});
-    },
-
     /**
      * Callback to change current image
      */
@@ -64,37 +68,55 @@ var ProductShow = React.createClass({
         this.setState({baseImageUrl: App.Constants.MEDIA_URL + image.file.url});
     },
     /**
-     * Share action
+     *
+     * @param payload
      */
-    _shareAction (e) {
-        e.preventDefault();
-        App.Stores.get({
-            url: App.Helpers.formatApiUrl(App.Routes.shareProduct, {id: this.state.item.id})
-        });
+    onVotedListener: function (payload) {
+        let content = payload.content ;
+        if (content.action && content.data && content.data.product_id == this.state.item.id) {
+            let increment = 0;
+            let isVoted;
+            if (content.action == App.Actions.PRODUCT_VOTE_UP) {
+                increment = 1;
+                isVoted = true;
+            }
+            else if (content.action == App.Actions.PRODUCT_VOTE_DOWN) {
+                increment = -1;
+                isVoted = false;
+            }
+            if (increment !== 0 && isVoted != this.state.isVoted) {
+                var votesCount = this.state.votesCount + increment;
+                this.setState({isVoted: isVoted, votesCount: votesCount});
+            }
+        }
     },
-
     /**
      *
-     * @param isWishing
+     * @param isVoted
+     * @param id
      * @private
      */
-    _getFollowActionUrl (isWishing){
-        var url = isWishing ? App.Routes.unWishProduct : App.Routes.wishProduct;
-        return App.Helpers.formatApiUrl(url, {id: this.state.item.id});
+    _getVoteActionUrl (isVoted, id){
+        var url = isVoted ? App.Routes.unVoteProduct : App.Routes.voteProduct;
+        return App.Helpers.formatApiUrl(url, {id: id});
     },
     /**
-     * Wish action
+     *
+     * @param e
+     * @private
      */
-    _wishAction: function (e) {
+    _voteAction: function (e) {
         e.preventDefault();
+        let id = this.state.item.id;
         App.Stores.post({
-            url: this._getFollowActionUrl(this.state.isWishing),
-            action: this.actions.wish,
+            url: this._getVoteActionUrl(this.state.isVoted, id),
+            action: App.Actions.PRODUCT_VOTE,
             event: {
-                id: this.state.item.id
+                id: id
             }
         });
     },
+
     /**
      *
      */
@@ -113,30 +135,30 @@ var ProductShow = React.createClass({
             case WISHERS_TAB :
                 container = <ProductShowWishersList id={this.props.id}/>;
                 break;
-            case COUPON_TAB :
-                container = <ProductShowCouponsList id={this.props.id}/>;
-                break;
             case REVIEWS_TAB :
             default:
                 container = <ProductShowReviewsList id={this.props.id}/>;
         }
         let brand = null;
-        if (item.brand){
+        if (item.brand) {
             brand = (<a className="ProductCard__BrandImageContainer"
-                        href={App.Helpers.getAbsoluteUrl(App.Routes.brand, {id : item.brand.id})}>
+                        href={App.Helpers.getAbsoluteUrl(App.Routes.showBrand, {id : item.brand.id})}>
                 <img
                     src={App.Helpers.getMediaUrl(item.brand.picture.thumb.url)}
                     alt={item.brand.name}/>
             </a>);
         }
+        let voteButtonClassName = this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
         return (
             <div className="col-lg-12">
                 <div className="ProductDetails col-lg-12">
                     <div className="ProductDetails__Cover">
                         <div className="ProductDetails__Menu">
                             <div className="btn-group">
-                                <button type="button" onClick={this._shareAction} className="btn"> <span className="ti-signal"></span></button>
-                                <button type="button" onClick={this._wishAction} className="btn"> <span className="ti-heart"></span></button>
+                                <button type="button" onClick={this._shareAction} className="btn"><span
+                                    className="ti-signal"></span></button>
+                                <button type="button" onClick={this._voteAction} className="btn"><span
+                                    className={voteButtonClassName}></span></button>
                             </div>
                         </div>
 
@@ -151,6 +173,9 @@ var ProductShow = React.createClass({
 
                         <ProductShowGallery pictures={item.pictures || [] }
                                             onImageThumbnailClicked={this.onImageThumbnailClicked}/>
+                        <div className="pull-right ProductCard__VotesCount">
+                            {this.state.votesCount}
+                        </div>
                     </div>
                     <ul className="nav nav-tabs">
 

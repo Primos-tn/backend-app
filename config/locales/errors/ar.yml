@@ -7,6 +7,7 @@ ar:
     messages :
       not_saved : العملية لم تكتمل
       blank: فارغ
+      duplicate : مكرر
       invalid : غير مقبول
       not_found : غير موجود
       carrierwave_processing_error: failed to be processed

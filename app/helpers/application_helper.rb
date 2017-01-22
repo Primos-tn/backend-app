@@ -9,9 +9,16 @@ module ApplicationHelper
     @full_template_page or hide_side_bar?
   end
 
+  def ws_app_host?
+    Rails.configuration.wsapp[:host]
+  end
+
+  def ws_app_user?
+    current_user.id if current_user
+  end
 
   def get_assets_url(url)
-     '/media/'.concat(url)
+    '/media/'.concat(url)
   end
 
 

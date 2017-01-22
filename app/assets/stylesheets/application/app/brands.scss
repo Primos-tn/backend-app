@@ -1,8 +1,45 @@
 @import "colors";
 @import "mixins";
 
+.Brand__Title {
+  position: absolute;
+  left: 25px;
+  bottom: 75px;
+  font-size: 25px;
+  span {
+    color: $color-white;
+    background-color: $primary-color;
+  }
+}
+
+.Brand__ShieldIcon {
+  position: absolute;
+  right: 5px;
+  z-index: 1;
+  top: 10px;
+  color: white;
+  i {
+    color: $green;
+  }
+}
+
+.Brand__FollowButton {
+  border: none;
+  right: 4px;
+  position: relative;
+  top: 3px;
+  font-size: 25px;
+  background-color: transparent;
+  &.BrandCard__FollowButton--off {
+    color: $primary-color;
+  }
+  &.BrandCard__FollowButton--on:hover {
+    color: red;
+  }
+}
+
 .BrandCard {
-  margin: 5px 1px;
+  margin: 12px;
   background: #FFF none repeat scroll 0% 0%;
   border-radius: 4px;
   overflow: hidden;
@@ -12,25 +49,10 @@
     font-size: 25px;
   }
   .BrandCard__Title {
-    position: absolute;
-    left: 25px;
-    bottom: 75px;
-    font-size: 25px;
-    span {
-      color: $color-white;
-      background-color: $primary-color;
-
-    }
+    @extend .Brand__Title;
   }
   .BrandCard__Verified {
-    position: absolute;
-    right: 5px;
-    z-index: 1;
-    top: 10px;
-    color: white;
-    i {
-      color: $green;
-    }
+    @extend .Brand__ShieldIcon;
   }
   .BrandCard__Actions {
     min-height: 45px;
@@ -65,24 +87,10 @@
   }
 
   .BrandCard__FollowButton {
-    right: 18px;
-    @include rounded(50%);
     text-align: center;
+    padding-left: 12px;
     padding-top: 1px;
-    &.BrandCard__FollowButton--off {
-      color: $primary-color;
-    }
-    &.BrandCard__FollowButton--on:hover {
-      color: red;
-    }
-  }
-  .BrandCard__FollowButton {
-    right: 4px;
-    position: relative;
-    top: 3px;
-    font-size: 25px;
-    border :none ;
-    background-color: transparent;
+    @extend .Brand__FollowButton;
 
   }
 
@@ -96,6 +104,27 @@
 
 .BrandDetails {
   position: relative;
+
+  .BrandDetails__Title {
+    @extend .Brand__Title;
+  }
+  .BrandDetails__Verified {
+    @extend .Brand__ShieldIcon;
+    color: green;
+    font-size: 20px;
+  }
+  .BrandDetails__Follow {
+    @extend .Brand__FollowButton;
+    right: 5px;
+    position: absolute;
+    bottom: 75px;
+    top: auto;
+    background-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding-top: 6px;
+  }
   .nav-tabs {
 
     background-color: $color-white;
@@ -128,29 +157,22 @@
   .BrandDetails__ImageContainer {
     height: 250px;
     overflow-y: hidden;
-    @include  rounded-top(2px);
+    @include rounded-top(2px);
     .BrandDetails__ImageCover {
       width: 100%;
       min-height: 250px;
     }
-
-    .ProductDetails__Name {
-      color: $color-white;
-      position: absolute;
-      left: 10px;
-      top: 10px;
-
-    }
   }
 
 }
+
 .ProductCouponsList {
   .ProductCouponsList__Item {
     float: left;
     display: inline-block;
     width: 25%;
     position: relative;
-    img{
+    img {
       width: 100%;
       height: 100%;
     }

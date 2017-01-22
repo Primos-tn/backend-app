@@ -63,4 +63,9 @@ Rails.application.configure do
     Bullet.add_footer = true
     Bullet.bullet_logger = true
   end
+
+  config.wsapp = {
+      host: 'wss://localhost/wsapp/'
+  }
+
 end

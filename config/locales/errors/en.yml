@@ -8,6 +8,7 @@ en:
       not_saved : Invalid operation
       blank: Empty
       invalid : Invalid
+      duplicate : Duplicated
       not_found : Not found
       carrierwave_processing_error: failed to be processed
       carrierwave_integrity_error: is not of an allowed file type

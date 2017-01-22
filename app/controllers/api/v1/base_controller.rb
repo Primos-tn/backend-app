@@ -89,10 +89,18 @@ class Api::V1::BaseController < ApplicationController
     errors_hash
   end
 
+
   private
 
 
   protected
+  #
+  # Next function
+  #
+  def next!
+    render json: {:reason => "next version"}, status: 401
+  end
+
   #
   # Not authorized application
   #

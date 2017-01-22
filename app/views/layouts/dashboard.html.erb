@@ -2,6 +2,9 @@
     <%= t('app') %> | dashboard > <%= controller_name %>
 <% end %>
 
+<% content_for :ws_connection, 'dashboard' %>
+
+
 <% content_for :stylesheets do %>
     <%= stylesheet_link_tag 'dashboard', media: 'all', 'data-turbolinks-track' => true %>
 <% end %>
@@ -48,6 +51,7 @@
         <nav class="navbar navbar-default">
 
           <div class="container-fluid">
+            <%= react_component('DashboardRTConnectorIndicator') %>
             <div class="navbar-header">
               <button type="button" class="navbar-toggle">
                 <span class="sr-only">Toggle navigation</span>
@@ -73,6 +77,7 @@
                   <% end -%>
                 </li>
                 <%= react_component('DashboardNotifier', {'link_to': dashboard_notifications_path}, {:tag => 'li'}) %>
+
 
                 <li>
                   <%= link_to profile_path do %>
@@ -113,7 +118,7 @@
         <div class="flash" data-type="success" data-text="<%= flash[:notice] %>"></div>
     <% end -%>
     <%- if flash[:error] %>
-          <div class="flash" data-type="danger" data-text="<%= flash[:error] %>"></div>
+        <div class="flash" data-type="danger" data-text="<%= flash[:error] %>"></div>
     <% end -%>
     <script>
       <%= content_for?(:scripts) ? yield(:scripts) : '' %>

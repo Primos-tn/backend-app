@@ -32,5 +32,6 @@
 <%= content_for?(:body) ? yield(:body) : yield %>
 
 <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+<div id="ws_config" data-host="<%= ws_app_host? %>" data-user="<%= ws_app_user? %>" data-connection="<%= content_for?(:ws_connection) ? yield(:ws_connection) : '' %>" ></div>
 </body>
 </html>

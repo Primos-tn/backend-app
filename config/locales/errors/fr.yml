@@ -9,6 +9,7 @@ fr:
       record_invalid : Opération non valide
       blank: Vide
       invalid : Invalide
+      duplicate : Dupliqué
       not_found : Non trouvé
       carrierwave_processing_error: failed to be processed
       carrierwave_integrity_error: is not of an allowed file type

@@ -5,3 +5,4 @@
 //= require_tree  ./vendor
 //= require websocket
 //= require flumx
+//= require_tree  ./flumx

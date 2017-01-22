@@ -15,6 +15,10 @@ class Product < ActiveRecord::Base
   has_many :shares, through: :shares_relation, source: :account
 
 
+  has_many :votes_relation, class_name: :UserProductVote
+  has_many :votes, through: :votes_relation, source: :account
+
+
   has_many :categories_relations, class_name: :CategoryProduct
   has_many :categories, through: :categories_relations, source: :category
 
@@ -24,6 +28,8 @@ class Product < ActiveRecord::Base
 
   has_many :product_stores
   has_many :stores, through: :product_stores
+
+
   accepts_nested_attributes_for :stores,
                                 :allow_destroy => true
 

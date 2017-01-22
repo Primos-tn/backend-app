@@ -43,4 +43,11 @@ Rails.application.configure do
   CarrierWave.configure do |config|
     config.root = Rails.application.secrets.storage['root']
   end
+
+
+  config.wsapp = {
+      host: 'wss://localhost/wsapp/'
+  }
+
+
 end

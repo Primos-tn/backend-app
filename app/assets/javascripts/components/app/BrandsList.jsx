@@ -55,7 +55,7 @@ var BrandsList = React.createClass({
         var items;
         if (this.state.items.length) {
             items = this.state.items.map(function (item, index) {
-                return <BrandsListItem entry={item} key={index}/>;
+                return <BrandsListItem item={item} key={index}/>;
             }.bind(this));
         }
         else {

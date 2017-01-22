@@ -38,20 +38,25 @@
           <% end -%>
         </td>
         <td>
-          <%= link_to dashboard_product_coupons_path(product) , class: "btn btn-icon  btn-fill btn-default"  do %>
-              <span class="ti-layout-grid4"></span>
-          <% end %>
-        </td>
-        <td><%= link_to  dashboard_product_path(product), class: "btn btn-icon btn-fill btn-default"  do %>
-              <span class="ti-dashboard"></span>
-          <% end %>
-             <%= link_to  edit_dashboard_product_path(product) , class: "btn btn-icon btn-fill btn-default"  do %>
-              <span class="ti-pencil-alt"></span>
-          <% end %>
+          <div class="btn-group">
+            <%= link_to dashboard_product_coupons_path(product), class: "btn btn-icon  btn-fill btn-default" do %>
+                <span class="ti-layout-grid4"></span>
+            <% end %>
+            <%= link_to dashboard_product_path(product), class: "btn btn-icon btn-fill btn-default" do %>
+                <span class="ti-dashboard"></span>
+            <% end %>
+            <%= link_to edit_dashboard_product_path(product), class: "btn btn-icon btn-fill btn-default" do %>
+                <span class="ti-pencil-alt"></span>
+            <% end %>
+            <%= link_to dashboard_product_path(product), class: "btn btn-icon btn-fill btn-danger", method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
+                <span class="ti-trash"></span>
+            <% end %>
+          </div>
 
-          <%= link_to dashboard_product_path(product), class: "btn btn-icon btn-fill btn-danger", method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
-              <span class="ti-trash"></span>
-          <% end %>
+        </td>
+        <td>
+
+
         </td>
       </tr>
       <tr>

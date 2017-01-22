@@ -3,21 +3,20 @@ var DashboardBoardHeatMap = React.createClass({
     /**
      */
     componentDidMount: function () {
-        var dom = ReactDOM.findDOMNode(this);
-        var $map = $(dom).find('#map');
-        var map = L.map($map[0]).setView([51.505, -0.09], 13);
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        //$('body').addClass('map');
-        this._map = map;
-        //
-        /*
-        L.heatLayer([
-            [50.5, 30.5, 0.2], // lat, lng, intensity
-            [50.6, 30.4, 0.5]
-        ], {radius: 25}).addTo(map);
-        */
+        new Chartist.Bar('#chart_search_block', {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            series: [
+                [5, 4, 3, 7, 5, 10, 3],
+                [3, 2, 9, 5, 4, 6, 4]
+            ]
+        }, {
+            seriesBarDistance: 10,
+            reverseData: true,
+            horizontalBars: true,
+            axisY: {
+                offset: 70
+            }
+        });
     },
     /**
      *
@@ -63,14 +62,10 @@ var DashboardBoardHeatMap = React.createClass({
             <div className="col-md-6">
                 <div className="card">
                     <div className="header">
-                        <h4 className="title">{i18n['HeatMap']}</h4>
-                        <p className="category">{i18n['HeatMap']}</p>
+                        <h4 className="title">{i18n['UsersOrientation']}</h4>
                     </div>
                     <div className="content">
-                        <div className="MapContainer">
-                            <div id="map">
-                            </div>
-                        </div>
+                        <div id="chart_search_block" className="ct-chart ct-perfect-fourth"></div>
                         <hr/>
                         <div className="footer">
                             <div className="chart-legend text-danger">

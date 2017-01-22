@@ -1,5 +1,6 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   include StatisticsUtils
+  include RabbitMQDispatcher
   #
   skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
   before_action :set_product, except: [:index, :product_of_day] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
@@ -14,14 +15,14 @@ class Api::V1::ProductsController < Api::V1::BaseController
     search = {}
     search[:brand] = params[:brand]
     search[:categories] = params[:categories]
-    _products_with_wishers = Product.connection.select_all(Product.get_sql_query(params[:limit], params[:page], params))
-    puts _products_with_wishers
-    products_ids = _products_with_wishers.map { |c| c['id'] }
+    ids_query =  Product.get_sql_query(params[:limit], params[:page], params)
+    ids_query_results = ActiveRecord::Base.connection.execute(ids_query)
+    products_ids = ids_query_results.map { |c| c['id'] }
     # render json: products_ids
     products = Product.where(id: products_ids)
     @products = {}
     @top_wishers = {}
-    _products_with_wishers.each { |c|
+    ids_query_results.each { |c|
       unless @top_wishers.has_key?(c['id'])
         @top_wishers[c['id']] = []
       end
@@ -35,9 +36,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
         @products[entry.id] = {
             :item => entry,
             :brand => entry.brand,
-            :pictures => entry.pictures,
-            :wishers_count => entry.wishers.size,
-            :wishers => []
+            :pictures => entry.pictures
         }
       end
     }
@@ -45,7 +44,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
     ## check all current user like
     @me_and_products = {}
     if current_user
-      mine = current_user.get_products_i_wish_given_list(@products.keys)
+      mine = current_user.get_products_i_voted_from_list(@products.keys)
       mine.map do |entry|
         @me_and_products[entry[:product_id]] = true
       end
@@ -58,6 +57,13 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
   def show
     @product = Product.includes(:stores, :comments).find(params[:id])
+    @is_voted = false
+    if current_user
+      mine = current_user.get_products_i_voted_from_list([@product.id])
+      if mine.count > 0
+        @is_voted = true
+      end
+    end
   end
 
   #
@@ -102,13 +108,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   # Wish list
   #
   def wish
-    wish = UserProductWish.new({account: current_user, product: @product})
-    if wish.save
-      reply_success ({id: wish.id})
-    else
-      reply_error (I18n.t('duplicate'))
-    end
-
+    next!
   end
 
 
@@ -116,15 +116,48 @@ class Api::V1::ProductsController < Api::V1::BaseController
   # Wish list
   #
   def unwish
-    wished = UserProductWish.find({account: current_user, product: @product})
-    reply_success (wished)
-    return
-    if wished && wished.destrory!
-      reply_success (wished)
+    next!
+  end
+
+
+  #
+  # Wish list
+  #
+  def vote
+    vote = UserProductVote.new({account: current_user, product: @product})
+    if vote.save
+      notification = {
+          content: {
+              :action => ApiConstants::PRODUCT_VOTE_UP,
+              :data => {:product_id => @product.id}
+          }
+      }
+      render json: notification, status: 200
+      rabbitmq_dispatch_user_notifications(notification.to_json)
     else
-      reply_error (I18n.t('duplicate'))
+      reply_error (I18n.t('errors.messages.duplicate'))
+    end
+
+  end
+
+  #
+  # Wish list
+  #
+  def unvote
+    vote = UserProductVote.find_by({account: current_user, product: @product})
+    if vote && vote.destroy!
+      notification = {
+          content: {
+              :action => ApiConstants::PRODUCT_VOTE_DOWN,
+              :data => {:product_id => @product.id}
+          }
+      }
+      render json: notification
+    else
+      reply_error (I18n.t('errors.messages.duplicate'))
     end
   end
+
 
   private
 
@@ -136,11 +169,13 @@ class Api::V1::ProductsController < Api::V1::BaseController
     account_id = current_user.id if current_user
   else
     nil
+
     view = UserProductView
                .where(:ip_address => ip, :product => @product, :account_id => account_id)
                .first_or_create(:count => 1)
     view.increment!(:count, by = 1)
   end
+
 
   def in_launch_mode?
     unless @product.in_launch_mode?

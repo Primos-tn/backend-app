@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170109044438) do
+ActiveRecord::Schema.define(version: 20170114130444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 20170109044438) do
     t.float    "old_price"
     t.float    "new_price"
     t.string   "currrency"
+    t.integer  "user_product_votes_count",  default: 0
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -324,6 +325,13 @@ ActiveRecord::Schema.define(version: 20170109044438) do
     t.float    "longitude"
     t.inet     "ip_address"
     t.integer  "count"
+  end
+
+  create_table "user_product_votes", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_product_wishes", force: :cascade do |t|

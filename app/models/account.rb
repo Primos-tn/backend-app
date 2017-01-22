@@ -76,6 +76,12 @@ class Account < ActiveRecord::Base
   end
 
 
+  # Given a list of products ids, will check all products that follow in this list
+  scope :products_i_voted_from_list, -> (account, products_ids) do
+    UserProductVote.where({account: account, product: products_ids}).all
+  end
+
+
   def self.search(search)
     if search
       where('lower(username) LIKE ?', "%#{search.downcase}%")
@@ -179,6 +185,12 @@ class Account < ActiveRecord::Base
   def get_products_i_wish_given_list(products_list)
     Account.products_followed_from_products_list(self, products_list)
   end
+
+
+  def get_products_i_voted_from_list(products_list)
+    Account.products_i_voted_from_list(self, products_list)
+  end
+
 
   private
 

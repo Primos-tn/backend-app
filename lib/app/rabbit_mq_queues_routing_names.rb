@@ -1,0 +1,10 @@
+module RabbitMQQueuesRoutingNames
+  MQ_USER_QUEUE_NAME =  'user.notifications'
+  MQ_ADMIN_QUEUE_NAME =  'admin.notifications'
+  MQ_LOG_QUEUE_NAME =  'log'
+  # key routings
+  PRODUCT_VOTING = 'PRODUCT_VOTING'
+  BRAND_FOLLOWING = 'BRAND_FOLLOWING'
+  ADMIN_BRAND_FOLLOWING = 'ADMIN_BRAND_FOLLOWING'
+  ADMIN_PRODUCT_FOLLOWING = 'ADMIN_PRODUCT_FOLLOWING'
+end

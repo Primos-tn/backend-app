@@ -13,35 +13,26 @@ var DashboardNotifier = React.createClass({
      */
     getInitialState: function () {
         return {
-            count: 0, items: [{
-                text: "me SDFSDFqsdfqf"
-            }, {
-                text: "me sdfqsdf "
-            }, {
-                text: "me SDSDFQFQDFQSDFQSDFD"
-            }, {
-                text: "me again"
-            }]
+            count: 1
         }
     },
     /**
      */
     componentDidMount: function () {
-        App.Dispatcher.attach(App.Actions.NOTIFICATION, this._OnNotificationArrived);
+        App.Dispatcher.attach(App.Actions.ADMIN_NOTIFICATION, this._onNotificationArrived);
 
     },
     /**
      */
     componentWillUnmount: function () {
-        App.Dispatcher.removeListener(App.Actions.NOTIFICATION, this._OnNotificationArrived);
+        App.Dispatcher.removeListener(App.Actions.ADMIN_NOTIFICATION, this._onNotificationArrived);
     },
     /**
      *
      * @private
      */
-    _OnNotificationArrived: function (data) {
-        this.setState({count: data.count});
-        this.setState({items: data.list});
+    _onNotificationArrived: function (data) {
+        this.setState({count: data.count + this.state.count});
     },
     /**
      *

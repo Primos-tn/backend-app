@@ -38,11 +38,31 @@ var dispatcher = {
      * @param {Object} event to execute
      */
     dispatch: function (action, data, event) {
+        // local notification
+        // lookup , when you send notification from current interface
         if (App.Dispatcher._listeners[action]) {
-            var listeners = App.Dispatcher._listeners[action];
-            for (var entry in listeners) {
-                listeners[entry](data, event);
-            }
+            App.Dispatcher._dispatchToListener(action, data, event)
+        }
+    },
+    /**
+     *
+     * @private
+     */
+    _dispatchToListener: function (action, data, eventSource) {
+        var listeners = App.Dispatcher._listeners[action];
+        for (var entry in listeners) {
+            listeners[entry](data, eventSource);
+        }
+    },
+    /**
+     * Future usage
+     */
+    notifyAll: function (notification) {
+        // server notification
+        var actionName = (notification || {}).action ;
+        var data = notification.data ;
+        if (actionName  &&  App.Dispatcher._listeners[actionName]) {
+            App.Dispatcher._dispatchToListener(actionName, data);
         }
     }
 };
@@ -106,8 +126,8 @@ App.Helpers = {
     querify: function (queryObject) {
         var query = '';
         for (var key in queryObject) {
-                query += key + '=' + queryObject[key];
-                query +='&'
+            query += key + '=' + queryObject[key];
+            query += '&'
         }
         return query;
     },
@@ -120,7 +140,7 @@ App.Helpers = {
         for (var key in data) {
             url = url.replace(':' + key, data[key]);
         }
-        return url +  (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
+        return url + (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
     },
     /**
      * Format an url given a key, value object
@@ -156,18 +176,20 @@ var routes = {
     geoSearch: 'geo/search',
     geoMine: 'geo/mine',
     brands: 'brands',
-    followBrand: 'brands/:id/follow',
-    unFollowBrand: 'brands/:id/unfollow',
-    brand: 'brands/:id',
+    showBrand: 'brands/:id',
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
     brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
+    followBrand: 'brands/:id/follow',
+    unFollowBrand: 'brands/:id/unfollow',
     products: 'products',
     productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',
     unWishProduct: 'products/:id/unwish',
+    voteProduct: 'products/:id/vote',
+    unVoteProduct: 'products/:id/unvote',
     showProduct: 'products/:id/',
     notifyProduct: 'products/:id/notify',
     productWishers: 'products/:id/wishers',
@@ -193,29 +215,8 @@ App.Routes = {};
 for (var key in routes) {
     App.Routes[key] = baseApiUrl + routes[key];
 }
-/**
- *
- * @type {{}}
- */
-App.Actions = {
-    SEARCH: 'SEARCH',
-    NOTIFICATION: 'NOTIFICATION',
-    FILTER_CHANGED : 'FILTER_CHANGED',
-    TAB_CHANGED : ''
-};
-/**
- *
- * @type {{}}
- */
-App.Constants = {
-    AUTO_COMPLETE: 'AUTOCOMPLETE',
-    MEDIA_URL: '/media',
-    LOGIN_ACTION: 'LOGIN',
-    END_DAY: 'END_DAY'
-
-};
 App.Configuration = {
-    MAP_TILES_URL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    MAP_TILES_URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 };
 
 // error login

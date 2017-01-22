@@ -21,9 +21,10 @@ class Dashboard::AjaxController < Dashboard::DashboardController
   end
 
   def product_info(product_id)
-    product = Product.exists?(brand: current_brand, id: product_id)
-    if product
-      @wishers_count = product.wishers.size
+    exists = Product.exists?(brand: current_brand, id: product_id)
+    if exists
+      product = Product.where(brand: current_brand, id: product_id).first
+      @voters_count = product.wishers.size
       @views_count = product.views.size
       @stores_count = product.stores.size
       @shares_count = product.shares.size

@@ -2,6 +2,6 @@
 <div>
   <%= react_component('BrandProfile', props={'id' => params[:id],
                                              'activeTab' => @active_tab,
-                                             'stores' => @active_tab == 'stores' ? @stores : [] ,
-                                             'cover' => get_assets_url(@brand.cover.to_s) }) %>
+                                             'stores' => @active_tab == 'stores' ? @stores : [],
+                                             'cover' => get_assets_url(@brand.cover.to_s)}) %>
 </div>

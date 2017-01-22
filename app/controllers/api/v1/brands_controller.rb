@@ -1,5 +1,9 @@
 class Api::V1::BrandsController < Api::V1::BaseController
+  include RabbitMQDispatcher
+
   skip_before_filter :authenticate_user!, only: ['index', 'show', 'followers', 'stores']
+  before_action :set_brand, only: [:follow, :unfollow]
+
 
   def index
     page = params[:page]
@@ -18,8 +22,7 @@ class Api::V1::BrandsController < Api::V1::BaseController
     @brands.map do |brand|
       brands_ids.append (brand.id)
     end
-    puts ('##############')
-    puts (brands_ids.length)
+
     if brands_ids.length > 0
       # build followers
       @followers = BrandUserFollower.top_followers(3, brands_ids)
@@ -35,25 +38,15 @@ class Api::V1::BrandsController < Api::V1::BaseController
           @followers_by_brands_id[current_brand_id].push(entry)
         end
       end
-      @me_and_brands = {}
-
-      if current_user
-        mine = current_user.get_brands_i_follow_given_list(brands_ids)
-        mine.map do |entry|
-          @me_and_brands[entry[:brand_id]] = true
-        end
-      end
+      attach_my_brands(brands_ids)
     end
-
-
-
   end
 
 
   # show brand main action
   def show
     @brand = Brand.find(params[:id])
-    render 'show.jbuilder'
+    attach_my_brands([@brand.id])
   end
 
   # get all followers
@@ -72,26 +65,47 @@ class Api::V1::BrandsController < Api::V1::BaseController
 
   # follow
   def follow
-    id = params[:id]
     # check if the brand exists
-    new_follower = BrandUserFollower.new ({:brand_id => id, :account_id => current_user.id})
-    new_follower.save!
-    result = {
-        :ok => true
-    }
-    render :json => result
-  end
-
-  def unfollow
-    # check if the brand exists
-    new_follower = BrandUserFollower.where(:account_id => current_user.id).where(:brand_id => params[:id]).first
-    unless new_follower.nil?
-      new_follower.destroy
+    new_follower = BrandUserFollower.new ({:brand => @brand, :account => current_user})
+    if new_follower.save
+      @brand.reload
+      action_name = ApiConstants::BRAND_FOLLOW
+      response = {:action => action_name, :data => {:brand_id => @brand.id, :followers_count => @brand.followers.size}}
+      render json: response, status: 200
+      rabbitmq_dispatch_user_notifications(response.to_json)
+      AdminRabbitMQNotifier.perform_later @brand.id, action_name
+    else
+      reply_error (I18n.t('errors.messages.duplicate'))
     end
-    result = {
-        :ok => true
-    }
-    render :json => result
   end
 
+  # unfollow brand
+  def unfollow
+    following = BrandUserFollower.find_by({account: current_user, :brand => @brand})
+    if following.destroy
+      @brand.reload
+      response = {:action => ApiConstants::BRAND_UNFOLLOW, :data => {:brand_id => @brand.id, :followers_count => @brand.followers.size}}
+      render json: response, status: 200
+      rabbitmq_dispatch_user_notifications(response.to_json)
+    else
+      reply_error (I18n.t('errors.messages.duplicate'))
+    end
+
+  end
+
+  private
+
+  def set_brand
+    @brand = Brand.find(params[:id])
+  end
+
+  def attach_my_brands(brands_ids)
+    @me_and_brands = {}
+    if current_user
+      mine = current_user.get_brands_i_follow_given_list(brands_ids)
+      mine.map do |entry|
+        @me_and_brands[entry[:brand_id]] = true
+      end
+    end
+  end
 end

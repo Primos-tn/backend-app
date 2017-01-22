@@ -1,7 +1,7 @@
 class BrandUserFollower < ActiveRecord::Base
   belongs_to :brand, :counter_cache => :followers_count
   belongs_to :account
-  validates_uniqueness_of :account_id, :scope => :brand_id
+  validates_uniqueness_of :brand_id, scope: [:account_id]
 
   #
   # scope that return list of products with with the first 3 followers

@@ -78,4 +78,6 @@ gem 'geocoder'
 
 gem 'rqrcode'
 
+gem 'bunny',  ">= 2.5.1"
+
 ruby '2.3.3'

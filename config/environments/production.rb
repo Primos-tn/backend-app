@@ -95,4 +95,7 @@ Rails.application.configure do
     config.root = Rails.application.secrets.storage['root']
   end
 
+  config.wsapp = {
+      host: 'wss://www.primos.tn/wsapp/'
+  }
 end

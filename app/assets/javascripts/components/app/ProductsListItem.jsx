@@ -1,19 +1,12 @@
 var ProductsListItem = React.createClass({
     /**
      *
-     */
-    actions: {
-        follow: "FOLLOW",
-        wish: "WISH"
-    },
-    /**
-     *
      * @returns {{isWishing: boolean}}
      */
     getInitialState: function () {
         return {
-            isWishing: this.props.item.is_wishing,
-            wishersCount: this.props.item.wishers_count
+            isVoted: this.props.item.is_voted,
+            votesCount: this.props.item.info.user_product_votes_count
         }
     },
     /**
@@ -27,26 +20,37 @@ var ProductsListItem = React.createClass({
     /**
      */
     componentDidMount: function () {
-        var element = ReactDOM.findDOMNode(this);
-        App.Dispatcher.attach(this.actions.wish, this.itemChangedListener);
+        //App.Dispatcher.attach(App.Actions.WISH, this.onVotedListener);
+        App.Dispatcher.attach(App.Actions.PRODUCT_VOTE, this.onVotedListener);
     },
     /**
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.wish, this.itemChangedListener);
+        App.Dispatcher.detach(App.Actions.PRODUCT_VOTE, this.onVotedListener);
+
     },
     /**
      *
-     * @param data
-     * @param event
+     * @param payload
      */
-    itemChangedListener: function (data, event) {
-        if ((event.id == this.props.item.id) && data.ok) {
-            var isWishing = this.state.isWishing;
-            var addFollowersCount = isWishing ? -1 : 1;
-            var wishersCount = this.state.wishersCount + addFollowersCount;
-            this.setState({isWishing: !isWishing, wishersCount: wishersCount});
+    onVotedListener: function (payload) {
+        let content = payload.content ;
+        if (content.action && content.data && content.data.product_id == this.props.item.id) {
+            let increment = 0;
+            let isVoted;
+            if (content.action == App.Actions.PRODUCT_VOTE_UP) {
+                increment = 1;
+                isVoted = true;
+            }
+            else if (content.action == App.Actions.PRODUCT_VOTE_DOWN) {
+                increment = -1;
+                isVoted = false;
+            }
+            if (increment !== 0 && isVoted != this.state.isVoted) {
+                var votesCount = this.state.votesCount + increment;
+                this.setState({isVoted: isVoted, votesCount: votesCount});
+            }
         }
 
     },
@@ -55,8 +59,8 @@ var ProductsListItem = React.createClass({
      * @param isWishing
      * @private
      */
-    _getFollowActionUrl (isWishing){
-        var url = isWishing ? App.Routes.unWishProduct : App.Routes.wishProduct;
+    _getVoteActionUrl (isVoted){
+        var url = isVoted ? App.Routes.unVoteProduct : App.Routes.voteProduct;
         return App.Helpers.formatApiUrl(url, {id: this.props.item.id});
     },
     /**
@@ -69,26 +73,18 @@ var ProductsListItem = React.createClass({
         });
     },
     /**
-     * Wish action
+     *
+     * @param e
+     * @private
      */
-    _wishAction: function (e) {
+    _voteAction: function (e) {
         e.preventDefault();
         App.Stores.post({
-            url: this._getFollowActionUrl(this.state.isWishing),
-            action: this.actions.wish,
+            url: this._getVoteActionUrl(this.state.isVoted),
+            action: App.Actions.PRODUCT_VOTE,
             event: {
                 id: this.props.item.id
             }
-        });
-    },
-
-    /**
-     * Share action
-     */
-    _viewCouponAction  (e) {
-        e.preventDefault();
-        App.Stores.loadData({
-            url: App.Helpers.formatApiUrl(App.Routes.productCoupons, {id: this.props.item.id})
         });
     },
     /**
@@ -96,9 +92,7 @@ var ProductsListItem = React.createClass({
      */
     onImageThumbnailClicked: function (image, event) {
         event.preventDefault();
-        this.setState({baseImageUrl: App.Constants.MEDIA_URL + image.file.url}, function () {
-            this.props.recalculate()
-        });
+        this.setState({baseImageUrl: App.Constants.MEDIA_URL + image.file.url});
     },
     /**
      *
@@ -111,14 +105,18 @@ var ProductsListItem = React.createClass({
         if (!baseImageUrl && pictures.length) {
             baseImageUrl = App.Constants.MEDIA_URL + pictures[0].file.url;
         }
+
+        let voteButtonClassName = this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
         return (
             <div className="ProductCardContainer NoPadding col-lg-6 col-sm-12">
 
                 <div className="ProductCard">
                     <div className="ProductDetails__Menu">
                         <div className="btn-group">
-                            <button type="button" onClick={this._shareAction} className="btn"> <span className="ti-signal"></span></button>
-                            <button type="button" onClick={this._wishAction} className="btn"> <span className="ti-heart"></span></button>
+                            <button type="button" onClick={this._shareAction} className="btn"><span
+                                className="ti-announcement"></span></button>
+                            <button type="button" onClick={this._voteAction} className="btn"><span
+                                className={voteButtonClassName}></span></button>
                         </div>
                     </div>
                     <div className="ProductCard__ImageContainer">
@@ -129,9 +127,8 @@ var ProductsListItem = React.createClass({
                                 </div>
                             </div>
                         </a>
-
                         <a className="ProductCard__BrandImageContainer"
-                           href={App.Helpers.getAbsoluteUrl(App.Routes.brand, {id : item.brand.id})}>
+                           href={App.Helpers.getAbsoluteUrl(App.Routes.showBrand, {id : item.brand.id})}>
                             <img
                                 src={App.Helpers.getMediaUrl(item.brand.picture.thumb.url)}
                                 alt={item.brand.name}/>
@@ -144,7 +141,9 @@ var ProductsListItem = React.createClass({
                         </div>
                         <ProductShowGallery pictures={pictures || [] }
                                             onImageThumbnailClicked={this.onImageThumbnailClicked}/>
-                        <ProductsListItemWishersList list={item.wishers}/>
+                        <div className="pull-right ProductCard__VotesCount">
+                            {this.state.votesCount}
+                        </div>
                     </div>
                 </div>
             </div>
