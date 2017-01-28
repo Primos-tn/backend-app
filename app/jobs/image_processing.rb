@@ -24,8 +24,8 @@ class ImageProcessing < ApplicationJob
     }
     if dominant_colors.length > 0
       puts 'updating dominant'
-      model.dominant_colors = dominant_colors
-      model.save!
+      # Use update column and not save to avoid loop on callbacks !
+      model.update_column(:dominant_colors, dominant_colors)
     end
 
 
