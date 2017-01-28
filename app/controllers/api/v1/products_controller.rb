@@ -19,7 +19,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
     ids_query_results = ActiveRecord::Base.connection.execute(ids_query)
     products_ids = ids_query_results.map { |c| c['id'] }
     # render json: products_ids
-    products = Product.where(id: products_ids)
+    products = Product.where(id: products_ids).order(votes_count: :desc)
     @products = {}
     @top_wishers = {}
     ids_query_results.each { |c|

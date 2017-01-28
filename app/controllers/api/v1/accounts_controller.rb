@@ -52,17 +52,22 @@ class Api::V1::AccountsController < Api::V1::BaseController
 
   # Register a new push token .
   def register_push
-    # account = Account.find_by(email: access_params[:email])
-    # if user
-    #   access_token = create_access_token(account)
-    #   render(
-    #       #json: Api::V1::SessionSerializer.new(user, root: false).to_json,
-    #       json: access_token.to_json,
-    #       status: 201
-    #   )
-    # else
-    #   unauthenticated!
-    # end
+    push_token = AccountPushToken.new(push_token_params)
+    push_token.account = current_user
+    if push_token.save
+      render(
+          #json: Api::V1::SessionSerializer.new(user, root: false).to_json,
+          json: push_token.to_json,
+          status: 201
+      )
+    else
+       api_error(422, push_token.errors.details)
+    end
+  end
+
+  # Register a new push token .
+  def update_push
+
   end
 
   # Destroys a token
@@ -94,6 +99,11 @@ class Api::V1::AccountsController < Api::V1::BaseController
   # Get prarams from header
   def login_params
     params.require(:account).permit([:login, :password])
+  end
+
+  # Get prarams from header
+  def push_token_params
+    params.require(:push_token).permit([:value, :platform, :uuid])
   end
 
   # New user creation

@@ -5,7 +5,7 @@ fr:
     no coordinates provided : Erreurs des coordonnées
   errors :
     messages :
-      not_saved : Opération non valide
+      not_saved : Echéc lors de sauvegarde
       record_invalid : Opération non valide
       blank: Vide
       invalid : Invalide

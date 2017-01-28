@@ -101,8 +101,8 @@ var RangeSlider = React.createClass({
             slide: function (event, ui) {
                 $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
             },
-            change: function (args) {
-                this.props.onSliderChanged(args);
+            change: function (e, ui) {
+                this.props.onSliderChanged(e, ui);
             }.bind(this)
         });
         $("#amount").val("$" + $slider.slider("values", 0) + " - $" + $slider.slider("values", 1));
@@ -167,8 +167,8 @@ var SideBarFilter = React.createClass({
     /**
      *
      */
-    onSliderChanged (range){
-        this.setState ({range : range});
+    onSliderChanged (range, ui){
+        this.setState ({range : ui.values});
     },
     /**
      *

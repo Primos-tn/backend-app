@@ -14,6 +14,6 @@ module AdminHelper
     $admin_menu_links[index]
   end
 
-  $admin_menu_names = %w(Dashboard  BusinessRequests Invitations BusinessAccounts Contacts  Brands Accounts Categories BusinessConfiguration System)
-  $admin_menu_icons = %w(panel flag  email briefcase  email map user view-list-alt settings  settings)
+  $admin_menu_names = %w(Dashboard  BusinessRequests Invitations BusinessAccounts Contacts  Brands Products Accounts Categories BusinessConfiguration System)
+  $admin_menu_icons = %w(panel flag  email briefcase  briefcase email map user view-list-alt settings  settings)
 end

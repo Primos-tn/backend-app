@@ -10,18 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114130444) do
+ActiveRecord::Schema.define(version: 20170128141042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "access_tokens", force: :cascade do |t|
-    t.integer  "account"
-    t.string   "value"
-    t.datetime "expires_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "account_access_tokens", force: :cascade do |t|
     t.integer  "account_id"
@@ -29,10 +21,19 @@ ActiveRecord::Schema.define(version: 20170114130444) do
     t.string   "expires"
     t.string   "uuid"
     t.json     "info"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "push_token_value"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "token_value"
+  end
+
+  create_table "account_push_tokens", force: :cascade do |t|
+    t.integer  "account_id"
+    t.string   "value"
+    t.string   "platform"
+    t.json     "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "uuid"
   end
 
   create_table "account_registration_invitations", force: :cascade do |t|
@@ -79,8 +80,9 @@ ActiveRecord::Schema.define(version: 20170114130444) do
     t.integer  "brand_id"
     t.string   "name"
     t.string   "file"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "dominant_colors", default: [],              array: true
   end
 
   create_table "brand_namespaces", force: :cascade do |t|
@@ -264,7 +266,7 @@ ActiveRecord::Schema.define(version: 20170114130444) do
     t.float    "old_price"
     t.float    "new_price"
     t.string   "currrency"
-    t.integer  "user_product_votes_count",  default: 0
+    t.integer  "votes_count",               default: 0
   end
 
   create_table "profiles", force: :cascade do |t|

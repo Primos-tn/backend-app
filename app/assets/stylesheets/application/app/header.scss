@@ -73,6 +73,9 @@ header {
     }
     .SearchContainer {
       position: relative;
+      .ui-autocomplete {
+        position: absolute !important;
+      }
       .ti-search {
         color: #FFA500;
         position: absolute;

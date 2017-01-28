@@ -1,6 +1,7 @@
 class Web::HomeController < Web::CompanyController
   before_filter :check_already_exists, only: [:request_join, :create_request_join]
   before_filter :set_full_template_page, only: [:request_join, :create_request_join, :request_pending]
+  before_action :set_show_cover, except: [:request_join]
 
   def index
   end
@@ -55,4 +56,8 @@ class Web::HomeController < Web::CompanyController
     @full_template_page = true
   end
 
+
+  def set_show_cover
+    @show_cover = true
+  end
 end

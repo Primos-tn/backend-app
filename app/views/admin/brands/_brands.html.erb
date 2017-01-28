@@ -5,8 +5,8 @@
   <% @brands.each do |brand| %>
       <tr>
         <td><%= brand.name %></td>
-        <td><%= brand.brand_users_followers_count %></td>
-        <td><%= brand.comments_count %></td>
+        <td><%= brand.followers_count %></td>
+        <td><%= brand.reviews_count %></td>
         <td><%= brand.cover %></td>
         <td><%= link_to 'Show', admin_brand_path(brand) %></td>
       </tr>

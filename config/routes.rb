@@ -60,10 +60,11 @@ Rails.application.routes.draw do
     end
 
 
-    get 'map', to: 'map#index'
+    #get 'map', to: 'map#index'
     post 'company/contact'
     get 'company/:page', to: 'company#show', as: 'company_page'
 
+    get 'engineering(/:page)', to: 'engineering#index', as: 'engineering_page'
 
     # check for not authenticated
     get 'profile', to: 'profiles#show'
@@ -185,6 +186,11 @@ Rails.application.routes.draw do
     resources :categories
     resources :contacts, only: %w(index show)
     resources :brands, only: %w(index show)
+    resources :products, only: %w(index show) do
+      member do
+        post 'launch'
+      end
+    end
     resources :accounts, only: %w(index show)
     scope :ajax, controller: 'ajax' do
       get 'info'
@@ -200,7 +206,7 @@ Rails.application.routes.draw do
       scope :accounts, as: :accounts, controller: :accounts do
         post 'create'
         post 'login'
-        post 'register_push'
+        post 'register_push', path: 'register-push'
         put 'destory'
       end
 
@@ -223,6 +229,7 @@ Rails.application.routes.draw do
         member do
           # share
           get 'share'
+          #
           post 'share'
           # wishers api
           get 'wishers'

@@ -50,20 +50,32 @@ class Product < ActiveRecord::Base
   def self.get_sql_query (limit, offset, options={})
     join_top_wishers(get_base_products_query(limit, offset, options))
   end
+
+  def self.search(search)
+    if search
+      where('lower(name) LIKE ?', "%#{search.downcase}%")
+    else
+      where(nil)
+    end
+  end
+
   #
-  # TODO , fix sql injections
+  # FIXME sql injections
 
   def self.get_base_products_query(limit, offset, options)
-    limit ||= 10
+    limit ||= 4
     offset ||= 0
     today_query = 'date (last_launch) = current_date'
-    name_query = options[:search] ? " and lower(name) like '%#{options[:search].downcase}%'" : ''
+    name_query = options[:query] ? " and lower(name) like '%#{options[:query].downcase}%'" : ''
     categories_query = options[:categories] ? include_categories(options[:categories]) : ''
     store_query = options[:stores] ? include_stores(options[:stores]) : ''
     brands_query = options[:brands] ? "and brand_id in (#{options[:brands].split(',').join(',')})" : ''
     query = [today_query, name_query, categories_query, store_query, brands_query].join(' ')
     "select id,  brand_id  FROM products  WHERE  #{query} LIMIT #{limit} OFFSET #{offset}"
   end
+
+
+  # Method to include categories join
 
   def self.include_categories(categories)
     "and id in
@@ -72,6 +84,8 @@ class Product < ActiveRecord::Base
             where categories_products.category_id in (#{categories.split(',').join(',')})
       )"
   end
+
+  # Method to include categories join
 
   def self.include_stores(stores)
     "and id in
@@ -133,6 +147,7 @@ class Product < ActiveRecord::Base
 
   #
   # Check if the product can be launched
+  # Add Last Launch
   #
   def can_be_launched?
     !in_launch_mode? and !scheduled_for_launch?

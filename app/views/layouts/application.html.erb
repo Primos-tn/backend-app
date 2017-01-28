@@ -1,24 +1,24 @@
 
 <% content_for :title do %>
-    <%= content_for?(:title) ? yield(:title) : t('app')  %>
+    <%= content_for?(:title) ? yield(:title) : t('app') %>
 <% end %>
 
 <% content_for :stylesheets do %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 <% end %>
-<% isProductsView = %w(welcome products home).include?(controller_name) %>
 
 <% full_template = with_full_header? %>
 
 <% content_for :body do %>
     <body class="<%= (@is_logged_in and !hide_side_bar?) ? '' : 'hello' %>">
+  <div>
 
-    <%- if full_template %>
+    <%- if full_template and !@show_full_header %>
         <%= render :partial => 'header/mini_header' %>
     <%- else -%>
         <%= render :partial => 'header/header' %>
     <% end -%>
-    <%- if not @is_logged_in and isProductsView %>
+    <%- if ((not @is_logged_in and @show_cover) or (controller_name == 'welcome')) %>
         <div class="Cover">
 
         </div>
@@ -36,18 +36,18 @@
         </div>
         <div class="<%= full_template ? '' : 'col-lg-4' %>">
           <%- if not full_template %>
-                <%= render partial: 'shared/sidebar' %>
+              <%= render partial: 'shared/sidebar' %>
           <%- end %>
         </div>
       </div>
 
     </main>
-
     <%= render 'layouts/footer' %>
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
     <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+  </div>
 
 <% end %>
 

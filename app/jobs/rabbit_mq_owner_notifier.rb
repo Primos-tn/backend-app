@@ -1,4 +1,4 @@
-class AdminRabbitMQNotifier < ApplicationJob
+class RabbitMQOwnerNotifier < ApplicationJob
   include RabbitMQDispatcher
   # no sideqick
   self.queue_adapter= :async

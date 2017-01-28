@@ -1,7 +1,7 @@
 /**
  *
  */
-var ProductsList = React.createClass({
+var MapView = React.createClass({
     /**
      *
      */
@@ -34,12 +34,13 @@ var ProductsList = React.createClass({
      *
      */
     componentDidMount: function () {
-        $(window).on('scroll', function (){
+        $(window).on('scroll', function () {
             console.log('#################"');
         });
         App.Dispatcher.attach(this.actions.list, this.onDataChange);
         App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
         this.getServerItems();
+
 
     },
     /**
@@ -52,9 +53,7 @@ var ProductsList = React.createClass({
     /**
      *
      */
-    filterChanged  (filter){
-        this.setState({filter: filter});
-        this.getServerItems();
+    onMapAreaChanged  (filter){
     },
     /**
      *
@@ -68,26 +67,9 @@ var ProductsList = React.createClass({
      *
      */
     render: function () {
-        var items;
-        //
-        if (this.state.items.length) {
-            items = [];
-            var i = 0;
-            this.state.items.forEach(function (item, index) {
-                items.push(<ProductsListItem item={item} index={i} key={index + i++}/>);
-            }.bind(this));
+        return (<div>
+            <Map onMapAreaChanged={this.onMapAreaChanged}></Map>
 
-        }
-        else {
-            items = this.state.serverLoadingDone ? <EmptyProductsList/> : <Loading/>;
-        }
-
-        return (
-            <div>
-                <div className="ProductCardLisContainer">
-                    {items}
-                </div>
-            </div>
-        );
+        </div>)
     }
 });

@@ -73,7 +73,7 @@ class Api::V1::BrandsController < Api::V1::BaseController
       response = {:action => action_name, :data => {:brand_id => @brand.id, :followers_count => @brand.followers.size}}
       render json: response, status: 200
       rabbitmq_dispatch_user_notifications(response.to_json)
-      AdminRabbitMQNotifier.perform_later @brand.id, action_name
+      RabbitMQOwnerNotifier.perform_later @brand.id, action_name
     else
       reply_error (I18n.t('errors.messages.duplicate'))
     end

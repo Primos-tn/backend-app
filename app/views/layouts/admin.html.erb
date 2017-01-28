@@ -5,6 +5,7 @@
     admin_business_accounts_path,
     admin_contacts_path,
     admin_brands_path,
+    admin_products_path,
     admin_accounts_path,
     admin_categories_path,
     admin_business_configure_path,
@@ -32,6 +33,7 @@
                     <p><%= I18n.t(tab) %></p>
                   </a>
                 </li>
+
             <% end %>
           </ul>
         </div>
@@ -41,9 +43,13 @@
         <div class="content">
           <div class="container-fluid">
             <div class="row">
-              <%= render partial: 'shared/locale_form' %>
               <%= content_for?(:main_content) ? yield(:main_content) : yield %>
             </div>
+            <%= render partial: 'shared/locale_form' %>
+
+              <%= link_to destroy_user_session_path, :method => :delete do %>
+                  <i class="ti-lock"></i> Exit
+              <% end %>
           </div>
         </div>
       </div>

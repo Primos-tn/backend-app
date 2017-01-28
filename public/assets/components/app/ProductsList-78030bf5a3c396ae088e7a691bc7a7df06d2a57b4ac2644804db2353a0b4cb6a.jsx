@@ -12,18 +12,21 @@ var ProductsList = React.createClass({
      *
      */
     getInitialState: function () {
-        return {items: [], serverLoadingDone: false};
+        return {items: [], serverLoadingDone: false, filter: {}};
     },
     /**
      *
      */
-    loadDataFromServer: function () {
+    getServerItems: function () {
+        // get query
+        let query = $.extend({
+            brands: this.props.brand
+        }, this.state.filter);
+
         App.Stores.loadData({
             url: App.Routes.products,
             action: this.actions.list,
-            query: {
-                brands: this.props.brand
-            }
+            query: query
         });
     },
 
@@ -31,10 +34,12 @@ var ProductsList = React.createClass({
      *
      */
     componentDidMount: function () {
-        //
+        $(window).on('scroll', function (){
+            console.log('#################"');
+        });
         App.Dispatcher.attach(this.actions.list, this.onDataChange);
         App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
-        this.loadDataFromServer();
+        this.getServerItems();
 
     },
     /**
@@ -47,9 +52,9 @@ var ProductsList = React.createClass({
     /**
      *
      */
-    filterChanged  (state){
-        alert('listen');
-        console.log(state);
+    filterChanged  (filter){
+        this.setState({filter: filter});
+        this.getServerItems();
     },
     /**
      *

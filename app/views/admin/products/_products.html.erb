@@ -1,0 +1,19 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+<table>
+
+  <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.brand.name %></td>
+        <td><%= product.votes_count %></td>
+        <td><%= product.stores.size %></td>
+        <td><%= link_to 'Show', admin_product_path(product) %></td>
+        <td>
+          <%= form_for([:admin, product], url:   launch_admin_product_path(product), method: :post) do |f| %>
+              <%= f.submit t('Launch'), :class => 'btn btn-danger btn-fill' %>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+</table>

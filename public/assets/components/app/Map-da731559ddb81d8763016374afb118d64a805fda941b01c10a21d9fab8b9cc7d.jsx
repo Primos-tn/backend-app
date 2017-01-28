@@ -30,7 +30,9 @@ var Map = React.createClass({
         this._map = map;
         this._placeMarkers();
         if (this.props.onMapAreaChanged) {
-            this._map.on('moveend', this.props.onMapAreaChanged);
+            this._map.on('moveend', function (e){
+                this.props.onMapAreaChanged(e.target.getBounds().toBBoxString())
+            }.bind(this));
         }
 
     },

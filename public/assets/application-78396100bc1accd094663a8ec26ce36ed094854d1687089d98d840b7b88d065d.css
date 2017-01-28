@@ -2355,6 +2355,40 @@ input[type='file'] {
 /**
  *
  */
+/* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/engineering.scss */
+.EngineeringItem {
+  background-color: #fff;
+  border: solid 10px #ffb249;
+  color: #ffb249;
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20%;
+  border-radius: 50%;
+  margin: auto auto 30px;
+  width: 200px;
+  height: 200px;
+}
+/* line 14, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/engineering.scss */
+.EngineeringItem i {
+  font-size: 100px;
+}
+/* line 17, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/engineering.scss */
+.EngineeringItem:hover {
+  border: solid 0.5px #ffb249;
+  font-size: 44px;
+  -webkit-transition: border 0.2s;
+  /* Safari */
+  transition: border 0.2s;
+  -webkit-transition: font-size 0.2s;
+  /* Safari */
+  transition: font-size 0.2s;
+}
+/**
+ * Define app main colors
+ */
+/**
+ *
+ */
 /* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer {
   padding-top: 15px;
@@ -2486,13 +2520,17 @@ header .navbar-header .SearchContainer {
   position: relative;
 }
 /* line 76, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+header .navbar-header .SearchContainer .ui-autocomplete {
+  position: absolute !important;
+}
+/* line 79, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-header .SearchContainer .ti-search {
   color: #FFA500;
   position: absolute;
   right: -9px;
   top: -1px;
 }
-/* line 82, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 85, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-header .SearchContainer input {
   border: none;
   -webkit-border-radius: 2px;
@@ -2502,24 +2540,24 @@ header .navbar-header .SearchContainer input {
   width: 514px;
 }
 @media only screen and (max-width: 768px) {
-  /* line 82, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 85, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .navbar-header .SearchContainer input {
     width: 200px;
   }
 }
-/* line 92, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 95, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks {
   float: left;
   padding-left: 5px;
   height: 100%;
 }
 @media only screen and (max-width: 768px) {
-  /* line 92, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 95, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .NavMainLinks {
     margin-top: 0px;
   }
 }
-/* line 99, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 102, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks i {
   color: white;
   position: relative;
@@ -2532,75 +2570,75 @@ header .NavMainLinks i {
   cursor: pointer;
 }
 @media only screen and (max-width: 768px) {
-  /* line 99, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 102, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .NavMainLinks i {
     padding-top: 3px;
     font-size: 24px;
   }
 }
-/* line 115, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 118, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks a:hover {
   text-decoration: none;
 }
-/* line 118, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 121, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks .NavMainLinks__TextLink {
   color: #fff;
   font-size: 16px;
   position: relative;
 }
-/* line 123, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 126, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks li {
   padding-top: 10px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 123, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 126, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .NavMainLinks li {
     height: 100%;
   }
 }
-/* line 128, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 131, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks li.active {
   background-color: #ffb249;
 }
-/* line 131, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 134, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .NavMainLinks li.active a, header .NavMainLinks li.active i, header .NavMainLinks li.active span {
   color: #fff;
 }
 @media only screen and (max-width: 768px) {
-  /* line 137, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 140, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .navbar-nav {
     margin: 0;
     padding: 10px 5px;
   }
 }
-/* line 143, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 146, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-nav .GoAndroid i {
   font-size: 18px;
   color: #fff;
 }
-/* line 149, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 152, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-nav a {
   font-size: 16px;
   font-weight: 500;
   color: #fff;
 }
-/* line 153, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 156, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-nav a:hover {
   background-color: transparent;
 }
-/* line 159, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 162, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 header .navbar-toggle {
   margin-bottom: 0px;
 }
 @media only screen and (max-width: 768px) {
-  /* line 159, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+  /* line 162, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
   header .navbar-toggle {
     padding-top: 0px;
     margin-top: 15px;
   }
 }
 
-/* line 168, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
+/* line 171, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/header.scss */
 .HeaderContainer {
   z-index: 3;
 }

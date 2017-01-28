@@ -30,7 +30,7 @@
                   <% end %>
                 </div>
                 <div class="col-md-3  text-center">
-                  <%= link_to  dashboard_brand_gallery_path(entry), method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
+                  <%= link_to dashboard_brand_gallery_path(entry), method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
                       <button class="btn btn-sm btn-danger btn-icon">
                         <span class="ti-trash "></span>
                       </button>
@@ -38,6 +38,12 @@
                 </div>
               </div>
             </div>
+            <div class="DashboardGallery__DominantColorContainer">
+              <% entry.dominant_colors.each do |color| %>
+                  <div class="DashboardGallery__DominantColor" style="background: <%= color %>"></div>
+              <% end %>
+            </div>
+            <hr/>
           </div>
         </div>
     <% end %>

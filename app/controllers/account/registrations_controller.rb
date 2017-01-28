@@ -71,7 +71,6 @@ class Account::RegistrationsController < Devise::RegistrationsController
 
   def new_registration_params
     params.require(:user).permit(:email)
-
   end
 
 # The path used after sign up for inactive accounts.

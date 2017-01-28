@@ -6,7 +6,7 @@ var ProductsListItem = React.createClass({
     getInitialState: function () {
         return {
             isVoted: this.props.item.is_voted,
-            votesCount: this.props.item.info.user_product_votes_count
+            votesCount: this.props.item.info.votes_count
         }
     },
     /**
@@ -141,6 +141,9 @@ var ProductsListItem = React.createClass({
                         </div>
                         <ProductShowGallery pictures={pictures || [] }
                                             onImageThumbnailClicked={this.onImageThumbnailClicked}/>
+
+
+
                         <div className="pull-right ProductCard__VotesCount">
                             {this.state.votesCount}
                         </div>

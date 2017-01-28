@@ -29,17 +29,14 @@ class Api::V1::BaseController < ApplicationController
   # Once the client has the token it sends both token and email
   # to the API for each subsequent request.
   def authenticate_user!
-    if current_user
-      return current_user
-    end
+    return true if @current_user
     # get token and options
     authenticate_or_request_with_http_token do |token, options|
       access_token = AccountAccessToken.find_by(token_value: token)
       if access_token #&& !access_token.expires_at < Date.now
-        @current_user = access_token.account
+        current_user = access_token.account
       else
-
-        #unauthenticated!
+        unauthenticated!
       end
     end
   end
@@ -66,7 +63,7 @@ class Api::V1::BaseController < ApplicationController
         if errors.has_key?(:message)
           errors_hash[:error] = errors
         else
-          if errors.has_key?(:message)
+          if errors.has_key?(:messages)
             errors.messages.each do |attribute, error|
               array_hash = []
               error.each do |e|
@@ -75,7 +72,7 @@ class Api::V1::BaseController < ApplicationController
               errors_hash.merge!({attribute => array_hash})
             end
           else
-            errors_hash[:error] = t('api error')
+            errors_hash[:error] = errors
           end
 
         end
@@ -98,7 +95,7 @@ class Api::V1::BaseController < ApplicationController
   # Next function
   #
   def next!
-    render json: {:reason => "next version"}, status: 401
+    render json: {:reason => 'next version'}, status: 401
   end
 
   #
@@ -108,8 +105,8 @@ class Api::V1::BaseController < ApplicationController
     api_error(401, 'Not authorized', 'LOGIN')
   end
 
-  def request_http_token_authentication(realm = "Application", message =t("HTTP Token: Access denied. You did not provide an valid API key."))
+  def request_http_token_authentication(realm = "Application", message="HTTP Token: Access denied. You did not provide an valid API key.")
     self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, "")}")
-    api_error(401, 'Not authorized', 'LOGIN')
+    unauthenticated!
   end
 end

@@ -1,0 +1,27 @@
+@import "colors";
+
+.EngineeringItem {
+  background-color: $color-white;
+  border : solid 10px $primary-color;
+  color : $primary-color;
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20%;
+  border-radius: 50%;
+  margin: auto auto 30px;
+  width: 200px;
+  height: 200px;
+  i{
+    font-size: 100px;
+  }
+  &:hover {
+
+    border : solid .5px $primary-color;
+    font-size: 44px;
+    -webkit-transition: border 0.2s; /* Safari */
+    transition: border 0.2s;
+    -webkit-transition: font-size 0.2s; /* Safari */
+    transition: font-size 0.2s;
+  }
+ }
+

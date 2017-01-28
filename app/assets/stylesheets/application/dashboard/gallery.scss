@@ -1,6 +1,16 @@
 .DashboardGallery__Item {
 
 }
+.DashboardGallery__DominantColorContainer{
+  text-align: center;
+
+  .DashboardGallery__DominantColor {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+  }
+}
 
 .DashboardGallery__DropZone{
   margin: 8px 12px;
