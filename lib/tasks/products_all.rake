@@ -17,8 +17,9 @@ namespace :gallery do
   desc 'Products pictures name'
   task set_dominant_colors: :environment do
     puts 'Staring generating dominants colors '
-    ImageProcessing.perform_now BrandGallery.find(112)
-
+    BrandGallery.all.each do |entry|
+      ImageProcessing.perform_now entry
+    end
     puts 'End generating dominants colors '
   end
 
