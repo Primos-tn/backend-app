@@ -221,6 +221,10 @@ App.Configuration = {
 
 // error login
 $(document).ready(function () {
+    // listen to scroll
+    $(window).on('scroll', function (){
+        App.Dispatcher.dispatch(App.Actions.WINDOW_SCROLL, window.scrollY);
+    });
     $(document).ajaxError(function (event, xhr, settings) {
         try {
             var response = xhr.responseJSON || JSON.parse(xhr.responseText);

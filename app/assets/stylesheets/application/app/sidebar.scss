@@ -1,7 +1,11 @@
 @import "colors";
 @import "mixins";
 .AppSideBar {
+  &.fixed {
+    position: fixed;
+  }
   position: relative;
+  width: 350px;
   background-color: $color-white;
   border: solid 1px $primary-color;
   border-radius: 4px;

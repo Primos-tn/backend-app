@@ -8,63 +8,159 @@
 
 <%- launches_counts = %w(2 4 7) %>
 
-<section>
+<section class="PriceSection">
   <h4 class="sectionTitle"> <%= t('Offers') %> </h4>
 
-  <div class="SectionPrices">
-    <% offers.each_with_index do |item, index| %>
-        <div class="col-sm-12 col-md-4 col-lg-4 SectionPrices__Item">
-          <div class="SectionPrices__ItemContainer <%= "ProOffer" if index == 2 %>">
-            <h4 class="text-uppercase SectionPrices__Title">
-              <%= item %>
-              <br/>
-              <small>&nbsp; <%= offers_titles[index] %></small>
-            </h4>
-            <ul>
-              <li>
-                &nbsp;  <%= launches_counts[index] %> <i class="ti-timer"></i>  <%= I18n.t('Feature Launches') %>
-              </li>
-              <li>
-                <i class="ti-pulse"></i>  <%= I18n.t('Feature Statistics') %>
-              </li>
+  <div>
+    <table>
+      <tbody>
+      <tr>
+        <td class="SectionPrices__ItemContainer">
+          <table>
+            <tr>
+              <td>
+                <h4 class="text-uppercase SectionPrices__Title">Services</h4><br/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-timer"></i>
+                <%= I18n.t('Feature Launches') %>
+              </td>
+            <tr>
+              <td>
 
-              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
-                <i class="ti-layout-cta-left"></i>  <%= I18n.t('Feature QR Coupons') %>
-              </li>
-              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
-                <i class="ti-target"></i>  <%= I18n.t('Feature BI') %>
-              </li>
-              <li class="<%= "SectionPrices--Disabled" if index < 1 %>">
-                <i class="ti-bell"></i>  <%= I18n.t('Feature Actions') %>
-              </li>
+                <i class="ti-pulse"></i>
+                <%= I18n.t('Feature Statistics') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-layout-cta-left"></i>
+                <%= I18n.t('Feature QR Coupons') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-target"></i>
+                <%= I18n.t('Feature BI') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-bell"></i>
+                <%= I18n.t('Feature Actions') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-star"></i>
+                <%= I18n.t('Feature Sponsored') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-layout-cta-left"></i>
+                <%= I18n.t('Feature Subdomain') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-user"></i>
+                <%= I18n.t('Feature Collaboration') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-loop"></i>
+                <%= I18n.t('Feature Machine Learning') %></td>
+            </tr>
+            <tr>
+              <td>
+                <i class="ti-comments-smiley"></i>
+                <%= I18n.t('Feature Bot') %></td>
+            </tr>
+          </table>
+        </td>
 
-              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
-                <i class="ti-star"></i>   <%= I18n.t('Feature Sponsored') %>
-              </li>
+        <% offers.each_with_index do |item, index| %>
+            <td class="SectionPrices__ItemContainer">
+              <table class=" <%= "ProOffer" if index == 2 %>">
+                <!--<tr class="col-sm-12 col-md-4 col-lg-4 SectionPrices__Item">-->
+                <tr>
+                  <td>
+                    <h4 class="text-uppercase SectionPrices__Title">
+                      <%= item %>
+                      <br/>
 
-              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
-                <i class="ti-layout-cta-left"></i>   <%= I18n.t('Feature Subdomain') %>
-              </li>
-              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
-                <i class="ti-user"></i>  <%= I18n.t('Feature Collaboration') %>
-              </li>
-              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
-                <i class="ti-loop"></i>   <%= I18n.t('Feature Machine Learning') %>
-              </li>
+                      <small>&nbsp; <%= offers_titles[index] %></small>
+                      <%- if index == 2 %>
+                          <span class="SectionPrices__ItemContainerSoon">
+                            <%= t('Not available in beta version') %>
+                          </span>
+                      <% end -%>
+                    </h4>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    &nbsp;  <%= launches_counts[index] %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
 
-              <li class="<%= "SectionPrices--Disabled" if index < 2 %>">
-                <i class="ti-comments-smiley"></i>   <%= I18n.t('Feature Bot') %>
-              </li>
+                </tr>
 
-            </ul>
-            <%- if index == 2 %>
-                <div class="SectionPrices__ItemContainerSoon">
-                 <%= t('Not available in beta version') %>
-                </div>
-            <% end -%>
-          </div>
-        </div>
-    <%- end %>
+                <tr class="<%= 'SectionPrices--Disabled' if index < 1 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+                <tr class="<%= 'SectionPrices--Disabled' if index < 1 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+                <tr class="<%= 'SectionPrices--Disabled' if index < 1 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+
+                <tr class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+
+                <tr class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+                <tr class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+                <tr class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+
+                <tr class="<%= "SectionPrices--Disabled" if index < 2 %>">
+                  <td>
+                    <i class="ti-check"></i>
+                  </td>
+                </tr>
+
+
+                <!--</tr>!-->
+              </table>
+            </td>
+        <%- end %>
+      </tr>
+      </tbody>
+    </table>
+
   </div>
+
 </section>
 <br/>

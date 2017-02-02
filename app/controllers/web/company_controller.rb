@@ -26,10 +26,6 @@ class Web::CompanyController < Web::BaseController
       CompanyMailer.new_contact(@contact).deliver_now
       AdminMailer.new_contact(@contact).deliver_now
       redirect_to root_path
-
-      BrandUserFollower.new({brand:  2, account: 1})
-
-
     end
 
   end

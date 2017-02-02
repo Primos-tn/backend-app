@@ -38,6 +38,10 @@ class Product < ActiveRecord::Base
   has_many :product_coupons
 
 
+  has_many :product_taggings
+  has_many :tags, through: :product_taggings
+
+
   validates :brand, presence: true
   validates :name, presence: true
 
@@ -135,6 +139,16 @@ class Product < ActiveRecord::Base
   # Returns the model id
   def media_store_dir
     "#{brand.media_store_dir}/products/#{id}"
+  end
+
+  def all_tags=(names)
+    self.tags = names.split(',').map do |name|
+      Tag.where(name: name.strip).first_or_create!
+    end
+  end
+
+  def all_tags
+    self.tags.map(&:name).join(", ")
   end
 
   #

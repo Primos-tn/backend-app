@@ -135,8 +135,38 @@ var SideBarFilter = React.createClass({
             map : null,
             color : null,
             categoriesList : null,
-            range : null
+            range : null,
+            navBarHeight : $('.navbar-nav').height() + 5
         }
+
+    },
+    /**
+     *
+     */
+    componentDidMount () {
+        App.Dispatcher.attach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        this.onWindowScrolled(window.scrollY);
+
+    },
+    /**
+     *
+     */
+    componentWillUnmount (){
+        App.Dispatcher.detach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+
+    },
+    /**
+     *
+     */
+    onWindowScrolled : function (value){
+        //console.log(value);
+        let $container = $('.AppSideBar');
+        //if (value >  this.state.navBarHeight){
+            $container.addClass("fixed");
+        /*}
+        else {
+            $container.removeClass("fixed");
+        }*/
     },
     /**
      *

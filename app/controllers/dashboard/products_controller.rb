@@ -51,7 +51,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         if not at.nil? and Time.strptime(at, '%m/%d/%Y')
           at = Time.strptime(at, '%m/%d/%Y')
         else
-          at = Date.tomorrow
+          at = Date.today
         end
 
         @product.last_launch = at
