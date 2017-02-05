@@ -35713,6 +35713,10 @@ var ProfileMapInterests = React.createClass({
         try {
             regionInterest = JSON.parse(this.props.regionInterest);
         } catch (e) {}
+        // my be null for first open
+        if (!regionInterest) {
+            regionInterest = {};
+        }
         return {
             center: regionInterest.center || [51.505, -0.09],
             distance: regionInterest.distance || 40
