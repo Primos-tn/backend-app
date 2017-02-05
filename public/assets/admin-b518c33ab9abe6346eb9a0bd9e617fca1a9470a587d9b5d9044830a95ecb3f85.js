@@ -32950,12 +32950,12 @@ var dispatcher = {
      * @param action to be attached
      * @param callback to execute
      */
-    attach: function (action, callback) {
+    attach: function (action, callback, params) {
         if (!App.Dispatcher._listeners[action]) {
             // create callback in list of events
             App.Dispatcher._listeners[action] = {};
         }
-        // save dispatch id to be deleted in removeListener
+        // save dispatch id to be deleted so we can delete it later
         var dispatchId = Date.now();
         App.Dispatcher._listeners[action][dispatchId] = callback;
         callback.__dispatecherID__ = dispatchId;
@@ -33035,7 +33035,7 @@ App.Stores = {
     post: function (options) {
         $.ajax({
             type: 'POST',
-            url: options.url,
+            url: App.Helpers.formatApiUrl(options.url, options.params || {}),
             data: options.data || {},
             success: function (data) {
                 App.Dispatcher.dispatch(options.action || options.url, data, options.event || {});
@@ -33118,10 +33118,13 @@ var routes = {
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
-    brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
+    // reviews
+
+    brandReviews: 'brands/:id/reviews',
+
     products: 'products',
     productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',
@@ -33159,6 +33162,10 @@ App.Configuration = {
 
 // error login
 $(document).ready(function () {
+    // listen to scroll
+    $(window).on('scroll', function (){
+        App.Dispatcher.dispatch(App.Actions.WINDOW_SCROLL, window.scrollY);
+    });
     $(document).ajaxError(function (event, xhr, settings) {
         try {
             var response = xhr.responseJSON || JSON.parse(xhr.responseText);
@@ -33200,6 +33207,7 @@ $(document).ready(function () {
 App.Actions = {
     'WS_CONNECTION_ESTABLISHED': 'WS_CONNECTION_ESTABLISHED',
     'WS_CONNECTION_LOST': 'WS_CONNECTION_LOST',
+    WINDOW_SCROLL : 'WINDOW_SCROLL',
     SEARCH: 'SEARCH',
     NOTIFICATION: 'NOTIFICATION',
     ADMIN_NOTIFICATION: 'ADMIN_NOTIFICATION',
@@ -33212,9 +33220,14 @@ App.Actions = {
     PRODUCT_VOTE_DOWN: 'PRODUCT_VOTE_DOWN',
 
     BRAND_FOLLOWING: 'BRAND_FOLLOWING',
+    BRAND_LIST_FETCHING : 'BRAND_LIST_FETCHING',
+    BRAND_FOLLOWERS_LIST_FETCHING : 'BRAND_FOLLOWERS_LIST_FETCHING',
     BRAND_INOFO_CHANGED: 'BRAND_INOFO_CHANGED',
     BRAND_FOLLOW: 'BRAND_FOLLOW',
-    BRAND_UNFOLLOW: 'BRAND_UNFOLLOW'
+    BRAND_UNFOLLOW: 'BRAND_UNFOLLOW',
+
+    BRAND_REVIEWS_LIST_FETCHING : 'BRAND_REVIEWS_LIST_FETCHING',
+    BRAND_EDIT_REVIEW : 'BRAND_EDIT_REVIEW'
 
 };
 /**

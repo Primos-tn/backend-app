@@ -1,7 +1,9 @@
 <% render partial: 'shared/requires_map_libs' %>
 <div>
   <%= react_component('BrandProfile', props={'id' => params[:id],
+                                             'brandInfo' => @brand.as_json.merge({ :category => humanize_category_name(@brand.category)}),
                                              'activeTab' => @active_tab,
+                                             'authenticityToken' => form_authenticity_token,
                                              'stores' => @active_tab == 'stores' ? @stores : [],
                                              'cover' => get_assets_url(@brand.cover.to_s)}) %>
 </div>

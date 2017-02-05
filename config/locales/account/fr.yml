@@ -1,6 +1,7 @@
 fr:
   Sign in : "Entrer"
   Sign up : "Enregistrer"
+  Cancel my account : Annuler mon compte
   registration policy : Conditions de création de compte
   identifier not valid : L'address électronique n'est pas valide
   activerecord:

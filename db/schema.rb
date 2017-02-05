@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131161554) do
+ActiveRecord::Schema.define(version: 20170204220745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,8 @@ ActiveRecord::Schema.define(version: 20170131161554) do
     t.string   "username"
     t.integer  "account_type",           default: 0
     t.boolean  "is_super_admin",         default: false
+    t.string   "provider"
+    t.string   "uid"
     t.index ["email"], name: "index_accounts_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
     t.index ["username"], name: "index_accounts_on_username", unique: true, using: :btree
@@ -96,7 +98,7 @@ ActiveRecord::Schema.define(version: 20170131161554) do
   create_table "brand_reviews", force: :cascade do |t|
     t.integer  "brand_id"
     t.integer  "author_id"
-    t.string   "comment"
+    t.string   "body"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "likes_count", default: 0
@@ -132,6 +134,12 @@ ActiveRecord::Schema.define(version: 20170131161554) do
     t.string   "cover"
     t.integer  "products_count",  default: 0
     t.integer  "stores_count",    default: 0
+    t.string   "fb_link"
+    t.string   "tw_link"
+    t.string   "ln_link"
+    t.string   "address"
+    t.date     "creation_date"
+    t.integer  "category_id"
     t.index ["account_id"], name: "index_brands_on_account_id", using: :btree
   end
 
@@ -287,12 +295,13 @@ ActiveRecord::Schema.define(version: 20170131161554) do
     t.integer  "account_id"
     t.integer  "country_id"
     t.date     "birthdate"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "avatar_tiny"
     t.integer  "age"
     t.json     "pictures"
     t.string   "address"
+    t.json     "region_interest"
     t.index ["account_id"], name: "index_profiles_on_account_id", using: :btree
   end
 
@@ -323,6 +332,15 @@ ActiveRecord::Schema.define(version: 20170131161554) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_category_interests", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "category_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["account_id"], name: "index_user_category_interests_on_account_id", using: :btree
+    t.index ["category_id"], name: "index_user_category_interests_on_category_id", using: :btree
   end
 
   create_table "user_product_shares", force: :cascade do |t|
@@ -368,4 +386,6 @@ ActiveRecord::Schema.define(version: 20170131161554) do
   add_foreign_key "brands", "accounts"
   add_foreign_key "product_taggings", "products"
   add_foreign_key "product_taggings", "tags"
+  add_foreign_key "user_category_interests", "accounts"
+  add_foreign_key "user_category_interests", "categories"
 end

@@ -1,4 +1,3 @@
-
 <% content_for :title do %>
     <%= content_for?(:title) ? yield(:title) : t('app') %>
 <% end %>
@@ -11,26 +10,25 @@
 
 <% content_for :body do %>
     <body class="<%= (@is_logged_in and !hide_side_bar?) ? '' : 'hello' %>">
-  <div>
+    <div>
 
-    <%- if full_template and !@show_full_header %>
-        <%= render :partial => 'header/mini_header' %>
-    <%- else -%>
-        <%= render :partial => 'header/header' %>
-    <% end -%>
-    <%- if ((not @is_logged_in and @show_cover) or (controller_name == 'welcome')) %>
-        <div class="Cover">
+      <%- if full_template and !@show_full_header %>
+          <%= render :partial => 'header/mini_header' %>
+      <%- else -%>
+          <%= render :partial => 'header/header' %>
+      <% end -%>
+      <%- if ((not @is_logged_in and @show_cover) or (controller_name == 'welcome')) %>
+          <div class="Cover">
 
-        </div>
-    <% end -%>
-    <%- unless @is_logged_in %>
-        <%= render template: 'devise/sessions/new_modal' %>
-        <%= render template: 'devise/registrations/new_modal' %>
-    <% end -%>
-    <%= content_for?(:outside_main) ? yield(:outside_main) : '' %>
+          </div>
+      <% end -%>
+      <%- unless @is_logged_in %>
+          <%= render template: 'devise/sessions/new_modal' %>
+          <%= render template: 'devise/registrations/new_modal' %>
+      <% end -%>
+      <%= content_for?(:outside_main) ? yield(:outside_main) : '' %>
 
-    <main class="container AppContainer">
-      <div>
+      <main class="container AppContainer">
         <div class="<%= full_template ? '' : 'col-lg-8 NoPadding' %>">
           <%= content_for?(:main_content) ? yield(:main_content) : yield %>
         </div>
@@ -39,15 +37,13 @@
               <%= render partial: 'shared/sidebar' %>
           <%- end %>
         </div>
-      </div>
+      </main>
+      <%= render 'layouts/footer' %>
 
-    </main>
-    <%= render 'layouts/footer' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-
-    <%= content_for?(:scripts) ? yield(:scripts) : '' %>
-  </div>
+      <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+    </div>
 
 <% end %>
 

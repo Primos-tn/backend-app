@@ -12,12 +12,12 @@ var dispatcher = {
      * @param action to be attached
      * @param callback to execute
      */
-    attach: function (action, callback) {
+    attach: function (action, callback, params) {
         if (!App.Dispatcher._listeners[action]) {
             // create callback in list of events
             App.Dispatcher._listeners[action] = {};
         }
-        // save dispatch id to be deleted in removeListener
+        // save dispatch id to be deleted so we can delete it later
         var dispatchId = Date.now();
         App.Dispatcher._listeners[action][dispatchId] = callback;
         callback.__dispatecherID__ = dispatchId;
@@ -97,7 +97,7 @@ App.Stores = {
     post: function (options) {
         $.ajax({
             type: 'POST',
-            url: options.url,
+            url: App.Helpers.formatApiUrl(options.url, options.params || {}),
             data: options.data || {},
             success: function (data) {
                 App.Dispatcher.dispatch(options.action || options.url, data, options.event || {});
@@ -180,10 +180,13 @@ var routes = {
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
-    brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
+    // reviews
+
+    brandReviews: 'brands/:id/reviews',
+
     products: 'products',
     productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',

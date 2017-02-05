@@ -1,8 +1,46 @@
 @import "mixins";
 @import "colors";
+
 .UserProfilePage {
   @include rounded-top(2px);
-  border:  solid 1px $primary-color;
+  border: solid 1px $primary-color;
   background-color: white;
 
+}
+.UserProfile__InterestRegionSlider {
+  .ui-slider-horizontal {
+    background-color: $primary-color;
+  }
+  position: relative;
+  #profile_region_interest_distance_slider_indicator {
+    position: absolute;
+    z-index: 200;
+    top : -28px;
+    min-width: 100px;
+    span{
+      background-color: $primary-color;
+      padding: 2px;
+      border-radius: 2px;
+    }
+
+    color : $color-white;
+  }
+ margin: 20px 0px;
+}
+.UserProfile__InterestCategory {
+  padding: 2px;
+  .UserProfile__InterestCategoryContainer {
+    background-color: $primary-color;
+    padding: 10px;
+    color: $color-white;
+    i {
+      font-size: 20px;
+      color: $color-white;
+    }
+  }
+}
+.UserProfile__InterestRegionMap {
+  width: 100%;
+  margin: 2px;
+  min-height: 350px;
 }

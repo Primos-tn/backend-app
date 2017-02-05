@@ -51,9 +51,11 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
+
 # Bundle devise
 gem 'devise'
 
+gem 'omniauth-facebook'
 # Bundle devise
 gem 'sidekiq', '4.0.0'
 

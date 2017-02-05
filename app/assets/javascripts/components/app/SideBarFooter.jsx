@@ -17,7 +17,7 @@ var SideBarFooter = React.createClass({
                     <a href="#"><i className="  ti-facebook"></i></a>
                     <a href="#"><i className="ti-linkedin"></i></a>
                     <a href="#"><i className="ti-twitter"></i></a>
-                    <span>© 2016</span>
+                    <span>© 2017</span>
                 </div>
             </div>
         );

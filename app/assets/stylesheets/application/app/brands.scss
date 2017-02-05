@@ -53,6 +53,10 @@
   }
   .BrandCard__Verified {
     @extend .Brand__ShieldIcon;
+    right: 19px;
+    top: 15px;
+    color: #45C632;
+    font-size: 26px;
   }
   .BrandCard__Actions {
     min-height: 45px;
@@ -104,7 +108,9 @@
 
 .BrandDetails {
   position: relative;
-
+  .BrandDetails_Header {
+    position: relative;
+  }
   .BrandDetails__Title {
     @extend .Brand__Title;
   }
@@ -180,7 +186,32 @@
       position: absolute;
       z-index: 2;
       left: 2%;
-      bottom: 10px;
+      bottom:  10px;
+    }
+  }
+}
+.BrandProfile__ReviewForm {
+  padding: 7px 0px;
+  textarea{
+    width: 100%;
+    padding: 5px;
+    border : solid 1px $primary-color;
+  }
+}
+.BrandProfile__InfoContainer{
+  background: $color-white;
+  padding: 4px;
+  min-height: 250px;
+  .BrandProfile__InfoItem {
+    padding: 2px 5px;
+    background-color: $primary-color;
+    color: white;
+    i {
+      display: inline-block;
+      border-radius: 15px;
+    }
+    a{
+      color: $color-white;
     }
   }
 }

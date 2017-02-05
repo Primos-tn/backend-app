@@ -16,7 +16,7 @@ var DashboardBoard = React.createClass({
                 <DashboardBoardUsersBlock id={this.props.id}/>
                 <div className="card">
                     <div className="header">
-                        <h4 className="title">{i18n.Shops}</h4>
+                        <h4 className="title">{i18n.Locations}</h4>
                     </div>
                     <div className="content">
                         <DashboardStoresMapView stores={this.props.stores} id={this.props.id}/>

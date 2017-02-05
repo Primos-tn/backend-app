@@ -32950,12 +32950,12 @@ var dispatcher = {
      * @param action to be attached
      * @param callback to execute
      */
-    attach: function (action, callback) {
+    attach: function (action, callback, params) {
         if (!App.Dispatcher._listeners[action]) {
             // create callback in list of events
             App.Dispatcher._listeners[action] = {};
         }
-        // save dispatch id to be deleted in removeListener
+        // save dispatch id to be deleted so we can delete it later
         var dispatchId = Date.now();
         App.Dispatcher._listeners[action][dispatchId] = callback;
         callback.__dispatecherID__ = dispatchId;
@@ -33035,7 +33035,7 @@ App.Stores = {
     post: function (options) {
         $.ajax({
             type: 'POST',
-            url: options.url,
+            url: App.Helpers.formatApiUrl(options.url, options.params || {}),
             data: options.data || {},
             success: function (data) {
                 App.Dispatcher.dispatch(options.action || options.url, data, options.event || {});
@@ -33118,10 +33118,13 @@ var routes = {
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
-    brandReviews: 'brands/:id/reviews',
     brandStores: 'brands/:id/stores',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
+    // reviews
+
+    brandReviews: 'brands/:id/reviews',
+
     products: 'products',
     productOfDay: 'products/product-of-day',
     wishProduct: 'products/:id/wish',
@@ -33159,6 +33162,10 @@ App.Configuration = {
 
 // error login
 $(document).ready(function () {
+    // listen to scroll
+    $(window).on('scroll', function (){
+        App.Dispatcher.dispatch(App.Actions.WINDOW_SCROLL, window.scrollY);
+    });
     $(document).ajaxError(function (event, xhr, settings) {
         try {
             var response = xhr.responseJSON || JSON.parse(xhr.responseText);
@@ -33200,6 +33207,7 @@ $(document).ready(function () {
 App.Actions = {
     'WS_CONNECTION_ESTABLISHED': 'WS_CONNECTION_ESTABLISHED',
     'WS_CONNECTION_LOST': 'WS_CONNECTION_LOST',
+    WINDOW_SCROLL : 'WINDOW_SCROLL',
     SEARCH: 'SEARCH',
     NOTIFICATION: 'NOTIFICATION',
     ADMIN_NOTIFICATION: 'ADMIN_NOTIFICATION',
@@ -33212,9 +33220,14 @@ App.Actions = {
     PRODUCT_VOTE_DOWN: 'PRODUCT_VOTE_DOWN',
 
     BRAND_FOLLOWING: 'BRAND_FOLLOWING',
+    BRAND_LIST_FETCHING : 'BRAND_LIST_FETCHING',
+    BRAND_FOLLOWERS_LIST_FETCHING : 'BRAND_FOLLOWERS_LIST_FETCHING',
     BRAND_INOFO_CHANGED: 'BRAND_INOFO_CHANGED',
     BRAND_FOLLOW: 'BRAND_FOLLOW',
-    BRAND_UNFOLLOW: 'BRAND_UNFOLLOW'
+    BRAND_UNFOLLOW: 'BRAND_UNFOLLOW',
+
+    BRAND_REVIEWS_LIST_FETCHING : 'BRAND_REVIEWS_LIST_FETCHING',
+    BRAND_EDIT_REVIEW : 'BRAND_EDIT_REVIEW'
 
 };
 /**
@@ -33360,6 +33373,10 @@ var BrandProfile = React.createClass({
         // data is loaded
         if (this.state.item.id) {
             switch (activeTab) {
+                case INFO_TAB:
+                default:
+                    tabClassInstance = React.createElement(BrandProfileInfo, { id: this.props.id, brandInfo: this.props.brandInfo });
+                    break;
                 case STORES_TAB:
                     tabClassInstance = React.createElement(BrandProfileStoresInfo, { positions: this.props.stores });
                     break;
@@ -33367,14 +33384,14 @@ var BrandProfile = React.createClass({
                     tabClassInstance = React.createElement(ProductsList, { id: this.props.id, brand: this.props.id });
                     break;
                 case REVIEWS_TAB:
-                    tabClassInstance = React.createElement(BrandProfileReviewsList, { id: this.props.id });
+                    tabClassInstance = React.createElement(BrandProfileReviewsList, {
+                        authenticityToken: this.props.authenticityToken,
+                        id: this.props.id });
                     break;
                 case FOLLOWERS_TAB:
                     tabClassInstance = React.createElement(BrandProfileFollowersList, { id: this.props.id });
                     break;
-                case INFO_TAB:
-                default:
-                    tabClassInstance = React.createElement(BrandProfileInfo, { id: this.props.id });
+
             }
         }
         var container = tabClassInstance;
@@ -33391,7 +33408,7 @@ var BrandProfile = React.createClass({
                 ),
                 React.createElement(
                     "div",
-                    null,
+                    { className: "BrandDetails_Header" },
                     React.createElement(
                         "div",
                         { className: "BrandDetails__Title" },
@@ -33481,7 +33498,6 @@ var BrandProfile = React.createClass({
         );
     }
 });
-var BRAND_FOLLOWERS_ACTION = "BRAND_FOLLOWERS_ACTION";
 var BrandProfileFollowersListItem = React.createClass({
     displayName: "BrandProfileFollowersListItem",
 
@@ -33502,17 +33518,29 @@ var BrandProfileFollowersListItem = React.createClass({
 var BrandProfileFollowersList = React.createClass({
     displayName: "BrandProfileFollowersList",
 
+    getInitialState: function () {
+        return {
+            items: [],
+            noMoreItems: false,
+            isFetchingItems: false,
+            page: 0,
+            maxItems: 10
+        };
+    },
     /**
      *
      */
-    loadDataFromServer: function () {
+    fetchItems: function () {
+        // get query
+        var query = { page: this.state.page };
         //
-        this.setState({ isFetching: true });
+        this.setState({ isFetchingItems: true });
         //
         App.Stores.loadData({
             url: App.Routes.brandFollowers,
-            action: BRAND_FOLLOWERS_ACTION,
-            params: { id: this.props.id }
+            action: App.Actions.BRAND_FOLLOWERS_LIST_FETCHING,
+            params: { id: this.props.id },
+            query: query
         });
     },
 
@@ -33520,64 +33548,59 @@ var BrandProfileFollowersList = React.createClass({
      *
      */
     componentDidMount: function () {
-        App.Dispatcher.attach(BRAND_FOLLOWERS_ACTION, this.onDataChange);
-        this.loadDataFromServer();
+        App.Dispatcher.attach(App.Actions.BRAND_FOLLOWERS_LIST_FETCHING, this.onDataChange);
+        this.fetchItems();
     },
     /**
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(BRAND_FOLLOWERS_ACTION, this.onDataChange);
-    },
-    /**
-     *
-     */
-    getInitialState: function () {
-        return { items: [], isFetching: false };
+        App.Dispatcher.detach(App.Actions.BRAND_FOLLOWERS_LIST_FETCHING, this.onDataChange);
     },
     /**
      *
      */
     onDataChange: function (result) {
-        this.setState({ items: result.followers, isFetching: false });
+        var followers = result.followers;
+        // there's more
+        if (followers.length) {
+            this.setState({
+                items: this.state.items.concat(followers),
+                isFetchingItems: false
+            });
+        }
+        if (followers.length < this.state.maxItems) {
+            this.setState({ noMoreItems: true });
+        } else {
+            this.setState({ noMoreItems: false });
+        }
     },
     /**
      *
      */
     render: function () {
         var items;
+        var bottomLoading = this.state.isFetchingItems ? React.createElement(Loading, null) : "";
         if (this.state.items.length) {
             items = this.state.items.map((function (item, index) {
                 return React.createElement(BrandProfileFollowersListItem, { entry: item, key: index });
             }).bind(this));
         } else {
-            if (this.state.isFetching) {
+            if (this.state.isFetchingItems) {
                 items = React.createElement(Fetching, null);
             } else {
-                items = React.createElement(EmptyFollowersList, null);
+                items = React.createElement(EmptyList, null);
             }
+            bottomLoading = "";
         }
-
         return React.createElement(
             "div",
             null,
-            items
+            items,
+            bottomLoading
         );
     }
 });
-/**
- *
- //
- if (this.state.item) {
-            items = this.state.items.map(function (item, index) {
-                return <ProductsListItem item={item} key={index}/>;
-            }.bind(this));
-        }
- else {
-            items = this.state.serverLoadingDone ? <Loading/> : <EmptyList/>;
-        }
- */
-
 var BrandProfileInfo = React.createClass({
     displayName: "BrandProfileInfo",
 
@@ -33585,10 +33608,141 @@ var BrandProfileInfo = React.createClass({
      *
      */
     render: function () {
+        var info = this.props.brandInfo;
         return React.createElement(
             "div",
-            null,
-            "Info"
+            { className: "BrandProfile__InfoContainer" },
+            React.createElement(
+                "span",
+                { className: "BrandProfile__InfoItem" },
+                React.createElement("i", { className: "ti-location-pin" }),
+                " ",
+                info.address,
+                " "
+            ),
+            React.createElement("br", null),
+            React.createElement(
+                "span",
+                { className: "BrandProfile__InfoItem" },
+                React.createElement("i", { className: "ti-lamp" }),
+                " ",
+                info.category,
+                " "
+            ),
+            React.createElement("br", null),
+            React.createElement(
+                "span",
+                { className: "BrandProfile__InfoItem" },
+                " ",
+                this.props.brandInfo.creation_date
+            ),
+            React.createElement("br", null),
+            React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "span",
+                    { className: "BrandProfile__InfoItem" },
+                    React.createElement(
+                        "a",
+                        { href: this.props.brandInfo.fb_link },
+                        React.createElement("i", { className: "ti-facebook" })
+                    )
+                ),
+                React.createElement(
+                    "span",
+                    { className: "BrandProfile__InfoItem" },
+                    React.createElement(
+                        "a",
+                        { href: this.props.brandInfo.ln_link },
+                        React.createElement("i", { className: "ti-linkedin" })
+                    )
+                ),
+                React.createElement(
+                    "span",
+                    { className: "BrandProfile__InfoItem" },
+                    React.createElement(
+                        "a",
+                        { href: this.props.brandInfo.tw_link },
+                        React.createElement("i", { className: "ti-twitter" })
+                    )
+                )
+            )
+        );
+    }
+});
+/**
+ *
+ */
+
+var BrandProfileReviewEdit = React.createClass({
+    displayName: "BrandProfileReviewEdit",
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return {
+            isReviewing: false,
+            mine: this.props.mine
+        };
+    },
+    /**
+     *
+     */
+    postReview: function () {
+        if (!this.state.isReviewing) {
+            this.setState({ isReviewing: true });
+            App.Stores.post({
+                url: App.Routes.brandReviews,
+                action: App.Actions.BRAND_EDIT_REVIEW,
+                params: {
+                    id: this.props.id
+                },
+                data: {
+                    review: {
+                        eval: 0,
+                        body: this.refs.body_text.value
+                    }
+                }
+
+            });
+        }
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.BRAND_EDIT_REVIEW, this.onReviewDone);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.BRAND_EDIT_REVIEW, this.onReviewDone);
+    },
+    onReviewDone: function () {
+        this.setState({ isReviewing: false });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "BrandProfile__ReviewForm" },
+            React.createElement(
+                "textarea",
+                { ref: "body_text", placeholder: i18n['Your review'] },
+                this.state.mine.body
+            ),
+            React.createElement(
+                "button",
+                { onClick: this.postReview, className: "AppButton btn-sm pull-right" },
+                React.createElement("i", {
+                    className: this.state.isReviewing ? "ti-reload" : "ti-pencil" }),
+                i18n.PostReview
+            )
         );
     }
 });
@@ -33612,11 +33766,94 @@ var BrandProfileReviewsList = React.createClass({
     /**
      *
      */
+    getInitialState: function () {
+        return { items: [], isFetching: false, maxPageItems: 10, mine: {}, firstLoadDone: false };
+    },
+    /**
+     *
+     */
+    fetchItems: function () {
+        //
+        this.setState({ isFetching: true });
+        //
+        App.Stores.loadData({
+            url: App.Routes.brandReviews,
+            action: App.Actions.BRAND_REVIEWS_LIST_FETCHING,
+            params: { id: this.props.id }
+        });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.BRAND_REVIEWS_LIST_FETCHING, this.onDataChange);
+        this.fetchItems();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.BRAND_REVIEWS_LIST_FETCHING, this.onDataChange);
+    },
+    /**
+     *
+     */
+    onDataChange: function (result) {
+        var reviews = result.reviews;
+        // my review if i'm connected
+        var mine = result.mine;
+        var newState = { isFetchingItems: false, mine: mine, firstLoadDone: true };
+        // there's more
+        if (reviews.length) {
+            // update items
+            newState['items'] = this.state.items.concat(reviews);
+        }
+        this.setState(newState);
+        // check if there is more results
+        if (reviews.length < this.state.maxPageItems) {
+            this.setState({ noMoreItems: true });
+        } else {
+            this.setState({ noMoreItems: false });
+        }
+    },
+    /**
+     *
+     */
     render: function () {
+        var items;
+        var bottomLoading = this.state.isFetchingItems ? React.createElement(Loading, null) : "";
+        if (this.state.items.length) {
+            items = this.state.items.map((function (item, index) {
+                return React.createElement(BrandProfileReviewsListItem, { entry: item, key: index });
+            }).bind(this));
+        } else {
+            if (this.state.isFetchingItems) {
+                items = React.createElement(Fetching, null);
+            } else {
+                items = React.createElement(EmptyList, null);
+            }
+            bottomLoading = "";
+        }
+        var editor = undefined;
+        if (this.state.firstLoadDone) {
+            editor = React.createElement(BrandProfileReviewEdit, {
+                id: this.props.id,
+                mine: this.state.mine,
+                authenticityToken: this.props.authenticityToken });
+        } else {
+            editor = '';
+        }
         return React.createElement(
             "div",
-            null,
-            "reviews List"
+            { className: "BrandProfile__Reviews" },
+            editor,
+            React.createElement(
+                "h4",
+                null,
+                i18n.Reviews
+            ),
+            items,
+            bottomLoading
         );
     }
 });
@@ -33640,76 +33877,102 @@ var BrandProfileStoresInfo = React.createClass({
 var BrandsList = React.createClass({
     displayName: "BrandsList",
 
-    actions: {
-        list: "BRANDS_LIST"
-    },
     /**
      *
      */
     getInitialState: function () {
-        return { items: [], serverLoadingDone: false };
+        return { items: [], isFetchingItems: false, page: 0, maxItems: 10, noMoreItems: true };
     },
-
     /**
      *
      */
     componentDidMount: function () {
-        App.Dispatcher.attach(this.actions.list, this.onDataChange);
-        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
-        this.loadDataFromServer();
-    },
-    /**
-     *
-     */
-    filterChanged: function (state) {
-        alert('listen');
-        console.log(state);
+        App.Dispatcher.attach(App.Actions.BRAND_LIST_FETCHING, this.onDataChange);
+        App.Dispatcher.attach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.onFilterChanged);
+        this._fetchItems();
     },
     /**
      *
      */
     componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.list, this.onDataChange);
-        App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+        App.Dispatcher.detach(App.Actions.BRAND_LIST_FETCHING, this.onDataChange);
+        App.Dispatcher.detach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        App.Dispatcher.detach(App.Actions.FILTER_CHANGED, this.filterChanged);
     },
     /**
      *
      */
-    loadDataFromServer: function () {
-        this.setState({ serverLoadingDone: false });
+    onWindowScrolled: function (value) {
+        var $container = $(ReactDOM.findDOMNode(this));
+        if (!this.state.noMoreItems && !this.state.isFetchingItems && $container.position().top - value < 100) {
+            this.setState({ page: this.state.page + 1, isFetchingItems: true });
+        }
+    },
+    /**
+     *
+     */
+    onFilterChanged: function (filter) {
+        // reinitialize filter
+        this.setState({ filter: filter, page: 0, items: [] });
+        this._fetchItems();
+    },
+    /**
+     *
+     */
+    _fetchItems: function () {
+        this.setState({ isFetchingItems: true });
+        // get query
+        var query = $.extend({
+            brands: this.props.brand,
+            page: this.state.page
+        }, this.state.filter);
         App.Stores.loadData({
             url: App.Routes.brands,
-            action: this.actions.list
+            action: App.Actions.BRAND_LIST_FETCHING,
+            query: query
         });
     },
     /**
      *
      */
     onDataChange: function (result) {
-        this.setState({ items: result.brands, serverLoadingDone: true }, function () {});
+        var brands = result.brands;
+        // there's more
+        if (brands.length) {
+            this.setState({
+                items: this.state.items.concat(brands),
+                isFetchingItems: false
+            });
+        }
+
+        // check if there is more results
+        if (brands.length < this.state.maxItems) {
+            this.setState({ noMoreItems: true });
+        } else {
+            this.setState({ noMoreItems: false });
+        }
     },
     /**
      *
      */
     render: function () {
         var items;
+        var bottomLoading = this.state.isFetchingItems ? React.createElement(Loading, null) : "";
+        //
         if (this.state.items.length) {
             items = this.state.items.map((function (item, index) {
                 return React.createElement(BrandsListItem, { item: item, key: index });
             }).bind(this));
         } else {
-            items = React.createElement(
-                "div",
-                { className: "text-center" },
-                this.state.serverLoadingDone ? i18n.Empty : i18n.Loading,
-                " "
-            );
+            items = this.state.isFetchingItems ? React.createElement(Loading, null) : React.createElement(EmptyProductsList, null);
+            bottomLoading = "";
         }
-
         return React.createElement(
             "div",
             null,
-            items
+            items,
+            bottomLoading
         );
     }
 });
@@ -33718,12 +33981,13 @@ var BrandsListItem = React.createClass({
 
     /**
      *
-     * @returns {{isFollowing: boolean}}
+     * @returns {{isFollowed: boolean}}
      */
     getInitialState: function () {
         return {
-            isFollowing: this.props.item.is_following,
-            followersCount: this.props.item.followers_count
+            isFollowed: this.props.item.is_following,
+            followersCount: this.props.item.followers_count,
+            isFollowing: false
         };
     },
     /**
@@ -33744,49 +34008,56 @@ var BrandsListItem = React.createClass({
     onFollowingChanged: function (payload) {
         if (payload.action && payload.data && payload.data.brand_id == this.props.item.id) {
             var increment = 0;
-            var isFollowing = undefined;
+            var isFollowed = undefined;
             if (payload.action == App.Actions.BRAND_FOLLOW) {
                 increment = 1;
-                isFollowing = true;
+                isFollowed = true;
             } else if (payload.action == App.Actions.BRAND_UNFOLLOW) {
                 increment = -1;
-                isFollowing = false;
+                isFollowed = false;
             }
-            if (increment !== 0 && isFollowing != this.state.isFollowing) {
+            if (increment !== 0 && isFollowed != this.state.isFollowed) {
                 var followersCount = this.state.followersCount + increment;
-                this.setState({ isFollowing: isFollowing, followersCount: followersCount });
+                this.setState({ isFollowed: isFollowed, followersCount: followersCount });
             }
+        }
+
+        if (this.state.isFollowing) {
+            this.setState({ isFollowing: false });
         }
     },
     /**
      *
-     * @param isFollowing
+     * @param isFollowed
      * @param id
     * @private
      */
-    _getFollowActionUrl: function (isFollowing, id) {
-        var url = isFollowing ? App.Routes.unFollowBrand : App.Routes.followBrand;
+    _getFollowActionUrl: function (isFollowed, id) {
+        var url = isFollowed ? App.Routes.unFollowBrand : App.Routes.followBrand;
         return App.Helpers.formatApiUrl(url, { id: id });
     },
     /**
      *
      */
     toggleFollowing: function () {
-        var id = this.props.item.id;
-        App.Stores.post({
-            url: this._getFollowActionUrl(this.state.isFollowing, id),
-            action: App.Actions.BRAND_FOLLOWING,
-            event: {
-                id: id
-            }
-        });
+        if (!this.state.isFollowing) {
+            this.setState({ isFollowing: true });
+            var id = this.props.item.id;
+            App.Stores.post({
+                url: this._getFollowActionUrl(this.state.isFollowed, id),
+                action: App.Actions.BRAND_FOLLOWING,
+                event: {
+                    id: id
+                }
+            });
+        }
     },
     /**
      *
      */
     render: function () {
         var item = this.props.item;
-        var followingClass = this.state.isFollowing ? "ti-unlink" : "ti-link";
+        var followingClass = this.state.isFollowing ? "ti-reload" : this.state.isFollowed ? "ti-unlink" : "ti-link";
         return React.createElement(
             "div",
             { className: "col-lg-6 col-sm-6 col-xs-12 NoPadding", key: item.id },
@@ -33835,7 +34106,7 @@ var BrandsListItem = React.createClass({
                     React.createElement(
                         "button",
                         {
-                            className: "BrandCard__FollowButton BrandCard__FollowButton--" + (this.state.isFollowing ? "on" : "off"),
+                            className: "BrandCard__FollowButton BrandCard__FollowButton--" + (this.state.isFollowed ? "on" : "off"),
                             onClick: this.toggleFollowing },
                         React.createElement("i", { className: followingClass })
                     ),
@@ -33948,22 +34219,11 @@ var CategoriesList = React.createClass({
     }
 });
 
-var EmptyFollowersList = React.createClass({
-    displayName: "EmptyFollowersList",
-
-    render: function () {
-        return React.createElement(
-            "div",
-            { className: "col-lg-12 text-center" },
-            "Empty"
-        );
-    }
-});
-
 /**
  *
  * @type {*|Function}
  */
+
 var Loading = React.createClass({
     displayName: "Loading",
 
@@ -34002,8 +34262,8 @@ var EmptyList = React.createClass({
     render: function () {
         return React.createElement(
             "div",
-            { className: "col-lg-12" },
-            i18n.Empty
+            { className: "col-lg-12 text-center" },
+            this.props.text || i18n.Empty
         );
     }
 
@@ -35096,7 +35356,7 @@ var Products = React.createClass({
  */
 
 var ProductsList = React.createClass({
-    displayName: 'ProductsList',
+    displayName: "ProductsList",
 
     /**
      *
@@ -35108,17 +35368,19 @@ var ProductsList = React.createClass({
      *
      */
     getInitialState: function () {
-        return { items: [], serverLoadingDone: false, filter: {} };
+        return { items: [], filter: {}, page: 0, isFetchingItems: false, maxItems: 10, noMoreItems: false };
     },
     /**
      *
      */
     getServerItems: function () {
+        this.setState({ isFetchingItems: true });
         // get query
         var query = $.extend({
-            brands: this.props.brand
+            brands: this.props.brand,
+            page: this.state.page
         }, this.state.filter);
-
+        //
         App.Stores.loadData({
             url: App.Routes.products,
             action: this.actions.list,
@@ -35130,11 +35392,9 @@ var ProductsList = React.createClass({
      *
      */
     componentDidMount: function () {
-        $(window).on('scroll', function () {
-            console.log('#################"');
-        });
         App.Dispatcher.attach(this.actions.list, this.onDataChange);
-        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
+        App.Dispatcher.attach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.onFilterChanged);
         this.getServerItems();
     },
     /**
@@ -35142,26 +35402,52 @@ var ProductsList = React.createClass({
      */
     componentWillUnmount: function () {
         App.Dispatcher.detach(this.actions.list, this.onDataChange);
-        App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+        App.Dispatcher.detach(App.actions.WINDOW_SCROLL, this.onWindowScrolled);
+        App.Dispatcher.detach(App.Actions.FILTER_CHANGED, this.onFilterChanged);
+    },
+
+    /**
+     *
+     */
+    onWindowScrolled: function (value) {
+        var $container = $(ReactDOM.findDOMNode(this));
+        if (!this.state.noMoreItems && !this.state.isFetchingItems && $container.position().top - value < 100) {
+            this.setState({ page: this.state.page + 1, isFetchingItems: true });
+        }
     },
     /**
      *
      */
-    filterChanged: function (filter) {
-        this.setState({ filter: filter });
+    onFilterChanged: function (filter) {
+        // reinitialize filter
+        this.setState({ filter: filter, page: 0, items: [] });
         this.getServerItems();
     },
     /**
      *
      */
     onDataChange: function (result) {
-        this.setState({ items: result.products, serverLoadingDone: true }, function () {});
+        var products = result.products;
+        var newState = { isFetchingItems: false };
+        // there's more
+        if (products.length) {
+            // update items
+            newState['items'] = this.state.items.concat(products);
+        }
+        this.setState(newState);
+        // check if there is more results
+        if (products.length < this.state.maxItems) {
+            this.setState({ noMoreItems: true });
+        } else {
+            this.setState({ noMoreItems: false });
+        }
     },
     /**
      *
      */
     render: function () {
         var items;
+        var bottomLoading = this.state.isFetchingItems ? React.createElement(Loading, null) : "";
         //
         if (this.state.items.length) {
             items = [];
@@ -35170,16 +35456,17 @@ var ProductsList = React.createClass({
                 items.push(React.createElement(ProductsListItem, { item: item, index: i, key: index + i++ }));
             }).bind(this));
         } else {
-            items = this.state.serverLoadingDone ? React.createElement(EmptyProductsList, null) : React.createElement(Loading, null);
+            items = this.state.isFetchingItems ? React.createElement(Loading, null) : React.createElement(EmptyProductsList, null);
+            bottomLoading = "";
         }
-
         return React.createElement(
-            'div',
+            "div",
             null,
             React.createElement(
-                'div',
-                { className: 'ProductCardLisContainer' },
-                items
+                "div",
+                { className: "ProductCardLisContainer" },
+                items,
+                bottomLoading
             )
         );
     }
@@ -35194,7 +35481,8 @@ var ProductsListItem = React.createClass({
     getInitialState: function () {
         return {
             isVoted: this.props.item.is_voted,
-            votesCount: this.props.item.info.votes_count
+            votesCount: this.props.item.info.votes_count,
+            isVoting: false
         };
     },
     /**
@@ -35240,6 +35528,9 @@ var ProductsListItem = React.createClass({
                 this.setState({ isVoted: isVoted, votesCount: votesCount });
             }
         }
+        if (this.state.isVoting) {
+            this.setState({ isVoting: false });
+        }
     },
     /**
      *
@@ -35266,13 +35557,16 @@ var ProductsListItem = React.createClass({
      */
     _voteAction: function (e) {
         e.preventDefault();
-        App.Stores.post({
-            url: this._getVoteActionUrl(this.state.isVoted),
-            action: App.Actions.PRODUCT_VOTE,
-            event: {
-                id: this.props.item.id
-            }
-        });
+        if (!this.state.isVoting) {
+            this.setState({ isVoting: true });
+            App.Stores.post({
+                url: this._getVoteActionUrl(this.state.isVoted),
+                action: App.Actions.PRODUCT_VOTE,
+                event: {
+                    id: this.props.item.id
+                }
+            });
+        }
     },
     /**
      * Callback to change current image
@@ -35292,8 +35586,7 @@ var ProductsListItem = React.createClass({
         if (!baseImageUrl && pictures.length) {
             baseImageUrl = App.Constants.MEDIA_URL + pictures[0].file.url;
         }
-
-        var voteButtonClassName = this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
+        var voteButtonClassName = this.state.isVoting ? "ti-reload" : this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
         return React.createElement(
             "div",
             { className: "ProductCardContainer NoPadding col-lg-6 col-sm-12" },
@@ -35404,6 +35697,118 @@ var ProductsListItemWishersList = React.createClass({
                 " ",
                 items.length
             )
+        );
+    }
+});
+/**
+ *
+ */
+
+var ProfileMapInterests = React.createClass({
+    displayName: 'ProfileMapInterests',
+
+    getInitialState: function () {
+
+        var regionInterest = {};
+        try {
+            regionInterest = JSON.parse(this.props.regionInterest);
+        } catch (e) {}
+        return {
+            center: regionInterest.center || [51.505, -0.09],
+            distance: regionInterest.distance || 40
+        };
+    },
+    //
+    _updateRegionCenter: function (center) {
+        // get form
+        this.setState({ 'center': center });
+    },
+    _updateRegionDistance: function (distance) {
+        this.setState({ 'distance': distance });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        var _this = this;
+
+        //
+        var center = this.state.center;
+        // set default to 40 km
+        var distance = this.state.distance;
+
+        var map = L.map('map').setView(center, 9);
+
+        L.tileLayer(App.Configuration.MAP_TILES_URL, {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var circle = L.circle(center, distance * 1000);
+        circle.on('mousedown', function (event) {
+            //L.DomEvent.stop(event);
+            map.dragging.disable();
+            var _circle$_latlng = circle._latlng;
+            var circleStartingLat = _circle$_latlng.lat;
+            var circleStartingLng = _circle$_latlng.lng;
+            var _event$latlng = event.latlng;
+            var mouseStartingLat = _event$latlng.lat;
+            var mouseStartingLng = _event$latlng.lng;
+
+            map.on('mousemove', function (event) {
+                var _event$latlng2 = event.latlng;
+                var mouseNewLat = _event$latlng2.lat;
+                var mouseNewLng = _event$latlng2.lng;
+
+                var latDifference = mouseStartingLat - mouseNewLat;
+                var lngDifference = mouseStartingLng - mouseNewLng;
+                var center = [circleStartingLat - latDifference, circleStartingLng - lngDifference];
+                circle.setLatLng(center);
+                _this._updateRegionCenter(center);
+            });
+        });
+
+        map.on('mouseup', function () {
+            map.dragging.enable();
+            map.removeEventListener('mousemove');
+        });
+        circle.addTo(map);
+        var $slider = $("#profile_region_interest_distance_slider");
+        var $indicator = $("#profile_region_interest_distance_slider_indicator");
+        var $spanText = $indicator.find('span');
+        var initialValue = distance;
+        var min = 40;
+        var max = 160;
+
+        var _updateDistanceIndicator = function (value) {
+            $indicator.css("margin-left", (value - min) / (max - min) * 100 + "%");
+            $indicator.css("left", "-60px");
+            $spanText.html(value + ' Km');
+        };
+        $slider.slider({
+            value: initialValue,
+            min: min,
+            max: max,
+            slide: function (event, ui) {
+                var value = ui.value;
+                circle.setRadius(value * 1000);
+                _updateDistanceIndicator(value);
+                _this._updateRegionDistance(value);
+            }
+        });
+        _updateDistanceIndicator(distance);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('input', { type: 'hidden', name: 'profile[region_interest]', value: JSON.stringify(this.state) }),
+            React.createElement('div', { id: 'map', className: 'UserProfile__InterestRegionMap' })
         );
     }
 });
@@ -35747,6 +36152,48 @@ var SideBarFilter = React.createClass({
     /**
      *
      */
+    componentDidMount: function () {
+        this.$container = $('.AppSideBar');
+        setTimeout(function () {
+            $('.AppContainer').css({ 'minHeight': 1000 });
+        }, 10);
+        App.Dispatcher.attach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        this.onWindowScrolled(window.scrollY);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+    },
+    /**
+     *
+     */
+    onWindowScrolled: function (value) {
+        if (value > 50) {
+            this.$container.addClass('fixed');
+            var height = this.$container.height();
+            var clientHeight = $(window).height();
+            if (height > clientHeight) {
+                height = height - clientHeight;
+                console.log(value - height);
+                this.$container.css({ 'top': -Math.abs(Math.min(height, value)) });
+            }
+        } else {
+            this.$container.removeClass("fixed");
+            this.$container.css({ 'top': 0 });
+        }
+        //console.log(value);
+        /*if (value >  this.state.navBarHeight){
+         $container.addClass("fixed");
+         $('.AppContainer').css({'min-height': $container.height()})
+          }
+         else {
+          }*/
+    },
+    /**
+     *
+     */
     componentWillUpdate: function (current, next) {
         // FILTER_CHANGED
         App.Dispatcher.dispatch(App.Actions.FILTER_CHANGED, next);
@@ -35806,7 +36253,11 @@ var SideBarFilter = React.createClass({
                     "Map"
                 )
             ),
-            React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged, height: "200px" }),
+            React.createElement(
+                "div",
+                { className: "AppSideBar__MapContainer" },
+                React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged, height: "200px" })
+            ),
             React.createElement(
                 "div",
                 { className: "AppSideBar__Header" },
@@ -35817,10 +36268,13 @@ var SideBarFilter = React.createClass({
                     "Categories"
                 )
             ),
-            React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: "Product" }),
+            React.createElement(
+                "div",
+                { className: "AppSideBar__CategoriesContainer" },
+                React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: "Product" })
+            ),
             priceRange,
-            colorsFilter,
-            React.createElement("div", { className: "clearfix" })
+            colorsFilter
         );
     }
 });
@@ -35867,7 +36321,7 @@ var SideBarFooter = React.createClass({
                 React.createElement(
                     "span",
                     null,
-                    "© 2016"
+                    "© 2017"
                 )
             )
         );

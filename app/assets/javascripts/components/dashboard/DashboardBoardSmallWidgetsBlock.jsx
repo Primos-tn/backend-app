@@ -88,7 +88,7 @@ var DashboardBoardSmallWidgetsBlock = React.createClass({
                                 </div>
                                 <div className="col-xs-7">
                                     <div className="numbers">
-                                        <p>{i18n.Shops}</p>
+                                        <p>{i18n.Locations}</p>
                                         {state.stores_count}
                                     </div>
                                 </div>

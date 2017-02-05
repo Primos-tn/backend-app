@@ -39,7 +39,7 @@ var ColorsSelector = React.createClass({
      * @private
      */
     _updateSelectedColors (selectedColors){
-        this.setState({'selectedColors': selectedColors})
+        this.setState({'selectedColors': selectedColors});
         this.props.onColorSelectedChange(selectedColors);
     },
     /**
@@ -132,43 +132,91 @@ var SideBarFilter = React.createClass({
      */
     getInitialState(){
         return {
-            map : null,
-            color : null,
-            categoriesList : null,
-            range : null
+            map: null,
+            color: null,
+            categoriesList: null,
+            range: null
         }
+
+    },
+    /**
+     *
+     */
+    componentDidMount () {
+        this.$container = $('.AppSideBar');
+        setTimeout(()=> {
+            $('.AppContainer').css({'minHeight': 1000})
+        }, 10);
+        App.Dispatcher.attach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+        this.onWindowScrolled(window.scrollY);
+
+    },
+    /**
+     *
+     */
+    componentWillUnmount (){
+        App.Dispatcher.detach(App.Actions.WINDOW_SCROLL, this.onWindowScrolled);
+
+    },
+    /**
+     *
+     */
+    onWindowScrolled: function (value) {
+        if (value > 50) {
+            this.$container.addClass('fixed');
+            var height = this.$container.height();
+            var clientHeight = $(window).height();
+            if (height > clientHeight){
+                height = height - clientHeight;
+                console.log(value - height);
+                this.$container.css({'top': -Math.abs(Math.min(height, value))})
+            }
+
+        } else {
+            this.$container.removeClass("fixed");
+            this.$container.css({'top': 0})
+        }
+        //console.log(value);
+        /*if (value >  this.state.navBarHeight){
+         $container.addClass("fixed");
+         $('.AppContainer').css({'min-height': $container.height()})
+
+         }
+         else {
+
+         }*/
     },
     /**
      *
      */
     componentWillUpdate(current, next){
-            // FILTER_CHANGED
-        App.Dispatcher.dispatch(App.Actions.FILTER_CHANGED,  next);
+        // FILTER_CHANGED
+        App.Dispatcher.dispatch(App.Actions.FILTER_CHANGED, next);
     },
     /**
      *
      */
     onMapAreaChanged(map){
-        this.setState ({map : map});
+        this.setState({map: map});
     },
     /***
      *
      */
     onColorSelectedChange (color){
-        this.setState ({color : color});
+        this.setState({color: color});
     },
     /**
      *
      * @param categoriesList
      */
     onCategoriesSelected (categoriesList){
-        this.setState ({categoriesList : categoriesList});
+        this.setState({categoriesList: categoriesList});
     },
     /**
      *
      */
     onSliderChanged (range, ui){
-        this.setState ({range : ui.values});
+        this.setState({range: ui.values});
     },
     /**
      *
@@ -193,17 +241,20 @@ var SideBarFilter = React.createClass({
                     <input type="checkbox" className="pull-left" onclick={this._reset}/>
                     <span>Map</span>
                 </div>
-                <Map onMapAreaChanged={this.onMapAreaChanged} height="200px"/>
+                <div className="AppSideBar__MapContainer">
+                    <Map onMapAreaChanged={this.onMapAreaChanged} height="200px"/>
+                </div>
+
                 <div className="AppSideBar__Header">
                     <input type="checkbox" className="pull-left" onclick={this._reset}/>
                     <span>Categories</span>
                 </div>
-                <CategoriesList onCategoriesSelected={this.onCategoriesSelected} type="Product" />
+                <div className="AppSideBar__CategoriesContainer">
+                    <CategoriesList onCategoriesSelected={this.onCategoriesSelected} type="Product"/>
+                </div>
                 {priceRange}
                 {colorsFilter}
-                <div className="clearfix"></div>
             </div>
-
         );
     },
 });

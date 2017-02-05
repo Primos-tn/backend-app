@@ -2105,19 +2105,26 @@ OWL THEME
 .BrandCard .icon {
   font-size: 25px;
 }
-/* line 57, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 54, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandCard .BrandCard__Verified {
+  right: 19px;
+  top: 15px;
+  color: #45C632;
+  font-size: 26px;
+}
+/* line 61, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__Actions {
   min-height: 45px;
   border: solid 1px #ffb249;
   border-top: 0;
   border-radius: 0px 0px 6px 6px;
 }
-/* line 63, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 67, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__ImageContainer {
   width: 100%;
   position: relative;
 }
-/* line 66, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 70, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__ImageContainer .BrandCard__Image {
   width: 100%;
   border-top-left-radius: 4px;
@@ -2125,7 +2132,7 @@ OWL THEME
   background-size: cover;
   max-height: 295px;
 }
-/* line 75, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 79, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__BrandImage {
   position: absolute;
   left: 5px;
@@ -2137,7 +2144,7 @@ OWL THEME
   border-radius: 50%;
   top: 5px;
 }
-/* line 83, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 87, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__ShareButton {
   right: 5px;
   -webkit-border-radius: 50%;
@@ -2146,13 +2153,13 @@ OWL THEME
   border-radius: 50%;
   top: 5px;
 }
-/* line 89, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 93, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__FollowButton {
   text-align: center;
   padding-left: 12px;
   padding-top: 1px;
 }
-/* line 97, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 101, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandCard .BrandCard__Followers {
   right: 10px;
   position: relative;
@@ -2160,16 +2167,20 @@ OWL THEME
   font-size: 25px;
 }
 
-/* line 105, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 109, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails {
   position: relative;
 }
 /* line 111, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandDetails .BrandDetails_Header {
+  position: relative;
+}
+/* line 117, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .BrandDetails__Verified {
   color: green;
   font-size: 20px;
 }
-/* line 116, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 122, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .BrandDetails__Follow {
   right: 5px;
   position: absolute;
@@ -2181,111 +2192,143 @@ OWL THEME
   height: 50px;
   padding-top: 6px;
 }
-/* line 128, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 134, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .nav-tabs {
   background-color: #fff;
   left: 0px;
   bottom: 0px;
   border: 0px;
 }
-/* line 135, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 141, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .nav-tabs li a {
   color: #307980;
 }
-/* line 139, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 145, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .nav-tabs li a:hover a {
   text-decoration: none;
   background-color: transparent;
   border: none;
 }
-/* line 148, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 154, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .nav-tabs li.active a {
   border: none;
   color: #ffb249;
   text-decoration: none;
 }
-/* line 157, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 163, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .BrandDetails__ImageContainer {
   height: 250px;
   overflow-y: hidden;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
-/* line 161, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 167, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .BrandDetails .BrandDetails__ImageContainer .BrandDetails__ImageCover {
   width: 100%;
   min-height: 250px;
 }
 
-/* line 170, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 176, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .ProductCouponsList .ProductCouponsList__Item {
   float: left;
   display: inline-block;
   width: 25%;
   position: relative;
 }
-/* line 175, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 181, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .ProductCouponsList .ProductCouponsList__Item img {
   width: 100%;
   height: 100%;
 }
-/* line 179, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+/* line 185, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
 .ProductCouponsList .ProductCouponsList__Item button {
   position: absolute;
   z-index: 2;
   left: 2%;
   bottom: 10px;
 }
-/**
- * Define app main colors
- */
-/**
- *
- */
-/**
- * Define app main colors
- */
-/**
- *
- */
-/* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Item {
-  padding: 7px;
+
+/* line 193, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__ReviewForm {
+  padding: 7px 0px;
 }
-/* line 5, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Item .SectionPrices__ItemContainer {
-  padding: 7px;
-  position: relative;
-  border: solid 1px #ffb249;
-  border-radius: 4px;
-}
-/* line 10, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Item .SectionPrices__ItemContainer .SectionPrices--Disabled {
-  color: #ccc;
-}
-/* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Item .SectionPrices__ItemContainer .SectionPrices__ItemContainerSoon {
-  position: absolute;
-  height: 80%;
+/* line 195, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__ReviewForm textarea {
   width: 100%;
-  left: 0px;
-  background-color: rgba(255, 178, 73, 0.29);
-  bottom: 0px;
-  text-align: center;
-  font-size: 50px;
-  color: white;
-}
-/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Title {
-  text-align: center;
-  margin: 20px 0px;
-}
-/* line 29, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
-.SectionPrices .SectionPrices__Title, .SectionPrices .SectionPrices__Title small {
-  color: #ffb249;
+  padding: 5px;
+  border: solid 1px #ffb249;
 }
 
-/* line 35, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+/* line 201, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__InfoContainer {
+  background: #fff;
+  padding: 4px;
+  min-height: 250px;
+}
+/* line 205, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__InfoContainer .BrandProfile__InfoItem {
+  padding: 2px 5px;
+  background-color: #ffb249;
+  color: white;
+}
+/* line 209, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__InfoContainer .BrandProfile__InfoItem i {
+  display: inline-block;
+  border-radius: 15px;
+}
+/* line 213, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/brands.scss */
+.BrandProfile__InfoContainer .BrandProfile__InfoItem a {
+  color: #fff;
+}
+/**
+ * Define app main colors
+ */
+/**
+ *
+ */
+/**
+ * Define app main colors
+ */
+/**
+ *
+ */
+/* line 2, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__Title {
+  font-weight: bold;
+}
+/* line 4, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__Title .SectionPrices__ItemContainerSoon {
+  font-size: 10px;
+}
+
+/* line 8, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer {
+  width: 25%;
+}
+/* line 12, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer:first-child table {
+  text-align: left;
+}
+/* line 15, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer:first-child, .SectionPrices__ItemContainer:first-child i {
+  color: black;
+}
+/* line 20, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer table {
+  width: 100%;
+  text-align: center;
+}
+/* line 23, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer table i {
+  color: #ffb249;
+  font-size: 25px;
+}
+/* line 29, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
+.SectionPrices__ItemContainer .SectionPrices--Disabled i {
+  color: #ccc5b9;
+}
+
+/* line 34, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/company.scss */
 .sectionTitle {
   margin-bottom: 15px;
   margin-top: 15px;
@@ -2399,41 +2442,51 @@ footer .Footer__Copy {
   padding: 5px 10px;
   color: #fff;
 }
-/* line 11, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 10, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+footer .Footer__Bottom {
+  font-size: 10px;
+}
+/* line 12, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+footer .Footer__Bottom .Footer__BottomNotice a {
+  color: #ffb249;
+}
+/* line 17, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer a {
   color: #ffb249;
   margin-right: 10px;
   font-size: 14px;
 }
-/* line 15, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 21, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
-/* line 19, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer a.Footer__SocialLink {
   padding: 0px;
   margin: 4px;
 }
-/* line 25, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer .LanguagesSelector {
   display: inline-block;
 }
-/* line 27, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 34, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer .LanguagesSelector form {
   display: inline-block;
 }
-/* line 30, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 37, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer .LanguagesSelector button {
-  text-decoration: underline;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   border: none;
+  text-decoration: none;
   color: #ffb249;
 }
-/* line 35, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 45, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer .LanguagesSelector button[disabled=disabled] {
   color: gray;
-  text-decoration: none;
 }
-/* line 40, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
+/* line 49, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/footer.scss */
 footer .Footer__CompanyLinksContainer .Footer__CompanySeparator {
   float: left;
 }
@@ -2894,6 +2947,12 @@ body header.MiniHeader *, body footer.MiniHeader * {
   background-color: #ffb249;
   padding: 5px;
   border-radius: 2px;
+}
+
+/* line 175, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/main.scss */
+.AppContainer {
+  min-height: 100vh;
+  flex: 1;
 }
 /**
  * Define app main colors
@@ -3478,17 +3537,18 @@ body.map main {
 .ProductCardLisContainer .ProductCardLisContainerEmpty {
   height: 50px;
   color: #fff;
+  padding-top: 10px;
   text-align: center;
   background: #ffb249;
 }
 
-/* line 149, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 150, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCardContainer {
   margin-top: 5px;
   padding: 5px;
 }
 
-/* line 154, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 155, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard {
   position: relative;
   margin: 10px 1px;
@@ -3498,22 +3558,22 @@ body.map main {
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);
   min-height: 200px;
 }
-/* line 163, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 164, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Header {
   position: relative;
   height: 50px;
 }
-/* line 167, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 168, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .icon {
   font-size: 25px;
 }
-/* line 170, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 171, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__VotesCount {
   color: #ffb249;
   padding: 5px;
   font-size: 25px;
 }
-/* line 176, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 177, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Name {
   position: absolute;
   left: 10px;
@@ -3521,27 +3581,27 @@ body.map main {
   font-size: 25px;
   color: #ffb249;
 }
-/* line 182, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 183, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Name:hover {
   text-decoration: underline;
 }
-/* line 187, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 188, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__ImageContainer {
   width: 100%;
   position: relative;
 }
-/* line 191, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 192, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .sixteen-nine {
   position: relative;
 }
-/* line 194, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 195, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .sixteen-nine:before {
   display: block;
   content: "";
   width: 100%;
   padding-top: 56.25%;
 }
-/* line 200, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 201, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .sixteen-nine > .content {
   position: absolute;
   top: 0;
@@ -3552,7 +3612,7 @@ body.map main {
   background-position: center;
   background-size: cover;
 }
-/* line 210, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 211, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Image {
   width: auto;
   position: absolute;
@@ -3561,13 +3621,13 @@ body.map main {
   left: 0;
   right: 0;
 }
-/* line 216, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 217, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__BrandImageContainer {
   position: absolute;
   left: 5px;
   top: 5px;
 }
-/* line 219, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 220, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__BrandImageContainer img {
   height: 70px;
   width: 70px;
@@ -3577,14 +3637,14 @@ body.map main {
   -ms-border-radius: 50%;
   border-radius: 50%;
 }
-/* line 228, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 229, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__ShareButton {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   border-radius: 50%;
 }
-/* line 232, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 233, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__WishButton {
   right: 40px;
   top: 5px;
@@ -3593,15 +3653,15 @@ body.map main {
   -ms-border-radius: 50%;
   border-radius: 50%;
 }
-/* line 236, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 237, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__WishButton.ProductCard__WishButton--on {
   color: #ffb249;
 }
-/* line 240, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 241, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__WishButton.ProductCard__WishButton--off {
   color: #F00;
 }
-/* line 244, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 245, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__WishButton, .ProductCard .ProductCard__ShareButton, .ProductCard .ProductCard__ShowQrCodesButton {
   position: absolute;
   border: none;
@@ -3611,33 +3671,33 @@ body.map main {
   padding-top: 1px;
   top: 5px;
 }
-/* line 254, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 255, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__ShareButton, .ProductCard .ProductCard__ShowQrCodesButton {
   right: 5px;
 }
-/* line 256, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 257, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__ShareButton i, .ProductCard .ProductCard__ShowQrCodesButton i {
   color: #ffb249;
 }
-/* line 260, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 261, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__ShowQrCodesButton {
   right: 30px;
 }
-/* line 264, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 265, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details {
   border-top: 0;
   border-radius: 0px 0px 6px 6px;
   min-height: 51px;
 }
-/* line 266, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 267, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details .Product_GalleryThumbnails img {
   border: solid 1px #ffb249;
 }
-/* line 273, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 274, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details .ProductCard__WishersList {
   padding: 6px;
 }
-/* line 276, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 277, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details .ProductCard__WishersList .ProductCard__WisherListItem img {
   border: 1px solid #ffb249;
   -webkit-border-radius: 50%;
@@ -3648,18 +3708,18 @@ body.map main {
   width: 38px;
   margin-left: 1px;
 }
-/* line 285, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 286, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details .ProductCard__WishersList .ProductCard__WisherListItem, .ProductCard .ProductCard__Details .ProductCard__WishersList .ProductCard__WishersListMore {
   color: #ffb249;
   float: left;
 }
-/* line 289, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 290, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .ProductCard__Details .ProductCard__WishersList .ProductCard__WishersListMore {
   float: right;
   font-size: 16px;
   top: 8px;
 }
-/* line 296, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 297, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .timer {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
@@ -3671,7 +3731,7 @@ body.map main {
   background-color: rgba(0, 0, 0, 0.11);
   height: 15px;
 }
-/* line 306, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 307, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .timer .progress-color {
   background-color: #ffb249;
   left: 0;
@@ -3680,7 +3740,7 @@ body.map main {
   top: 0;
   bottom: 0;
 }
-/* line 314, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 315, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductCard .timer .progress-text {
   position: absolute;
   z-index: 1;
@@ -3689,7 +3749,7 @@ body.map main {
   top: -2px;
 }
 
-/* line 325, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 326, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductWishersList .ProductWishersList__Item {
   min-height: 30px;
   float: left;
@@ -3699,7 +3759,7 @@ body.map main {
   border-radius: 1px;
   border-right: solid 1px red;
 }
-/* line 333, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 334, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductWishersList .ProductWishersList__Item img {
   width: 50px;
   height: 50px;
@@ -3707,20 +3767,20 @@ body.map main {
   border-radius: 50%;
 }
 
-/* line 343, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 344, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .DayTimer {
   border: solid 1px #ffb249;
   text-align: center;
   background-color: white;
   margin-bottom: 15px;
 }
-/* line 349, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 350, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .DayTimer span {
   font-size: 25px;
   color: #ffb249;
 }
 
-/* line 355, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 356, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay {
   height: 115px;
   border-radius: 4px;
@@ -3733,7 +3793,7 @@ body.map main {
   position: relative;
   overflow: hidden;
 }
-/* line 366, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 367, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .Block__Header {
   left: -48px;
   top: -13px;
@@ -3741,17 +3801,17 @@ body.map main {
   transform: rotate(-45deg);
   padding-top: 15px;
 }
-/* line 372, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 373, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .Block__Header span {
   padding: 10px 43px 5px;
 }
-/* line 376, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 377, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .ProductOfDay__Item {
   width: 20%;
   text-align: center;
   display: inline-block;
 }
-/* line 380, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 381, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .ProductOfDay__Item .ProductOfDay__InnerItem {
   position: relative;
   width: 80px;
@@ -3760,7 +3820,7 @@ body.map main {
   border-radius: 50%;
   border: solid 2px #ffb249;
 }
-/* line 387, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 388, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .ProductOfDay__Item .ProductOfDay__InnerItem .ProductOfDay__InnerItemVoteNumber {
   position: absolute;
   top: 0px;
@@ -3771,14 +3831,14 @@ body.map main {
   width: 25px;
   border: solid 1px #fff;
 }
-/* line 397, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 398, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOfDay .ProductOfDay__Item .ProductOfDay__InnerItem .ProductOfDay__InnerItemName {
   position: absolute;
   background-color: #ffb249;
   color: #fff;
 }
 
-/* line 405, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 406, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOut {
   border-radius: 3px;
   border: solid 1px #ffb249;
@@ -3786,12 +3846,12 @@ body.map main {
   text-align: center;
   background-color: #fff;
 }
-/* line 410, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 411, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOut .title {
   margin: 4px;
   color: #ffb249;
 }
-/* line 415, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
+/* line 416, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/products.scss */
 .ProductOut .ProductOut__Brand {
   margin: 8px;
 }
@@ -3804,11 +3864,17 @@ body.map main {
 /* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar {
   position: relative;
+  width: 350px;
   background-color: #fff;
   border: solid 1px #ffb249;
   border-radius: 4px;
 }
-/* line 8, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 4, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+.AppSideBar.fixed {
+  position: fixed;
+  top: 50px;
+}
+/* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Header {
   color: #fff;
   font-family: open_bold, serif;
@@ -3816,27 +3882,35 @@ body.map main {
   padding: 5px;
   width: 100%;
 }
-/* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 18, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Header.AppSideBar__Header--top {
   border-radius: 2px 0px;
 }
-/* line 19, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 23, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+.AppSideBar .AppSideBar__MapContainer {
+  height: 200px;
+}
+/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+.AppSideBar .AppSideBar__CategoriesContainer {
+  min-height: 90px;
+}
+/* line 30, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Profile .AppSideBar__ProfileCover {
   padding: 5px;
 }
-/* line 21, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Profile .AppSideBar__ProfileCover img {
   max-width: 120px;
   max-height: 120px;
 }
-/* line 27, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 38, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer {
   bottom: 0px;
   text-align: center;
   left: 0px;
   right: 0px;
 }
-/* line 28, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 39, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer .SideBarFooter__Company {
   bottom: -7px;
   padding-top: 4px;
@@ -3845,38 +3919,38 @@ body.map main {
   color: #fff;
   border-radius: 0px 0px 2px 2px;
 }
-/* line 35, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 46, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer .SideBarFooter__Company a {
   float: left;
   color: #fff;
   font-style: normal;
 }
-/* line 40, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 51, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer .SideBarFooter__Company a:hover {
   text-decoration: none;
 }
-/* line 44, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 55, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer .SideBarFooter__Company span {
   font-weight: bold;
   float: right;
 }
-/* line 48, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 59, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer .SideBarFooter__Company a, .AppSideBar .AppSideBar__Footer .SideBarFooter__Company span {
   margin: 6px;
 }
-/* line 56, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 67, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .AppSideBar .AppSideBar__Footer img {
   width: auto;
   height: 60px;
 }
 
-/* line 64, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 75, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__ColorChoicesContainer {
   padding-top: 5px;
   margin: 0px 46px;
   padding: 2px;
 }
-/* line 69, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 80, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__ColorChoicesContainer .FilterBlock__ColorChoice {
   cursor: pointer;
   width: 25px;
@@ -3885,23 +3959,23 @@ body.map main {
   display: inline-block;
   border-radius: 50%;
 }
-/* line 73, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 84, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__ColorChoicesContainer .FilterBlock__ColorChoice.FilterBlock__ColorChoice--Selected {
   width: 23px;
   height: 23px;
   border: solid 2px #ffb249;
 }
-/* line 83, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 94, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector {
   margin: 0px 3px 3px 0px;
   display: inline-block;
   border-radius: 50%;
 }
-/* line 89, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 100, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel {
   direction: ltr !important;
 }
-/* line 91, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 102, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel .item {
   cursor: pointer;
   padding: 20px 0px;
@@ -3913,24 +3987,24 @@ body.map main {
   color: white;
   text-transform: lowercase;
 }
-/* line 100, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 111, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel .item.clicked {
   color: #ffb249;
   background: #fff;
 }
-/* line 106, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 117, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel .item i {
   font-size: 25px;
 }
-/* line 110, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 121, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel .owl-wrapper-outer {
   background-color: #ffb249;
 }
-/* line 114, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 125, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer.owl-carousel .owl-page span {
   background-color: #ffb249;
 }
-/* line 120, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 131, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainer .FilterBlock__CategoriesSelectorInner {
   display: inline-block;
   border: solid 1px #ffb249;
@@ -3944,7 +4018,7 @@ body.map main {
   margin: 2px;
   padding: 2px;
 }
-/* line 131, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 142, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__CategoriesSelector .FilterBlock__CategoriesSelectorContainerTitle {
   width: 20%;
   padding: 4px;
@@ -3952,16 +4026,16 @@ body.map main {
   color: #fff;
   font-weight: bold;
 }
-/* line 143, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 154, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__PriceRange input[type="text"] {
   width: 142px;
 }
-/* line 146, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 157, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__PriceRange .ui-slider-range, .FilterBlock .FilterBlock__PriceRange .ui-slider-handle {
   background-color: #ffb249;
   border-color: #fff;
 }
-/* line 150, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
+/* line 161, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/sidebar.scss */
 .FilterBlock .FilterBlock__PriceRange .FilterBlock__PriceRangeBody {
   padding: 20px;
 }
@@ -3971,12 +4045,59 @@ body.map main {
 /**
  *
  */
-/* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+/* line 4, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
 .UserProfilePage {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   border: solid 1px #ffb249;
   background-color: white;
+}
+
+/* line 10, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestRegionSlider {
+  position: relative;
+  margin: 20px 0px;
+}
+/* line 11, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestRegionSlider .ui-slider-horizontal {
+  background-color: #ffb249;
+}
+/* line 15, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestRegionSlider #profile_region_interest_distance_slider_indicator {
+  position: absolute;
+  z-index: 200;
+  top: -28px;
+  min-width: 100px;
+  color: #fff;
+}
+/* line 20, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestRegionSlider #profile_region_interest_distance_slider_indicator span {
+  background-color: #ffb249;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+/* line 30, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestCategory {
+  padding: 2px;
+}
+/* line 32, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestCategory .UserProfile__InterestCategoryContainer {
+  background-color: #ffb249;
+  padding: 10px;
+  color: #fff;
+}
+/* line 36, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestCategory .UserProfile__InterestCategoryContainer i {
+  font-size: 20px;
+  color: #fff;
+}
+
+/* line 42, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/users.scss */
+.UserProfile__InterestRegionMap {
+  width: 100%;
+  margin: 2px;
+  min-height: 350px;
 }
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

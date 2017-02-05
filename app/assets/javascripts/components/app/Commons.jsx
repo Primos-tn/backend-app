@@ -1,12 +1,4 @@
 
-var EmptyFollowersList = React.createClass({
-    render : function () {
-        return (
-            <div className="col-lg-12 text-center">Empty</div>
-        )
-    }
-});
-
 /**
  *
  * @type {*|Function}
@@ -38,7 +30,7 @@ var EmptyProductsList = React.createClass({
 var EmptyList = React.createClass({
     render : function () {
         return (
-            <div className="col-lg-12">{i18n.Empty}</div>
+            <div className="col-lg-12 text-center">{this.props.text || i18n.Empty}</div>
         )
     }
 

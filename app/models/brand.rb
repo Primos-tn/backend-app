@@ -10,23 +10,22 @@ class Brand < ActiveRecord::Base
   has_many :members, :through => :brand_team_members, class_name: :Account
 
   # products  associations
-
   has_many :products
 
   # reviews associations
-
-
   has_many :reviews, class_name: :BrandReview
 
 
 
-  # brands
+  # photo and gallery
   has_many :gallery, class_name: :BrandGallery, dependent: :destroy
 
-  # brands
+  # followers
   has_many :followers, class_name: :BrandUserFollower
   has_many :followersDetails, :through => :user_brands_relations,  class_name: Account, source: :account
 
+  #
+  belongs_to :category
 
   validates :account, presence: true
   validates_presence_of :name

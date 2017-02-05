@@ -1,5 +1,5 @@
 class Account::RegistrationsController < Devise::RegistrationsController
-  before_filter :check_is_invited_and_confirmed, only: [:create]
+  before_action :check_is_invited_and_confirmed, only: [:create]
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 # GET /resource/sign_up
@@ -53,20 +53,23 @@ class Account::RegistrationsController < Devise::RegistrationsController
     super(resource)
     AccountsMailer.welcome_user_and_validation(resource).deliver_later
     AccountsMailer.new_user_notify_system(resource).deliver_later
-    redirect profile_path
+    redirect profile_edit_path
   end
 
 #
 # Check if can create
 #
   def check_is_invited_and_confirmed
-    email = new_registration_params[:email]
-    # check
-    unless  email &&
-        SystemConfiguration.first.with_invitation? &&
-        AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => true)
-      redirect_to request_join_path + '?email=' + email
+    unless session['devise.facebook_data']
+      email = new_registration_params[:email]
+      # check
+      unless email &&
+          SystemConfiguration.first.with_invitation? &&
+          AccountRegistrationInvitation.exists?(:email => email, :is_confirmed => true)
+        redirect_to request_join_path + '?email=' + email
+      end
     end
+
   end
 
   def new_registration_params

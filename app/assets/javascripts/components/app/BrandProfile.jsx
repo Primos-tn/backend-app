@@ -113,6 +113,10 @@ var BrandProfile = React.createClass({
         // data is loaded
         if (this.state.item.id){
             switch (activeTab) {
+                case INFO_TAB :
+                default:
+                    tabClassInstance = <BrandProfileInfo id={this.props.id} brandInfo={this.props.brandInfo}/>;
+                    break;
                 case STORES_TAB :
                     tabClassInstance = <BrandProfileStoresInfo positions={this.props.stores}/>;
                     break;
@@ -120,14 +124,14 @@ var BrandProfile = React.createClass({
                     tabClassInstance = <ProductsList id={this.props.id} brand={this.props.id}/>;
                     break;
                 case REVIEWS_TAB :
-                    tabClassInstance = <BrandProfileReviewsList id={this.props.id}/>;
+                    tabClassInstance = <BrandProfileReviewsList
+                        authenticityToken={this.props.authenticityToken}
+                        id={this.props.id}/>;
                     break;
                 case FOLLOWERS_TAB :
                     tabClassInstance = <BrandProfileFollowersList id={this.props.id}/>;
                     break;
-                case INFO_TAB :
-                default:
-                    tabClassInstance = <BrandProfileInfo id={this.props.id}/>;
+
             }
         }
         let container = tabClassInstance;
@@ -137,7 +141,7 @@ var BrandProfile = React.createClass({
                     <div className="BrandDetails__Verified">
                         <span className="ti-shield"></span>
                     </div>
-                    <div>
+                    <div className="BrandDetails_Header">
                         <div className="BrandDetails__Title">
                             <span>{this.state.item.name}</span>
                         </div>
@@ -151,7 +155,6 @@ var BrandProfile = React.createClass({
                             onClick={this.toggleFollowing}>
                             <i className={followingClass}></i>
                         </button>
-
                         <ul className="nav nav-tabs">
                             <li className={(activeTab == INFO_TAB || !activeTab) ? ACTIVE_CLASS : ''}>
                                 <a href={App.Helpers.getAbsoluteUrl(App.Routes.brandInfo, { id : this.props.id})}>

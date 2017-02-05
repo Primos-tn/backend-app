@@ -1,12 +1,13 @@
 var BrandsListItem = React.createClass({
     /**
      *
-     * @returns {{isFollowing: boolean}}
+     * @returns {{isFollowed: boolean}}
      */
     getInitialState: function () {
         return {
-            isFollowing: this.props.item.is_following,
-            followersCount: this.props.item.followers_count
+            isFollowed: this.props.item.is_following,
+            followersCount: this.props.item.followers_count,
+            isFollowing : false
         }
     },
     /**
@@ -27,52 +28,59 @@ var BrandsListItem = React.createClass({
     onFollowingChanged: function (payload) {
         if (payload.action && payload.data && payload.data.brand_id == this.props.item.id) {
             let increment = 0;
-            let isFollowing;
+            let isFollowed;
             if (payload.action  == App.Actions.BRAND_FOLLOW) {
                 increment = 1;
-                isFollowing = true;
+                isFollowed = true;
             }
             else if (payload.action == App.Actions.BRAND_UNFOLLOW) {
                 increment = -1;
-                isFollowing = false;
+                isFollowed = false;
             }
-            if (increment !== 0 && isFollowing != this.state.isFollowing) {
+            if (increment !== 0 && isFollowed != this.state.isFollowed) {
                 var followersCount = this.state.followersCount + increment;
-                this.setState({isFollowing: isFollowing, followersCount: followersCount});
+                this.setState({isFollowed: isFollowed, followersCount: followersCount});
             }
 
+        }
+
+        if (this.state.isFollowing){
+            this.setState({isFollowing : false})
         }
 
     },
     /**
      *
-     * @param isFollowing
+     * @param isFollowed
      * @param id
  * @private
      */
-    _getFollowActionUrl (isFollowing, id){
-        var url = isFollowing ? App.Routes.unFollowBrand : App.Routes.followBrand;
+    _getFollowActionUrl (isFollowed, id){
+        var url = isFollowed ? App.Routes.unFollowBrand : App.Routes.followBrand;
         return App.Helpers.formatApiUrl(url, {id: id});
     },
     /**
      *
      */
     toggleFollowing: function () {
-        let id = this.props.item.id;
-        App.Stores.post({
-            url: this._getFollowActionUrl(this.state.isFollowing, id),
-            action: App.Actions.BRAND_FOLLOWING,
-            event: {
-                id: id
-            }
-        });
+        if (!this.state.isFollowing) {
+            this.setState({isFollowing : true});
+            let id = this.props.item.id;
+            App.Stores.post({
+                url: this._getFollowActionUrl(this.state.isFollowed, id),
+                action: App.Actions.BRAND_FOLLOWING,
+                event: {
+                    id: id
+                }
+            });
+        }
     },
     /**
      *
      */
     render: function () {
         var item = this.props.item;
-        let followingClass  = this.state.isFollowing ? "ti-unlink" : "ti-link" ;
+        let followingClass  = this.state.isFollowing ? "ti-reload" : this.state.isFollowed ? "ti-unlink" : "ti-link" ;
         return (
             <div className="col-lg-6 col-sm-6 col-xs-12 NoPadding" key={item.id}>
                 <div className="BrandCard">
@@ -100,7 +108,7 @@ var BrandsListItem = React.createClass({
                             </div>
                         </div>
                         <button
-                            className={"BrandCard__FollowButton BrandCard__FollowButton--"  + (this.state.isFollowing ? "on" : "off")}
+                            className={"BrandCard__FollowButton BrandCard__FollowButton--"  + (this.state.isFollowed ? "on" : "off")}
                             onClick={this.toggleFollowing}>
                             <i className={followingClass}></i>
                         </button>

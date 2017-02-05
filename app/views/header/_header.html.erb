@@ -36,12 +36,12 @@
       <ul id="navbar" class="nav navbar-nav navbar-right navbar-collapse collapse">
         <% if @is_logged_in %>
             <li>
-              <%= link_to profile_path do %>
+              <%= link_to profile_interests_path do %>
                   <i class="ti-bell"></i>
               <% end %>
             </li>
             <li class="dropdown">
-              <%= link_to profile_path do %>
+              <%= link_to profile_edit_path do %>
                   <i class="ti-user"></i>
               <% end %>
             </li>

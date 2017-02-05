@@ -6,7 +6,8 @@ var ProductsListItem = React.createClass({
     getInitialState: function () {
         return {
             isVoted: this.props.item.is_voted,
-            votesCount: this.props.item.info.votes_count
+            votesCount: this.props.item.info.votes_count,
+            isVoting : false
         }
     },
     /**
@@ -51,6 +52,10 @@ var ProductsListItem = React.createClass({
                 var votesCount = this.state.votesCount + increment;
                 this.setState({isVoted: isVoted, votesCount: votesCount});
             }
+
+        }
+        if (this.state.isVoting){
+            this.setState({isVoting : false})
         }
 
     },
@@ -79,13 +84,16 @@ var ProductsListItem = React.createClass({
      */
     _voteAction: function (e) {
         e.preventDefault();
-        App.Stores.post({
-            url: this._getVoteActionUrl(this.state.isVoted),
-            action: App.Actions.PRODUCT_VOTE,
-            event: {
-                id: this.props.item.id
-            }
-        });
+        if (!this.state.isVoting){
+            this.setState({isVoting : true});
+            App.Stores.post({
+                url: this._getVoteActionUrl(this.state.isVoted),
+                action: App.Actions.PRODUCT_VOTE,
+                event: {
+                    id: this.props.item.id
+                }
+            });
+        }
     },
     /**
      * Callback to change current image
@@ -105,8 +113,7 @@ var ProductsListItem = React.createClass({
         if (!baseImageUrl && pictures.length) {
             baseImageUrl = App.Constants.MEDIA_URL + pictures[0].file.url;
         }
-
-        let voteButtonClassName = this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
+        let voteButtonClassName = this.state.isVoting ? "ti-reload" : this.state.isVoted ? "ti-arrow-down" : "ti-arrow-up";
         return (
             <div className="ProductCardContainer NoPadding col-lg-6 col-sm-12">
 

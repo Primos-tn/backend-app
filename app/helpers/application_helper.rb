@@ -21,6 +21,9 @@ module ApplicationHelper
     '/media/'.concat(url)
   end
 
+  def humanize_category_name(category)
+    category['name' + (locale.equal?(:en) ? '' : '_' + locale.to_s)]
+  end
 
   def sortable(column, title = nil)
     title ||= column.titleize

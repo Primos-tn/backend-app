@@ -1,6 +1,24 @@
 class Account < ActiveRecord::Base
-
+  attr_accessor :auth_mode
   enum accounts_type: {user: 0, business: 2, system: -2, admin: -1, business_request: 1}
+
+
+  # @see https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
+  # Virtual attribute for authenticating by either username or email
+  # This is in addition to a real persisted field like 'username'
+  attr_accessor :login
+  attr_accessor :is_admin
+
+
+  validates :username,
+            :presence => true,
+            :uniqueness => {
+                :case_sensitive => false
+            } # etc.
+
+  # Only allow letter, number, underscore and punctuation.
+  validates_format_of :username, with: /\A[a-zA-Z0-9_\.]*\z/
+
 
   after_validation :beta_invited?
   after_create :add_profile
@@ -27,6 +45,10 @@ class Account < ActiveRecord::Base
   has_many :brands_relations, class_name: BrandUserFollower
   has_many :favorite_brands, :through => :brands_relations, class_name: Brand, source: :brand
 
+  #
+  has_many :categories_relations, class_name: :UserCategoryInterest
+  has_many :categories, through: :categories_relations, source: :category
+
 
   accepts_nested_attributes_for :profile
 
@@ -37,15 +59,11 @@ class Account < ActiveRecord::Base
          :recoverable,
          :rememberable,
          :trackable,
-         :validatable
-         #:authentication_keys => {email: true, login: false}
+         :validatable,
+         :omniauthable,
+         :omniauth_providers => [:facebook]
+  #:authentication_keys => {email: true, login: false}
 
-
-  # @see https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
-  # Virtual attribute for authenticating by either username or email
-  # This is in addition to a real persisted field like 'username'
-  attr_accessor :login
-  attr_accessor :is_admin
 
   def is_brand_admin=(is_brand_admin)
     @is_brand_admin = is_brand_admin
@@ -64,6 +82,27 @@ class Account < ActiveRecord::Base
     @login || self.username || self.email
   end
 
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid, email: auth.info.email).first_or_create do |account|
+      account.auth_mode = 'omniauth'
+      account.email = auth.info.email
+      account.password = Devise.friendly_token[0, 20]
+      account.username = auth.info.name.gsub(/\s+/,'_') # assuming the user model has a name
+      # account.image = auth.info.image # assuming the user model has an image
+      # If you are using confirmable and the provider(s) you use validate emails,
+      # uncomment the line below to skip the confirmation emails.
+      # user.skip_confirmation!
+    end
+  end
+
+  # def self.new_with_session(params, session)
+  #   super.tap do |user|
+  #     if data = session["devise.facebook_data"] && session['devise.facebook_data']['extra']['raw_info']
+  #       user.email = data['email'] if user.email.blank?
+  #       user.username = data['username'] if user.username.blank?
+  #     end
+  #   end
+  # end
 
   # Given a list of brands ids, will check all brands that follow in this list
   scope :brands_followed_from_brands_list, -> (account, brands_ids) do
@@ -92,36 +131,22 @@ class Account < ActiveRecord::Base
 
   def self.find_for_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    puts '######################################################'
-    puts '######################################################'
-    puts '######################################################'
-    puts '######################################################'
-    puts conditions
-
     if login = conditions.delete(:login)
       # when allowing distinct User records with, e.g., "username" and "UserName"...
-      where(conditions).where([" lower (username) = :value OR lower (email) = :value", {:value => login.downcase }]).first
+      where(conditions).where([' lower (username) = :value OR lower (email) = :value', {:value => login.downcase}]).first
     elsif conditions.has_key?(:username) || conditions.has_key?(:email)
       where(conditions.to_h).first
     end
   end
 
 
-  validates :username,
-            :presence => true,
-            :uniqueness => {
-                :case_sensitive => false
-            } # etc.
-
-  # Only allow letter, number, underscore and punctuation.
-  validates_format_of :username, with: /\A[a-zA-Z0-9_\.]*\z/
-  validate :validate_username
-
-
   def beta_invited?
-    if self.new_record?  && SystemConfiguration.first.with_invitation?
-      unless AccountRegistrationInvitation.exists?(:email => email)
-        errors.add :email, I18n.t("Require invitation")
+    unless auth_mode == 'omniauth'
+      # only with new record
+      if self.new_record? && SystemConfiguration.first.with_invitation?
+        unless AccountRegistrationInvitation.exists?(:email => email)
+          errors.add :email, I18n.t("Require invitation")
+        end
       end
     end
   end
@@ -145,7 +170,7 @@ class Account < ActiveRecord::Base
 
 
   def in_trial_mode?
-      self.business_profile.has_free_account && (Date.today < self.business_profile.free_account_started_at + 30.day)
+    self.business_profile.has_free_account && (Date.today < self.business_profile.free_account_started_at + 30.day)
   end
 
   def can_have_trial_business?
@@ -171,11 +196,7 @@ class Account < ActiveRecord::Base
     self.is_super_admin or self.account_type == Account.accounts_types[:admin]
   end
 
-  def validate_username
-    if Account.where(email: username).exists?
-      errors.add(:username, :invalid)
-    end
-  end
+
 
 
   def get_brands_i_follow_given_list(brands_ids)

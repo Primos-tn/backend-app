@@ -8,7 +8,12 @@ namespace :configure do
         name, name_fr, name_ar, icon_class_name = category.chomp.split('|')
         puts icon_class_name
         puts '************************'
-        Category.create!(:name => name, :name_fr => name_fr, :name_ar => name_ar, :icon_class_name => icon_class_name )
+        begin
+          Category.create(:name => name, :name_fr => name_fr, :name_ar => name_ar, :icon_class_name => icon_class_name )
+        rescue => ex
+          logger.error ex.message
+        end
+
       end
     end
   end

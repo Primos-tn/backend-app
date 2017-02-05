@@ -16,7 +16,8 @@ Rails.application.routes.draw do
              :controllers => {
                  :passwords => 'account/passwords',
                  :registrations => 'account/registrations',
-                 :sessions => 'account/sessions'
+                 :sessions => 'account/sessions',
+                 :omniauth_callbacks => "account/omniauth_callbacks"
              }
 
 
@@ -67,8 +68,8 @@ Rails.application.routes.draw do
     get 'engineering(/:page)', to: 'engineering#index', as: 'engineering_page'
 
     # check for not authenticated
-    get 'profile', to: 'profiles#show'
-    post 'profile', to: 'profiles#update'
+    get 'profile/edit', to: 'profiles#show'
+    get 'profile/interests', to: 'profiles#interests'
 
     # pending requests and business requests
     post 'request-join', to: 'home#create_request_join'
@@ -140,10 +141,9 @@ Rails.application.routes.draw do
     resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
     resources :hooks
 
-    resources :system, only: ['index'] do
-      collection do
-        patch 'update'
-      end
+    scope :system, controller: :system do
+      get '/'  => 'system#index', as: 'system'
+      patch 'update'
     end
 
     scope :targetize, controller: 'targetize' do
@@ -210,6 +210,12 @@ Rails.application.routes.draw do
         put 'destory'
       end
 
+      scope :profile, as: :profile, :controller => :profiles do
+        post 'update'
+        post 'interests'
+      end
+
+
       resources :categories, only: :index
 
       get '/search' => 'search#index'
@@ -219,7 +225,6 @@ Rails.application.routes.draw do
         get 'address'
         get 'mine'
       end
-
 
       resources :products do
         collection do
@@ -265,6 +270,9 @@ Rails.application.routes.draw do
       end
 
       resources :brands do
+        resources :reviews, controller: :brand_reviews do
+
+        end
         collection do
           get 'search'
         end
@@ -277,11 +285,11 @@ Rails.application.routes.draw do
           get 'reviews'
           get 'followers'
           get 'info'
-          get 'stores'
         end
       end
 
     end
+
 
     match '(*any)', :to => "v1/base#not_found", via: [:all]
   end

@@ -7,13 +7,20 @@ footer {
     padding: 5px 10px;
     color : $color-white;
   }
+  .Footer__Bottom {
+    font-size: 10px;
+    .Footer__BottomNotice a{
+      color: $primary-color;
+    }
+  }
   .Footer__CompanyLinksContainer {
     a{
       color : $primary-color;
       margin-right: 10px;
       font-size: 14px;
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        //font-size: 16px;
       }
 
       &.Footer__SocialLink {
@@ -28,13 +35,15 @@ footer {
         display: inline-block;
       }
       button{
-        text-decoration: underline;
+        border-radius: 50%;
+        width:30px;
+        height:30px;
         border :none;
+        text-decoration: none;
         color : $primary-color;
       }
       button[disabled=disabled]{
         color : gray;
-        text-decoration: none;
       }
     }
     .Footer__CompanySeparator {
