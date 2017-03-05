@@ -4,6 +4,8 @@ class Product < ActiveRecord::Base
   belongs_to :brand, :counter_cache => :products_count
   has_one :account, :through => :brand
 
+  has_many :launches, class_name: :ProductLaunch
+
   has_many :wishes_relation, class_name: :UserProductWish
   has_many :wishers, through: :wishes_relation, source: :account, class_name: Account
 
@@ -155,7 +157,9 @@ class Product < ActiveRecord::Base
   #
   #
   def in_launch_mode?
-    !last_launch.nil? and (last_launch.to_date == Date.today)
+    # check if launch mode
+    launches.detect { |item| item.launch_date.to_date == Date.today }
+    #!last_launch.nil? and ()
   end
 
 
@@ -172,7 +176,7 @@ class Product < ActiveRecord::Base
   # Check if the product can be launched
   #
   def scheduled_for_launch?
-    !last_launch.nil? and Date.today < last_launch.to_date
+    launches.detect { |item| item.launch_date.to_date > Date.today }
   end
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170204220745) do
+ActiveRecord::Schema.define(version: 20170304120619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,15 @@ ActiveRecord::Schema.define(version: 20170204220745) do
     t.string   "image_qr_code"
   end
 
+  create_table "product_launches", force: :cascade do |t|
+    t.integer  "product_id"
+    t.date     "launch_date"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "views_count",            default: 0
+    t.integer  "products_collection_id"
+  end
+
   create_table "product_stores", force: :cascade do |t|
     t.integer  "store_id"
     t.integer  "product_id"
@@ -284,6 +293,23 @@ ActiveRecord::Schema.define(version: 20170204220745) do
     t.float    "new_price"
     t.string   "currrency"
     t.integer  "votes_count",               default: 0
+  end
+
+  create_table "products_collections", id: :integer, default: -> { "nextval('product_collections_id_seq'::regclass)" }, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "brand_id"
+    t.datetime "last_launch"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "product_size", default: 0
+    t.index ["brand_id"], name: "index_product_collections_on_brand_id", using: :btree
+  end
+
+  create_table "products_collections_products", force: :cascade do |t|
+    t.integer  "products_collection_id"
+    t.integer  "product_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "profiles", force: :cascade do |t|

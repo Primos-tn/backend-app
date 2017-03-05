@@ -93,6 +93,14 @@ App.Stores = {
     /**
      *
      * @param options
+     * options {
+     *            url => endpoint
+     *            params => url params (query ....)
+     *            data => post form data
+     *            action => callback event action
+     *            event => data source to be dispatched onresponse to success
+     *
+     * }
      */
     post: function (options) {
         $.ajax({
@@ -160,12 +168,15 @@ App.Helpers = {
     }
 };
 /**
- *
+ * All dashboard js routes
  * @type {{info: string}}
  */
 App.DashboradRoutes = {
     stats: '/dashboard/ajax/stats',
     galleryList: '/dashboard/gallery',
+    collections: '/dashboard/collections',
+    collectionsItemAdd : '/dashboard/collections/:id/add-products',
+    collectionsItemRemove : '/dashboard/collections/:id/remove-products'
 };
 /**
  *

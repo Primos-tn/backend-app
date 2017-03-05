@@ -9,6 +9,12 @@
     border-radius: 2px;
   }
 }
+.DashboardProductsList__LaunchingButtons {
+  .DashboardProductsList__LaunchingButtonItem {
+    display: inline-block;
+    padding: 2px;
+  }
+}
 .ProductPropertiesEdit__PropertyContainer {
   label.key, .value {
     width: 150px;
@@ -16,4 +22,7 @@
   div.value {
     display: inline-block;
   }
+}
+.ProductAddToCollectionButton {
+  margin: 10px;
 }

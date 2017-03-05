@@ -14,8 +14,25 @@ class Api::V1::BrandsController < Api::V1::BaseController
     else
       page = [page.to_i, 1].max
     end
-    # get brands
-    @brands = Brand.eager_load(:account).page(page).per(limit)
+
+
+    @brands = Brand.eager_load (:account)
+
+    if request.params[:map]
+      center = request.params[:map][:center].to_a
+      distance = 50 #request.params[:map][:distance].to_i
+      center = center.collect { |i| i.to_f }
+      box = Geocoder::Calculations.bounding_box(center, distance)
+      stores_ids = Store.within_bounding_box(box).map(&:id)
+      @brands = @brands.joins([:stores]).where({:stores => {id: stores_ids}})
+    end
+
+    categories_ids = request.params[:categoriesList]
+    unless categories_ids.blank?
+      @brands = @brands.where(:category_id => request.params[:categoriesList])
+    end
+
+    @brands = @brands.page(page).per(limit)
 
     # get all brands ids
     brands_ids = []

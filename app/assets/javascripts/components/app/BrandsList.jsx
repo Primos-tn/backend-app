@@ -38,8 +38,9 @@ var BrandsList = React.createClass({
      */
     onFilterChanged  (filter){
         // reinitialize filter
-        this.setState({filter: filter, page: 0, items: []});
-        this._fetchItems();
+        this.setState({filter: filter, page: 0, items: []}, () => {
+            this._fetchItems();
+        });
     },
     /**
      *
@@ -47,10 +48,12 @@ var BrandsList = React.createClass({
     _fetchItems: function () {
         this.setState({isFetchingItems: true});
         // get query
-        let query = $.extend({
+        let query = $.extend({}, {
             brands: this.props.brand,
             page: this.state.page
         }, this.state.filter);
+
+
         App.Stores.loadData({
             url: App.Routes.brands,
             action: App.Actions.BRAND_LIST_FETCHING,

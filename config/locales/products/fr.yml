@@ -1,17 +1,19 @@
 fr:
   # views/dashboard/index.html
   Launch : Lancer maintenant
+  Add to collection : Ajouter à la collection
   Edit :  Mettre à jour
   Show : Voir
-  New Product : Nouveau produit
-  Product name : Nom de produit
+  New Product : Nouvelle offre
+  Product name : Nom de l'offre
   Brand : Marque
   Destroy : Supprimer
   Last launch : Dernier lancement
-  The products : Liste des produits
+  The products : Liste des offres
   Are you sure about that : Etes vous sur ?
   Oh no! product can't be shown : Ohh, non ! Vous ne pouvez pas voir ce produit hors la journée de lancement.
   Schedule : Schedule
+  Launching : Lancement
   activerecord:
       attributes:
         product :

@@ -12,17 +12,17 @@ var ProductsList = React.createClass({
      *
      */
     getInitialState: function () {
-        return {items: [], filter: {}, page : 0, isFetchingItems : false, maxItems : 10, noMoreItems : false};
+        return {items: [], filter: {}, page: 0, isFetchingItems: false, maxItems: 10, noMoreItems: false};
     },
     /**
      *
      */
     getServerItems: function () {
-        this.setState({isFetchingItems : true});
+        this.setState({isFetchingItems: true});
         // get query
-        let query = $.extend({
+        let query = $.extend({}, {
             brands: this.props.brand,
-            page : this.state.page
+            page: this.state.page,
         }, this.state.filter);
         //
         App.Stores.loadData({
@@ -54,12 +54,11 @@ var ProductsList = React.createClass({
     /**
      *
      */
-    onWindowScrolled : function (value){
-        let $container = $(ReactDOM.findDOMNode(this)) ;
-        if (!this.state.noMoreItems && 
-            !this.state.isFetchingItems && 
-            $container.position().top - value < 100 ){
-            this.setState({page : this.state.page + 1, isFetchingItems : true});
+    onWindowScrolled: function (value) {
+        let $container = $(ReactDOM.findDOMNode(this));
+        if (!this.state.noMoreItems && !this.state.isFetchingItems &&
+            $container.position().top - value < 100) {
+            this.setState({page: this.state.page + 1, isFetchingItems: true});
         }
 
     },
@@ -68,8 +67,10 @@ var ProductsList = React.createClass({
      */
     onFilterChanged  (filter){
         // reinitialize filter
-        this.setState({filter: filter, page : 0, items : []});
-        this.getServerItems();
+        this.setState({filter: filter, page: 0, items: []}, () => {
+            this.getServerItems();
+        });
+
     },
     /**
      *
@@ -78,17 +79,17 @@ var ProductsList = React.createClass({
         let products = result.products;
         let newState = {isFetchingItems: false};
         // there's more
-        if (products.length){
+        if (products.length) {
             // update items
             newState['items'] = this.state.items.concat(products)
         }
         this.setState(newState);
         // check if there is more results
-        if (products.length < this.state.maxItems){
-            this.setState( {noMoreItems : true});
+        if (products.length < this.state.maxItems) {
+            this.setState({noMoreItems: true});
         }
         else {
-            this.setState( {noMoreItems : false});
+            this.setState({noMoreItems: false});
         }
     },
     /**
@@ -96,7 +97,7 @@ var ProductsList = React.createClass({
      */
     render: function () {
         var items;
-        var bottomLoading = this.state.isFetchingItems ? <Loading/> : "" ;
+        var bottomLoading = this.state.isFetchingItems ? <Loading/> : "";
         //
         if (this.state.items.length) {
             items = [];
@@ -107,7 +108,7 @@ var ProductsList = React.createClass({
 
         }
         else {
-            items = this.state.isFetchingItems ? <Loading/> : <EmptyProductsList/>  ;
+            items = this.state.isFetchingItems ? <Loading/> : <EmptyProductsList/>;
             bottomLoading = "";
         }
         return (

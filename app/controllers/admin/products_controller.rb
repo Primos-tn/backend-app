@@ -1,5 +1,5 @@
 class Admin::ProductsController < Admin::BaseController
-  before_action :set_product, only: [:show, :launch]
+  before_action :set_product, only: [:show, :launch_date]
   # GET /category_products
   # GET /category_products.json
   def index

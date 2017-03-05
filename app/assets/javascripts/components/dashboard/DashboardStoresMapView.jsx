@@ -10,21 +10,23 @@ var DashboardStoresMapView = React.createClass({
         L.tileLayer(App.Configuration.MAP_TILES_URL, {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+
         /**
          * Check for stores
          */
-        if (this.props.stores){
-            this.props.stores.forEach(function (entry){
-                var latitude = entry.latitude ;
-                var longitude =  entry.longitude;
-                if (latitude && longitude){
-                    new L.Marker([latitude, longitude]).addTo(map);
+        if (this.props.stores) {
+            let html = '<img src="' + App.Helpers.getMediaUrl(this.props.brand.picture.small_thumb.url) + '">';
+            console.log(this.props.brand.picture);
+            var locationIcon = L.divIcon({className: 'DashboardStores__Marker', html: html});
+
+            this.props.stores.forEach(function (entry) {
+                var latitude = entry.latitude;
+                var longitude = entry.longitude;
+                if (latitude && longitude) {
+                    new L.Marker([latitude, longitude], {icon: locationIcon}).addTo(map);
                 }
             })
         }
-
-
-
     },
     /**
      */

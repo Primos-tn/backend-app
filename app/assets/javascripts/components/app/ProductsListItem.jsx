@@ -107,6 +107,9 @@ var ProductsListItem = React.createClass({
      */
     render: function () {
         var item = this.props.item;
+        if (item.collection && item.collection.length > 0){
+            console.error(item.collection)
+        }
         var info = item.info;
         var pictures = item.pictures || [];
         var baseImageUrl = this.state.baseImageUrl;

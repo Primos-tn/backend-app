@@ -7,15 +7,75 @@ class Api::V1::ProductsController < Api::V1::BaseController
   before_action :in_launch_mode?, only: [:show, :reviews, :stores, :wishers, :coupons]
   before_action :register_static_view, except: [:index, :unwish, :product_of_day]
 
+  def index
+    if request.params[:map]
+      center = request.params[:map][:center].to_a
+      distance = 50 #request.params[:map][:distance].to_i
+      center  = center.collect{|i| i.to_f}
+      # get within 50 km near given position
+      box = Geocoder::Calculations.bounding_box(center, distance)
+      # find all stores id within the bounding box
+      stores_ids = Store.within_bounding_box(box).map(&:id)
+    else
+      stores_ids = nil
+    end
+
+    @products = ProductLaunch.launches_of_day({stores_ids: stores_ids})
+
+    #
+    collections_ids = []
+    # e
+    excludes_from_collections_ids = []
+    # products without collection
+    standalone_products = []
+    @collections = {}
+
+
+    
+    @products.each do |entry|
+      if not entry.products_collection_id.nil?
+        collections_ids << entry.products_collection_id
+        excludes_from_collections_ids << entry.product_id
+        @collections[entry.products_collection_id] = []
+      else
+        standalone_products << entry.product_id
+      end
+    end
+    # get all items with brands
+    products_in_collections = ProductLaunch
+                                  .joins(product: :brand)
+                                  .eager_load!(product: [:brand, :pictures])
+                                  .where({launch_date: Date.today})
+                                  .where({products_collection_id: collections_ids})
+                                  .where
+                                  .not({product_id: excludes_from_collections_ids})
+                                  .order('products.user_product_views_count DESC')
+
+    # get id form products in collection s
+    products_in_collections.each do |entry|
+      @collections[entry.products_collection_id] << entry
+    end
+
+    # find user with relation to current user
+    @me_and_products = {}
+    if current_user
+      mine = current_user.get_products_i_voted_from_list(standalone_products)
+      mine.map do |entry|
+        @me_and_products[entry[:product_id]] = true
+      end
+    end
+    # get all items that items
+
+  end
 
   # TODO , fix the search
-  def index
+  def index_old
     # includes will use a LEFT OUTER JOIN query if you do a condition on the table that the includes association uses:
     #@products = Product.eager_load(:brand).page(params[:page] || 1).per(2)
     search = {}
     search[:brand] = params[:brand]
     search[:categories] = params[:categories]
-    ids_query =  Product.get_sql_query(params[:limit], params[:page], params)
+    ids_query = Product.get_sql_query(params[:limit], params[:page], params)
     ids_query_results = ActiveRecord::Base.connection.execute(ids_query)
     products_ids = ids_query_results.map { |c| c['id'] }
     # render json: products_ids

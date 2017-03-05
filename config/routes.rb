@@ -1,12 +1,9 @@
 Rails.application.routes.draw do
-
   # You can have the root of your site routed with "root"
   authenticated do
     root :to => 'web/home#index'
   end
-
   root :to => 'web/welcome#index', :as => 'anonymous'
-
   # handle account
   # check fo devise_scope method to show how to handle
   devise_scope :user do
@@ -113,6 +110,14 @@ Rails.application.routes.draw do
       resources :coupons
       resources :targetize, only: :index
       resources :pictures, :only => [:create, :destroy], controller: :product_pictures
+    end
+
+    resources :products_collections, :path => '/collections' do
+      member do
+        post 'launch'
+        post 'add-products'
+        post 'remove-products'
+      end
     end
 
     resources :brand_team_members, as: 'team', path: 'team' do

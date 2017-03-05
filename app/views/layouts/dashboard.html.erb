@@ -28,7 +28,7 @@
               </div>
 
               <ul class="nav">
-                <% $dashboard_tabs.each_with_index do |tab, index| %>
+                <% $dashboard_tabs_links.each_with_index do |tab, index| %>
                     <li class="<%= get_active_sidebar_item(@active_tab, tab.downcase) %> ">
                       <a href="<%= get_tab_link(tab) %>" class="<%= get_class_active(tab) %>">
                         <%- if $dashboard_tabs_soon.include?(tab.downcase) %>
@@ -37,7 +37,7 @@
                             <i class="ti-<%= $dashboard_tabs_icons[index] %>"></i>
 
                         <% end %>
-                        <p><%= I18n.t(tab) %></p>
+                        <p><%= I18n.t($dashboard_tabs[index]) %></p>
                       </a>
                     </li>
                 <% end %>

@@ -3,7 +3,7 @@
   <th><%= I18n.t('Product name') %></th>
   <!--<th><%= I18n.t('Brand') %></th>-->
   <th><%= I18n.t('Last launch') %></th>
-  <th colspan="4"></th>
+  <th><%= I18n.t('Launching') %></th>
   </thead>
   <tbody>
   <% @products.each do |product| %>
@@ -26,18 +26,25 @@
         </td>
 
         <td><%= product.last_launch %></td>
-        <td>
+        <td  class="DashboardProductsList__LaunchingButtons">
           <%- if product.can_be_launched? %>
-              <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
-
-              <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
-                  <%= f.date_field :last_launch, value: '', placeholder: 'MM/DD/YYYY', type: 'time' %>
-                  <%= f.submit t('Schedule'), :class => 'btn btn-danger btn-fill' %>
-              <% end %>
-
-          <% end -%>
+              <div class="DashboardProductsList__LaunchingButtonItem">
+                <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn  btn-sm btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
+              </div>
+              <div class="DashboardProductsList__LaunchingButtonItem">
+                <%= react_component('DashboardCollectionProductModalButtonLauncher', {:product_id => product.id, :text => I18n.t('Add to collection') }) %>
+              </div>
+              <div class="DashboardProductsList__LaunchingButtonItem">
+                <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
+                    <!--<%= f.date_field :last_launch, value: '', placeholder: 'MM/DD/YYYY', type: 'time' %>-->
+                    <%= f.submit t('Schedule'), :class => 'btn btn-danger btn-sm btn-fill' %>
+                <% end %>
+              </div>
+        <% end -%>
         </td>
-        <td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-center">
           <div class="btn-group">
             <%= link_to dashboard_product_coupons_path(product), class: "btn btn-icon  btn-fill btn-default" do %>
                 <span class="ti-layout-grid4"></span>
@@ -54,14 +61,11 @@
           </div>
 
         </td>
-        <td>
-
-
-        </td>
-      </tr>
-      <tr>
-
       </tr>
   <% end %>
   </tbody>
 </table>
+<% content_for :out_wrapper do %>
+<%= react_component('DashboardCollectionsProductModal', {:upload_url => dashboard_brand_galleries_path,
+                                                     :authenticity_token => form_authenticity_token}) %>
+<% end %>

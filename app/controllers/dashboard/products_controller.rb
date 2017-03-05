@@ -53,10 +53,8 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         else
           at = Date.today
         end
-
-        @product.last_launch = at
-
-        @product.save
+        launch = ProductLaunch.new ({ launch_date: at, product: @product})
+        launch.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
         format.json { render :show, status: :launched, location: @product }
       else
@@ -104,7 +102,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_product_and_brand
-    @product = Product.joins(:brand).where({id: params[:id], brands: {:account_id => current_user}}).first
+    @product = Product.includes([:launches]).joins(:brand).where({id: params[:id], brands: {:account_id => current_user}}).first
     @brand = @product.brand
   end
 
