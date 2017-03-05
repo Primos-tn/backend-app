@@ -30,9 +30,15 @@ var Map = React.createClass({
         this._map = map;
         this._placeMarkers();
         if (this.props.onMapAreaChanged) {
-            this._map.on('moveend', function (e){
-                this.props.onMapAreaChanged(e.target.getBounds().toBBoxString())
-            }.bind(this));
+            let changed = this.props.onMapAreaChanged;
+            let circle = L.circle(map.getCenter(), 50 * 1000).addTo(map);
+            let fireChange = function (e) {
+                changed(e.target);
+                circle.setLatLng(e.target.getCenter());
+                //changed(map.getCenter(), map.getCenter().distanceTo(map.getBounds().getSouthWest()));
+            };
+            map.on('zoomend', fireChange);
+            map.on('dragend', fireChange);
         }
 
     },
@@ -72,7 +78,7 @@ var Map = React.createClass({
         let parsedPositions = [];
         if (positions) {
             positions.forEach(function (entry) {
-                parsedPosition = this._parsePosition(entry) ;
+                parsedPosition = this._parsePosition(entry);
                 parsedPositions.push(parsedPosition);
                 L.marker(parsedPosition, {
                     icon: L.divIcon({

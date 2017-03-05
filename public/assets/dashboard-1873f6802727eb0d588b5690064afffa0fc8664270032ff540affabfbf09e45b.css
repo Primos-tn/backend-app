@@ -5391,12 +5391,34 @@ textarea.form-control {
 }
 
 /* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
+.DashboardProductsList__LaunchingButtons .DashboardProductsList__LaunchingButtonItem {
+  display: inline-block;
+  padding: 2px;
+}
+
+/* line 19, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
 .ProductPropertiesEdit__PropertyContainer label.key, .ProductPropertiesEdit__PropertyContainer .value {
   width: 150px;
 }
-/* line 16, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
+/* line 22, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
 .ProductPropertiesEdit__PropertyContainer div.value {
   display: inline-block;
+}
+
+/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/products.scss */
+.ProductAddToCollectionButton {
+  margin: 10px;
+}
+/**
+ * Define app main colors
+ */
+/**
+ *
+ */
+/* line 3, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/dashboard/stores.scss */
+.DashboardStores__Marker img {
+  border-radius: 50%;
+  border: solid 1px #ffb249;
 }
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

@@ -33031,6 +33031,14 @@ App.Stores = {
     /**
      *
      * @param options
+     * options {
+     *            url => endpoint
+     *            params => url params (query ....)
+     *            data => post form data
+     *            action => callback event action
+     *            event => data source to be dispatched onresponse to success
+     *
+     * }
      */
     post: function (options) {
         $.ajax({
@@ -33098,12 +33106,15 @@ App.Helpers = {
     }
 };
 /**
- *
+ * All dashboard js routes
  * @type {{info: string}}
  */
 App.DashboradRoutes = {
     stats: '/dashboard/ajax/stats',
     galleryList: '/dashboard/gallery',
+    collections: '/dashboard/collections',
+    collectionsItemAdd : '/dashboard/collections/:id/add-products',
+    collectionsItemRemove : '/dashboard/collections/:id/remove-products'
 };
 /**
  *
@@ -33212,6 +33223,9 @@ App.Actions = {
     NOTIFICATION: 'NOTIFICATION',
     ADMIN_NOTIFICATION: 'ADMIN_NOTIFICATION',
     FILTER_CHANGED: 'FILTER_CHANGED',
+
+    'DASHBOARD_MODAL_COLLECTION_OPEN' : 'DASHBOARD_MODAL_COLLECTION_OPEN',
+    'DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED' : 'DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED',
 
 
     TAB_CHANGED: '',
@@ -33913,9 +33927,12 @@ var BrandsList = React.createClass({
      *
      */
     onFilterChanged: function (filter) {
+        var _this = this;
+
         // reinitialize filter
-        this.setState({ filter: filter, page: 0, items: [] });
-        this._fetchItems();
+        this.setState({ filter: filter, page: 0, items: [] }, function () {
+            _this._fetchItems();
+        });
     },
     /**
      *
@@ -33923,10 +33940,11 @@ var BrandsList = React.createClass({
     _fetchItems: function () {
         this.setState({ isFetchingItems: true });
         // get query
-        var query = $.extend({
+        var query = $.extend({}, {
             brands: this.props.brand,
             page: this.state.page
         }, this.state.filter);
+
         App.Stores.loadData({
             url: App.Routes.brands,
             action: App.Actions.BRAND_LIST_FETCHING,
@@ -34355,6 +34373,8 @@ var Map = React.createClass({
     /**
      */
     componentDidMount: function () {
+        var _this = this;
+
         App.Dispatcher.attach(App.Actions.SEARCH, this._searchChanged);
         App.Dispatcher.attach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
         var $map = $('#map');
@@ -34375,9 +34395,17 @@ var Map = React.createClass({
         this._map = map;
         this._placeMarkers();
         if (this.props.onMapAreaChanged) {
-            this._map.on('moveend', (function (e) {
-                this.props.onMapAreaChanged(e.target.getBounds().toBBoxString());
-            }).bind(this));
+            (function () {
+                var changed = _this.props.onMapAreaChanged;
+                var circle = L.circle(map.getCenter(), 50 * 1000).addTo(map);
+                var fireChange = function (e) {
+                    changed(e.target);
+                    circle.setLatLng(e.target.getCenter());
+                    //changed(map.getCenter(), map.getCenter().distanceTo(map.getBounds().getSouthWest()));
+                };
+                map.on('zoomend', fireChange);
+                map.on('dragend', fireChange);
+            })();
         }
     },
     /**
@@ -35376,7 +35404,7 @@ var ProductsList = React.createClass({
     getServerItems: function () {
         this.setState({ isFetchingItems: true });
         // get query
-        var query = $.extend({
+        var query = $.extend({}, {
             brands: this.props.brand,
             page: this.state.page
         }, this.state.filter);
@@ -35419,9 +35447,12 @@ var ProductsList = React.createClass({
      *
      */
     onFilterChanged: function (filter) {
+        var _this = this;
+
         // reinitialize filter
-        this.setState({ filter: filter, page: 0, items: [] });
-        this.getServerItems();
+        this.setState({ filter: filter, page: 0, items: [] }, function () {
+            _this.getServerItems();
+        });
     },
     /**
      *
@@ -35580,6 +35611,9 @@ var ProductsListItem = React.createClass({
      */
     render: function () {
         var item = this.props.item;
+        if (item.collection && item.collection.length > 0) {
+            console.error(item.collection);
+        }
         var info = item.info;
         var pictures = item.pictures || [];
         var baseImageUrl = this.state.baseImageUrl;
@@ -36206,7 +36240,16 @@ var SideBarFilter = React.createClass({
      *
      */
     onMapAreaChanged: function (map) {
-        this.setState({ map: map });
+        var center = map.getCenter();
+        var eastBound = map.getBounds().getEast();
+        var centerEast = L.latLng(center.lat, eastBound);
+        var dist = center.distanceTo(centerEast);
+        this.setState({
+            map: {
+                center: [center.lat, center.lng],
+                distance: dist / 2
+            }
+        });
     },
     /***
      *
@@ -36236,10 +36279,12 @@ var SideBarFilter = React.createClass({
         if (profile) {
             profileBlock = React.createElement(UserProfileSideBar, null);
         }
-        var colorsFilter = [];
-        if (this.props.showColors) {
-            colorsFilter.push(React.createElement(ColorsSelector, { onColorSelectedChange: this.onColorSelectedChange }));
-        }
+        /*
+         // #FUSAGE
+         let colorsFilter = [];
+         if (this.props.showColors) {
+         colorsFilter.push(<ColorsSelector onColorSelectedChange={this.onColorSelectedChange}/>)
+         }*/
         var priceRange = [];
         if (this.props.shwoPriceRange) {
             priceRange.push(React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged }));
@@ -36277,8 +36322,7 @@ var SideBarFilter = React.createClass({
                 { className: "AppSideBar__CategoriesContainer" },
                 React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: "Product" })
             ),
-            priceRange,
-            colorsFilter
+            priceRange
         );
     }
 });

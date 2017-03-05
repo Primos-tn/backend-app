@@ -166,7 +166,7 @@ var SideBarFilter = React.createClass({
             this.$container.addClass('fixed');
             var height = this.$container.height();
             var clientHeight = $(window).height();
-            if (height > clientHeight){
+            if (height > clientHeight) {
                 height = height - clientHeight;
                 console.log(value - height);
                 this.$container.css({'top': -Math.abs(Math.min(height, value))})
@@ -197,7 +197,17 @@ var SideBarFilter = React.createClass({
      *
      */
     onMapAreaChanged(map){
-        this.setState({map: map});
+        let center = map.getCenter();
+        var eastBound = map.getBounds().getEast();
+        var centerEast = L.latLng(center.lat, eastBound);
+        var dist = center.distanceTo(centerEast);
+        this.setState({
+            map: {
+                center:[center.lat, center.lng],
+                distance:  dist/2
+            }
+        });
+
     },
     /***
      *
@@ -227,10 +237,12 @@ var SideBarFilter = React.createClass({
         if (profile) {
             profileBlock = <UserProfileSideBar/>;
         }
-        let colorsFilter = [];
-        if (this.props.showColors) {
-            colorsFilter.push(<ColorsSelector onColorSelectedChange={this.onColorSelectedChange}/>)
-        }
+        /*
+         // #FUSAGE
+         let colorsFilter = [];
+         if (this.props.showColors) {
+         colorsFilter.push(<ColorsSelector onColorSelectedChange={this.onColorSelectedChange}/>)
+         }*/
         let priceRange = [];
         if (this.props.shwoPriceRange) {
             priceRange.push(<RangeSlider onSliderChanged={this.onSliderChanged}/>)
@@ -253,7 +265,6 @@ var SideBarFilter = React.createClass({
                     <CategoriesList onCategoriesSelected={this.onCategoriesSelected} type="Product"/>
                 </div>
                 {priceRange}
-                {colorsFilter}
             </div>
         );
     },

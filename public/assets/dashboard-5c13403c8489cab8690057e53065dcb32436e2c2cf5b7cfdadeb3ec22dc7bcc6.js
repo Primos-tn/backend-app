@@ -33031,6 +33031,14 @@ App.Stores = {
     /**
      *
      * @param options
+     * options {
+     *            url => endpoint
+     *            params => url params (query ....)
+     *            data => post form data
+     *            action => callback event action
+     *            event => data source to be dispatched onresponse to success
+     *
+     * }
      */
     post: function (options) {
         $.ajax({
@@ -33098,12 +33106,15 @@ App.Helpers = {
     }
 };
 /**
- *
+ * All dashboard js routes
  * @type {{info: string}}
  */
 App.DashboradRoutes = {
     stats: '/dashboard/ajax/stats',
     galleryList: '/dashboard/gallery',
+    collections: '/dashboard/collections',
+    collectionsItemAdd : '/dashboard/collections/:id/add-products',
+    collectionsItemRemove : '/dashboard/collections/:id/remove-products'
 };
 /**
  *
@@ -33213,6 +33224,9 @@ App.Actions = {
     ADMIN_NOTIFICATION: 'ADMIN_NOTIFICATION',
     FILTER_CHANGED: 'FILTER_CHANGED',
 
+    'DASHBOARD_MODAL_COLLECTION_OPEN' : 'DASHBOARD_MODAL_COLLECTION_OPEN',
+    'DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED' : 'DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED',
+
 
     TAB_CHANGED: '',
     PRODUCT_VOTE: 'PRODUCT_VOTE',
@@ -33249,45 +33263,3970 @@ App.Constants = {
 
 
 
-/**
+
+/*
  *
- * @private
+ * More info at [www.dropzonejs.com](http://www.dropzonejs.com)
+ *
+ * Copyright (c) 2012, Matias Meno
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
  */
 
-function _appendNotification(name, value) {
-    var $notification = $('<div class="SideBarTabNotification"></div>').html(value);
-    $('[data-tab="' + name + '"]').find('a').prepend($notification);
-}
-/**
- *
- */
-function _displayNotifications(data) {
-    // {"business_pending_count":1,"invitations_pending_count":2,"business_accounts_count":1,"brands":0}
-    _appendNotification('BusinessRequests', data.business_pending_count);
-    _appendNotification('Invitations', data.invitations_pending_count);
-    _appendNotification('BusinessAccounts', data.business_accounts_count);
-    _appendNotification('Brands', data.brands_count);
-}
-/**
- * Get server info
- */
-function getInfo() {
-    $.get('/admin/ajax/info', _displayNotifications);
-}
-/**
- *
- */
-AdminBaseApp = React.createClass({
-    displayName: 'AdminBaseApp',
 
-    componentDidMount: function () {
-        getInfo();
+(function() {
+    var Dropzone, Emitter, camelize, contentLoaded, detectVerticalSquash, drawImageIOSFix, noop, without,
+        __slice = [].slice,
+        __hasProp = {}.hasOwnProperty,
+        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+    noop = function() {};
+
+    Emitter = (function() {
+        function Emitter() {}
+
+        Emitter.prototype.addEventListener = Emitter.prototype.on;
+
+        Emitter.prototype.on = function(event, fn) {
+            this._callbacks = this._callbacks || {};
+            if (!this._callbacks[event]) {
+                this._callbacks[event] = [];
+            }
+            this._callbacks[event].push(fn);
+            return this;
+        };
+
+        Emitter.prototype.emit = function() {
+            var args, callback, callbacks, event, _i, _len;
+            event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+            this._callbacks = this._callbacks || {};
+            callbacks = this._callbacks[event];
+            if (callbacks) {
+                for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
+                    callback = callbacks[_i];
+                    callback.apply(this, args);
+                }
+            }
+            return this;
+        };
+
+        Emitter.prototype.removeListener = Emitter.prototype.off;
+
+        Emitter.prototype.removeAllListeners = Emitter.prototype.off;
+
+        Emitter.prototype.removeEventListener = Emitter.prototype.off;
+
+        Emitter.prototype.off = function(event, fn) {
+            var callback, callbacks, i, _i, _len;
+            if (!this._callbacks || arguments.length === 0) {
+                this._callbacks = {};
+                return this;
+            }
+            callbacks = this._callbacks[event];
+            if (!callbacks) {
+                return this;
+            }
+            if (arguments.length === 1) {
+                delete this._callbacks[event];
+                return this;
+            }
+            for (i = _i = 0, _len = callbacks.length; _i < _len; i = ++_i) {
+                callback = callbacks[i];
+                if (callback === fn) {
+                    callbacks.splice(i, 1);
+                    break;
+                }
+            }
+            return this;
+        };
+
+        return Emitter;
+
+    })();
+
+    Dropzone = (function(_super) {
+        var extend, resolveOption;
+
+        __extends(Dropzone, _super);
+
+        Dropzone.prototype.Emitter = Emitter;
+
+
+        /*
+         This is a list of all available events you can register on a dropzone object.
+
+         You can register an event handler like this:
+
+         dropzone.on("dragEnter", function() { });
+         */
+
+        Dropzone.prototype.events = ["drop", "dragstart", "dragend", "dragenter", "dragover", "dragleave", "addedfile", "addedfiles", "removedfile", "thumbnail", "error", "errormultiple", "processing", "processingmultiple", "uploadprogress", "totaluploadprogress", "sending", "sendingmultiple", "success", "successmultiple", "canceled", "canceledmultiple", "complete", "completemultiple", "reset", "maxfilesexceeded", "maxfilesreached", "queuecomplete"];
+
+        Dropzone.prototype.defaultOptions = {
+            url: null,
+            method: "post",
+            withCredentials: false,
+            parallelUploads: 2,
+            uploadMultiple: false,
+            maxFilesize: 256,
+            paramName: "file",
+            createImageThumbnails: true,
+            maxThumbnailFilesize: 10,
+            thumbnailWidth: 120,
+            thumbnailHeight: 120,
+            filesizeBase: 1000,
+            maxFiles: null,
+            params: {},
+            clickable: true,
+            ignoreHiddenFiles: true,
+            acceptedFiles: null,
+            acceptedMimeTypes: null,
+            autoProcessQueue: true,
+            autoQueue: true,
+            addRemoveLinks: false,
+            previewsContainer: null,
+            hiddenInputContainer: "body",
+            capture: null,
+            renameFilename: null,
+            dictDefaultMessage: "Drop files here to upload",
+            dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+            dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+            dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
+            dictInvalidFileType: "You can't upload files of this type.",
+            dictResponseError: "Server responded with {{statusCode}} code.",
+            dictCancelUpload: "Cancel upload",
+            dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+            dictRemoveFile: "Remove file",
+            dictRemoveFileConfirmation: null,
+            dictMaxFilesExceeded: "You can not upload any more files.",
+            accept: function(file, done) {
+                return done();
+            },
+            init: function() {
+                return noop;
+            },
+            forceFallback: false,
+            fallback: function() {
+                var child, messageElement, span, _i, _len, _ref;
+                this.element.className = "" + this.element.className + " dz-browser-not-supported";
+                _ref = this.element.getElementsByTagName("div");
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    child = _ref[_i];
+                    if (/(^| )dz-message($| )/.test(child.className)) {
+                        messageElement = child;
+                        child.className = "dz-message";
+                        continue;
+                    }
+                }
+                if (!messageElement) {
+                    messageElement = Dropzone.createElement("<div class=\"dz-message\"><span></span></div>");
+                    this.element.appendChild(messageElement);
+                }
+                span = messageElement.getElementsByTagName("span")[0];
+                if (span) {
+                    if (span.textContent != null) {
+                        span.textContent = this.options.dictFallbackMessage;
+                    } else if (span.innerText != null) {
+                        span.innerText = this.options.dictFallbackMessage;
+                    }
+                }
+                return this.element.appendChild(this.getFallbackForm());
+            },
+            resize: function(file) {
+                var info, srcRatio, trgRatio;
+                info = {
+                    srcX: 0,
+                    srcY: 0,
+                    srcWidth: file.width,
+                    srcHeight: file.height
+                };
+                srcRatio = file.width / file.height;
+                info.optWidth = this.options.thumbnailWidth;
+                info.optHeight = this.options.thumbnailHeight;
+                if ((info.optWidth == null) && (info.optHeight == null)) {
+                    info.optWidth = info.srcWidth;
+                    info.optHeight = info.srcHeight;
+                } else if (info.optWidth == null) {
+                    info.optWidth = srcRatio * info.optHeight;
+                } else if (info.optHeight == null) {
+                    info.optHeight = (1 / srcRatio) * info.optWidth;
+                }
+                trgRatio = info.optWidth / info.optHeight;
+                if (file.height < info.optHeight || file.width < info.optWidth) {
+                    info.trgHeight = info.srcHeight;
+                    info.trgWidth = info.srcWidth;
+                } else {
+                    if (srcRatio > trgRatio) {
+                        info.srcHeight = file.height;
+                        info.srcWidth = info.srcHeight * trgRatio;
+                    } else {
+                        info.srcWidth = file.width;
+                        info.srcHeight = info.srcWidth / trgRatio;
+                    }
+                }
+                info.srcX = (file.width - info.srcWidth) / 2;
+                info.srcY = (file.height - info.srcHeight) / 2;
+                return info;
+            },
+
+            /*
+             Those functions register themselves to the events on init and handle all
+             the user interface specific stuff. Overwriting them won't break the upload
+             but can break the way it's displayed.
+             You can overwrite them if you don't like the default behavior. If you just
+             want to add an additional event handler, register it on the dropzone object
+             and don't overwrite those options.
+             */
+            drop: function(e) {
+                return this.element.classList.remove("dz-drag-hover");
+            },
+            dragstart: noop,
+            dragend: function(e) {
+                return this.element.classList.remove("dz-drag-hover");
+            },
+            dragenter: function(e) {
+                return this.element.classList.add("dz-drag-hover");
+            },
+            dragover: function(e) {
+                return this.element.classList.add("dz-drag-hover");
+            },
+            dragleave: function(e) {
+                return this.element.classList.remove("dz-drag-hover");
+            },
+            paste: noop,
+            reset: function() {
+                return this.element.classList.remove("dz-started");
+            },
+            addedfile: function(file) {
+                var node, removeFileEvent, removeLink, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
+                if (this.element === this.previewsContainer) {
+                    this.element.classList.add("dz-started");
+                }
+                if (this.previewsContainer) {
+                    file.previewElement = Dropzone.createElement(this.options.previewTemplate.trim());
+                    file.previewTemplate = file.previewElement;
+                    this.previewsContainer.appendChild(file.previewElement);
+                    _ref = file.previewElement.querySelectorAll("[data-dz-name]");
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        node = _ref[_i];
+                        node.textContent = this._renameFilename(file.name);
+                    }
+                    _ref1 = file.previewElement.querySelectorAll("[data-dz-size]");
+                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        node = _ref1[_j];
+                        node.innerHTML = this.filesize(file.size);
+                    }
+                    if (this.options.addRemoveLinks) {
+                        file._removeLink = Dropzone.createElement("<a class=\"dz-remove\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
+                        file.previewElement.appendChild(file._removeLink);
+                    }
+                    removeFileEvent = (function(_this) {
+                        return function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (file.status === Dropzone.UPLOADING) {
+                                return Dropzone.confirm(_this.options.dictCancelUploadConfirmation, function() {
+                                    return _this.removeFile(file);
+                                });
+                            } else {
+                                if (_this.options.dictRemoveFileConfirmation) {
+                                    return Dropzone.confirm(_this.options.dictRemoveFileConfirmation, function() {
+                                        return _this.removeFile(file);
+                                    });
+                                } else {
+                                    return _this.removeFile(file);
+                                }
+                            }
+                        };
+                    })(this);
+                    _ref2 = file.previewElement.querySelectorAll("[data-dz-remove]");
+                    _results = [];
+                    for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                        removeLink = _ref2[_k];
+                        _results.push(removeLink.addEventListener("click", removeFileEvent));
+                    }
+                    return _results;
+                }
+            },
+            removedfile: function(file) {
+                var _ref;
+                if (file.previewElement) {
+                    if ((_ref = file.previewElement) != null) {
+                        _ref.parentNode.removeChild(file.previewElement);
+                    }
+                }
+                return this._updateMaxFilesReachedClass();
+            },
+            thumbnail: function(file, dataUrl) {
+                var thumbnailElement, _i, _len, _ref;
+                if (file.previewElement) {
+                    file.previewElement.classList.remove("dz-file-preview");
+                    _ref = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        thumbnailElement = _ref[_i];
+                        thumbnailElement.alt = file.name;
+                        thumbnailElement.src = dataUrl;
+                    }
+                    return setTimeout(((function(_this) {
+                        return function() {
+                            return file.previewElement.classList.add("dz-image-preview");
+                        };
+                    })(this)), 1);
+                }
+            },
+            error: function(file, message) {
+                var node, _i, _len, _ref, _results;
+                if (file.previewElement) {
+                    file.previewElement.classList.add("dz-error");
+                    if (typeof message !== "String" && message.error) {
+                        message = message.error;
+                    }
+                    _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+                    _results = [];
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        node = _ref[_i];
+                        _results.push(node.textContent = message);
+                    }
+                    return _results;
+                }
+            },
+            errormultiple: noop,
+            processing: function(file) {
+                if (file.previewElement) {
+                    file.previewElement.classList.add("dz-processing");
+                    if (file._removeLink) {
+                        return file._removeLink.textContent = this.options.dictCancelUpload;
+                    }
+                }
+            },
+            processingmultiple: noop,
+            uploadprogress: function(file, progress, bytesSent) {
+                var node, _i, _len, _ref, _results;
+                if (file.previewElement) {
+                    _ref = file.previewElement.querySelectorAll("[data-dz-uploadprogress]");
+                    _results = [];
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        node = _ref[_i];
+                        if (node.nodeName === 'PROGRESS') {
+                            _results.push(node.value = progress);
+                        } else {
+                            _results.push(node.style.width = "" + progress + "%");
+                        }
+                    }
+                    return _results;
+                }
+            },
+            totaluploadprogress: noop,
+            sending: noop,
+            sendingmultiple: noop,
+            success: function(file) {
+                if (file.previewElement) {
+                    return file.previewElement.classList.add("dz-success");
+                }
+            },
+            successmultiple: noop,
+            canceled: function(file) {
+                return this.emit("error", file, "Upload canceled.");
+            },
+            canceledmultiple: noop,
+            complete: function(file) {
+                if (file._removeLink) {
+                    file._removeLink.textContent = this.options.dictRemoveFile;
+                }
+                if (file.previewElement) {
+                    return file.previewElement.classList.add("dz-complete");
+                }
+            },
+            completemultiple: noop,
+            maxfilesexceeded: noop,
+            maxfilesreached: noop,
+            queuecomplete: noop,
+            addedfiles: noop,
+            previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n  <div class=\"dz-details\">\n    <div class=\"dz-size\"><span data-dz-size></span></div>\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n  </div>\n  <div class=\"dz-progress\"><span class=\"dz-upload\" data-dz-uploadprogress></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n  <div class=\"dz-success-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Check</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <path d=\"M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" stroke-opacity=\"0.198794158\" stroke=\"#747474\" fill-opacity=\"0.816519475\" fill=\"#FFFFFF\" sketch:type=\"MSShapeGroup\"></path>\n      </g>\n    </svg>\n  </div>\n  <div class=\"dz-error-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Error</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <g id=\"Check-+-Oval-2\" sketch:type=\"MSLayerGroup\" stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n          <path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" sketch:type=\"MSShapeGroup\"></path>\n        </g>\n      </g>\n    </svg>\n  </div>\n</div>"
+        };
+
+        extend = function() {
+            var key, object, objects, target, val, _i, _len;
+            target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+            for (_i = 0, _len = objects.length; _i < _len; _i++) {
+                object = objects[_i];
+                for (key in object) {
+                    val = object[key];
+                    target[key] = val;
+                }
+            }
+            return target;
+        };
+
+        function Dropzone(element, options) {
+            var elementOptions, fallback, _ref;
+            this.element = element;
+            this.version = Dropzone.version;
+            this.defaultOptions.previewTemplate = this.defaultOptions.previewTemplate.replace(/\n*/g, "");
+            this.clickableElements = [];
+            this.listeners = [];
+            this.files = [];
+            if (typeof this.element === "string") {
+                this.element = document.querySelector(this.element);
+            }
+            if (!(this.element && (this.element.nodeType != null))) {
+                throw new Error("Invalid dropzone element.");
+            }
+            if (this.element.dropzone) {
+                throw new Error("Dropzone already attached.");
+            }
+            Dropzone.instances.push(this);
+            this.element.dropzone = this;
+            elementOptions = (_ref = Dropzone.optionsForElement(this.element)) != null ? _ref : {};
+            this.options = extend({}, this.defaultOptions, elementOptions, options != null ? options : {});
+            if (this.options.forceFallback || !Dropzone.isBrowserSupported()) {
+                return this.options.fallback.call(this);
+            }
+            if (this.options.url == null) {
+                this.options.url = this.element.getAttribute("action");
+            }
+            if (!this.options.url) {
+                throw new Error("No URL provided.");
+            }
+            if (this.options.acceptedFiles && this.options.acceptedMimeTypes) {
+                throw new Error("You can't provide both 'acceptedFiles' and 'acceptedMimeTypes'. 'acceptedMimeTypes' is deprecated.");
+            }
+            if (this.options.acceptedMimeTypes) {
+                this.options.acceptedFiles = this.options.acceptedMimeTypes;
+                delete this.options.acceptedMimeTypes;
+            }
+            this.options.method = this.options.method.toUpperCase();
+            if ((fallback = this.getExistingFallback()) && fallback.parentNode) {
+                fallback.parentNode.removeChild(fallback);
+            }
+            if (this.options.previewsContainer !== false) {
+                if (this.options.previewsContainer) {
+                    this.previewsContainer = Dropzone.getElement(this.options.previewsContainer, "previewsContainer");
+                } else {
+                    this.previewsContainer = this.element;
+                }
+            }
+            if (this.options.clickable) {
+                if (this.options.clickable === true) {
+                    this.clickableElements = [this.element];
+                } else {
+                    this.clickableElements = Dropzone.getElements(this.options.clickable, "clickable");
+                }
+            }
+            this.init();
+        }
+
+        Dropzone.prototype.getAcceptedFiles = function() {
+            var file, _i, _len, _ref, _results;
+            _ref = this.files;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                if (file.accepted) {
+                    _results.push(file);
+                }
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.getRejectedFiles = function() {
+            var file, _i, _len, _ref, _results;
+            _ref = this.files;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                if (!file.accepted) {
+                    _results.push(file);
+                }
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.getFilesWithStatus = function(status) {
+            var file, _i, _len, _ref, _results;
+            _ref = this.files;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                if (file.status === status) {
+                    _results.push(file);
+                }
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.getQueuedFiles = function() {
+            return this.getFilesWithStatus(Dropzone.QUEUED);
+        };
+
+        Dropzone.prototype.getUploadingFiles = function() {
+            return this.getFilesWithStatus(Dropzone.UPLOADING);
+        };
+
+        Dropzone.prototype.getAddedFiles = function() {
+            return this.getFilesWithStatus(Dropzone.ADDED);
+        };
+
+        Dropzone.prototype.getActiveFiles = function() {
+            var file, _i, _len, _ref, _results;
+            _ref = this.files;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                if (file.status === Dropzone.UPLOADING || file.status === Dropzone.QUEUED) {
+                    _results.push(file);
+                }
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.init = function() {
+            var eventName, noPropagation, setupHiddenFileInput, _i, _len, _ref, _ref1;
+            if (this.element.tagName === "form") {
+                this.element.setAttribute("enctype", "multipart/form-data");
+            }
+            if (this.element.classList.contains("dropzone") && !this.element.querySelector(".dz-message")) {
+                this.element.appendChild(Dropzone.createElement("<div class=\"dz-default dz-message\"><span>" + this.options.dictDefaultMessage + "</span></div>"));
+            }
+            if (this.clickableElements.length) {
+                setupHiddenFileInput = (function(_this) {
+                    return function() {
+                        if (_this.hiddenFileInput) {
+                            _this.hiddenFileInput.parentNode.removeChild(_this.hiddenFileInput);
+                        }
+                        _this.hiddenFileInput = document.createElement("input");
+                        _this.hiddenFileInput.setAttribute("type", "file");
+                        if ((_this.options.maxFiles == null) || _this.options.maxFiles > 1) {
+                            _this.hiddenFileInput.setAttribute("multiple", "multiple");
+                        }
+                        _this.hiddenFileInput.className = "dz-hidden-input";
+                        if (_this.options.acceptedFiles != null) {
+                            _this.hiddenFileInput.setAttribute("accept", _this.options.acceptedFiles);
+                        }
+                        if (_this.options.capture != null) {
+                            _this.hiddenFileInput.setAttribute("capture", _this.options.capture);
+                        }
+                        _this.hiddenFileInput.style.visibility = "hidden";
+                        _this.hiddenFileInput.style.position = "absolute";
+                        _this.hiddenFileInput.style.top = "0";
+                        _this.hiddenFileInput.style.left = "0";
+                        _this.hiddenFileInput.style.height = "0";
+                        _this.hiddenFileInput.style.width = "0";
+                        document.querySelector(_this.options.hiddenInputContainer).appendChild(_this.hiddenFileInput);
+                        return _this.hiddenFileInput.addEventListener("change", function() {
+                            var file, files, _i, _len;
+                            files = _this.hiddenFileInput.files;
+                            if (files.length) {
+                                for (_i = 0, _len = files.length; _i < _len; _i++) {
+                                    file = files[_i];
+                                    _this.addFile(file);
+                                }
+                            }
+                            _this.emit("addedfiles", files);
+                            return setupHiddenFileInput();
+                        });
+                    };
+                })(this);
+                setupHiddenFileInput();
+            }
+            this.URL = (_ref = window.URL) != null ? _ref : window.webkitURL;
+            _ref1 = this.events;
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                eventName = _ref1[_i];
+                this.on(eventName, this.options[eventName]);
+            }
+            this.on("uploadprogress", (function(_this) {
+                return function() {
+                    return _this.updateTotalUploadProgress();
+                };
+            })(this));
+            this.on("removedfile", (function(_this) {
+                return function() {
+                    return _this.updateTotalUploadProgress();
+                };
+            })(this));
+            this.on("canceled", (function(_this) {
+                return function(file) {
+                    return _this.emit("complete", file);
+                };
+            })(this));
+            this.on("complete", (function(_this) {
+                return function(file) {
+                    if (_this.getAddedFiles().length === 0 && _this.getUploadingFiles().length === 0 && _this.getQueuedFiles().length === 0) {
+                        return setTimeout((function() {
+                            return _this.emit("queuecomplete");
+                        }), 0);
+                    }
+                };
+            })(this));
+            noPropagation = function(e) {
+                e.stopPropagation();
+                if (e.preventDefault) {
+                    return e.preventDefault();
+                } else {
+                    return e.returnValue = false;
+                }
+            };
+            this.listeners = [
+                {
+                    element: this.element,
+                    events: {
+                        "dragstart": (function(_this) {
+                            return function(e) {
+                                return _this.emit("dragstart", e);
+                            };
+                        })(this),
+                        "dragenter": (function(_this) {
+                            return function(e) {
+                                noPropagation(e);
+                                return _this.emit("dragenter", e);
+                            };
+                        })(this),
+                        "dragover": (function(_this) {
+                            return function(e) {
+                                var efct;
+                                try {
+                                    efct = e.dataTransfer.effectAllowed;
+                                } catch (_error) {}
+                                e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy';
+                                noPropagation(e);
+                                return _this.emit("dragover", e);
+                            };
+                        })(this),
+                        "dragleave": (function(_this) {
+                            return function(e) {
+                                return _this.emit("dragleave", e);
+                            };
+                        })(this),
+                        "drop": (function(_this) {
+                            return function(e) {
+                                noPropagation(e);
+                                return _this.drop(e);
+                            };
+                        })(this),
+                        "dragend": (function(_this) {
+                            return function(e) {
+                                return _this.emit("dragend", e);
+                            };
+                        })(this)
+                    }
+                }
+            ];
+            this.clickableElements.forEach((function(_this) {
+                return function(clickableElement) {
+                    return _this.listeners.push({
+                        element: clickableElement,
+                        events: {
+                            "click": function(evt) {
+                                if ((clickableElement !== _this.element) || (evt.target === _this.element || Dropzone.elementInside(evt.target, _this.element.querySelector(".dz-message")))) {
+                                    _this.hiddenFileInput.click();
+                                }
+                                return true;
+                            }
+                        }
+                    });
+                };
+            })(this));
+            this.enable();
+            return this.options.init.call(this);
+        };
+
+        Dropzone.prototype.destroy = function() {
+            var _ref;
+            this.disable();
+            this.removeAllFiles(true);
+            if ((_ref = this.hiddenFileInput) != null ? _ref.parentNode : void 0) {
+                this.hiddenFileInput.parentNode.removeChild(this.hiddenFileInput);
+                this.hiddenFileInput = null;
+            }
+            delete this.element.dropzone;
+            return Dropzone.instances.splice(Dropzone.instances.indexOf(this), 1);
+        };
+
+        Dropzone.prototype.updateTotalUploadProgress = function() {
+            var activeFiles, file, totalBytes, totalBytesSent, totalUploadProgress, _i, _len, _ref;
+            totalBytesSent = 0;
+            totalBytes = 0;
+            activeFiles = this.getActiveFiles();
+            if (activeFiles.length) {
+                _ref = this.getActiveFiles();
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    file = _ref[_i];
+                    totalBytesSent += file.upload.bytesSent;
+                    totalBytes += file.upload.total;
+                }
+                totalUploadProgress = 100 * totalBytesSent / totalBytes;
+            } else {
+                totalUploadProgress = 100;
+            }
+            return this.emit("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent);
+        };
+
+        Dropzone.prototype._getParamName = function(n) {
+            if (typeof this.options.paramName === "function") {
+                return this.options.paramName(n);
+            } else {
+                return "" + this.options.paramName + (this.options.uploadMultiple ? "[" + n + "]" : "");
+            }
+        };
+
+        Dropzone.prototype._renameFilename = function(name) {
+            if (typeof this.options.renameFilename !== "function") {
+                return name;
+            }
+            return this.options.renameFilename(name);
+        };
+
+        Dropzone.prototype.getFallbackForm = function() {
+            var existingFallback, fields, fieldsString, form;
+            if (existingFallback = this.getExistingFallback()) {
+                return existingFallback;
+            }
+            fieldsString = "<div class=\"dz-fallback\">";
+            if (this.options.dictFallbackText) {
+                fieldsString += "<p>" + this.options.dictFallbackText + "</p>";
+            }
+            fieldsString += "<input type=\"file\" name=\"" + (this._getParamName(0)) + "\" " + (this.options.uploadMultiple ? 'multiple="multiple"' : void 0) + " /><input type=\"submit\" value=\"Upload!\"></div>";
+            fields = Dropzone.createElement(fieldsString);
+            if (this.element.tagName !== "FORM") {
+                form = Dropzone.createElement("<form action=\"" + this.options.url + "\" enctype=\"multipart/form-data\" method=\"" + this.options.method + "\"></form>");
+                form.appendChild(fields);
+            } else {
+                this.element.setAttribute("enctype", "multipart/form-data");
+                this.element.setAttribute("method", this.options.method);
+            }
+            return form != null ? form : fields;
+        };
+
+        Dropzone.prototype.getExistingFallback = function() {
+            var fallback, getFallback, tagName, _i, _len, _ref;
+            getFallback = function(elements) {
+                var el, _i, _len;
+                for (_i = 0, _len = elements.length; _i < _len; _i++) {
+                    el = elements[_i];
+                    if (/(^| )fallback($| )/.test(el.className)) {
+                        return el;
+                    }
+                }
+            };
+            _ref = ["div", "form"];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                tagName = _ref[_i];
+                if (fallback = getFallback(this.element.getElementsByTagName(tagName))) {
+                    return fallback;
+                }
+            }
+        };
+
+        Dropzone.prototype.setupEventListeners = function() {
+            var elementListeners, event, listener, _i, _len, _ref, _results;
+            _ref = this.listeners;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                elementListeners = _ref[_i];
+                _results.push((function() {
+                    var _ref1, _results1;
+                    _ref1 = elementListeners.events;
+                    _results1 = [];
+                    for (event in _ref1) {
+                        listener = _ref1[event];
+                        _results1.push(elementListeners.element.addEventListener(event, listener, false));
+                    }
+                    return _results1;
+                })());
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.removeEventListeners = function() {
+            var elementListeners, event, listener, _i, _len, _ref, _results;
+            _ref = this.listeners;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                elementListeners = _ref[_i];
+                _results.push((function() {
+                    var _ref1, _results1;
+                    _ref1 = elementListeners.events;
+                    _results1 = [];
+                    for (event in _ref1) {
+                        listener = _ref1[event];
+                        _results1.push(elementListeners.element.removeEventListener(event, listener, false));
+                    }
+                    return _results1;
+                })());
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.disable = function() {
+            var file, _i, _len, _ref, _results;
+            this.clickableElements.forEach(function(element) {
+                return element.classList.remove("dz-clickable");
+            });
+            this.removeEventListeners();
+            _ref = this.files;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                _results.push(this.cancelUpload(file));
+            }
+            return _results;
+        };
+
+        Dropzone.prototype.enable = function() {
+            this.clickableElements.forEach(function(element) {
+                return element.classList.add("dz-clickable");
+            });
+            return this.setupEventListeners();
+        };
+
+        Dropzone.prototype.filesize = function(size) {
+            var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
+            selectedSize = 0;
+            selectedUnit = "b";
+            if (size > 0) {
+                units = ['TB', 'GB', 'MB', 'KB', 'b'];
+                for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
+                    unit = units[i];
+                    cutoff = Math.pow(this.options.filesizeBase, 4 - i) / 10;
+                    if (size >= cutoff) {
+                        selectedSize = size / Math.pow(this.options.filesizeBase, 4 - i);
+                        selectedUnit = unit;
+                        break;
+                    }
+                }
+                selectedSize = Math.round(10 * selectedSize) / 10;
+            }
+            return "<strong>" + selectedSize + "</strong> " + selectedUnit;
+        };
+
+        Dropzone.prototype._updateMaxFilesReachedClass = function() {
+            if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
+                if (this.getAcceptedFiles().length === this.options.maxFiles) {
+                    this.emit('maxfilesreached', this.files);
+                }
+                return this.element.classList.add("dz-max-files-reached");
+            } else {
+                return this.element.classList.remove("dz-max-files-reached");
+            }
+        };
+
+        Dropzone.prototype.drop = function(e) {
+            var files, items;
+            if (!e.dataTransfer) {
+                return;
+            }
+            this.emit("drop", e);
+            files = e.dataTransfer.files;
+            this.emit("addedfiles", files);
+            if (files.length) {
+                items = e.dataTransfer.items;
+                if (items && items.length && (items[0].webkitGetAsEntry != null)) {
+                    this._addFilesFromItems(items);
+                } else {
+                    this.handleFiles(files);
+                }
+            }
+        };
+
+        Dropzone.prototype.paste = function(e) {
+            var items, _ref;
+            if ((e != null ? (_ref = e.clipboardData) != null ? _ref.items : void 0 : void 0) == null) {
+                return;
+            }
+            this.emit("paste", e);
+            items = e.clipboardData.items;
+            if (items.length) {
+                return this._addFilesFromItems(items);
+            }
+        };
+
+        Dropzone.prototype.handleFiles = function(files) {
+            var file, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                _results.push(this.addFile(file));
+            }
+            return _results;
+        };
+
+        Dropzone.prototype._addFilesFromItems = function(items) {
+            var entry, item, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = items.length; _i < _len; _i++) {
+                item = items[_i];
+                if ((item.webkitGetAsEntry != null) && (entry = item.webkitGetAsEntry())) {
+                    if (entry.isFile) {
+                        _results.push(this.addFile(item.getAsFile()));
+                    } else if (entry.isDirectory) {
+                        _results.push(this._addFilesFromDirectory(entry, entry.name));
+                    } else {
+                        _results.push(void 0);
+                    }
+                } else if (item.getAsFile != null) {
+                    if ((item.kind == null) || item.kind === "file") {
+                        _results.push(this.addFile(item.getAsFile()));
+                    } else {
+                        _results.push(void 0);
+                    }
+                } else {
+                    _results.push(void 0);
+                }
+            }
+            return _results;
+        };
+
+        Dropzone.prototype._addFilesFromDirectory = function(directory, path) {
+            var dirReader, errorHandler, readEntries;
+            dirReader = directory.createReader();
+            errorHandler = function(error) {
+                return typeof console !== "undefined" && console !== null ? typeof console.log === "function" ? console.log(error) : void 0 : void 0;
+            };
+            readEntries = (function(_this) {
+                return function() {
+                    return dirReader.readEntries(function(entries) {
+                        var entry, _i, _len;
+                        if (entries.length > 0) {
+                            for (_i = 0, _len = entries.length; _i < _len; _i++) {
+                                entry = entries[_i];
+                                if (entry.isFile) {
+                                    entry.file(function(file) {
+                                        if (_this.options.ignoreHiddenFiles && file.name.substring(0, 1) === '.') {
+                                            return;
+                                        }
+                                        file.fullPath = "" + path + "/" + file.name;
+                                        return _this.addFile(file);
+                                    });
+                                } else if (entry.isDirectory) {
+                                    _this._addFilesFromDirectory(entry, "" + path + "/" + entry.name);
+                                }
+                            }
+                            readEntries();
+                        }
+                        return null;
+                    }, errorHandler);
+                };
+            })(this);
+            return readEntries();
+        };
+
+        Dropzone.prototype.accept = function(file, done) {
+            if (file.size > this.options.maxFilesize * 1024 * 1024) {
+                return done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
+            } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
+                return done(this.options.dictInvalidFileType);
+            } else if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
+                done(this.options.dictMaxFilesExceeded.replace("{{maxFiles}}", this.options.maxFiles));
+                return this.emit("maxfilesexceeded", file);
+            } else {
+                return this.options.accept.call(this, file, done);
+            }
+        };
+
+        Dropzone.prototype.addFile = function(file) {
+            file.upload = {
+                progress: 0,
+                total: file.size,
+                bytesSent: 0
+            };
+            this.files.push(file);
+            file.status = Dropzone.ADDED;
+            this.emit("addedfile", file);
+            this._enqueueThumbnail(file);
+            return this.accept(file, (function(_this) {
+                return function(error) {
+                    if (error) {
+                        file.accepted = false;
+                        _this._errorProcessing([file], error);
+                    } else {
+                        file.accepted = true;
+                        if (_this.options.autoQueue) {
+                            _this.enqueueFile(file);
+                        }
+                    }
+                    return _this._updateMaxFilesReachedClass();
+                };
+            })(this));
+        };
+
+        Dropzone.prototype.enqueueFiles = function(files) {
+            var file, _i, _len;
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                this.enqueueFile(file);
+            }
+            return null;
+        };
+
+        Dropzone.prototype.enqueueFile = function(file) {
+            if (file.status === Dropzone.ADDED && file.accepted === true) {
+                file.status = Dropzone.QUEUED;
+                if (this.options.autoProcessQueue) {
+                    return setTimeout(((function(_this) {
+                        return function() {
+                            return _this.processQueue();
+                        };
+                    })(this)), 0);
+                }
+            } else {
+                throw new Error("This file can't be queued because it has already been processed or was rejected.");
+            }
+        };
+
+        Dropzone.prototype._thumbnailQueue = [];
+
+        Dropzone.prototype._processingThumbnail = false;
+
+        Dropzone.prototype._enqueueThumbnail = function(file) {
+            if (this.options.createImageThumbnails && file.type.match(/image.*/) && file.size <= this.options.maxThumbnailFilesize * 1024 * 1024) {
+                this._thumbnailQueue.push(file);
+                return setTimeout(((function(_this) {
+                    return function() {
+                        return _this._processThumbnailQueue();
+                    };
+                })(this)), 0);
+            }
+        };
+
+        Dropzone.prototype._processThumbnailQueue = function() {
+            if (this._processingThumbnail || this._thumbnailQueue.length === 0) {
+                return;
+            }
+            this._processingThumbnail = true;
+            return this.createThumbnail(this._thumbnailQueue.shift(), (function(_this) {
+                return function() {
+                    _this._processingThumbnail = false;
+                    return _this._processThumbnailQueue();
+                };
+            })(this));
+        };
+
+        Dropzone.prototype.removeFile = function(file) {
+            if (file.status === Dropzone.UPLOADING) {
+                this.cancelUpload(file);
+            }
+            this.files = without(this.files, file);
+            this.emit("removedfile", file);
+            if (this.files.length === 0) {
+                return this.emit("reset");
+            }
+        };
+
+        Dropzone.prototype.removeAllFiles = function(cancelIfNecessary) {
+            var file, _i, _len, _ref;
+            if (cancelIfNecessary == null) {
+                cancelIfNecessary = false;
+            }
+            _ref = this.files.slice();
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                if (file.status !== Dropzone.UPLOADING || cancelIfNecessary) {
+                    this.removeFile(file);
+                }
+            }
+            return null;
+        };
+
+        Dropzone.prototype.createThumbnail = function(file, callback) {
+            var fileReader;
+            fileReader = new FileReader;
+            fileReader.onload = (function(_this) {
+                return function() {
+                    if (file.type === "image/svg+xml") {
+                        _this.emit("thumbnail", file, fileReader.result);
+                        if (callback != null) {
+                            callback();
+                        }
+                        return;
+                    }
+                    return _this.createThumbnailFromUrl(file, fileReader.result, callback);
+                };
+            })(this);
+            return fileReader.readAsDataURL(file);
+        };
+
+        Dropzone.prototype.createThumbnailFromUrl = function(file, imageUrl, callback, crossOrigin) {
+            var img;
+            img = document.createElement("img");
+            if (crossOrigin) {
+                img.crossOrigin = crossOrigin;
+            }
+            img.onload = (function(_this) {
+                return function() {
+                    var canvas, ctx, resizeInfo, thumbnail, _ref, _ref1, _ref2, _ref3;
+                    file.width = img.width;
+                    file.height = img.height;
+                    resizeInfo = _this.options.resize.call(_this, file);
+                    if (resizeInfo.trgWidth == null) {
+                        resizeInfo.trgWidth = resizeInfo.optWidth;
+                    }
+                    if (resizeInfo.trgHeight == null) {
+                        resizeInfo.trgHeight = resizeInfo.optHeight;
+                    }
+                    canvas = document.createElement("canvas");
+                    ctx = canvas.getContext("2d");
+                    canvas.width = resizeInfo.trgWidth;
+                    canvas.height = resizeInfo.trgHeight;
+                    drawImageIOSFix(ctx, img, (_ref = resizeInfo.srcX) != null ? _ref : 0, (_ref1 = resizeInfo.srcY) != null ? _ref1 : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, (_ref2 = resizeInfo.trgX) != null ? _ref2 : 0, (_ref3 = resizeInfo.trgY) != null ? _ref3 : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
+                    thumbnail = canvas.toDataURL("image/png");
+                    _this.emit("thumbnail", file, thumbnail);
+                    if (callback != null) {
+                        return callback();
+                    }
+                };
+            })(this);
+            if (callback != null) {
+                img.onerror = callback;
+            }
+            return img.src = imageUrl;
+        };
+
+        Dropzone.prototype.processQueue = function() {
+            var i, parallelUploads, processingLength, queuedFiles;
+            parallelUploads = this.options.parallelUploads;
+            processingLength = this.getUploadingFiles().length;
+            i = processingLength;
+            if (processingLength >= parallelUploads) {
+                return;
+            }
+            queuedFiles = this.getQueuedFiles();
+            if (!(queuedFiles.length > 0)) {
+                return;
+            }
+            if (this.options.uploadMultiple) {
+                return this.processFiles(queuedFiles.slice(0, parallelUploads - processingLength));
+            } else {
+                while (i < parallelUploads) {
+                    if (!queuedFiles.length) {
+                        return;
+                    }
+                    this.processFile(queuedFiles.shift());
+                    i++;
+                }
+            }
+        };
+
+        Dropzone.prototype.processFile = function(file) {
+            return this.processFiles([file]);
+        };
+
+        Dropzone.prototype.processFiles = function(files) {
+            var file, _i, _len;
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                file.processing = true;
+                file.status = Dropzone.UPLOADING;
+                this.emit("processing", file);
+            }
+            if (this.options.uploadMultiple) {
+                this.emit("processingmultiple", files);
+            }
+            return this.uploadFiles(files);
+        };
+
+        Dropzone.prototype._getFilesWithXhr = function(xhr) {
+            var file, files;
+            return files = (function() {
+                var _i, _len, _ref, _results;
+                _ref = this.files;
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    file = _ref[_i];
+                    if (file.xhr === xhr) {
+                        _results.push(file);
+                    }
+                }
+                return _results;
+            }).call(this);
+        };
+
+        Dropzone.prototype.cancelUpload = function(file) {
+            var groupedFile, groupedFiles, _i, _j, _len, _len1, _ref;
+            if (file.status === Dropzone.UPLOADING) {
+                groupedFiles = this._getFilesWithXhr(file.xhr);
+                for (_i = 0, _len = groupedFiles.length; _i < _len; _i++) {
+                    groupedFile = groupedFiles[_i];
+                    groupedFile.status = Dropzone.CANCELED;
+                }
+                file.xhr.abort();
+                for (_j = 0, _len1 = groupedFiles.length; _j < _len1; _j++) {
+                    groupedFile = groupedFiles[_j];
+                    this.emit("canceled", groupedFile);
+                }
+                if (this.options.uploadMultiple) {
+                    this.emit("canceledmultiple", groupedFiles);
+                }
+            } else if ((_ref = file.status) === Dropzone.ADDED || _ref === Dropzone.QUEUED) {
+                file.status = Dropzone.CANCELED;
+                this.emit("canceled", file);
+                if (this.options.uploadMultiple) {
+                    this.emit("canceledmultiple", [file]);
+                }
+            }
+            if (this.options.autoProcessQueue) {
+                return this.processQueue();
+            }
+        };
+
+        resolveOption = function() {
+            var args, option;
+            option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+            if (typeof option === 'function') {
+                return option.apply(this, args);
+            }
+            return option;
+        };
+
+        Dropzone.prototype.uploadFile = function(file) {
+            return this.uploadFiles([file]);
+        };
+
+        Dropzone.prototype.uploadFiles = function(files) {
+            var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+            xhr = new XMLHttpRequest();
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                file.xhr = xhr;
+            }
+            method = resolveOption(this.options.method, files);
+            url = resolveOption(this.options.url, files);
+            xhr.open(method, url, true);
+            xhr.withCredentials = !!this.options.withCredentials;
+            response = null;
+            handleError = (function(_this) {
+                return function() {
+                    var _j, _len1, _results;
+                    _results = [];
+                    for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+                        file = files[_j];
+                        _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
+                    }
+                    return _results;
+                };
+            })(this);
+            updateProgress = (function(_this) {
+                return function(e) {
+                    var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
+                    if (e != null) {
+                        progress = 100 * e.loaded / e.total;
+                        for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+                            file = files[_j];
+                            file.upload = {
+                                progress: progress,
+                                total: e.total,
+                                bytesSent: e.loaded
+                            };
+                        }
+                    } else {
+                        allFilesFinished = true;
+                        progress = 100;
+                        for (_k = 0, _len2 = files.length; _k < _len2; _k++) {
+                            file = files[_k];
+                            if (!(file.upload.progress === 100 && file.upload.bytesSent === file.upload.total)) {
+                                allFilesFinished = false;
+                            }
+                            file.upload.progress = progress;
+                            file.upload.bytesSent = file.upload.total;
+                        }
+                        if (allFilesFinished) {
+                            return;
+                        }
+                    }
+                    _results = [];
+                    for (_l = 0, _len3 = files.length; _l < _len3; _l++) {
+                        file = files[_l];
+                        _results.push(_this.emit("uploadprogress", file, progress, file.upload.bytesSent));
+                    }
+                    return _results;
+                };
+            })(this);
+            xhr.onload = (function(_this) {
+                return function(e) {
+                    var _ref;
+                    if (files[0].status === Dropzone.CANCELED) {
+                        return;
+                    }
+                    if (xhr.readyState !== 4) {
+                        return;
+                    }
+                    response = xhr.responseText;
+                    if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) {
+                        try {
+                            response = JSON.parse(response);
+                        } catch (_error) {
+                            e = _error;
+                            response = "Invalid JSON response from server.";
+                        }
+                    }
+                    updateProgress();
+                    if (!((200 <= (_ref = xhr.status) && _ref < 300))) {
+                        return handleError();
+                    } else {
+                        return _this._finished(files, response, e);
+                    }
+                };
+            })(this);
+            xhr.onerror = (function(_this) {
+                return function() {
+                    if (files[0].status === Dropzone.CANCELED) {
+                        return;
+                    }
+                    return handleError();
+                };
+            })(this);
+            progressObj = (_ref = xhr.upload) != null ? _ref : xhr;
+            progressObj.onprogress = updateProgress;
+            headers = {
+                "Accept": "application/json",
+                "Cache-Control": "no-cache",
+                "X-Requested-With": "XMLHttpRequest"
+            };
+            if (this.options.headers) {
+                extend(headers, this.options.headers);
+            }
+            for (headerName in headers) {
+                headerValue = headers[headerName];
+                if (headerValue) {
+                    xhr.setRequestHeader(headerName, headerValue);
+                }
+            }
+            formData = new FormData();
+            if (this.options.params) {
+                _ref1 = this.options.params;
+                for (key in _ref1) {
+                    value = _ref1[key];
+                    formData.append(key, value);
+                }
+            }
+            for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+                file = files[_j];
+                this.emit("sending", file, xhr, formData);
+            }
+            if (this.options.uploadMultiple) {
+                this.emit("sendingmultiple", files, xhr, formData);
+            }
+            if (this.element.tagName === "FORM") {
+                _ref2 = this.element.querySelectorAll("input, textarea, select, button");
+                for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                    input = _ref2[_k];
+                    inputName = input.getAttribute("name");
+                    inputType = input.getAttribute("type");
+                    if (input.tagName === "SELECT" && input.hasAttribute("multiple")) {
+                        _ref3 = input.options;
+                        for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+                            option = _ref3[_l];
+                            if (option.selected) {
+                                formData.append(inputName, option.value);
+                            }
+                        }
+                    } else if (!inputType || ((_ref4 = inputType.toLowerCase()) !== "checkbox" && _ref4 !== "radio") || input.checked) {
+                        formData.append(inputName, input.value);
+                    }
+                }
+            }
+            for (i = _m = 0, _ref5 = files.length - 1; 0 <= _ref5 ? _m <= _ref5 : _m >= _ref5; i = 0 <= _ref5 ? ++_m : --_m) {
+                formData.append(this._getParamName(i), files[i], this._renameFilename(files[i].name));
+            }
+            return this.submitRequest(xhr, formData, files);
+        };
+
+        Dropzone.prototype.submitRequest = function(xhr, formData, files) {
+            return xhr.send(formData);
+        };
+
+        Dropzone.prototype._finished = function(files, responseText, e) {
+            var file, _i, _len;
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                file.status = Dropzone.SUCCESS;
+                this.emit("success", file, responseText, e);
+                this.emit("complete", file);
+            }
+            if (this.options.uploadMultiple) {
+                this.emit("successmultiple", files, responseText, e);
+                this.emit("completemultiple", files);
+            }
+            if (this.options.autoProcessQueue) {
+                return this.processQueue();
+            }
+        };
+
+        Dropzone.prototype._errorProcessing = function(files, message, xhr) {
+            var file, _i, _len;
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+                file = files[_i];
+                file.status = Dropzone.ERROR;
+                this.emit("error", file, message, xhr);
+                this.emit("complete", file);
+            }
+            if (this.options.uploadMultiple) {
+                this.emit("errormultiple", files, message, xhr);
+                this.emit("completemultiple", files);
+            }
+            if (this.options.autoProcessQueue) {
+                return this.processQueue();
+            }
+        };
+
+        return Dropzone;
+
+    })(Emitter);
+
+    Dropzone.version = "4.3.0";
+
+    Dropzone.options = {};
+
+    Dropzone.optionsForElement = function(element) {
+        if (element.getAttribute("id")) {
+            return Dropzone.options[camelize(element.getAttribute("id"))];
+        } else {
+            return void 0;
+        }
+    };
+
+    Dropzone.instances = [];
+
+    Dropzone.forElement = function(element) {
+        if (typeof element === "string") {
+            element = document.querySelector(element);
+        }
+        if ((element != null ? element.dropzone : void 0) == null) {
+            throw new Error("No Dropzone found for given element. This is probably because you're trying to access it before Dropzone had the time to initialize. Use the `init` option to setup any additional observers on your Dropzone.");
+        }
+        return element.dropzone;
+    };
+
+    Dropzone.autoDiscover = true;
+
+    Dropzone.discover = function() {
+        var checkElements, dropzone, dropzones, _i, _len, _results;
+        if (document.querySelectorAll) {
+            dropzones = document.querySelectorAll(".dropzone");
+        } else {
+            dropzones = [];
+            checkElements = function(elements) {
+                var el, _i, _len, _results;
+                _results = [];
+                for (_i = 0, _len = elements.length; _i < _len; _i++) {
+                    el = elements[_i];
+                    if (/(^| )dropzone($| )/.test(el.className)) {
+                        _results.push(dropzones.push(el));
+                    } else {
+                        _results.push(void 0);
+                    }
+                }
+                return _results;
+            };
+            checkElements(document.getElementsByTagName("div"));
+            checkElements(document.getElementsByTagName("form"));
+        }
+        _results = [];
+        for (_i = 0, _len = dropzones.length; _i < _len; _i++) {
+            dropzone = dropzones[_i];
+            if (Dropzone.optionsForElement(dropzone) !== false) {
+                _results.push(new Dropzone(dropzone));
+            } else {
+                _results.push(void 0);
+            }
+        }
+        return _results;
+    };
+
+    Dropzone.blacklistedBrowsers = [/opera.*Macintosh.*version\/12/i];
+
+    Dropzone.isBrowserSupported = function() {
+        var capableBrowser, regex, _i, _len, _ref;
+        capableBrowser = true;
+        if (window.File && window.FileReader && window.FileList && window.Blob && window.FormData && document.querySelector) {
+            if (!("classList" in document.createElement("a"))) {
+                capableBrowser = false;
+            } else {
+                _ref = Dropzone.blacklistedBrowsers;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    regex = _ref[_i];
+                    if (regex.test(navigator.userAgent)) {
+                        capableBrowser = false;
+                        continue;
+                    }
+                }
+            }
+        } else {
+            capableBrowser = false;
+        }
+        return capableBrowser;
+    };
+
+    without = function(list, rejectedItem) {
+        var item, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = list.length; _i < _len; _i++) {
+            item = list[_i];
+            if (item !== rejectedItem) {
+                _results.push(item);
+            }
+        }
+        return _results;
+    };
+
+    camelize = function(str) {
+        return str.replace(/[\-_](\w)/g, function(match) {
+            return match.charAt(1).toUpperCase();
+        });
+    };
+
+    Dropzone.createElement = function(string) {
+        var div;
+        div = document.createElement("div");
+        div.innerHTML = string;
+        return div.childNodes[0];
+    };
+
+    Dropzone.elementInside = function(element, container) {
+        if (element === container) {
+            return true;
+        }
+        while (element = element.parentNode) {
+            if (element === container) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    Dropzone.getElement = function(el, name) {
+        var element;
+        if (typeof el === "string") {
+            element = document.querySelector(el);
+        } else if (el.nodeType != null) {
+            element = el;
+        }
+        if (element == null) {
+            throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector or a plain HTML element.");
+        }
+        return element;
+    };
+
+    Dropzone.getElements = function(els, name) {
+        var e, el, elements, _i, _j, _len, _len1, _ref;
+        if (els instanceof Array) {
+            elements = [];
+            try {
+                for (_i = 0, _len = els.length; _i < _len; _i++) {
+                    el = els[_i];
+                    elements.push(this.getElement(el, name));
+                }
+            } catch (_error) {
+                e = _error;
+                elements = null;
+            }
+        } else if (typeof els === "string") {
+            elements = [];
+            _ref = document.querySelectorAll(els);
+            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                el = _ref[_j];
+                elements.push(el);
+            }
+        } else if (els.nodeType != null) {
+            elements = [els];
+        }
+        if (!((elements != null) && elements.length)) {
+            throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector, a plain HTML element or a list of those.");
+        }
+        return elements;
+    };
+
+    Dropzone.confirm = function(question, accepted, rejected) {
+        if (window.confirm(question)) {
+            return accepted();
+        } else if (rejected != null) {
+            return rejected();
+        }
+    };
+
+    Dropzone.isValidFile = function(file, acceptedFiles) {
+        var baseMimeType, mimeType, validType, _i, _len;
+        if (!acceptedFiles) {
+            return true;
+        }
+        acceptedFiles = acceptedFiles.split(",");
+        mimeType = file.type;
+        baseMimeType = mimeType.replace(/\/.*$/, "");
+        for (_i = 0, _len = acceptedFiles.length; _i < _len; _i++) {
+            validType = acceptedFiles[_i];
+            validType = validType.trim();
+            if (validType.charAt(0) === ".") {
+                if (file.name.toLowerCase().indexOf(validType.toLowerCase(), file.name.length - validType.length) !== -1) {
+                    return true;
+                }
+            } else if (/\/\*$/.test(validType)) {
+                if (baseMimeType === validType.replace(/\/.*$/, "")) {
+                    return true;
+                }
+            } else {
+                if (mimeType === validType) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    if (typeof jQuery !== "undefined" && jQuery !== null) {
+        jQuery.fn.dropzone = function(options) {
+            return this.each(function() {
+                return new Dropzone(this, options);
+            });
+        };
+    }
+
+    if (typeof module !== "undefined" && module !== null) {
+        module.exports = Dropzone;
+    } else {
+        window.Dropzone = Dropzone;
+    }
+
+    Dropzone.ADDED = "added";
+
+    Dropzone.QUEUED = "queued";
+
+    Dropzone.ACCEPTED = Dropzone.QUEUED;
+
+    Dropzone.UPLOADING = "uploading";
+
+    Dropzone.PROCESSING = Dropzone.UPLOADING;
+
+    Dropzone.CANCELED = "canceled";
+
+    Dropzone.ERROR = "error";
+
+    Dropzone.SUCCESS = "success";
+
+
+    /*
+
+     Bugfix for iOS 6 and 7
+     Source: http://stackoverflow.com/questions/11929099/html5-canvas-drawimage-ratio-bug-ios
+     based on the work of https://github.com/stomita/ios-imagefile-megapixel
+     */
+
+    detectVerticalSquash = function(img) {
+        var alpha, canvas, ctx, data, ey, ih, iw, py, ratio, sy;
+        iw = img.naturalWidth;
+        ih = img.naturalHeight;
+        canvas = document.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = ih;
+        ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        data = ctx.getImageData(0, 0, 1, ih).data;
+        sy = 0;
+        ey = ih;
+        py = ih;
+        while (py > sy) {
+            alpha = data[(py - 1) * 4 + 3];
+            if (alpha === 0) {
+                ey = py;
+            } else {
+                sy = py;
+            }
+            py = (ey + sy) >> 1;
+        }
+        ratio = py / ih;
+        if (ratio === 0) {
+            return 1;
+        } else {
+            return ratio;
+        }
+    };
+
+    drawImageIOSFix = function(ctx, img, sx, sy, sw, sh, dx, dy, dw, dh) {
+        var vertSquashRatio;
+        vertSquashRatio = detectVerticalSquash(img);
+        return ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
+    };
+
+
+    /*
+     * contentloaded.js
+     *
+     * Author: Diego Perini (diego.perini at gmail.com)
+     * Summary: cross-browser wrapper for DOMContentLoaded
+     * Updated: 20101020
+     * License: MIT
+     * Version: 1.2
+     *
+     * URL:
+     * http://javascript.nwbox.com/ContentLoaded/
+     * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
+     */
+
+    contentLoaded = function(win, fn) {
+        var add, doc, done, init, poll, pre, rem, root, top;
+        done = false;
+        top = true;
+        doc = win.document;
+        root = doc.documentElement;
+        add = (doc.addEventListener ? "addEventListener" : "attachEvent");
+        rem = (doc.addEventListener ? "removeEventListener" : "detachEvent");
+        pre = (doc.addEventListener ? "" : "on");
+        init = function(e) {
+            if (e.type === "readystatechange" && doc.readyState !== "complete") {
+                return;
+            }
+            (e.type === "load" ? win : doc)[rem](pre + e.type, init, false);
+            if (!done && (done = true)) {
+                return fn.call(win, e.type || e);
+            }
+        };
+        poll = function() {
+            var e;
+            try {
+                root.doScroll("left");
+            } catch (_error) {
+                e = _error;
+                setTimeout(poll, 50);
+                return;
+            }
+            return init("poll");
+        };
+        if (doc.readyState !== "complete") {
+            if (doc.createEventObject && root.doScroll) {
+                try {
+                    top = !win.frameElement;
+                } catch (_error) {}
+                if (top) {
+                    poll();
+                }
+            }
+            doc[add](pre + "DOMContentLoaded", init, false);
+            doc[add](pre + "readystatechange", init, false);
+            return win[add](pre + "load", init, false);
+        }
+    };
+
+    Dropzone._autoDiscoverFunction = function() {
+        if (Dropzone.autoDiscover) {
+            return Dropzone.discover();
+        }
+    };
+
+    contentLoaded(window, Dropzone._autoDiscoverFunction);
+
+}).call(this);
+/*
+    
+    
+
+     Creative Tim Modifications
+     
+     Lines: 239, 240 was changed from top: 5px to top: 50% and we added margin-top: -13px. In this way the close button will be aligned vertically 
+     Line:242 - modified when the icon is set, we add the class "alert-with-icon", so there will be enough space for the icon.
+
+
+
+
+*/
+
+
+/*
+* Project: Bootstrap Notify = v3.1.5
+* Description: Turns standard Bootstrap alerts into "Growl-like" notifications.
+* Author: Mouse0270 aka Robert McIntosh
+* License: MIT License
+* Website: https://github.com/mouse0270/bootstrap-growl
+*/
+
+/* global define:false, require: false, jQuery:false */
+
+
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+	// Create the defaults once
+	var defaults = {
+		element: 'body',
+		position: null,
+		type: "info",
+		allow_dismiss: true,
+		allow_duplicates: true,
+		newest_on_top: false,
+		showProgressbar: false,
+		placement: {
+			from: "top",
+			align: "right"
+		},
+		offset: 20,
+		spacing: 10,
+		z_index: 1031,
+		delay: 5000,
+		timer: 1000,
+		url_target: '_blank',
+		mouse_over: null,
+		animate: {
+			enter: 'animated fadeInDown',
+			exit: 'animated fadeOutUp'
+		},
+		onShow: null,
+		onShown: null,
+		onClose: null,
+		onClosed: null,
+		icon_type: 'class',
+		template: '<div data-notify="container" class="col-xs-11 col-sm-4 alert alert-{0}" role="alert"><button type="button" aria-hidden="true" class="close" data-notify="dismiss">&times;</button><span data-notify="icon"></span> <span data-notify="title">{1}</span> <span data-notify="message">{2}</span><div class="progress" data-notify="progressbar"><div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div><a href="{3}" target="{4}" data-notify="url"></a></div>'
+	};
+
+	String.format = function () {
+		var str = arguments[0];
+		for (var i = 1; i < arguments.length; i++) {
+			str = str.replace(RegExp("\\{" + (i - 1) + "\\}", "gm"), arguments[i]);
+		}
+		return str;
+	};
+
+	function isDuplicateNotification(notification) {
+		var isDupe = false;
+
+		$('[data-notify="container"]').each(function (i, el) {
+			var $el = $(el);
+			var title = $el.find('[data-notify="title"]').text().trim();
+			var message = $el.find('[data-notify="message"]').html().trim();
+
+			// The input string might be different than the actual parsed HTML string!
+			// (<br> vs <br /> for example)
+			// So we have to force-parse this as HTML here!
+			var isSameTitle = title === $("<div>" + notification.settings.content.title + "</div>").html().trim();
+			var isSameMsg = message === $("<div>" + notification.settings.content.message + "</div>").html().trim();
+			var isSameType = $el.hasClass('alert-' + notification.settings.type);
+
+			if (isSameTitle && isSameMsg && isSameType) {
+				//we found the dupe. Set the var and stop checking.
+				isDupe = true;
+			}
+			return !isDupe;
+		});
+
+		return isDupe;
+	}
+
+	function Notify(element, content, options) {
+		// Setup Content of Notify
+		var contentObj = {
+			content: {
+				message: typeof content === 'object' ? content.message : content,
+				title: content.title ? content.title : '',
+				icon: content.icon ? content.icon : '',
+				url: content.url ? content.url : '#',
+				target: content.target ? content.target : '-'
+			}
+		};
+
+		options = $.extend(true, {}, contentObj, options);
+		this.settings = $.extend(true, {}, defaults, options);
+		this._defaults = defaults;
+		if (this.settings.content.target === "-") {
+			this.settings.content.target = this.settings.url_target;
+		}
+		this.animations = {
+			start: 'webkitAnimationStart oanimationstart MSAnimationStart animationstart',
+			end: 'webkitAnimationEnd oanimationend MSAnimationEnd animationend'
+		};
+
+		if (typeof this.settings.offset === 'number') {
+			this.settings.offset = {
+				x: this.settings.offset,
+				y: this.settings.offset
+			};
+		}
+
+		//if duplicate messages are not allowed, then only continue if this new message is not a duplicate of one that it already showing
+		if (this.settings.allow_duplicates || (!this.settings.allow_duplicates && !isDuplicateNotification(this))) {
+			this.init();
+		}
+	}
+	
+	$.extend(Notify.prototype, {
+		init: function () {
+			var self = this;
+
+			this.buildNotify();
+			if (this.settings.content.icon) {
+				this.setIcon();
+			}
+			if (this.settings.content.url != "#") {
+				this.styleURL();
+			}
+			this.styleDismiss();
+			this.placement();
+			this.bind();
+
+			this.notify = {
+				$ele: this.$ele,
+				update: function (command, update) {
+					var commands = {};
+					if (typeof command === "string") {
+						commands[command] = update;
+					} else {
+						commands = command;
+					}
+					for (var cmd in commands) {
+						switch (cmd) {
+							case "type":
+								this.$ele.removeClass('alert-' + self.settings.type);
+								this.$ele.find('[data-notify="progressbar"] > .progress-bar').removeClass('progress-bar-' + self.settings.type);
+								self.settings.type = commands[cmd];
+								this.$ele.addClass('alert-' + commands[cmd]).find('[data-notify="progressbar"] > .progress-bar').addClass('progress-bar-' + commands[cmd]);
+								break;
+							case "icon":
+								var $icon = this.$ele.find('[data-notify="icon"]');
+								if (self.settings.icon_type.toLowerCase() === 'class') {
+									$icon.removeClass(self.settings.content.icon).addClass(commands[cmd]);
+								} else {
+									if (!$icon.is('img')) {
+										$icon.find('img');
+									}
+									$icon.attr('src', commands[cmd]);
+								}
+								break;
+							case "progress":
+								var newDelay = self.settings.delay - (self.settings.delay * (commands[cmd] / 100));
+								this.$ele.data('notify-delay', newDelay);
+								this.$ele.find('[data-notify="progressbar"] > div').attr('aria-valuenow', commands[cmd]).css('width', commands[cmd] + '%');
+								break;
+							case "url":
+								this.$ele.find('[data-notify="url"]').attr('href', commands[cmd]);
+								break;
+							case "target":
+								this.$ele.find('[data-notify="url"]').attr('target', commands[cmd]);
+								break;
+							default:
+								this.$ele.find('[data-notify="' + cmd + '"]').html(commands[cmd]);
+						}
+					}
+					var posX = this.$ele.outerHeight() + parseInt(self.settings.spacing) + parseInt(self.settings.offset.y);
+					self.reposition(posX);
+				},
+				close: function () {
+					self.close();
+				}
+			};
+
+		},
+		buildNotify: function () {
+			var content = this.settings.content;
+			this.$ele = $(String.format(this.settings.template, this.settings.type, content.title, content.message, content.url, content.target));
+			this.$ele.attr('data-notify-position', this.settings.placement.from + '-' + this.settings.placement.align);
+			if (!this.settings.allow_dismiss) {
+				this.$ele.find('[data-notify="dismiss"]').css('display', 'none');
+			}
+			if ((this.settings.delay <= 0 && !this.settings.showProgressbar) || !this.settings.showProgressbar) {
+				this.$ele.find('[data-notify="progressbar"]').remove();
+			}
+		},
+		setIcon: function () {
+    		
+    		this.$ele.addClass('alert-with-icon');
+    		
+			if (this.settings.icon_type.toLowerCase() === 'class') {
+				this.$ele.find('[data-notify="icon"]').addClass(this.settings.content.icon);
+			} else {
+				if (this.$ele.find('[data-notify="icon"]').is('img')) {
+					this.$ele.find('[data-notify="icon"]').attr('src', this.settings.content.icon);
+				} else {
+					this.$ele.find('[data-notify="icon"]').append('<img src="' + this.settings.content.icon + '" alt="Notify Icon" />');
+				}
+			}
+		},
+		styleDismiss: function () {
+			this.$ele.find('[data-notify="dismiss"]').css({
+				position: 'absolute',
+				right: '10px',
+				top: '50%',
+				marginTop: '-13px',
+				zIndex: this.settings.z_index + 2
+			});
+		},
+		styleURL: function () {
+			this.$ele.find('[data-notify="url"]').css({
+				backgroundImage: 'url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)',
+				height: '100%',
+				left: 0,
+				position: 'absolute',
+				top: 0,
+				width: '100%',
+				zIndex: this.settings.z_index + 1
+			});
+		},
+		placement: function () {
+			var self = this,
+				offsetAmt = this.settings.offset.y,
+				css = {
+					display: 'inline-block',
+					margin: '0px auto',
+					position: this.settings.position ? this.settings.position : (this.settings.element === 'body' ? 'fixed' : 'absolute'),
+					transition: 'all .5s ease-in-out',
+					zIndex: this.settings.z_index
+				},
+				hasAnimation = false,
+				settings = this.settings;
+
+			$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function () {
+				offsetAmt = Math.max(offsetAmt, parseInt($(this).css(settings.placement.from)) + parseInt($(this).outerHeight()) + parseInt(settings.spacing));
+			});
+			if (this.settings.newest_on_top === true) {
+				offsetAmt = this.settings.offset.y;
+			}
+			css[this.settings.placement.from] = offsetAmt + 'px';
+
+			switch (this.settings.placement.align) {
+				case "left":
+				case "right":
+					css[this.settings.placement.align] = this.settings.offset.x + 'px';
+					break;
+				case "center":
+					css.left = 0;
+					css.right = 0;
+					break;
+			}
+			this.$ele.css(css).addClass(this.settings.animate.enter);
+			$.each(Array('webkit-', 'moz-', 'o-', 'ms-', ''), function (index, prefix) {
+				self.$ele[0].style[prefix + 'AnimationIterationCount'] = 1;
+			});
+
+			$(this.settings.element).append(this.$ele);
+
+			if (this.settings.newest_on_top === true) {
+				offsetAmt = (parseInt(offsetAmt) + parseInt(this.settings.spacing)) + this.$ele.outerHeight();
+				this.reposition(offsetAmt);
+			}
+
+			if ($.isFunction(self.settings.onShow)) {
+				self.settings.onShow.call(this.$ele);
+			}
+
+			this.$ele.one(this.animations.start, function () {
+				hasAnimation = true;
+			}).one(this.animations.end, function () {
+				if ($.isFunction(self.settings.onShown)) {
+					self.settings.onShown.call(this);
+				}
+			});
+
+			setTimeout(function () {
+				if (!hasAnimation) {
+					if ($.isFunction(self.settings.onShown)) {
+						self.settings.onShown.call(this);
+					}
+				}
+			}, 600);
+		},
+		bind: function () {
+			var self = this;
+
+			this.$ele.find('[data-notify="dismiss"]').on('click', function () {
+				self.close();
+			});
+
+			this.$ele.mouseover(function () {
+				$(this).data('data-hover', "true");
+			}).mouseout(function () {
+				$(this).data('data-hover', "false");
+			});
+			this.$ele.data('data-hover', "false");
+
+			if (this.settings.delay > 0) {
+				self.$ele.data('notify-delay', self.settings.delay);
+				var timer = setInterval(function () {
+					var delay = parseInt(self.$ele.data('notify-delay')) - self.settings.timer;
+					if ((self.$ele.data('data-hover') === 'false' && self.settings.mouse_over === "pause") || self.settings.mouse_over != "pause") {
+						var percent = ((self.settings.delay - delay) / self.settings.delay) * 100;
+						self.$ele.data('notify-delay', delay);
+						self.$ele.find('[data-notify="progressbar"] > div').attr('aria-valuenow', percent).css('width', percent + '%');
+					}
+					if (delay <= -(self.settings.timer)) {
+						clearInterval(timer);
+						self.close();
+					}
+				}, self.settings.timer);
+			}
+		},
+		close: function () {
+			var self = this,
+				posX = parseInt(this.$ele.css(this.settings.placement.from)),
+				hasAnimation = false;
+
+			this.$ele.data('closing', 'true').addClass(this.settings.animate.exit);
+			self.reposition(posX);
+
+			if ($.isFunction(self.settings.onClose)) {
+				self.settings.onClose.call(this.$ele);
+			}
+
+			this.$ele.one(this.animations.start, function () {
+				hasAnimation = true;
+			}).one(this.animations.end, function () {
+				$(this).remove();
+				if ($.isFunction(self.settings.onClosed)) {
+					self.settings.onClosed.call(this);
+				}
+			});
+
+			setTimeout(function () {
+				if (!hasAnimation) {
+					self.$ele.remove();
+					if (self.settings.onClosed) {
+						self.settings.onClosed(self.$ele);
+					}
+				}
+			}, 600);
+		},
+		reposition: function (posX) {
+			var self = this,
+				notifies = '[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])',
+				$elements = this.$ele.nextAll(notifies);
+			if (this.settings.newest_on_top === true) {
+				$elements = this.$ele.prevAll(notifies);
+			}
+			$elements.each(function () {
+				$(this).css(self.settings.placement.from, posX);
+				posX = (parseInt(posX) + parseInt(self.settings.spacing)) + $(this).outerHeight();
+			});
+		}
+	});
+
+	$.notify = function (content, options) {
+		var plugin = new Notify(this, content, options);
+		return plugin.notify;
+	};
+	$.notifyDefaults = function (options) {
+		defaults = $.extend(true, {}, defaults, options);
+		return defaults;
+	};
+	$.notifyClose = function (command) {
+		if (typeof command === "undefined" || command === "all") {
+			$('[data-notify]').find('[data-notify="dismiss"]').trigger('click');
+		} else {
+			$('[data-notify-position="' + command + '"]').find('[data-notify="dismiss"]').trigger('click');
+		}
+	};
+
+}));
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoard = React.createClass({
+    displayName: "DashboardBoard",
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [] };
     },
+    /**
+     *
+     */
     render: function () {
-        return null;
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(DashboardBoardSmallWidgetsBlock, { id: this.props.id }),
+            React.createElement(DashboardBoardUsersBlock, { id: this.props.id }),
+            React.createElement(
+                "div",
+                { className: "card" },
+                React.createElement(
+                    "div",
+                    { className: "header" },
+                    React.createElement(
+                        "h4",
+                        { className: "title" },
+                        i18n.Locations
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "content" },
+                    React.createElement(DashboardStoresMapView, { stores: this.props.stores, id: this.props.id })
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "row" },
+                React.createElement(DashboardBoardHeatMap, { id: this.props.id }),
+                React.createElement(DashboardBoardSales, { id: this.props.id })
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoardHeatMap = React.createClass({
+    displayName: 'DashboardBoardHeatMap',
+
+    /**
+     */
+    componentDidMount: function () {
+        new Chartist.Bar('#chart_search_block', {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            series: [[5, 4, 3, 7, 5, 10, 3], [3, 2, 9, 5, 4, 6, 4]]
+        }, {
+            seriesBarDistance: 10,
+            reverseData: true,
+            horizontalBars: true,
+            axisY: {
+                offset: 70
+            }
+        });
+    },
+    /**
+     *
+     * @private
+     */
+    _placeMarkers: function () {
+        /*
+         this.props.positions.forEach(function (entry) {
+         console.log(entry);
+         L.marker(entry, {
+         icon: L.divIcon({
+         html: '<div class="pin"></div>\
+         <div class="pulse"></div>'
+         })
+         }).addTo(this._map);
+         }.bind(this));*/
+
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.detach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     *
+     * @private
+     */
+    _searchTypeChanged: function (data) {
+        this.setState({ searchFor: data.tab });
+    },
+    /**
+     *
+     */
+    _searchChanged: function (data) {
+        this.setState({ searchResults: data.results });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'col-md-6' },
+            React.createElement(
+                'div',
+                { className: 'card' },
+                React.createElement(
+                    'div',
+                    { className: 'header' },
+                    React.createElement(
+                        'h4',
+                        { className: 'title' },
+                        i18n['UsersOrientation']
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'content' },
+                    React.createElement('div', { id: 'chart_search_block', className: 'ct-chart ct-perfect-fourth' }),
+                    React.createElement('hr', null),
+                    React.createElement(
+                        'div',
+                        { className: 'footer' },
+                        React.createElement('div', { className: 'chart-legend text-danger' }),
+                        React.createElement(
+                            'div',
+                            { className: 'stats' },
+                            React.createElement('i', { className: 'ti-timer' }),
+                            ' Campaign sent 2 days ago'
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoardSales = React.createClass({
+    displayName: 'DashboardBoardSales',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [] };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        this._loadDataFromServer();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+
+    /**
+     *
+     */
+    _loadDataFromServer: function () {
+        this._draw();
+    },
+    /**
+     *
+     */
+    _draw: function () {
+        var data = {
+            series: [5, 3, 4]
+        };
+
+        var sum = function (a, b) {
+            return a + b;
+        };
+
+        new Chartist.Pie('#chart_ages_block', data, {
+            labelInterpolationFnc: function (value) {
+                return Math.round(value / data.series.reduce(sum) * 100) + '%';
+            }
+        });
+        var $legend = $('.chart-legend');
+        var colors = '#68B3C8,#F3BB45,#EB5E28'.split(',');
+        //
+        data.series.forEach(function (entry, index) {
+            $legend.append($('<span class="ChartLabel"></span>').html(entry).css({ 'color': colors[index] }));
+        });
+        /*
+         ( text-info"></span>) {i18n['Age partition']}
+         <span className="ChartLabel text-danger"></span> {i18n['Age partition']}
+         <span className="ChartLabel text-warning"></span> {i18n['Age partition']}
+         ;
+         */
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'col-md-6' },
+            React.createElement(
+                'div',
+                { className: 'card' },
+                React.createElement(
+                    'div',
+                    { className: 'header' },
+                    React.createElement(
+                        'h4',
+                        { className: 'title' },
+                        i18n['Age partition']
+                    ),
+                    React.createElement(
+                        'p',
+                        { className: 'category' },
+                        i18n['Age partition sub']
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'content' },
+                    React.createElement('div', { id: 'chart_ages_block', className: 'ct-chart ct-perfect-fourth' }),
+                    React.createElement('hr', null),
+                    React.createElement(
+                        'div',
+                        { className: 'footer' },
+                        React.createElement('div', { className: 'chart-legend text-danger' }),
+                        React.createElement(
+                            'div',
+                            { className: 'stats' },
+                            React.createElement('i', { className: 'ti-timer' }),
+                            ' Campaign sent 2 days ago'
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoardSideBarBrandBlock = React.createClass({
+    displayName: 'DashboardBoardSideBarBrandBlock',
+
+    /**
+     *
+     */
+    _ids: {
+        COVER_INPUT_ID: 'cover_input'
+
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {},
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    _$file: null,
+    /**
+     *
+     */
+    loadDataFromServer: function () {},
+    /**
+     *
+     * @private
+     */
+    _ajaxUploadBrandCover: function () {
+
+        //var fd = new FormData();
+        //fd.append('file', input.files[0] );
+        var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
+        $form.trigger('sumbit');
+        /*
+         $.ajax({
+         url: 'http://example.com/script.php',
+         data: fd,
+         processData: false,
+         contentType: false,
+         type: 'POST',
+         success: function(data){
+         alert(data);
+         }
+         });*/
+    },
+    /**
+     *
+     * @private
+     */
+    _uploadBrandCover: function () {
+        //var file = $(ReactDOM.findDOMNode(this)).find('form')[0];
+        var $form = $(this.refs[this._ids.COVER_INPUT_ID]).closest('form');
+        $form.trigger('submit');
+    },
+    /**
+     *
+     * @private
+     */
+    _triggerInput: function (e) {
+        e.preventDefault();
+        $(this.refs[this._ids.COVER_INPUT_ID]).trigger('click');
+    },
+    /**
+     *
+     */
+    render: function () {
+        var link = React.createElement('i', { className: 'ti-camera' });
+        var style = {};
+        var onClick = undefined;
+
+        if (this.props.image) {
+            if (this.props.type == "cover") {
+                style = {
+                    background: "url(" + App.Helpers.getMediaUrl(this.props.image) + ") ",
+                    backgroundAttachment: "fixed",
+                    backgroundPosition: "center",
+                    height: "200px",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover"
+                };
+            } else {
+                link = React.createElement('img', { src: App.Helpers.getMediaUrl(this.props.image) });
+            }
+        }
+        var formName = "brand[" + this.props.type + "]";
+        var className = "DashboardSideBar__uploadIcon " + this.props.type;
+        return React.createElement(
+            'div',
+            { style: style },
+            React.createElement('input', { name: formName,
+                type: 'file',
+                ref: this._ids.COVER_INPUT_ID,
+                id: this._ids.COVER_INPUT_ID,
+                onChange: this._uploadBrandCover,
+                style: { width: '0px', height: '0px' } }),
+            React.createElement(
+                'div',
+                { className: className, onClick: this._triggerInput },
+                link
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoardSmallWidgetsBlock = React.createClass({
+    displayName: "DashboardBoardSmallWidgetsBlock",
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return {
+            followers_count: null,
+            views_count: null,
+            interested_count: null,
+            similar_count: null
+        };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        this._loadData();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    _loadData: function () {
+        var url = App.DashboradRoutes.stats;
+        if (this.props.id) {
+            url += '?product_id=' + this.props.id;
+        }
+        $.get(url, this._displayStats);
+    },
+    /**
+     *
+     */
+    _displayStats: function (data) {
+        this.setState({
+            followers_count: data.followers_count,
+            views_count: data.views_count,
+            products_count: data.products_count,
+            stores_count: data.stores_count
+        });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var state = this.state;
+        return React.createElement(
+            "div",
+            { className: "row" },
+            React.createElement(
+                "div",
+                { className: "col-lg-3 col-sm-6" },
+                React.createElement(
+                    "div",
+                    { className: "card" },
+                    React.createElement(
+                        "div",
+                        { className: "content" },
+                        React.createElement(
+                            "div",
+                            { className: "row" },
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-5" },
+                                React.createElement(
+                                    "div",
+                                    { className: "icon-big icon-warning text-center" },
+                                    React.createElement("i", { className: "ti-server" })
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-7" },
+                                React.createElement(
+                                    "div",
+                                    { className: "numbers" },
+                                    React.createElement(
+                                        "p",
+                                        null,
+                                        i18n.Products
+                                    ),
+                                    state.products_count
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "footer" },
+                            React.createElement("hr", null),
+                            React.createElement(
+                                "div",
+                                { className: "stats" },
+                                React.createElement("i", { className: "ti-reload" }),
+                                " ",
+                                i18n['Updated recently']
+                            )
+                        )
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "col-lg-3 col-sm-6" },
+                React.createElement(
+                    "div",
+                    { className: "card" },
+                    React.createElement(
+                        "div",
+                        { className: "content" },
+                        React.createElement(
+                            "div",
+                            { className: "row" },
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-5" },
+                                React.createElement(
+                                    "div",
+                                    { className: "icon-big icon-success text-center" },
+                                    React.createElement("i", { className: "ti-wallet" })
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-7" },
+                                React.createElement(
+                                    "div",
+                                    { className: "numbers" },
+                                    React.createElement(
+                                        "p",
+                                        null,
+                                        i18n.Locations
+                                    ),
+                                    state.stores_count
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "footer" },
+                            React.createElement("hr", null),
+                            React.createElement(
+                                "div",
+                                { className: "stats" },
+                                React.createElement("i", { className: "ti-calendar" }),
+                                " ",
+                                i18n['Updated recently']
+                            )
+                        )
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "col-lg-3 col-sm-6" },
+                React.createElement(
+                    "div",
+                    { className: "card" },
+                    React.createElement(
+                        "div",
+                        { className: "content" },
+                        React.createElement(
+                            "div",
+                            { className: "row" },
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-5" },
+                                React.createElement(
+                                    "div",
+                                    { className: "icon-big icon-danger text-center" },
+                                    React.createElement("i", { className: "ti-pulse" })
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-7" },
+                                React.createElement(
+                                    "div",
+                                    { className: "numbers" },
+                                    React.createElement(
+                                        "p",
+                                        null,
+                                        i18n.Reviews
+                                    ),
+                                    state.interested_count
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "footer" },
+                            React.createElement("hr", null),
+                            React.createElement(
+                                "div",
+                                { className: "stats" },
+                                React.createElement("i", { className: "ti-timer" }),
+                                i18n['Updated recently']
+                            )
+                        )
+                    )
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "col-lg-3 col-sm-6" },
+                React.createElement(
+                    "div",
+                    { className: "card" },
+                    React.createElement(
+                        "div",
+                        { className: "content" },
+                        React.createElement(
+                            "div",
+                            { className: "row" },
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-5" },
+                                React.createElement(
+                                    "div",
+                                    { className: "icon-big icon-info text-center" },
+                                    React.createElement("i", { className: "ti-user" })
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "col-xs-7" },
+                                React.createElement(
+                                    "div",
+                                    { className: "numbers" },
+                                    React.createElement(
+                                        "p",
+                                        null,
+                                        i18n.Followers
+                                    ),
+                                    state.followers_count
+                                )
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "footer" },
+                            React.createElement("hr", null),
+                            React.createElement(
+                                "div",
+                                { className: "stats" },
+                                React.createElement("i", { className: "ti-reload" }),
+                                i18n['Updated recently']
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+// app/assets/javascripts/components/article.js.jsx
+var DashboardBoardUsersBlock = React.createClass({
+    displayName: 'DashboardBoardUsersBlock',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [] };
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        this._loadData();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    _loadData: function () {
+        // after data loaded from server
+        this._dataLoaded();
+    },
+    /**
+     *
+     * @private
+     */
+    _dataLoaded: function () {
+        var dataSales = {
+            labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
+            series: [[287, 385, 490, 562, 594, 626, 698, 895, 952], [67, 152, 193, 240, 387, 435, 535, 642, 744], [23, 113, 67, 108, 190, 239, 307, 410, 410]]
+        };
+
+        var optionsSales = {
+            lineSmooth: false,
+            low: 0,
+            high: 1000,
+            showArea: true,
+            height: "245px",
+            axisX: {
+                showGrid: false
+            },
+            lineSmooth: Chartist.Interpolation.simple({
+                divisor: 3
+            }),
+            showLine: true,
+            showPoint: false
+        };
+
+        var responsiveSales = [['screen and (max-width: 640px)', {
+            axisX: {
+                labelInterpolationFnc: function (value) {
+                    return value[0];
+                }
+            }
+        }]];
+
+        Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'row' },
+            React.createElement(
+                'div',
+                { className: 'col-md-12' },
+                React.createElement(
+                    'div',
+                    { className: 'card' },
+                    React.createElement(
+                        'div',
+                        { className: 'header' },
+                        React.createElement(
+                            'h4',
+                            { className: 'title' },
+                            i18n['Users behavior']
+                        ),
+                        React.createElement(
+                            'p',
+                            { className: 'category' },
+                            '24 Hours performance'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'content' },
+                        React.createElement('div', { id: 'chartHours', className: 'ct-chart' }),
+                        React.createElement(
+                            'div',
+                            { className: 'footer' },
+                            React.createElement(
+                                'div',
+                                { className: 'chart-legend' },
+                                React.createElement('span', { className: 'ChartLabel text-info' }),
+                                ' Open',
+                                React.createElement('span', { className: 'ChartLabel  text-danger' }),
+                                ' Click',
+                                React.createElement('span', { className: 'ChartLabel  text-warning' }),
+                                ' Click Second Time'
+                            ),
+                            React.createElement('hr', null),
+                            React.createElement(
+                                'div',
+                                { className: 'stats' },
+                                React.createElement('i', { className: 'ti-reload' }),
+                                ' Updated 3 minutes ago'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+/**
+ *
+ */
+
+var QUERY_ID = "with_product_id";
+var DashboardCollectionsProductModal = React.createClass({
+    displayName: 'DashboardCollectionsProductModal',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { productsCollections: [], isFetching: false };
+    },
+    /**
+     *
+     * @private
+     */
+    _loadDataServer: function () {
+        var queryObject = {};
+        queryObject[QUERY_ID] = this.state.productId;
+        $.get(App.Helpers.formatApiUrl(App.DashboradRoutes.collections, {}, queryObject), this._productsCollectionsLoaded);
+    },
+
+    /**
+     *
+     * @private
+     */
+    _productsCollectionsLoaded: function (response) {
+        this.setState({ isFetching: true });
+        this.setState({ productsCollections: response.list, isFetching: false });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.DASHBOARD_MODAL_COLLECTION_OPEN, this.showModal);
+        App.Dispatcher.attach(App.Actions.DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED, this.onItemAdded);
+    },
+
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.DASHBOARD_MODAL_COLLECTION_OPEN, this.showModal);
+        App.Dispatcher.detach(App.Actions.DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED, this.onItemAdded);
+    },
+    /**
+     *
+     */
+    showModal: function (data) {
+        this.setState({ collections: [], productId: data.productId }, function () {
+            $(ReactDOM.findDOMNode(this)).modal();
+            this._loadDataServer();
+        });
+    },
+    /**
+     *
+     */
+    _closeModal: function () {
+        $(ReactDOM.findDOMNode(this)).modal('hide');
+    },
+    /**
+     *
+     */
+    onItemAdded: function (serverData, eventSource) {
+        //alert(JSON.stringify(eventSource));
+        if (serverData.products) {
+            // enable all buttons
+            $(ReactDOM.findDOMNode(this)).find('button').removeAttr('disabled');
+            var collections = this.state.productsCollections;
+            collections.forEach(function (entry) {
+                if (eventSource.id == entry.id) {
+                    // alert('change');
+                    entry.products = serverData.products;
+                }
+            });
+            // alert(JSON.stringify(collections));
+            //
+            this.setState({ productsCollections: collections });
+        }
+    },
+    /**
+     * Add / delete product from collection
+     * @param entry
+     * @param isIn
+     * @param e
+     * @private
+     */
+    _selectItem: function (entry, isIn, e) {
+        // FIXME , disable the e.source.target
+        // disable  all buttons
+        //$(ReactDOM.findDOMNode(this)).find('button').attr('disabled', 'disable');
+        App.Stores.post({
+            url: isIn ? App.DashboradRoutes.collectionsItemRemove : App.DashboradRoutes.collectionsItemAdd,
+            params: { id: entry.id },
+            data: {
+                product_id: this.state.productId
+            },
+            action: App.Actions.DASHBOARD_MODAL_COLLECTION_ITEMS_MODIFIED,
+            // pass the collection id to success or fails
+            event: { id: entry.id }
+        }, this._productsCollectionsLoaded);
+    },
+    /**
+     *
+     * @returns {XML}
+     */
+    render: function () {
+        var _this = this;
+
+        var components = null;
+        if (this.state.productsCollections.length) {
+            (function () {
+                components = [];
+                var currentProductId = _this.state.productId;
+                // check the product inside the collection or not
+                var isIn = false;
+                var i = 0;
+                _this.state.productsCollections.forEach((function (entry) {
+                    isIn = false;
+                    i = 0;
+                    while (!isIn && i < entry.products.length) {
+                        isIn = entry.products[i].id == currentProductId;
+                        i++;
+                    }
+                    components.push(React.createElement(
+                        'div',
+                        { className: 'col-lg-3' },
+                        entry.name,
+                        ' (',
+                        entry.products.length,
+                        ')',
+                        React.createElement(
+                            'button',
+                            {
+                                className: "btn btn-sm ProductAddToCollectionButton " + (isIn ? "btn-danger" : "btn-success"),
+                                onClick: this._selectItem.bind(this, entry, isIn) },
+                            ' ',
+                            isIn ? i18n.Remove : i18n.Add
+                        )
+                    ));
+                }).bind(_this));
+                components.push(React.createElement('div', { className: 'clearfix' }));
+            })();
+        } else {
+            components = [];
+            components.push(React.createElement(
+                'div',
+                null,
+                'Empty'
+            ));
+        }
+        return React.createElement(
+            'div',
+            { className: 'modal fade', role: 'dialog' },
+            React.createElement(
+                'div',
+                { className: 'modal-dialog modal-lg' },
+                React.createElement(
+                    'div',
+                    { className: 'modal-content' },
+                    React.createElement(
+                        'div',
+                        { className: 'modal-header' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'close', 'data-dismiss': 'modal' },
+                            '×'
+                        ),
+                        React.createElement(
+                            'h4',
+                            { className: 'modal-title' },
+                            i18n.CollectionProductTitle
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-body' },
+                        this.isFetching ? i18n.Loading : components
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-footer' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
+                            i18n.Close
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+// app/assets/javascripts/components/article.js.jsx
+var DashboardCollectionProductModalButtonLauncher = React.createClass({
+    displayName: 'DashboardCollectionProductModalButtonLauncher',
+
+    /**
+     *
+     */
+    showModal: function (productId, e) {
+        e.preventDefault();
+        App.Dispatcher.dispatch(App.Actions.DASHBOARD_MODAL_COLLECTION_OPEN, { productId: productId });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(MODAL_GALLERY_ITEMS_SELECTED, this.onCollectionProductItemSelected);
+    },
+    /**
+     *
+     */
+    onCollectionProductItemSelected: function (data) {
+
+        //
+    },
+    /**
+     * // <%= link_to '+' + I18n.t('Add to collection'), launch_dashboard_product_path(product), method: :post, :class => '', data: {confirm: I18n.t('Are you sure about that')} %>
+     */
+    render: function () {
+        return React.createElement(
+            'button',
+            { className: ' btn-sm btn btn-danger', onClick: this.showModal.bind(this, this.props.product_id) },
+            this.props.text
+        );
+    }
+});
+var MODAL_GALLERY_ITEMS_SELECTED = 'modal:gallery:items:selected';
+var MODAL_GALLERY_OPEN = 'modal:gallery:open';
+/**
+ *
+ */
+var DashboardGalleryModal = React.createClass({
+    displayName: 'DashboardGalleryModal',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        return { items: [], isFetching: false, selected_items: [] };
+    },
+    /**
+     *
+     * @private
+     */
+    _loadDataServer: function () {
+        $.get(App.DashboradRoutes.galleryList, this._galleryLoaded);
+    },
+
+    /**
+     *
+     * @private
+     */
+    _galleryLoaded: function (response) {
+        this.setState({ isFetching: true });
+        this.setState({ items: response.list, isFetching: false });
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        // FIXME , move action to constants
+        App.Dispatcher.attach(MODAL_GALLERY_OPEN, this.showModal);
+    },
+    /**
+     *
+     */
+    showModal: function () {
+        this.setState({ selected_items: [] });
+        $(ReactDOM.findDOMNode(this)).modal();
+        this._loadDataServer();
+    },
+    /**
+     *
+     * @param entry
+     * @param e
+     * @private
+     */
+    _selectImage: function (entry, e) {
+        $(e.currentTarget).css({ 'border': 'solid' });
+        var old_values = this.state.selected_items;
+        var exists = false;
+        var i = 0;
+        while (!exists && i < old_values.length) {
+            if (entry.id == old_values[i++].id) {
+                exists = true;
+            }
+        }
+        // if not contains
+        if (!exists) {
+            old_values.push(entry);
+            this.setState({ selected_items: old_values });
+        }
+    },
+    /**
+     *
+     */
+    _closeModal: function () {
+        App.Dispatcher.dispatch(MODAL_GALLERY_ITEMS_SELECTED, { items: this.state.selected_items });
+        $(ReactDOM.findDOMNode(this)).modal('hide');
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     * @returns {XML}
+     */
+    render: function () {
+        var components = null;
+        if (this.state.items.length) {
+            components = [];
+            this.state.items.forEach((function (entry) {
+                components.push(React.createElement(
+                    'div',
+                    { className: 'col-lg-3' },
+                    React.createElement('img', { className: 'img-responsive',
+                        onClick: this._selectImage.bind(this, entry),
+                        src: App.Helpers.getMediaUrl(entry.file.thumb.url) })
+                ));
+            }).bind(this));
+            components.push(React.createElement('div', { className: 'clearfix' }));
+        } else {
+            components = [];
+            components.push(React.createElement(
+                'div',
+                null,
+                'Empty'
+            ));
+        }
+        return React.createElement(
+            'div',
+            { className: 'modal fade', role: 'dialog' },
+            React.createElement(
+                'div',
+                { className: 'modal-dialog modal-lg' },
+                React.createElement(
+                    'div',
+                    { className: 'modal-content' },
+                    React.createElement(
+                        'div',
+                        { className: 'modal-header' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'close', 'data-dismiss': 'modal' },
+                            '×'
+                        ),
+                        React.createElement(
+                            'h4',
+                            { className: 'modal-title' },
+                            i18n.GalleryTitle
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-body' },
+                        this.isFetching ? i18n.Loading : components
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-footer' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'btn btn-default',
+                                onClick: this._closeModal },
+                            i18n.Confirm
+                        ),
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
+                            i18n.Close
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+// app/assets/javascripts/components/article.js.jsx
+var DashboardGalleryModalManager = React.createClass({
+    displayName: 'DashboardGalleryModalManager',
+
+    /**
+     *
+     */
+    showModal: function (e) {
+        e.preventDefault();
+        App.Dispatcher.dispatch(MODAL_GALLERY_OPEN);
+    },
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(MODAL_GALLERY_ITEMS_SELECTED, this.onGalleryItemsSelected);
+        new Dropzone($(ReactDOM.findDOMNode(this)).find('#gallery_uploader').first()[0], {
+            url: this.props.upload_url,
+            params: {
+                authenticity_token: this.props.authenticity_token
+            },
+            init: function () {
+                this.on("success", function (file, response) {
+                    App.Dispatcher.dispatch(MODAL_GALLERY_ITEMS_SELECTED, { items: [response] });
+                    this.removeFile(file);
+                });
+            }
+        });
+    },
+    /**
+     *
+     */
+    onGalleryItemsSelected: function (data) {
+        var items = data.items;
+        var $container = $('#product_pictures_containers');
+        var $lastItem = $container.find('.ProductPictureItem').last();
+        var $newItem;
+        var $checkbox;
+        var $image;
+        items.forEach(function (picture) {
+            $newItem = $lastItem.clone();
+            var form_id = 'product_picture_ids' + picture.id;
+            // check if there's one
+            if ($container.find('#' + form_id).length == 0) {
+                $newItem.find('label').attr('for', form_id);
+                $checkbox = $newItem.find('input[type=checkbox]');
+                $checkbox.attr('id', form_id);
+                $checkbox.attr('checked', true);
+                $checkbox.attr('value', picture.id);
+                $image = $newItem.find('img');
+                $image.attr('src', App.Helpers.getMediaUrl(picture.file.thumb.url));
+                $newItem.insertBefore($lastItem);
+                $newItem.show();
+            }
+        });
+        //
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'div',
+                { id: 'gallery_uploader' },
+                i18n.Upload
+            ),
+            React.createElement(
+                'button',
+                { className: 'btn btn-default', onClick: this.showModal.bind(this) },
+                i18n.FromGallery
+            )
+        );
+    }
+});
+//
+var DashboardRTConnectorIndicator = React.createClass({
+    displayName: 'DashboardRTConnectorIndicator',
+
+    /**
+     *
+     * @returns {{connected: boolean}}
+     */
+    getInitialState: function () {
+        return {
+            connected: false
+        };
+    },
+    /**
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.WS_CONNECTION_LOST, this.onDisconnect);
+        App.Dispatcher.attach(App.Actions.WS_CONNECTION_ESTABLISHED, this.onConnect);
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.removeListener(App.Actions.WS_CONNECTION_LOST, this.onDisconnect);
+        App.Dispatcher.removeListener(App.Actions.WS_CONNECTION_ESTABLISHED, this.onConnect);
+    },
+    /**
+     *
+     * @private
+     */
+    onDisconnect: function () {
+        this.setState({ connected: false });
+    },
+    /**
+     *
+     * @private
+     */
+    onConnect: function () {
+        this.setState({ connected: true });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var className = "DashboardRT__Indicator " + (this.state.connected ? 'DashboardRT__Indicator--on' : 'DashboardRT__Indicator--off');
+        return React.createElement(
+            'div',
+            { className: className, title: i18n['WS connection status'] },
+            ' '
+        );
+    }
+});
+//
+var DashboardStoresMapView = React.createClass({
+    displayName: 'DashboardStoresMapView',
+
+    /**
+     */
+    componentDidMount: function () {
+        if (this.props.minHeight) {
+            $('#map_stores').css({ 'height': this.props.minHeight });
+        }
+        var map = L.map('map_stores').setView([51.505, -0.09], 3);
+        L.tileLayer(App.Configuration.MAP_TILES_URL, {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        /**
+         * Check for stores
+         */
+        if (this.props.stores) {
+            var html = '<img src="' + App.Helpers.getMediaUrl(this.props.brand.picture.small_thumb.url) + '">';
+            console.log(this.props.brand.picture);
+            var locationIcon = L.divIcon({ className: 'DashboardStores__Marker', html: html });
+
+            this.props.stores.forEach(function (entry) {
+                var latitude = entry.latitude;
+                var longitude = entry.longitude;
+                if (latitude && longitude) {
+                    new L.Marker([latitude, longitude], { icon: locationIcon }).addTo(map);
+                }
+            });
+        }
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.detach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     *
+     * @private
+     */
+    _searchTypeChanged: function (data) {
+        this.setState({ searchFor: data.tab });
+    },
+    /**
+     *
+     */
+    _searchChanged: function (data) {
+        this.setState({ searchResults: data.results });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'MapContainer' },
+            React.createElement('div', { id: 'map_stores' })
+        );
+    }
+});
+var MAP_ID = 'users_map';
+var DashboardUsersViewMenu = React.createClass({
+    displayName: "DashboardUsersViewMenu",
+
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "btn-group btn-group-sm" },
+            React.createElement(
+                "button",
+                { className: "btn" },
+                React.createElement("span", { className: "ti-alarm-clock" })
+            ),
+            React.createElement(
+                "button",
+                { className: "btn" },
+                React.createElement("span", { className: "ti-alarm-clock" })
+            ),
+            React.createElement(
+                "button",
+                { className: "btn" },
+                React.createElement("span", { className: "ti-alarm-clock" })
+            )
+        );
+    }
+});
+
+/**
+ *
+ */
+var DashboardUsersView = React.createClass({
+    displayName: "DashboardUsersView",
+
+    /**
+     */
+    componentDidMount: function () {
+        if (this.props.fullHeight) {
+            $('#' + MAP_ID).css({ 'height': $('.DashboardMainContainer').height() });
+        }
+        var map = L.map(MAP_ID).setView([51.505, -0.09], 3);
+        L.tileLayer(App.Configuration.MAP_TILES_URL, {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        /**
+         * Check for stores
+         */
+        if (this.props.stores) {
+            this.props.stores.forEach(function (entry) {
+                var latitude = entry.latitude;
+                var longitude = entry.longitude;
+                if (latitude && longitude) {
+                    new L.Marker([latitude, longitude]).addTo(map);
+                }
+            });
+        }
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
+        App.Dispatcher.detach(App.Actions.TAB_CHANGED, this._searchTypeChanged);
+    },
+    /**
+     *
+     * @private
+     */
+    _searchTypeChanged: function (data) {
+        this.setState({ searchFor: data.tab });
+    },
+    /**
+     *
+     */
+    _searchChanged: function (data) {
+        this.setState({ searchResults: data.results });
+    },
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            "div",
+            { className: "MapContainer" },
+            React.createElement("div", { id: MAP_ID })
+        );
+    }
+});
+//
+var DashboardNotifier = React.createClass({
+    displayName: "DashboardNotifier",
+
+    /**
+     *
+     */
+    propTypes: {
+        count: React.PropTypes.number,
+        items: React.PropTypes.array
+    },
+    /**
+     *
+     * @returns {{count: number, items: Array}}
+     */
+    getInitialState: function () {
+        return {
+            count: 1
+        };
+    },
+    /**
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.ADMIN_NOTIFICATION, this._onNotificationArrived);
+    },
+    /**
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.removeListener(App.Actions.ADMIN_NOTIFICATION, this._onNotificationArrived);
+    },
+    /**
+     *
+     * @private
+     */
+    _onNotificationArrived: function (data) {
+        this.setState({ count: data.count + this.state.count });
+    },
+    /**
+     *
+     */
+    render: function () {
+        var components = null;
+        if (this.state.count) {
+            components = React.createElement(
+                "p",
+                { className: "notification" },
+                " ",
+                this.state.count,
+                " "
+            );
+        }
+        /**
+         *
+         */
+        return React.createElement(
+            "a",
+            { href: this.props.link_to },
+            React.createElement("i", { className: "ti-bell" }),
+            " ",
+            components
+        );
+    }
+});
+var ProductPropertiesEdit = React.createClass({
+    displayName: 'ProductPropertiesEdit',
+
+    /**
+     *
+     */
+    getInitialState: function () {
+        var properties = {};
+        try {
+            properties = JSON.parse(this.props.properties);
+        } catch (e) {
+            // pass
+        }
+        if (!properties) {
+            properties = {};
+        }
+        return {
+            properties: properties,
+            defaults: this.props.defaults
+        };
+    },
+    /**
+     *
+     * @param newstate
+     * @private
+     */
+    _changeState: function (newstate) {
+        this.setState({ properties: newstate });
+        App.Dispatcher.dispatch('dashboard:product:edit:properties', newstate);
+        $('#product_properties').first().val(JSON.stringify(newstate));
+    },
+    /**
+     *
+     * @param key
+     * @param e
+     */
+    _validate: function (key, e) {
+        e.preventDefault();
+        var oldProperties = this.state.properties;
+        var parent = ReactDOM.findDOMNode(this.refs[key]);
+        var $input = $(parent).find('input.value');
+        var $span = $(parent).find('span.value');
+        var value = $input.val();
+        if (value.length) {
+            oldProperties[key] = value;
+            $span.html(value);
+            $input.hide();
+            $span.show();
+            this._changeState(oldProperties);
+        }
+    },
+    /**
+     *
+     * @param key
+     * @param e
+     */
+    _edit: function (key, e) {
+        e.preventDefault();
+        var oldProperties = this.state.properties;
+        var parent = ReactDOM.findDOMNode(this.refs[key]);
+        var $input = $(parent).find('input.value');
+        var $span = $(parent).find('div.value');
+        $span.hide();
+        $input.show();
+    },
+    /**
+     *
+     */
+    _remove: function (key, e) {
+        e.preventDefault();
+        var oldProperties = this.state.properties;
+        delete oldProperties[key];
+        this._changeState(oldProperties);
+    },
+    /**
+     *
+     */
+    _add: function (e) {
+        e.preventDefault();
+        var dom = ReactDOM.findDOMNode(this);
+        var $select = $(dom).find('select').first();
+        var oldProperties = this.state.properties;
+        oldProperties[$select.val()] = "";
+        console.log(oldProperties);
+        this._changeState(oldProperties);
+    },
+
+    /**
+     *
+     */
+    _addCustom: function (e) {
+        e.preventDefault();
+        var input = ReactDOM.findDOMNode(this.refs.customProperty);
+        var newKey = input.value;
+        var oldProperties = this.state.properties;
+        // check of length > 0 and not already exists
+        if (newKey.length && !oldProperties[newKey]) {
+            oldProperties[newKey] = "";
+            this._changeState(oldProperties);
+        }
+    },
+    /**
+     *
+     */
+    render: function () {
+        var properties = this.state.properties;
+        var defaults = this.state.defaults;
+        // used to translate
+        // keys translations
+        var translations = {};
+        var defaultOptions = [];
+        defaults.forEach(function (entry) {
+            defaultOptions.push(React.createElement(
+                'option',
+                { value: entry[1] },
+                entry[0]
+            ));
+            translations[entry[1]] = entry[0];
+        });
+        //
+        var currentPropertiesElements = [];
+        var value = undefined;
+        for (var key in properties) {
+            value = properties[key];
+            currentPropertiesElements.push(React.createElement(
+                'div',
+                { className: 'ProductPropertiesEdit__PropertyContainer', ref: key },
+                React.createElement('br', null),
+                React.createElement(
+                    'label',
+                    { className: 'key' },
+                    translations[key] || key
+                ),
+                React.createElement('input', { className: 'value', defaultValue: value }),
+                React.createElement('div', { className: 'value ' }),
+                React.createElement(
+                    'div',
+                    { className: 'btn-group btn-group-sm' },
+                    React.createElement(
+                        'button',
+                        { onClick: this._validate.bind(this, key), className: 'btn btn-primary' },
+                        React.createElement('i', {
+                            className: 'ti-check' })
+                    ),
+                    React.createElement(
+                        'button',
+                        { onClick: this._edit.bind(this, key), className: 'btn btn-sm btn-default' },
+                        React.createElement('i', {
+                            className: 'ti-pencil' })
+                    ),
+                    React.createElement(
+                        'button',
+                        { onClick: this._remove.bind(this, key), className: 'btn btn-sm btn-danger' },
+                        React.createElement('i', {
+                            className: 'ti-trash' })
+                    )
+                )
+            ));
+        }
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'select',
+                    null,
+                    defaultOptions
+                ),
+                React.createElement(
+                    'button',
+                    { onClick: this._add, className: 'bn btn-wd' },
+                    '+'
+                ),
+                React.createElement('input', { ref: 'customProperty', placeholder: i18n['add your custom property'] }),
+                React.createElement(
+                    'button',
+                    { onClick: this._addCustom, className: 'bn btn-wd' },
+                    '+'
+                )
+            ),
+            React.createElement(
+                'div',
+                null,
+                currentPropertiesElements
+            )
+        );
+    }
+});
+//
+var StoresEdit = React.createClass({
+    displayName: 'StoresEdit',
+
+    /**
+     */
+    componentDidMount: function () {
+        // pla-ce center at the props
+        // TODO fix empty initial position
+        var latitude = this.props.latitude || 51.505;
+        var longitude = this.props.longitude || -0.09;
+        // init app in the store place if exists
+        this._initMap(latitude, longitude);
+        // if not exists
+        this._setStorePosition(latitude, longitude);
+    },
+    /**
+     *
+     * @private
+     */
+    _loadInitialGeoPosition: function () {
+        $.get(App.Routes.geoMine, (function (position) {
+            this._setStorePosition(position.latitude, position.longitude);
+        }).bind(this));
+    },
+
+    /**
+     * @param {L.latLng} latLng
+     * @private
+     */
+    _loadPositionFullAddress: function (latLng) {
+        var latitude = latLng.lat;
+        var longitude = latLng.lng;
+        $('#store_latitude').val(latitude);
+        $('#store_longitude').val(longitude);
+        $.get(App.Helpers.formatApiUrl(App.Routes.geoAddress, {}, {
+            latitude: latitude,
+            longitude: longitude
+        }), this._fillAddress);
+    },
+
+    /**
+     *
+     * @private
+     */
+    _fillAddress: function (AddressObject) {
+        var address = AddressObject.address;
+        if (address != 'null') {
+            address = address.split(',');
+            if (address.length > 2) {
+                var $address = $('#store_address');
+                if (address[0].indexOf('Unnamed Road') < 0) {
+                    // empty it
+                    $address.val('');
+                    $address.val(address[0]);
+                }
+                //
+                var $country = $('#store_country_code');
+                var countryCode = $country.find('option:contains("' + address[2].trim() + '")').val();
+                if (countryCode) {
+                    console.log(countryCode);
+                    $country.val(countryCode);
+                }
+                var cityDetails = address[1].trim().split(" ");
+                var $city = $('#store_city');
+                if (cityDetails.length > 0) {
+                    // FIXME france
+                    $city.val(cityDetails[1]);
+                    cityDetails.pop();
+                    $address.val([cityDetails.join(" "), $address.val()].join(', '));
+                } else {
+                    $city.val(address[1]);
+                }
+            }
+        }
+    },
+    /**
+     *
+     * @param lat
+     * @param lng
+     * @private
+     */
+    _initMap: function (lat, lng) {
+        var dom = ReactDOM.findDOMNode(this);
+        var $map = $(dom).find('#map');
+        var map = L.map($map[0]).setView([lat, lng], 13);
+        L.tileLayer(App.Configuration.MAP_TILES_URL, {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        this._map = map;
+    },
+    /**
+     *
+     * @param lat
+     * @param lng
+     * @private
+     */
+    _setStorePosition: function (lat, lng) {
+        $('body').addClass('map');
+        var marker = new L.Marker([lat, lng], { draggable: true }).addTo(this._map);
+        marker.on('dragend', (function (event) {
+            this._loadPositionFullAddress(event.target.getLatLng());
+        }).bind(this));
+    },
+    /**
+     *
+     * @private
+     */
+    _onMarkerMoved: function () {},
+    /**
+     */
+    componentWillUnmount: function () {},
+    /**
+     *
+     */
+    render: function () {
+        return React.createElement(
+            'div',
+            { className: 'MapContainer' },
+            React.createElement('div', { id: 'map' })
+        );
     }
 });
 
 
 
 
+
+// body
+$(document).ready(function (){
+    $('.main-panel').on('scroll', function (){
+        console.log('#################"');
+    });
+    // get all flash message
+    $('.flash').each(function (){
+        var $this = $(this);
+        $.notify({
+            icon: 'ti-gift',
+            message: $this.data('text')
+
+        },{
+            type: 'danger',
+            timer: 2000
+        });
+    })
+});
