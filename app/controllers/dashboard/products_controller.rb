@@ -1,4 +1,6 @@
 class Dashboard::ProductsController < Dashboard::DashboardController
+  include ProductsUtils
+  require 'csv'
   before_action :set_product_and_brand, only: [:show, :edit, :update, :destroy, :launch]
   before_action :require_permission, only: [:show, :edit, :update, :destroy, :launch]
   before_action :set_user_brands, only: [:new, :edit, :create]
@@ -13,6 +15,37 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # GET /products/1
   # GET /products/1.json
   def show
+  end
+
+
+  def import
+    step = params[:step] || 1
+    if step == 1
+      if request.get?
+        return render 'import_step_1'
+      elsif request.post?
+        import_params = products_import_form_params
+        products = []
+        CSV.foreach(import_params[:file].path) do |row|
+          products << row
+        end
+        data = {products: products, with_header: import_params[:with_header]}
+        temp_id = set_cached_products_for_import(data.to_s)
+        @temp_id = temp_id
+        return render 'import_step_2'
+      else
+        # no sense
+      end
+    elsif step = 2
+      data = get_cached_products_for_import(params[:uuid])
+      if data.nil?
+        return
+      end
+      @data = eval(data)
+      return render 'import_step_3'
+    else
+      return
+    end
   end
 
   # GET /products/new
@@ -53,7 +86,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         else
           at = Date.today
         end
-        launch = ProductLaunch.new ({ launch_date: at, product: @product})
+        launch = ProductLaunch.new ({launch_date: at, product: @product})
         launch.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
         format.json { render :show, status: :launched, location: @product }
@@ -115,6 +148,12 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # Never trust parameters from the scary internet, only allow the white list through.
   def product_form_params
     params.require(:product).permit(:name, :properties, :brand_id, :old_price, :new_price, store_ids: [], picture_ids: [], category_ids: [])
+  end
+
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def products_import_form_params
+    params.permit(:file, :with_header)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

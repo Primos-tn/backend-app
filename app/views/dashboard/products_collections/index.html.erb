@@ -33,7 +33,17 @@
                 <%= entry.products.size %>
               </td>
               <td>
-                <%- if entry.scheduled_for_launch? %>
+                <%- if entry.in_launch_mode? %>
+
+                <% else -%>
+
+                    <%- if entry.scheduled_for_launch? %>
+
+                    <% else -%>
+                          <%= link_to I18n.t('Launch'), launch_dashboard_products_collection_path(entry), method: :post, :class => 'btn  btn-sm btn-success', data: {confirm: I18n.t('Are you sure about that')} %>
+
+                    <% end -%>
+
                 <% end -%>
                 <%= link_to edit_dashboard_products_collection_path(entry), class: 'btn btn-sm btn-danger' do %>
                     <span class="ti-pencil-alt"></span> <%= t ('edit') %>

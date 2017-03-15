@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-RAILS_ENV=<env>
+export RAILS_ENV=<env>
 
-bunlde install
+bundle install
 rake db:migrate
 
 

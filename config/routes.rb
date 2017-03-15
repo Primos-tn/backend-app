@@ -107,6 +107,11 @@ Rails.application.routes.draw do
       member do
         post 'launch'
       end
+
+      collection do
+        post 'import'
+        get 'import'
+      end
       resources :coupons
       resources :targetize, only: :index
       resources :pictures, :only => [:create, :destroy], controller: :product_pictures
@@ -147,7 +152,7 @@ Rails.application.routes.draw do
     resources :hooks
 
     scope :system, controller: :system do
-      get '/'  => 'system#index', as: 'system'
+      get '/' => 'system#index', as: 'system'
       patch 'update'
     end
 

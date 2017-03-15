@@ -16,6 +16,17 @@
         <%= f.text_field :name, class: "form-control border-input", placeholder: 'Valentine\'s day, Promotion, ..., inguration ... ' %>
       </div>
     </div>
+    <div class="col-lg-12">
+      <%= f.label :products %><br>
+      <%= f.collection_check_boxes(:product_ids, current_brand.products, :id, :name) do |fcb| %>
+          <div class="col-lg-4">
+
+            <%= fcb.label { fcb.check_box + '  ' + fcb.text.capitalize } %>
+
+          </div>
+
+      <% end %>
+    </div>
     <div class="clearfix"></div>
     <div class="text-center">
       <%= f.submit :class => 'btn btn-primary' %>
@@ -23,5 +34,6 @@
           <%= link_to t('Back'), dashboard_products_collections_path %>
       <% end -%>
     </div>
+
     <div class="clearfix"></div>
 <% end %>

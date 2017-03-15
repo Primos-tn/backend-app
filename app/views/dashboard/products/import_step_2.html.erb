@@ -1,0 +1,7 @@
+Step 2
+<%= form_tag import_dashboard_products_path do %>
+    <%= hidden_field_tag 'uuid', @temp_id %>
+    <%= hidden_field_tag 'step', 2 %>
+    <%= submit_tag t("import") %>
+<% end %>
+<%= @temp_id %>

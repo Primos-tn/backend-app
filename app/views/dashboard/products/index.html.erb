@@ -9,9 +9,12 @@
       <div class="header">
         <h4 class="title">
           <%= I18n.t('The products') %>
-          <%= link_to  dashboard_products_collections_path, class: 'pull-right' do %>
+          <%= link_to  dashboard_products_collections_path, class: 'btn btn-primary pull-right' do %>
               <%= t('Collections') %>
           <% end %>
+
+          <%= link_to t('New Product'), new_dashboard_product_path, class: 'pull-right btn btn-primary' %>
+          <%= link_to t('Import'), import_dashboard_product_path, class: 'pull-right btn btn-primary' %>
         </h4>
       </div>
       <div class="content table-responsive table-full-width" style="<%= view_style == grid ? '' : '' %> ">

@@ -28,6 +28,7 @@ class Api::V1::BrandsController < Api::V1::BaseController
     end
 
     categories_ids = request.params[:categoriesList]
+
     unless categories_ids.blank?
       @brands = @brands.where(:category_id => request.params[:categoriesList])
     end

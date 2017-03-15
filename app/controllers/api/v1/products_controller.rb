@@ -20,7 +20,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
       stores_ids = nil
     end
 
-    @products = ProductLaunch.launches_of_day({stores_ids: stores_ids})
+    @products = ProductLaunch.launches_of_day({stores_ids: stores_ids, page: params[:page], limit: params[:limit]})
 
     #
     collections_ids = []

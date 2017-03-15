@@ -14,6 +14,11 @@ class Dashboard::ProductsCollectionsController < Dashboard::DashboardController
     end
   end
 
+
+  def show
+
+  end
+
   # POST /products
   # POST /products.json
   def create
@@ -32,6 +37,7 @@ class Dashboard::ProductsCollectionsController < Dashboard::DashboardController
 
   # POST /collections/:id/add-products
   def add_products
+    # check if exists first
     if product = Product.where({id: params[:product_id], brand: current_brand}).first
       begin
         @products_collection.products << product
@@ -58,22 +64,42 @@ class Dashboard::ProductsCollectionsController < Dashboard::DashboardController
   def launch
     respond_to do |format|
       if @products_collection.can_be_launched?
-        launch_form_params = params.has_key?(:product) ? launch_params : {}
+        launch_form_params = params.has_key?(:products_collection) ? launch_params : {}
         at = launch_form_params[:last_launch]
+
         if not at.nil? and Time.strptime(at, '%m/%d/%Y')
           at = Time.strptime(at, '%m/%d/%Y')
         else
           at = Date.today
         end
 
-        @product.last_launch = at
-
-        @product.save
-        format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
-        format.json { render :show, status: :launched, location: @product }
+        products = @products_collection.products
+        # check for count of products
+        if products.count > 0 then
+          launches = []
+          products.each do |entry|
+            launches << {:product_id => entry.id, :launch_date => at, :products_collection_id => @products_collection.id}
+          end
+          ActiveRecord::Base.transaction do
+            begin
+              ProductLaunch.create(launches)
+              @products_collection.last_launch = at
+              @products_collection.save
+            rescue ActiveRecord::StatementInvalid
+              # ...which we ignore.
+              format.html { redirect_to dashboard_products_collection_path(@products_collection), notice: 'Empty collection ' }
+              format.json { render json: @products_collection.errors, status: :unprocessable_entity }
+            end
+            format.html { redirect_to dashboard_products_collection_path(@products_collection), notice: t('Product was successfully launched.') }
+            format.json { render :show, status: :launched, location: @products_collection }
+          end
+        else
+          format.html { redirect_to dashboard_products_collection_path(@products_collection), notice: 'Empty collection ' }
+          format.json { render json: @products_collection.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { redirect_to dashboard_product_path(@product), notice: 'Productcan not be launched launched.' }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.html { redirect_to dashboard_products_collection_path(@products_collection), notice: 'Collection can not launched.' }
+        format.json { render json: @products_collection.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -125,7 +151,7 @@ class Dashboard::ProductsCollectionsController < Dashboard::DashboardController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def products_collection_form_params
-    params.require(:products_collection).permit(:name)
+    params.require(:products_collection).permit(:name, product_ids: [])
   end
 
 end

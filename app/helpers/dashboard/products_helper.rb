@@ -11,13 +11,14 @@ module Dashboard::ProductsHelper
   end
 
   def get_defaults_product_properties
-    return [
-               [t('default_propeties.height'), 'height'],
-               [t('default_propeties.color'), 'color'],
-               [t('default_propeties.weight'), 'weight'],
-               [t('default_propeties.made'), 'made'],
-               [t('default_propeties.width'), 'width']
-           ]
+    [
+        [t('default_propeties.height'), 'height'],
+        [t('default_propeties.color'), 'color'],
+        [t('default_propeties.weight'), 'weight'],
+        [t('default_propeties.made'), 'made'],
+        [t('default_propeties.width'), 'width']
+    ]
   end
+
 
 end

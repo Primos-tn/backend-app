@@ -15,7 +15,7 @@ class ProductsCollection < ApplicationRecord
 
   def in_launch_mode?
     # check if launch mode
-    last_launch.to_date == Date.today
+    last_launch && last_launch.to_date == Date.today
     #!last_launch.nil? and ()
   end
 

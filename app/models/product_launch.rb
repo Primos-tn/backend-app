@@ -5,6 +5,8 @@ class ProductLaunch < ApplicationRecord
 
   def self.launches_of_day(args)
     stores_ids = args[:stores_ids]
+    page = args[:page]  || 0
+    limit = args [:limit] || 10
     if stores_ids && stores_ids.length == 0
       stores_ids = [-1]
     end
@@ -14,5 +16,7 @@ class ProductLaunch < ApplicationRecord
         .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
         .select('distinct on (products.brand_id) product_launches.products_collection_id, product_launches.product_id')
         .order('"products"."brand_id",  products.user_product_views_count DESC')
+        .page([page.to_i, 1].max)
+        .per(limit)
   end
 end
