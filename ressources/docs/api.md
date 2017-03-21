@@ -109,13 +109,25 @@
     **Content:** `{ error : "Invalid credentials" }`
 
 
-**Sample Call:**
+**Curl Call:**
+    
+ Get products 
+ 
+```
+  curl  http://localhost:3000/api/v1/products -H 'Authorization:Token token="vPCnlglK+TRcgwzRF6DK981q0qabfiz/BzF28nhAvlwKNJIk5HT+Yz/LKMU414FYRMLld9WgdgU20lvgsQKR2A=="' -d '{"push_token" : {"value" : "ccc", "platform" : "android", "uuid" : "74"}}' -H "Accept:application/json" -H "Content-Type:application/json"
+
+   ```  
+
+
+  Register push 
+  
   ```
   curl -X POST http://localhost:3000/api/v1/accounts/register-push -H 'Authorization:Token token="vPCnlglK+TRcgwzRF6DK981q0qabfiz/BzF28nhAvlwKNJIk5HT+Yz/LKMU414FYRMLld9WgdgU20lvgsQKR2A=="' -d '{"push_token" : {"value" : "ccc", "platform" : "android", "uuid" : "74"}}' -H "Accept:application/json" -H "Content-Type:application/json"
 
    ```  
    ```
-  curl  http://localhost:3000/api/v1/products/3/coupons -H 'Authorization:Token token="vPCnlglK+TRcgwzRF6DK981q0qabfiz/BzF28nhAvlwKNJIk5HT+Yz/LKMU414FYRMLld9WgdgU20lvgsQKR2A=="' 
+  curl  http://localhost:3000/api/v1/products/3/coupons \
+  -H 'Authorization:Token token="vPCnlglK+TRcgwzRF6DK981q0qabfiz/BzF28nhAvlwKNJIk5HT+Yz/LKMU414FYRMLld9WgdgU20lvgsQKR2A=="' 
 
    ``` 
    

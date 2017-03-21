@@ -42,7 +42,7 @@ class Api::V1::AccountsController < Api::V1::BaseController
             status: 201
         )
       else
-        api_error(401, "Oh no")
+        api_error(401, 'Oh no')
       end
     else
       api_error(401)
@@ -56,7 +56,6 @@ class Api::V1::AccountsController < Api::V1::BaseController
     push_token.account = current_user
     if push_token.save
       render(
-          #json: Api::V1::SessionSerializer.new(user, root: false).to_json,
           json: push_token.to_json,
           status: 201
       )

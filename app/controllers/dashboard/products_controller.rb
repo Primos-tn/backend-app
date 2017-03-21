@@ -32,6 +32,8 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         data = {products: products, with_header: import_params[:with_header]}
         temp_id = set_cached_products_for_import(data.to_s)
         @temp_id = temp_id
+        @with_header = import_params
+        @header = products[0]
         return render 'import_step_2'
       else
         # no sense

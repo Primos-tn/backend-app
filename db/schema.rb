@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170304120619) do
+ActiveRecord::Schema.define(version: 20170321212801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,12 +18,12 @@ ActiveRecord::Schema.define(version: 20170304120619) do
   create_table "account_access_tokens", force: :cascade do |t|
     t.integer  "account_id"
     t.string   "type"
-    t.string   "expires"
     t.string   "uuid"
     t.json     "info"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "token_value"
+    t.datetime "expires"
   end
 
   create_table "account_push_tokens", force: :cascade do |t|

@@ -47,6 +47,10 @@ class Product < ActiveRecord::Base
   validates :brand, presence: true
   validates :name, presence: true
 
+  def self.import_names
+    %w(name old_price new_price)
+  end
+
   def self.get_search_query ()
 
   end

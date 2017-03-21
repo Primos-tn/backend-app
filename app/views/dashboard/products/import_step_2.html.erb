@@ -1,7 +1,14 @@
 Step 2
 <%= form_tag import_dashboard_products_path do %>
+
+    <div>
+      <% @header.each do |header_item| %>
+          <%= header_item %> :
+          <%=  select_tag header_item,  options_for_select(Product.import_names) %>
+      <% end %>
+    </div>
     <%= hidden_field_tag 'uuid', @temp_id %>
     <%= hidden_field_tag 'step', 2 %>
-    <%= submit_tag t("import") %>
+    <%= submit_tag t("next") %>
 <% end %>
 <%= @temp_id %>

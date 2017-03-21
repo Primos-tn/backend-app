@@ -3,5 +3,5 @@ Step 1
 <%= form_tag import_dashboard_products_path, multipart: true do %>
     <%= file_field_tag :file %>
     <%= check_box_tag :with_header, t('With header'), true %>
-    <%= submit_tag "import" %>
+    <%= submit_tag 'import' %>
 <% end %>
