@@ -2966,11 +2966,76 @@ body.map main {
   padding-right: 0px;
 }
 
-/* line 13, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 11, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapCounter {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 50%;
+  border: solid 5px #ffb249;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  z-index: 500;
+  text-align: center;
+  font-size: 39px;
+  padding-top: 9px;
+  font-family: "Ubuntu", sans-serif;
+  font-style: inherit;
+}
+
+/* line 27, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapFilterContainer {
+  text-align: center;
+  width: 100%;
+}
+/* line 29, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapFilterContainer .MapFilterContainer__Inner {
+  width: 400px;
+  position: relative;
+  margin: auto;
+  background-color: white;
+  padding: 0px 2px 2px;
+}
+/* line 36, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapFilterContainer .MapFilterContainer__closer {
+  position: absolute;
+  z-index: 1;
+  right: 5px;
+  top: 1px;
+  font-size: 11px;
+  color: white;
+  cursor: pointer;
+}
+
+/* line 47, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapFilterShow, .MapFilterContainer {
+  position: absolute;
+  bottom: 150px;
+  right: 10px;
+  z-index: 500;
+}
+
+/* line 53, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+.MapFilterShow {
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
+  color: #ffb249;
+  border: solid 1px #ffb249;
+  bottom: 90px;
+}
+
+/* line 67, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer #map {
   width: 100%;
 }
-/* line 17, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 72, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer #map_details {
   position: absolute;
   bottom: 0px;
@@ -2979,14 +3044,14 @@ body.map main {
   width: 100%;
   z-index: 5000;
 }
-/* line 26, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 81, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer .leaflet-div-icon {
   background-color: transparent;
   border: none;
   text-align: center;
   vertical-align: center;
 }
-/* line 31, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 86, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer .leaflet-div-icon .pin {
   width: 30px;
   height: 30px;
@@ -3018,7 +3083,7 @@ body.map main {
   -ms-animation-duration: 1s;
   animation-duration: 1s;
 }
-/* line 62, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 117, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer .leaflet-div-icon .pin:after {
   content: '';
   width: 14px;
@@ -3029,7 +3094,7 @@ body.map main {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
-/* line 72, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 127, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer .leaflet-div-icon .pulse {
   background: #ffb249;
   -webkit-border-radius: 50%;
@@ -3047,7 +3112,7 @@ body.map main {
   transform: rotateX(55deg);
   z-index: -2;
 }
-/* line 89, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 144, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .MapContainer .leaflet-div-icon .pulse:after {
   content: "";
   -webkit-border-radius: 50%;
@@ -3329,7 +3394,7 @@ body.map main {
     transform: translateY(0) rotate(-45deg);
   }
 }
-/* line 375, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
+/* line 430, /home/hassenfath/work/pingo/server/app/assets/stylesheets/application/app/map.scss */
 .card .MapContainer #map {
   border-radius: 6px;
   min-height: 245px;

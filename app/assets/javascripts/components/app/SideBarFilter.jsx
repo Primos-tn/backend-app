@@ -112,7 +112,6 @@ var RangeSlider = React.createClass({
             <div className="FilterBlock">
                 <div className="FilterBlock__PriceRange">
                     <div className="AppSideBar__Header">
-                        <input type="checkbox" className="pull-left" onclick={this._reset}/>
                         <span>Price range:</span>
                         <input type="text" id="amount" readonly
                                style={{border:0, color: '#f6931f', 'display' : 'inline-block'}}/>
@@ -245,7 +244,11 @@ var SideBarFilter = React.createClass({
          }*/
         let priceRange = [];
         if (this.props.shwoPriceRange) {
-            priceRange.push(<RangeSlider onSliderChanged={this.onSliderChanged}/>)
+            priceRange.push(
+                <div>
+                    <input type="checkbox" className="pull-left" onclick={this._reset}/>
+                    <RangeSlider onSliderChanged={this.onSliderChanged}/>
+                </div>)
         }
         return (
             <div>

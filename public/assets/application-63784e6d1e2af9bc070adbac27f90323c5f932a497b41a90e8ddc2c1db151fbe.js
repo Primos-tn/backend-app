@@ -34503,9 +34503,31 @@ var MapView = React.createClass({
     },
     /**
      *
+     * @param dir
+     */
+    loopit: function (dir) {
+        var diff = this.state.tomorrow - Date.now();
+        var hours = 0;
+        var minutes = 0;
+        if (diff > 0) {
+            hours = Math.floor(diff % 86400000 / 3600000);
+            minutes = Math.round(diff % 86400000 % 3600000 / 60000);
+            $('.MapCounter').html([hours, minutes].join(':'));
+            // recursive call
+            setTimeout((function () {
+                this.loopit();
+            }).bind(this), 60000);
+        }
+    },
+    /**
+     *
      */
     getInitialState: function () {
-        return { items: [], serverLoadingDone: false, filter: {} };
+        var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        tomorrow.setUTCHours(0);
+        tomorrow.setUTCMinutes(0);
+        tomorrow.setUTCSeconds(0);
+        return { items: [], serverLoadingDone: false, filter: {}, filterShow: false, tomorrow: tomorrow.getTime() };
     },
     /**
      *
@@ -34527,9 +34549,9 @@ var MapView = React.createClass({
      *
      */
     componentDidMount: function () {
-        $(window).on('scroll', function () {
-            console.log('#################"');
-        });
+        setTimeout((function () {
+            this.loopit();
+        }).bind(this), 1000);
         App.Dispatcher.attach(this.actions.list, this.onDataChange);
         App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
         this.getServerItems();
@@ -34540,6 +34562,13 @@ var MapView = React.createClass({
     componentWillUnmount: function () {
         App.Dispatcher.detach(this.actions.list, this.onDataChange);
         App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+        $('.MapFilterContainer').draggable();
+    },
+    /**
+     *
+     */
+    toggleFilter: function () {
+        this.setState({ filterShow: !this.state.filterShow });
     },
     /**
      *
@@ -34558,6 +34587,24 @@ var MapView = React.createClass({
         return React.createElement(
             'div',
             null,
+            React.createElement(
+                'div',
+                { className: 'MapFilterContainer', style: { 'display': this.state.filterShow ? 'block' : 'none' } },
+                React.createElement(
+                    'div',
+                    { className: 'MapFilterContainer__Inner' },
+                    React.createElement('span', { className: 'MapFilterContainer__closer ti-close', onClick: this.toggleFilter }),
+                    React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: 'Product' }),
+                    React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged })
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'MapFilterShow', onClick: this.toggleFilter,
+                    style: { 'display': this.state.filterShow ? 'none' : '' } },
+                React.createElement('span', { className: 'ti-filter' })
+            ),
+            React.createElement('div', { className: 'MapCounter' }),
             React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged })
         );
     }
@@ -36154,7 +36201,6 @@ var RangeSlider = React.createClass({
                 React.createElement(
                     "div",
                     { className: "AppSideBar__Header" },
-                    React.createElement("input", { type: "checkbox", className: "pull-left", onclick: this._reset }),
                     React.createElement(
                         "span",
                         null,
@@ -36287,7 +36333,12 @@ var SideBarFilter = React.createClass({
          }*/
         var priceRange = [];
         if (this.props.shwoPriceRange) {
-            priceRange.push(React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged }));
+            priceRange.push(React.createElement(
+                "div",
+                null,
+                React.createElement("input", { type: "checkbox", className: "pull-left", onclick: this._reset }),
+                React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged })
+            ));
         }
         return React.createElement(
             "div",
@@ -36346,6 +36397,16 @@ var SideBarFooter = React.createClass({
                     { href: "http://play.google.com/store?utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" },
                     React.createElement("img", { alt: "undefined",
                         src: "https://play.google.com/intl/en_us/badges/images/generic/ar_badge_web_generic.png" })
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "AppIOSStoreLink" },
+                React.createElement(
+                    "a",
+                    { href: "" },
+                    React.createElement("img", { alt: "undefined", style: { height: '42px', 'marginBottom': '15px' },
+                        src: "/assets/welcome//Download_on_the_App_Store_Badge.png" })
                 )
             ),
             React.createElement(

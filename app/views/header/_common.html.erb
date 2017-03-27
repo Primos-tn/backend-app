@@ -8,3 +8,10 @@
       <i class="visible-xs-inline visible-sm-inline ti-bar-chart"></i>
   <% end %>
 </li>
+<%- if controller_name !='map' %>
+    <li>
+      <%= link_to (map_path) do %>
+          <span class="ti-map-alt" style="color: white"></span>
+      <% end %>
+    </li>
+<% end -%>

@@ -22,19 +22,15 @@
                     <%= entry.name %> &nbsp;
                   </h5>
                 </div>
-                <div class="col-md-3 text-center">
-                  <%= link_to edit_dashboard_brand_gallery_path(entry) do %>
-                      <button class="btn btn-sm btn-success btn-icon">
-                        <span class="ti-target"></span>
-                      </button>
-                  <% end %>
-                </div>
-                <div class="col-md-3  text-center">
-                  <%= link_to dashboard_brand_gallery_path(entry), method: :delete, data: {confirm: I18n.t('Are you sure about that')} do %>
-                      <button class="btn btn-sm btn-danger btn-icon">
-                        <span class="ti-trash "></span>
-                      </button>
-                  <% end %>
+                <div class=" col-md-6 btn-group">
+                    <%= link_to edit_dashboard_brand_gallery_path(entry), class: 'btn btn-success' do %>
+                        <!--<button class="">-->
+                          <span class="ti-pencil-alt"></span>
+                        <!--</button>-->
+                    <% end %>
+                    <%= link_to dashboard_brand_gallery_path(entry), method: :delete, data: {confirm: I18n.t('Are you sure about that')}, class: 'btn btn-danger' do %>
+                          <span class="ti-trash "></span>
+                    <% end %>
                 </div>
               </div>
             </div>

@@ -1,6 +1,8 @@
 fr:
   # views/dashboard/index.html
   Launch : Lancer maintenant
+  Import with header : Importer avec en-tête
+  Next : Suivant
   Add to collection : Ajouter à la collection
   Edit :  Mettre à jour
   Show : Voir

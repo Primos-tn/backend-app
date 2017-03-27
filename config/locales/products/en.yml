@@ -1,8 +1,10 @@
 en:
   # views/dashboard/index.html
   Launch : Launch now
+  Import with header : Import with header
   Edit :  Edit
   Show : Show
+  Next : Next
   Product name : Product name
   New Product : New Product
   Brand : Brand

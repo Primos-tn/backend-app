@@ -19,34 +19,103 @@ class Dashboard::ProductsController < Dashboard::DashboardController
 
 
   def import
-    step = params[:step] || 1
+    step = params['step'] || 1
+    step = step.to_i
+    # check for step
     if step == 1
+      # check for request type
       if request.get?
         return render 'import_step_1'
       elsif request.post?
+        # get import params
         import_params = products_import_form_params
         products = []
+        # read csv file
         CSV.foreach(import_params[:file].path) do |row|
           products << row
         end
-        data = {products: products, with_header: import_params[:with_header]}
-        temp_id = set_cached_products_for_import(data.to_s)
-        @temp_id = temp_id
-        @with_header = import_params
-        @header = products[0]
-        return render 'import_step_2'
+        if products.count < 3
+          return render 'import_step_1'
+        else
+          @with_header = import_params[:with_header]
+          # now store data
+          data = {products: products, with_header: @with_header}
+          temp_id = set_cached_products_for_import(data.to_s)
+          @temp_id = temp_id
+          @header = (1 .. products[0].count).to_a
+          # if with header, get the first item
+          if @with_header
+            @header_names = products[0]
+            @samples = [products[1], products[2]]
+            @more = products.count - 3
+          else
+            # get from 0 to n
+            @header_names = @header
+            @samples = [products[0], products[1]]
+            @more = products.count - 2
+          end
+          return render 'import_step_2'
+        end
       else
         # no sense
       end
-    elsif step = 2
-      data = get_cached_products_for_import(params[:uuid])
-      if data.nil?
-        return
-      end
-      @data = eval(data)
-      return render 'import_step_3'
     else
-      return
+      if step == 2
+        # get the products cached
+        data = get_cached_products_for_import(params[:uuid])
+
+        if data.nil?
+          render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+        end
+
+        data = eval(data)
+        with_header = data[:with_header]
+        @products_lines = data[:products]
+        # remove first line from
+        if with_header
+          @products_lines.shift
+        end
+        @attributes = {}
+        @products_objects = []
+        Product.import_names.each_with_index do |attr, index|
+          attr_key = params['attr_' + index.to_s]
+          unless attr_key.nil?
+            if @attributes.has_value?(attr_key)
+              @error = 'duplicate'
+              return render 'import_step_3', status: 500
+            else
+              @attributes[index] = attr_key
+            end
+          end
+        end
+        #
+        @products_lines.each do |product_line|
+          puts product_line
+          puts product_line
+          puts product_line
+          puts product_line
+          puts product_line
+          attributes = {}
+          @attributes.each do |key_index, value|
+            attributes[value] = product_line[key_index]
+          end
+          attributes[:brand] = current_brand
+          @products_objects.push(Product.new(attributes))
+        end
+
+        ActiveRecord::Base.transaction do
+          begin
+            # This will raise a unique constraint error...
+            @products_objects.each(&:save!)
+          rescue ActiveRecord::StatementInvalid
+            @error = 'db error'
+            return render 'import_step_3', status: 500
+          end
+        end
+        redirect_to dashboard_products_path
+      else
+        raise Exception(step)
+      end
     end
   end
 

@@ -13,6 +13,14 @@ var SideBarFooter = React.createClass({
                         <img alt='undefined'
                              src='https://play.google.com/intl/en_us/badges/images/generic/ar_badge_web_generic.png'/></a>
                 </div>
+                <div className="AppIOSStoreLink">
+                    <a href="">
+
+                        <img alt='undefined' style={{height: '42px', 'marginBottom': '15px'}}
+                             src='/assets/welcome//Download_on_the_App_Store_Badge.png'/></a>
+
+                </div>
+
                 <div className="SideBarFooter__Company">
                     <a href="#"><i className="  ti-facebook"></i></a>
                     <a href="#"><i className="ti-linkedin"></i></a>

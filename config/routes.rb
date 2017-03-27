@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     end
 
 
-    #get 'map', to: 'map#index'
+    get 'map', to: 'map#index'
     post 'company/contact'
     get 'company/:page', to: 'company#show', as: 'company_page'
 

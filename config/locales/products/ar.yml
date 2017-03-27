@@ -1,7 +1,9 @@
 ar:
   # views/dashboard/index.html
   Launch : إطلاق
+  Import with header : تحميل مع العنواين
   Edit :  تحرير
+  Next : التالي
   Show : إظهار
   Product name : اسم المنتوج
   New Product : اضافة منتوج جديد
