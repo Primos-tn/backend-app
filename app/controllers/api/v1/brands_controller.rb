@@ -14,9 +14,11 @@ class Api::V1::BrandsController < Api::V1::BaseController
     else
       page = [page.to_i, 1].max
     end
+    # used to exclude stores of today
+    # this used when user asked for a map with exclude_today query key
+    @exclude_stores_ids = []
 
-
-    @brands = Brand.eager_load (:account)
+    @brands = Brand.eager_load ([:account, :stores])
 
     if request.params[:map]
       center = request.params[:map][:center].to_a
@@ -25,6 +27,11 @@ class Api::V1::BrandsController < Api::V1::BaseController
       box = Geocoder::Calculations.bounding_box(center, distance)
       stores_ids = Store.within_bounding_box(box).map(&:id)
       @brands = @brands.joins([:stores]).where({:stores => {id: stores_ids}})
+      # check if we need to exclude stores that has
+      if request.params[:exclude_today]
+        @exclude_stores_ids = Store.has_offers_toady.map(&:id)
+      end
+
     end
 
     categories_ids = request.params[:categoriesList]

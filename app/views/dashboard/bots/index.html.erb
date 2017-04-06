@@ -1,0 +1,16 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <h4 class="title">
+        <%= I18n.t('Bots') %>
+      </h4>
+    </div>
+    <div class="content">
+      <%- if @facebook_required %>
+          <%= render 'login' %>
+      <% else %>
+          <%= render 'index' %>
+      <% end -%>
+    </div>
+  </div>
+</div>

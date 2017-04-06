@@ -45,6 +45,9 @@ var BrandProfileReviewEdit = React.createClass({
     componentWillUnmount: function () {
         App.Dispatcher.detach(App.Actions.BRAND_EDIT_REVIEW, this.onReviewDone);
     },
+    /**
+     *
+     */
     onReviewDone (){
         this.setState({isReviewing: false});
     },

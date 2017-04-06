@@ -85,4 +85,6 @@ gem 'bunny',  ">= 2.5.1"
 gem 'redis', '~>3.2'
 gem 'redis-namespace'
 
+gem "koala"
+
 ruby '2.3.3'

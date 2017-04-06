@@ -8,6 +8,7 @@ ar:
   we need your current password to confirm your changes : نحن بحاجة إلى كلمة المرور الحالية لتأكيد التغييرات
   Cancel my account : إلغاء الحساب
   leave blank if you don\'t want to change it: أترك حقل كلمة السر فارغا إذا كنت لا ترغب في تغييره
+  Manage : إدارة
   activerecord:
     attributes:
       account :

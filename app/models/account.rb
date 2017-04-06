@@ -83,16 +83,22 @@ class Account < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid, email: auth.info.email).first_or_create do |account|
+    account = where(provider: auth.provider, uid: auth.uid, email: auth.info.email).first_or_create do |account|
       account.auth_mode = 'omniauth'
       account.email = auth.info.email
       account.password = Devise.friendly_token[0, 20]
-      account.username = auth.info.name.gsub(/\s+/,'_') # assuming the user model has a name
+      account.provider_access_token = auth.credentials.token
+      account.username = auth.info.name.gsub(/\s+/, '_') # assuming the user model has a name
       # account.image = auth.info.image # assuming the user model has an image
       # If you are using confirmable and the provider(s) you use validate emails,
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
     end
+    if account.provider_access_token.nil?
+      account.provider_access_token = auth.credentials.token
+      account.save
+    end
+    account
   end
 
   # def self.new_with_session(params, session)
@@ -195,8 +201,6 @@ class Account < ActiveRecord::Base
   def is_admin?
     self.is_super_admin or self.account_type == Account.accounts_types[:admin]
   end
-
-
 
 
   def get_brands_i_follow_given_list(brands_ids)

@@ -9,6 +9,7 @@ class Account::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # GET|POST /resource/auth/twitter
   def facebook
+
     if request.env['omniauth.auth'].info.email.blank?
       redirect_to '/accounts/auth/facebook?auth_type=rerequest&scope=email'
     end

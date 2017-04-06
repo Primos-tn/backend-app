@@ -1,5 +1,8 @@
 //
 var Map = React.createClass({
+    // getMarkerIconStyle
+    // onMapAreaChanged
+
     /**
      *
      */
@@ -22,7 +25,10 @@ var Map = React.createClass({
             $map.css('height', $(window).height() - top);
             $('body').addClass('map');
         }
-        var map = L.map('map').setView([51.505, -0.09], 5);
+        var position = store.get(App.Constants.USER_MAP_LAST_CENTER) || [51.505, -0.09] ;
+        var zoom = store.get(App.Constants.USER_MAP_LAST_ZOOM) || 5 ;
+
+        var map = L.map('map').setView(position, zoom);
 
         L.tileLayer(App.Configuration.MAP_TILES_URL, {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -31,29 +37,21 @@ var Map = React.createClass({
         this._placeMarkers();
         if (this.props.onMapAreaChanged) {
             let changed = this.props.onMapAreaChanged;
-            let circle = L.circle(map.getCenter(), 50 * 1000).addTo(map);
+            let circle = L.circle(map.getCenter(), 25 * 1000).addTo(map);
             let fireChange = function (e) {
                 changed(e.target);
                 circle.setLatLng(e.target.getCenter());
+                store.set(App.Constants.USER_MAP_LAST_CENTER, e.target.getCenter())
+                store.set(App.Constants.USER_MAP_LAST_ZOOM, e.target.getZoom())
                 //changed(map.getCenter(), map.getCenter().distanceTo(map.getBounds().getSouthWest()));
             };
+
             map.on('zoomend', fireChange);
             map.on('dragend', fireChange);
         }
-
-    },
-    /**
-     *
-     * @param entry
-     * @returns {*}
-     * @private
-     */
-    _parsePosition  (entry){
-        var position = entry.position || entry;
-        if (position.latitude) {
-            position = [position.latitude, position.longitude]
+        if (this.props.onMapReady) {
+            this.props.onMapReady(map)
         }
-        return position;
     },
     /**
      *
@@ -72,25 +70,42 @@ var Map = React.createClass({
      *
      * @private
      */
-    _placeMarkers: function () {
-        let positions = this.props.positions;
+    _placeMarkers: function (positions) {
+        positions = positions || this.props.positions;
         let parsedPosition;
         let parsedPositions = [];
+        let defaultIcon = L.divIcon({
+            html: '<div class="pin"></div>\
+            <div class="pulse"></div>'
+        });
+        let icon;
+        // getIconStyle
         if (positions) {
             positions.forEach(function (entry) {
-                parsedPosition = this._parsePosition(entry);
+                if (this.props.getMarkerIconStyle) {
+                    icon = this.props.getMarkerIconStyle(entry);
+                }
+                else {
+                    icon = defaultIcon
+                }
+                parsedPosition = App.Helpers.parsePosition(entry);
                 parsedPositions.push(parsedPosition);
                 L.marker(parsedPosition, {
-                    icon: L.divIcon({
-                        html: '<div class="pin"></div>\
-            <div class="pulse"></div>'
-                    })
+                    icon: icon
                 }).addTo(this._map);
             }.bind(this));
             this._map.setView(this._calculateCentroid(parsedPositions))
         }
     },
     /**
+     *
+     * @param positions
+     */
+    addMarkers (positions){
+        this._placeMarkers(positions)
+    },
+    /**
+     *
      */
     componentWillUnmount: function () {
         App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);

@@ -118,7 +118,7 @@ var BrandProfile = React.createClass({
                     tabClassInstance = <BrandProfileInfo id={this.props.id} brandInfo={this.props.brandInfo}/>;
                     break;
                 case STORES_TAB :
-                    tabClassInstance = <BrandProfileStoresInfo positions={this.props.stores}/>;
+                    tabClassInstance = <BrandProfileStoresInfo brandId={this.props.id}/>;
                     break;
                 case PRODUCTS_TAB :
                     tabClassInstance = <ProductsList id={this.props.id} brand={this.props.id}/>;

@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   authenticated do
-    root :to => 'web/home#index'
+    root :to => 'web/map#index'
   end
-  root :to => 'web/welcome#index', :as => 'anonymous'
+  root :to => 'web/map#index', :as => 'anonymous'
   # handle account
   # check fo devise_scope method to show how to handle
   devise_scope :user do
@@ -158,6 +158,11 @@ Rails.application.routes.draw do
 
     scope :targetize, controller: 'targetize' do
       get '/(*)' => 'targetize#index'
+    end
+
+    scope :bots, controller: 'bots', as: 'bots' do
+      post '/manage-page/' => 'bots#manage_page', as: 'manage_page'
+      get '/(*)' => 'bots#index'
     end
 
     scope :ajax, controller: 'ajax' do

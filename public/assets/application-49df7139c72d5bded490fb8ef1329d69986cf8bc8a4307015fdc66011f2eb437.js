@@ -33078,6 +33078,31 @@ App.Helpers = {
         return query;
     },
     /**
+     *
+     * @param entry
+     * @returns {*}
+     * @private
+     */
+    parsePosition : function (entry){
+        var position = entry.position || entry;
+        if (position.latitude) {
+            position = [position.latitude, position.longitude]
+        }
+        if (position.lat){
+            position = [position.lat, position.lng]
+        }
+        return position;
+    },
+    //
+    getTomorrow: function () {
+        var tomorrow = new Date();
+        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        return tomorrow ;
+    },
+    /**
      * Format an url given a key, value object
      * foo/:bar , { bar : "alex" } will be transformed to foo/alex
      * queryObject , { bar : "alex" } will be transformed to foo/alex
@@ -33129,7 +33154,9 @@ var routes = {
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
+    // @deprecated use locations
     brandStores: 'brands/:id/stores',
+    brandLocations : 'brands/:id/stores',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
     // reviews
@@ -33239,7 +33266,7 @@ App.Actions = {
     BRAND_INOFO_CHANGED: 'BRAND_INOFO_CHANGED',
     BRAND_FOLLOW: 'BRAND_FOLLOW',
     BRAND_UNFOLLOW: 'BRAND_UNFOLLOW',
-
+    BRAND_LOCATIONS_FETCHING : 'BRAND_LOCATIONS_FETCHING',
     BRAND_REVIEWS_LIST_FETCHING : 'BRAND_REVIEWS_LIST_FETCHING',
     BRAND_EDIT_REVIEW : 'BRAND_EDIT_REVIEW'
 
@@ -33252,7 +33279,9 @@ App.Constants = {
     AUTO_COMPLETE: 'AUTOCOMPLETE',
     MEDIA_URL: '/media',
     LOGIN_ACTION: 'LOGIN',
-    END_DAY: 'END_DAY'
+    END_DAY: 'END_DAY',
+    USER_MAP_LAST_CENTER : 'USER_MAP_LAST_CENTER',
+    USER_MAP_LAST_ZOOM : 'USER_MAP_LAST_ZOOM'
 
 };
 
@@ -33392,7 +33421,7 @@ var BrandProfile = React.createClass({
                     tabClassInstance = React.createElement(BrandProfileInfo, { id: this.props.id, brandInfo: this.props.brandInfo });
                     break;
                 case STORES_TAB:
-                    tabClassInstance = React.createElement(BrandProfileStoresInfo, { positions: this.props.stores });
+                    tabClassInstance = React.createElement(BrandProfileStoresInfo, { brandId: this.props.id });
                     break;
                 case PRODUCTS_TAB:
                     tabClassInstance = React.createElement(ProductsList, { id: this.props.id, brand: this.props.id });
@@ -33735,6 +33764,9 @@ var BrandProfileReviewEdit = React.createClass({
     componentWillUnmount: function () {
         App.Dispatcher.detach(App.Actions.BRAND_EDIT_REVIEW, this.onReviewDone);
     },
+    /**
+     *
+     */
     onReviewDone: function () {
         this.setState({ isReviewing: false });
     },
@@ -33874,16 +33906,56 @@ var BrandProfileReviewsList = React.createClass({
 
 
 var BrandProfileStoresInfo = React.createClass({
-    displayName: "BrandProfileStoresInfo",
+    displayName: 'BrandProfileStoresInfo',
 
+    /**
+     *
+     */
+    componentDidMount: function () {
+        App.Dispatcher.attach(App.Actions.BRAND_LOCATIONS_FETCHING, this.onLocationsLoaded);
+        this._fetchItems();
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(App.Actions.BRAND_LOCATIONS_FETCHING, this.onLocationsLoaded);
+    },
+    /**
+     *
+     * @param response
+     */
+    onLocationsLoaded: function (response) {
+        this.refs.map.addMarkers(response.stores);
+    },
+    /**
+     *
+     */
+    _fetchItems: function () {
+        this.setState({ isFetchingItems: true });
+        App.Stores.loadData({
+            url: App.Routes.brandLocations,
+            params: { id: this.props.brandId },
+            action: App.Actions.BRAND_LOCATIONS_FETCHING
+        });
+    },
+    /**
+     *
+     */
+    getMarkerIconStyle: function (entry) {
+        console.log(entry);
+        var html = '<img src="' + App.Helpers.getMediaUrl(entry.picture.small_thumb.url) + '">';
+        //console.log(this.props.brand.picture);
+        return L.divIcon({ className: 'DashboardStores__Marker', html: html });
+    },
     /**
      *
      */
     render: function () {
         return React.createElement(
-            "div",
+            'div',
             null,
-            React.createElement(Map, { positions: this.props.positions })
+            React.createElement(Map, { ref: 'map', positions: this.props.positions, getMarkerIconStyle: this.getMarkerIconStyle })
         );
     }
 });
@@ -34286,7 +34358,7 @@ var EmptyList = React.createClass({
     }
 
 });
-//
+
 var DayTimer = React.createClass({
     displayName: "DayTimer",
 
@@ -34301,11 +34373,7 @@ var DayTimer = React.createClass({
      * @private
      */
     _update: function () {
-        var tomorrow = new Date();
-        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
-        tomorrow.setHours(0);
-        tomorrow.setMinutes(0);
-        tomorrow.setSeconds(0);
+        var tomorrow = App.Helpers.getTomorrow();
         var timerId = countdown(tomorrow, function (ts) {
             //if (ts.value > 0){
             if (ts.hours == 0 && ts.minutes == 0 && ts.seconds == 0) {
@@ -34364,6 +34432,9 @@ var Fetching = React.createClass({
 var Map = React.createClass({
     displayName: 'Map',
 
+    // getMarkerIconStyle
+    // onMapAreaChanged
+
     /**
      *
      */
@@ -34387,7 +34458,10 @@ var Map = React.createClass({
             $map.css('height', $(window).height() - top);
             $('body').addClass('map');
         }
-        var map = L.map('map').setView([51.505, -0.09], 5);
+        var position = store.get(App.Constants.USER_MAP_LAST_CENTER) || [51.505, -0.09];
+        var zoom = store.get(App.Constants.USER_MAP_LAST_ZOOM) || 5;
+
+        var map = L.map('map').setView(position, zoom);
 
         L.tileLayer(App.Configuration.MAP_TILES_URL, {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -34397,29 +34471,22 @@ var Map = React.createClass({
         if (this.props.onMapAreaChanged) {
             (function () {
                 var changed = _this.props.onMapAreaChanged;
-                var circle = L.circle(map.getCenter(), 50 * 1000).addTo(map);
+                var circle = L.circle(map.getCenter(), 25 * 1000).addTo(map);
                 var fireChange = function (e) {
                     changed(e.target);
                     circle.setLatLng(e.target.getCenter());
+                    store.set(App.Constants.USER_MAP_LAST_CENTER, e.target.getCenter());
+                    store.set(App.Constants.USER_MAP_LAST_ZOOM, e.target.getZoom());
                     //changed(map.getCenter(), map.getCenter().distanceTo(map.getBounds().getSouthWest()));
                 };
+
                 map.on('zoomend', fireChange);
                 map.on('dragend', fireChange);
             })();
         }
-    },
-    /**
-     *
-     * @param entry
-     * @returns {*}
-     * @private
-     */
-    _parsePosition: function (entry) {
-        var position = entry.position || entry;
-        if (position.latitude) {
-            position = [position.latitude, position.longitude];
+        if (this.props.onMapReady) {
+            this.props.onMapReady(map);
         }
-        return position;
     },
     /**
      *
@@ -34440,25 +34507,41 @@ var Map = React.createClass({
      *
      * @private
      */
-    _placeMarkers: function () {
-        var positions = this.props.positions;
+    _placeMarkers: function (positions) {
+        positions = positions || this.props.positions;
         var parsedPosition = undefined;
         var parsedPositions = [];
+        var defaultIcon = L.divIcon({
+            html: '<div class="pin"></div>\
+            <div class="pulse"></div>'
+        });
+        var icon = undefined;
+        // getIconStyle
         if (positions) {
             positions.forEach((function (entry) {
-                parsedPosition = this._parsePosition(entry);
+                if (this.props.getMarkerIconStyle) {
+                    icon = this.props.getMarkerIconStyle(entry);
+                } else {
+                    icon = defaultIcon;
+                }
+                parsedPosition = App.Helpers.parsePosition(entry);
                 parsedPositions.push(parsedPosition);
                 L.marker(parsedPosition, {
-                    icon: L.divIcon({
-                        html: '<div class="pin"></div>\
-            <div class="pulse"></div>'
-                    })
+                    icon: icon
                 }).addTo(this._map);
             }).bind(this));
             this._map.setView(this._calculateCentroid(parsedPositions));
         }
     },
     /**
+     *
+     * @param positions
+     */
+    addMarkers: function (positions) {
+        this._placeMarkers(positions);
+    },
+    /**
+     *
      */
     componentWillUnmount: function () {
         App.Dispatcher.detach(App.Actions.SEARCH, this._searchChanged);
@@ -34493,19 +34576,59 @@ var Map = React.createClass({
  */
 
 var MapView = React.createClass({
-    displayName: 'MapView',
+    displayName: "MapView",
 
     /**
      *
      */
+    getInitialState: function () {
+        var tomorrow = App.Helpers.getTomorrow();
+        return {
+            map: null,
+            offers: [],
+            serverLoadingDone: false,
+            filterShow: false,
+            tomorrow: tomorrow.getTime(),
+            categoriesList: [],
+            range: [],
+            locations: []
+
+        };
+    },
+    /**
+     *
+     */
     actions: {
-        list: "PRODUCTS_LIST"
+        productsList: "PRODUCTS_LIST",
+        locationsList: "LOCATIONS_LIST"
+
+    },
+
+    /**
+     *
+     */
+    componentDidMount: function () {
+        setTimeout((function () {
+            this.countDown();
+        }).bind(this), 1000);
+        App.Dispatcher.attach(this.actions.productsList, this.onProductsChange);
+        App.Dispatcher.attach(this.actions.locationsList, this.onLocationsLoaded);
+        //App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
+    },
+    /**
+     *
+     */
+    componentWillUnmount: function () {
+        App.Dispatcher.detach(this.actions.productsList, this.onProductsChange);
+        App.Dispatcher.detach(this.actions.locationsList, this.onLocationsLoaded);
+        //App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
+        $('.MapFilterContainer').draggable();
     },
     /**
      *
      * @param dir
      */
-    loopit: function (dir) {
+    countDown: function (dir) {
         var diff = this.state.tomorrow - Date.now();
         var hours = 0;
         var minutes = 0;
@@ -34515,19 +34638,9 @@ var MapView = React.createClass({
             $('.MapCounter').html([hours, minutes].join(':'));
             // recursive call
             setTimeout((function () {
-                this.loopit();
+                this.countDown();
             }).bind(this), 60000);
         }
-    },
-    /**
-     *
-     */
-    getInitialState: function () {
-        var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        tomorrow.setUTCHours(0);
-        tomorrow.setUTCMinutes(0);
-        tomorrow.setUTCSeconds(0);
-        return { items: [], serverLoadingDone: false, filter: {}, filterShow: false, tomorrow: tomorrow.getTime() };
     },
     /**
      *
@@ -34536,11 +34649,11 @@ var MapView = React.createClass({
         // get query
         var query = $.extend({
             brands: this.props.brand
-        }, this.state.filter);
-
+        }, { categoriesList: this.state.categoriesList }, { range: this.state.range }, { map: this.state.map });
+        console.log(query);
         App.Stores.loadData({
             url: App.Routes.products,
-            action: this.actions.list,
+            action: this.actions.productsList,
             query: query
         });
     },
@@ -34548,21 +34661,78 @@ var MapView = React.createClass({
     /**
      *
      */
-    componentDidMount: function () {
-        setTimeout((function () {
-            this.loopit();
-        }).bind(this), 1000);
-        App.Dispatcher.attach(this.actions.list, this.onDataChange);
-        App.Dispatcher.attach(App.Actions.FILTER_CHANGED, this.filterChanged);
+    loadStores: function () {
+        App.Stores.loadData({
+            url: App.Routes.brands,
+            action: this.actions.locationsList,
+            query: { map: this.state.map, exclude_today: true }
+        });
+    },
+    /**
+     *
+     */
+    onMapReady: function (map) {
+        console.log('map ready');
+        this._setMapParams(map, true);
+        this.storesMarkers = new L.MarkerClusterGroup({
+            iconCreateFunction: function (cluster) {
+                return L.divIcon({
+                    html: '<div class="marker-store"> \
+                    <div class="">' + cluster.getChildCount() + '</div>\
+                    </div>'
+                });
+            }
+        });
+        map.addLayer(this.storesMarkers);
+    },
+    /**
+     *
+     * @param map
+     * @param firsLoad only for first time
+     * @returns {{center: *, distance: *}}
+     * @private
+     */
+    _setMapParams: function (map, firsLoad) {
+        var center = map.getCenter();
+        var eastBound = map.getBounds().getEast();
+        var centerEast = L.latLng(center.lat, eastBound);
+        var dist = center.distanceTo(centerEast);
+        this.setState({
+            map: {
+                center: [center.lat, center.lng],
+                distance: dist / 2
+            }
+        }, (function () {
+            if (firsLoad) {
+                this.getServerItems();
+                alert('load');
+                this.loadStores();
+            }
+        }).bind(this));
+    },
+    /**
+     *
+     * @param map
+     */
+    onMapAreaChanged: function (map) {
+        this._setMapParams(map);
+        this.loadStores();
+        this.getServerItems();
+    },
+    /**
+     *
+     * @param categoriesList
+     */
+    onCategoriesSelected: function (categoriesList) {
+        this.setState({ categoriesList: categoriesList });
         this.getServerItems();
     },
     /**
      *
      */
-    componentWillUnmount: function () {
-        App.Dispatcher.detach(this.actions.list, this.onDataChange);
-        App.Dispatcher.detach(App.actions.FILTER_CHANGED, this.filterChanged);
-        $('.MapFilterContainer').draggable();
+    onSliderChanged: function (range, ui) {
+        this.setState({ range: ui.values });
+        this.getServerItems();
     },
     /**
      *
@@ -34573,39 +34743,51 @@ var MapView = React.createClass({
     /**
      *
      */
-    onMapAreaChanged: function (filter) {},
+    onProductsChange: function (result) {
+        this.setState({ offers: result.products, serverLoadingDone: true }, function () {});
+    },
+
     /**
      *
      */
-    onDataChange: function (result) {
-        this.setState({ items: result.products, serverLoadingDone: true }, function () {});
+    onLocationsLoaded: function (result) {
+        var brands = result.brands;
+        var positions = [];
+        brands.forEach(function (entry) {
+            entry.stores.forEach(function (store) {
+                console.log(store);
+                positions.push(new L.Marker(App.Helpers.parsePosition(store)));
+            });
+        });
+        // console.log(positions);
+        this.storesMarkers.addLayers(positions);
     },
     /**
      *
      */
     render: function () {
         return React.createElement(
-            'div',
+            "div",
             null,
             React.createElement(
-                'div',
-                { className: 'MapFilterContainer', style: { 'display': this.state.filterShow ? 'block' : 'none' } },
+                "div",
+                { className: "MapFilterContainer", style: { 'display': this.state.filterShow ? 'block' : 'none' } },
                 React.createElement(
-                    'div',
-                    { className: 'MapFilterContainer__Inner' },
-                    React.createElement('span', { className: 'MapFilterContainer__closer ti-close', onClick: this.toggleFilter }),
-                    React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: 'Product' }),
+                    "div",
+                    { className: "MapFilterContainer__Inner" },
+                    React.createElement("span", { className: "MapFilterContainer__closer ti-close", onClick: this.toggleFilter }),
+                    React.createElement(CategoriesList, { onCategoriesSelected: this.onCategoriesSelected, type: "Product" }),
                     React.createElement(RangeSlider, { onSliderChanged: this.onSliderChanged })
                 )
             ),
             React.createElement(
-                'div',
-                { className: 'MapFilterShow', onClick: this.toggleFilter,
+                "div",
+                { className: "MapFilterShow", onClick: this.toggleFilter,
                     style: { 'display': this.state.filterShow ? 'none' : '' } },
-                React.createElement('span', { className: 'ti-filter' })
+                React.createElement("span", { className: "ti-filter" })
             ),
-            React.createElement('div', { className: 'MapCounter' }),
-            React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged })
+            React.createElement("div", { className: "MapCounter" }),
+            React.createElement(Map, { onMapAreaChanged: this.onMapAreaChanged, onMapReady: this.onMapReady })
         );
     }
 });

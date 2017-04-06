@@ -1,0 +1,12 @@
+<div>
+  <% @pages.each do |entry| %>
+      <div>
+        <%= entry['name'] %>
+        <%= form_tag(dashboard_bots_manage_page_path) do %>
+            <input name="page-id" type="hidden" value="<%= entry['id'] %>" />
+            <input name="page-access-token" type="hidden" value="<%= entry['access_token'] %>" />
+            <input name="commit" type="submit" value="<%= t("Manage") %>" />
+        <% end %>
+      </div>
+  <% end %>
+</div>

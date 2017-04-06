@@ -3,6 +3,7 @@ en:
   Sign up : "Sign up"
   registration policy : "Sign up"
   identifier not valid : Identifier not valid
+  Manage : manage
   activerecord:
     attributes:
       account :

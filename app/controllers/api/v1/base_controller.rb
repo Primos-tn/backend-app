@@ -91,10 +91,11 @@ class Api::V1::BaseController < ApplicationController
     api_error(401, 'Not authorized', 'LOGIN')
   end
 
-  # def request_http_token_authentication(realm = "Application", message='HTTP Token: Access denied. You did not provide an valid API key.')
-  #   self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, '')}")
-  #   unauthenticated!
-  # end
+  # Override tauthenticate_or_request_with_http_token to send a json message
+  def request_http_token_authentication(realm = "Application", message='HTTP Token: Access denied. You did not provide an valid API key.')
+    self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, '')}")
+    unauthenticated!
+  end
 
   # Once the client has the token it sends both token and email
   # to the API for each subsequent request.

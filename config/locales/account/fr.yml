@@ -4,6 +4,7 @@ fr:
   Cancel my account : Annuler mon compte
   registration policy : Conditions de création de compte
   identifier not valid : L'address électronique n'est pas valide
+  Manage : gérer
   activerecord:
     attributes:
       account :

@@ -140,6 +140,31 @@ App.Helpers = {
         return query;
     },
     /**
+     *
+     * @param entry
+     * @returns {*}
+     * @private
+     */
+    parsePosition : function (entry){
+        var position = entry.position || entry;
+        if (position.latitude) {
+            position = [position.latitude, position.longitude]
+        }
+        if (position.lat){
+            position = [position.lat, position.lng]
+        }
+        return position;
+    },
+    //
+    getTomorrow: function () {
+        var tomorrow = new Date();
+        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        return tomorrow ;
+    },
+    /**
      * Format an url given a key, value object
      * foo/:bar , { bar : "alex" } will be transformed to foo/alex
      * queryObject , { bar : "alex" } will be transformed to foo/alex
@@ -191,7 +216,9 @@ var routes = {
     brandInfo: 'brands/:id/info',
     brandFollowers: 'brands/:id/followers',
     brandProducts: 'brands/:id/products',
+    // @deprecated use locations
     brandStores: 'brands/:id/stores',
+    brandLocations : 'brands/:id/stores',
     followBrand: 'brands/:id/follow',
     unFollowBrand: 'brands/:id/unfollow',
     // reviews

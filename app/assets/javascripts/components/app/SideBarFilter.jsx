@@ -270,6 +270,6 @@ var SideBarFilter = React.createClass({
                 {priceRange}
             </div>
         );
-    },
+    }
 });
 

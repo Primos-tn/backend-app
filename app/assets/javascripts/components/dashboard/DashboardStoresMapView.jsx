@@ -16,7 +16,7 @@ var DashboardStoresMapView = React.createClass({
          */
         if (this.props.stores) {
             let html = '<img src="' + App.Helpers.getMediaUrl(this.props.brand.picture.small_thumb.url) + '">';
-            console.log(this.props.brand.picture);
+            //console.log(this.props.brand.picture);
             var locationIcon = L.divIcon({className: 'DashboardStores__Marker', html: html});
 
             this.props.stores.forEach(function (entry) {

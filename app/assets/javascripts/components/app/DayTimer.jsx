@@ -1,4 +1,4 @@
-//
+
 var DayTimer = React.createClass({
     /**
      *
@@ -11,11 +11,7 @@ var DayTimer = React.createClass({
      * @private
      */
     _update (){
-        var tomorrow = new Date();
-        tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
-        tomorrow.setHours(0);
-        tomorrow.setMinutes(0);
-        tomorrow.setSeconds(0);
+        let tomorrow = App.Helpers.getTomorrow();
         var timerId =
             countdown(
                 tomorrow,

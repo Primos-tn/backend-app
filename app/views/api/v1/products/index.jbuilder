@@ -18,6 +18,7 @@
 json.products @products do |product_launch|
   json.id product_launch.product_id
   json.info product_launch.product
+  json.locations product_launch.product.stores
   json.brand do
     json.name product_launch.product.brand.name
     json.id product_launch.product.brand.id
