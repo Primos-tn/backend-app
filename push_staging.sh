@@ -7,6 +7,5 @@ git add .
 git commit -am $1
 git merge master
 git checkout master
-git merge dev
 git push github master
-git push github dev
+git push github developpment
