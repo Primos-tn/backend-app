@@ -28,10 +28,19 @@ json.products @products do |product_launch|
   end
   json.pictures product_launch.product.pictures
   json.stores product_launch.product.stores
+  # check for the same collection
+  if @same_brand_collections.has_key?(product_launch.product.brand_id)
+    json.brand_launches @same_brand_collections[product_launch.product.brand_id] do |entry|
+      json.id entry.product.id
+      json.name entry.product.name
+      json.pictures entry.product.pictures
+    end
+  end
 
   if @collections.has_key?(product_launch.products_collection_id)
     json.collection @collections[product_launch.products_collection_id] do |entry|
       json.id entry.product.id
+      json.name entry.product.name
       json.pictures entry.product.pictures
     end
   else

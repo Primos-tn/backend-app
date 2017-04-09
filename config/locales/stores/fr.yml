@@ -1,11 +1,11 @@
 fr:
   # views/dashboard/index.html
-  New store : Nouveau boutique
-  Store name : Nom de boutique
+  New store : Nouveau emplacement
+  Store name : Nom de l'emplacement
   Shops : Liste de stores
-  This store will be associated to : "Ce boutique sera associé au "
+  This store will be associated to : "Cet emplacement sera associé au "
   position : Position
-  Locations : Locations
+  Locations : Emplacements
   activerecord:
           attributes:
             store:
@@ -22,5 +22,5 @@ fr:
   helpers:
         submit :
           store :
-            create : Nouveau boutique
+            create : Nouveau emplacement
             update : Modifier

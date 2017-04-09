@@ -163,6 +163,7 @@ class Product < ActiveRecord::Base
   def in_launch_mode?
     # check if launch mode
     launches.detect { |item| item.launch_date.to_date == Date.today }
+    # FIXME , add time
     #!last_launch.nil? and ()
   end
 
@@ -172,7 +173,7 @@ class Product < ActiveRecord::Base
   # Add Last Launch
   #
   def can_be_launched?
-    !in_launch_mode? and !scheduled_for_launch?
+    !in_launch_mode? and !scheduled_for_launch? and !launched_since?
   end
 
 
@@ -183,6 +184,25 @@ class Product < ActiveRecord::Base
     launches.detect { |item| item.launch_date.to_date > Date.today }
   end
 
+
+  #
+  # Check if the product can be launched
+  #
+  def launched_since?
+    # TODO ,
+    false
+  end
+
+  def self.search(search, table_name='products')
+    unless table_name.nil?
+      table_name += '.'
+    end
+    if search
+      where("lower(#{table_name}name) LIKE ?", "%#{search.downcase}%")
+    else
+      where(nil)
+    end
+  end
 
   private
 

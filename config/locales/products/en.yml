@@ -20,7 +20,7 @@ en:
             name : Name
             brand_id : Brand
             pictures : Pictures
-            stores : Stores
+            stores : Locations
   default_propeties:
       height: height
       color: color

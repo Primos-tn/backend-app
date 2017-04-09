@@ -6,7 +6,7 @@ json.brands @brands do |brand|
   json.followers_count brand.followers.size
   json.is_following = false
   json.stores brand.stores do |store|
-    if @exclude_stores_ids.include?(store.id)
+    unless @exclude_stores_ids.include?(store.id)
       json.name store.name
       json.lat store.latitude
       json.lng store.longitude

@@ -10,9 +10,12 @@ class ProductLaunch < ApplicationRecord
     if stores_ids && stores_ids.length == 0
       stores_ids = [-1]
     end
+    now = Time.now.utc.strftime("%H:%M:%S")
+    puts "************** #{now} *****************"
     results = ProductLaunch
                   .joins(product: [:brand, :stores])
                   .where({launch_date: Date.today})
+                  .where('end_at >= ? AND start_at <= ?', now, now)
                   .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
                   .select('distinct on (products.brand_id) product_launches.products_collection_id, product_launches.product_id')
                   .order('"products"."brand_id",  products.user_product_views_count DESC')

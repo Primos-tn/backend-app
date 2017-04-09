@@ -8,8 +8,33 @@ class Dashboard::ProductsController < Dashboard::DashboardController
   # GET /products
   # GET /products.json
   def index
+    @search_query = params[:search]
+    page = params[:page]
+    limit = params[:limit] || 10
+
+    if page.nil?
+      page = 1
+    else
+      page = [page.to_i, 1].max
+    end
+    sort_column = params[:sort] || ''
+    sort_direction = params[:direction] || ''
     # select all products within current selected brand
-    @products = current_user.products.includes(:pictures).where({brand: current_brand})
+    products = current_user
+                   .products
+                   .where({brand: current_brand})
+                   .search(@search_query)
+                   .includes(:pictures)
+
+    total_count = products.count
+    @page = page
+    @count = total_count / limit + ((total_count % limit) > 0 ? 1 : 0)
+
+    @products = products
+                    .order(sort_column + ' ' + sort_direction)
+                    .page(page)
+                    .per(limit)
+
   end
 
   # GET /products/1
@@ -157,7 +182,9 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         else
           at = Date.today
         end
-        launch = ProductLaunch.new ({launch_date: at, product: @product})
+        start_at = launch_form_params[:start_at] || Datetime.beginning_of_day
+        end_at = launch_form_params[:end_at] || Datetime.ending_of_day
+        launch = ProductLaunch.new ({launch_date: at, product: @product, start_at: start_at, end_at: end_at})
         launch.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }
         format.json { render :show, status: :launched, location: @product }
@@ -229,7 +256,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def launch_params
-    params.require(:product).permit(:last_launch)
+    params.require(:product).permit(:last_launch, :start_at, :end_at)
   end
 
 end

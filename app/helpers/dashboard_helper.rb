@@ -27,7 +27,7 @@ module DashboardHelper
     end
   end
 
-  $dashboard_tabs = %w(Dashboard Locations Products Gallery Users  System Hooks Targetize Domain   )
+  $dashboard_tabs = %w(Dashboard Stores Products Gallery Users  System Hooks Targetize Domain   )
   $dashboard_tabs_links = %w(Dashboard Stores Products Gallery Users  System Hooks Targetize Domain   )
   $dashboard_tabs_icons = %w(panel map view-list-alt spray user settings bolt   target  paint-roller )
 

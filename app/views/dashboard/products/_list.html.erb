@@ -26,13 +26,20 @@
         </td>
 
         <td><%= product.last_launch %></td>
-        <td  class="DashboardProductsList__LaunchingButtons">
+        <td class="DashboardProductsList__LaunchingButtons">
           <%- if product.can_be_launched? %>
               <div class="DashboardProductsList__LaunchingButtonItem">
-                <%= link_to I18n.t('Launch'), launch_dashboard_product_path(product), method: :post, :class => 'btn  btn-sm btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
+                <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
+                    <%= f.time_field :start_at, value: '00:00:00', placeholder: 'hh:mm:ss', type: 'time' %>
+                    <%= f.time_field :end_at, value: '00:00:00', placeholder: 'hh:mm:ss', type: 'time' %>
+                    <%= f.submit I18n.t('Launch'), :class => 'btn  btn-sm btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
+
+                <% end %>
+
+
               </div>
               <div class="DashboardProductsList__LaunchingButtonItem">
-                <%= react_component('DashboardCollectionProductModalButtonLauncher', {:product_id => product.id, :text => I18n.t('Add to collection') }) %>
+                <%= react_component('DashboardCollectionProductModalButtonLauncher', {:product_id => product.id, :text => I18n.t('Add to collection')}) %>
               </div>
               <div class="DashboardProductsList__LaunchingButtonItem">
                 <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
@@ -40,7 +47,7 @@
                     <%= f.submit t('Schedule'), :class => 'btn btn-danger btn-sm btn-fill' %>
                 <% end %>
               </div>
-        <% end -%>
+          <% end -%>
         </td>
       </tr>
       <tr>
@@ -66,6 +73,6 @@
   </tbody>
 </table>
 <% content_for :out_wrapper do %>
-<%= react_component('DashboardCollectionsProductModal', {:upload_url => dashboard_brand_galleries_path,
-                                                     :authenticity_token => form_authenticity_token}) %>
+    <%= react_component('DashboardCollectionsProductModal', {:upload_url => dashboard_brand_galleries_path,
+                                                             :authenticity_token => form_authenticity_token}) %>
 <% end %>

@@ -11,7 +11,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
     if request.params[:map]
       center = request.params[:map][:center].to_a
       distance = 50 #request.params[:map][:distance].to_i
-      center  = center.collect{|i| i.to_f}
+      center = center.collect { |i| i.to_f }
       # get within 50 km near given position
       box = Geocoder::Calculations.bounding_box(center, distance)
       # find all stores id within the bounding box
@@ -25,37 +25,64 @@ class Api::V1::ProductsController < Api::V1::BaseController
     #
     collections_ids = []
     # e
-    excludes_from_collections_ids = []
+    already_loaded_products_ids = []
     # products without collection
     standalone_products = []
+
+    # collections by ids
     @collections = {}
+    # collections by ids
+    @same_brand_collections = {}
 
 
-    
     @products.each do |entry|
-      if not entry.products_collection_id.nil?
-        collections_ids << entry.products_collection_id
-        excludes_from_collections_ids << entry.product_id
-        @collections[entry.products_collection_id] = []
-      else
+
+      already_loaded_products_ids << entry.product_id
+
+      if entry.products_collection_id.nil?
         standalone_products << entry.product_id
+      else
+        collections_ids << entry.products_collection_id
+        @collections[entry.products_collection_id] = []
       end
     end
-    # get all items with brands
+    # get all items with same collection
     products_in_collections = ProductLaunch
-                                  .joins(product: :brand)
+                                  .joins(product: [:brand, :stores])
                                   .eager_load!(product: [:brand, :pictures])
                                   .where({launch_date: Date.today})
+                                  .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
                                   .where({products_collection_id: collections_ids})
                                   .where
-                                  .not({product_id: excludes_from_collections_ids})
+                                  .not({product_id: already_loaded_products_ids})
                                   .order('products.user_product_views_count DESC')
 
     # get id form products in collection s
     products_in_collections.each do |entry|
       @collections[entry.products_collection_id] << entry
+      already_loaded_products_ids << entry.product_id
     end
 
+    # get all items with same collection
+    same_brand_launches_of_day = ProductLaunch
+                                .joins(product: [:brand, :stores])
+                                .eager_load!(product: [:brand, :pictures])
+                                .where({launch_date: Date.today})
+                                .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
+                                .where
+                                .not({product_id: already_loaded_products_ids})
+                                .order('products.user_product_views_count DESC')
+
+
+
+    # get id form products in collection s
+    same_brand_launches_of_day.each do |entry|
+      brand_id = entry.product.brand_id
+      if @same_brand_collections[brand_id].nil?
+        @same_brand_collections[brand_id] = []
+      end
+      @same_brand_collections[brand_id] << entry
+    end
     # find user with relation to current user
     @me_and_products = {}
     if current_user

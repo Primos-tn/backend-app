@@ -9,6 +9,11 @@
       <div class="header">
         <h4 class="title">
           <%= I18n.t('The products') %>
+          <%= form_tag({url: dashboard_products_path}, method: :get, class: 'visible-lg-inline') do |f| %>
+              <%= text_field_tag :search , @search_query %>
+              <%= submit_tag I18n.t('search') , class: 'btn btn-primary btn-sm'%>
+          <% end %>
+
           <%= link_to  dashboard_products_collections_path, class: 'btn btn-primary pull-right' do %>
               <%= t('Collections') %>
           <% end %>
@@ -25,8 +30,12 @@
         <%end %>
 
         <div class="text-center">
+          <%= @page.to_s + '/' +  @count.to_s %>
+        </div>
+        <div class="text-center">
           <%= link_to t('New Product'), new_dashboard_product_path, class: 'btn btn-primary' %>
         </div>
+
       </div>
     </div>
   </div>
