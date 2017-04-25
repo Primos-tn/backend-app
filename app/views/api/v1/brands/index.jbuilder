@@ -13,6 +13,7 @@ json.brands @brands do |brand|
     end
   end
 
+  json.category brand.category
   if current_user and @me_and_brands[brand.id]
     json.is_following true
   end

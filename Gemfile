@@ -87,4 +87,6 @@ gem 'redis-namespace'
 
 gem "koala"
 
+gem "facebook-messenger"
+
 ruby '2.3.3'

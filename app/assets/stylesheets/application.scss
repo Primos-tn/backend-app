@@ -1,36 +1,18 @@
+
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
- *= include_self
- *= require ./icons
- *= require ./vendor/themify-icons
- *= require ./vendor/jquery-ui.min
- *= require ./vendor/owl
- *= require_directory ./application/app
+ *= require application/user/animate.min.css
+ *= require application/user/style.css
+ *= require application/user/menu.css
+ *= require application/user/responsive.css
+ *= require fonts/fontello/css/icon_set_1.css
+ *= require fonts/fontello/css/icon_set_2.css
+ *= require fonts/fontello/css/fontello.css
+ *= require fonts/icon_restaurant/css/icon_restaurants.css
+ *= require application/user/magnific-popup.css
+ *= require application/user/pop_up.css
+ *= require application/user/ion.rangeSlider.css
+ *= require application/user/ion.rangeSlider.skinFlat.css
+ *= require application/user/skins/square/grey.css
+ *= require application/user/custom.css
+ *= require application/user/color-orange.css
  */
-
-html {
-    position:relative;
-}
-body {
-    font-family: "proxima-nova", "Helvetica", "Verdana", sans-serif;
-    min-height: 100vh;
-}
-body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-main {
-  flex: 1 0 auto;
-}

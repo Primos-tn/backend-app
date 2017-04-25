@@ -218,6 +218,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
 
+
       scope :accounts, as: :accounts, controller: :accounts do
         post 'create'
         post 'login'
@@ -240,6 +241,7 @@ Rails.application.routes.draw do
         get 'address'
         get 'mine'
       end
+
 
       resources :products do
         collection do
@@ -303,11 +305,17 @@ Rails.application.routes.draw do
         end
       end
 
+
+
     end
 
 
-    match '(*any)', :to => "v1/base#not_found", via: [:all]
+    match '(*any)', :to => 'v1/base#not_found', via: [:all]
   end
 
 
+
+  Rails.application.routes.draw do
+    mount Facebook::Messenger::Server, at: "messenger-webhook"
+  end
 end

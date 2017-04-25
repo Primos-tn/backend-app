@@ -20,7 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  app : "Primos"
+  app : "YallPingo"
   Require invitation : Sorry, we are in beta version and we are working on the official version, only invited accounts are permitted !
   Beta invitation : We are in beta version and we are working on the official version, thanks for your patience!
   This service is not available in beta mode :

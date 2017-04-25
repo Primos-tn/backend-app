@@ -1,15 +1,1 @@
-<style>
-  main {
-    width: 100% !important;
-    margin-top: 0px !important;
-  }
-</style>
-
-<div>
-  <%= render partial: 'shared/requires_map_libs' %>
-
-  <% content_for :scripts do %>
-      <script src="https://unpkg.com/leaflet.markercluster@1.0.4/dist/leaflet.markercluster.js" type="application/javascript"></script>
-  <% end %>
-  <%= react_component('MapView') %>
-</div>
+<%= render template: 'web/products/index' %>

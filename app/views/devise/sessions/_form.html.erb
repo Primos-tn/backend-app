@@ -1,4 +1,4 @@
-<%= link_to user_facebook_omniauth_authorize_path, class: "btn SocialAuthenticationBtn" do %>
+<%= link_to user_facebook_omniauth_authorize_path, class: "bt_facebook" do %>
     <i class="ti-facebook"></i> <%= t("Sign in with Facebook") %>
 <% end %>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -7,10 +7,21 @@
           <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
       <%- end -%>
     </div>
+    <div class="login-or">
+      <hr class="hr-or">
+      <span class="span-or">or</span></div>
     <div class="field">
-      <%= f.text_field :login, autofocus: true, placeholder: t('Username or email') %>
 
-      <%= f.password_field :password, autocomplete: "off", placeholder: true %>
+      <div class="form-group">
+        <label><%= t('Username or email') %></label>
+        <%= f.text_field :login, autofocus: true, placeholder: t('Username or email'), class: "form-control"%>
+      </div>
+    </div>
+    <div class="field">
+      <div class="form-group">
+        <label><%= t('Password') %></label>
+        <%= f.password_field :password, autocomplete: "off", placeholder: true, class: "form-control" %>
+      </div>
     </div>
 
     <% if devise_mapping.rememberable? -%>
@@ -22,7 +33,7 @@
 
     <div class="actions">
       <div>
-        <%= f.submit I18n.t("Sign in"), class: 'btn' %>
+        <%= f.submit I18n.t("Sign in"), class:"btn_full" %>
       </div>
       <%- if style.to_s == 'modal' %>
           <span id="open_registration_modal"><%= I18n.t("Sign up") %></span>

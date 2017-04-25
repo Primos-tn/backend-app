@@ -17,30 +17,23 @@
       <%- else -%>
           <%= render :partial => 'header/header' %>
       <% end -%>
-      <%- if ((not @is_logged_in and @show_cover) or (controller_name == 'welcome')) %>
-          <div class="Cover">
 
-          </div>
-      <% end -%>
       <%- unless @is_logged_in %>
           <%= render template: 'devise/sessions/new_modal' %>
           <%= render template: 'devise/registrations/new_modal' %>
       <% end -%>
-      <%= content_for?(:outside_main) ? yield(:outside_main) : '' %>
 
-      <main class="container AppContainer">
-        <div class="<%= full_template ? '' : 'col-lg-8 NoPadding' %>">
-          <%= content_for?(:main_content) ? yield(:main_content) : yield %>
-        </div>
-        <div class="<%= full_template ? '' : 'col-lg-4' %>">
-          <%- if not full_template %>
-              <%= render partial: 'shared/sidebar' %>
-          <%- end %>
-        </div>
+      <%= content_for?(:main_content) ? yield(:main_content) : yield %>
+      <div class="<%= full_template ? '' : 'col-lg-4' %>">
+        <%- if not full_template %>
+            <%= render partial: 'shared/sidebar' %>
+        <%- end %>
+      </div>
       </main>
-      <%= render 'layouts/footer' %>
 
       <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+      <%= render partial: 'layouts/footer' %>
 
       <%= content_for?(:scripts) ? yield(:scripts) : '' %>
     </div>

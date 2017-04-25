@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Primos
+module YallaPingo
   class Application < Rails::Application
     config.middleware.use Rack::Attack
     #puts "env.#{Rails.env}.yml"
@@ -39,6 +39,10 @@ module Primos
 
     # jobs
     config.active_job.queue_adapter = :sidekiq
+
+    #bot
+    config.paths.add File.join('app', 'messenger'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'messenger', '*')]
   end
 
 end

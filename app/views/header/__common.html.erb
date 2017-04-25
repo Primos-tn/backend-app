@@ -1,0 +1,17 @@
+<% controller_name = params[:controller].split('/')[1] %>
+<li class="hidden-xs">
+  <%= react_component('Search', {tag: 'span'}) %>
+</li>
+<li class="hidden-xs">
+  <%= link_to (controller_name == "brands" ? products_path : brands_path) do %>
+      <span class="visible-lg-inline NavMainLinks__TextLink"> <%= t(controller_name == "brands" ? "Products" : "Brands") %> </span>
+      <i class="visible-xs-inline visible-sm-inline ti-bar-chart"></i>
+  <% end %>
+</li>
+<%- if controller_name !='map' %>
+    <li>
+      <%= link_to (map_path) do %>
+          <span class="ti-map-alt" style="color: white"></span>
+      <% end %>
+    </li>
+<% end -%>

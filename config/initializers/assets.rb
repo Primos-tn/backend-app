@@ -10,7 +10,8 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.precompile += %w( dashboard.js )
 Rails.application.config.assets.precompile += %w( admin.js )
-
+Rails.application.config.assets.precompile += %w(components/user/products/index.js)
+Rails.application.config.assets.precompile += %w(components/user/brands/index.js)
 # CSS assets
 Rails.application.config.assets.precompile += %w( dashboard.css )
 Rails.application.config.assets.precompile += %w( rtl.css )

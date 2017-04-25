@@ -1,4 +1,10 @@
-//= require vendor
+//= require jquery
+//= require jquery_ujs
+//= require react
+//= require react_ujs
+//= require_tree  ./vendor
+//= require websocket
+//= require  ./flumx/index
 //= require ./modules/dropzone
 //= require ./modules/bootstrap-notify
 //= require_tree ./components/dashboard

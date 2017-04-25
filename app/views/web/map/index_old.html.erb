@@ -1,0 +1,27 @@
+<style>
+  main {
+    width: 100% !important;
+    margin-top: 0px !important;
+  }
+</style>
+
+<div>
+  <%= render partial: 'shared/requires_map_libs' %>
+  <% content_for :scripts do %>
+      <script src="https://unpkg.com/leaflet.markercluster@1.0.4/dist/leaflet.markercluster.js" type="application/javascript"></script>
+  <% end %>
+  <%= react_component('MapView') %>
+</div>
+
+<div id="map" class="map" style="border-bottom:none; height:100%; width:100%; position:absolute; top:0; left:0;"></div>
+<div id="map_filter">
+  <ul>
+    <li><a href="javascript:toggleMarkers('Historic');"><i class="icon_set_1_icon-44"></i><span>Historic Buildings</span></a></li>
+    <li><a href="javascript:toggleMarkers('Sightseeing');"><i class="icon_set_1_icon-3"></i><span>City sightseeing</span></a></li>
+    <li><a href="javascript:toggleMarkers('Museums');"><i class="icon_set_1_icon-4"></i><span>Museum</span></a></li>
+    <li><a href="javascript:toggleMarkers('Skyline');"><i class="icon_set_1_icon-28"></i><span>Skyline tours</span></a></li>
+    <li><a href="javascript:toggleMarkers('Eat_drink');"><i class="icon_set_1_icon-14"></i><span>Eat & Drink</span></a></li>
+    <li><a href="javascript:toggleMarkers('Walking');"><i class="icon_set_1_icon-37"></i><span>Walking tours</span></a></li>
+    <li><a href="javascript:toggleMarkers('Churches');"><i class="icon_set_1_icon-43"></i><span>Churces</span></a></li>
+  </ul>
+</div>
