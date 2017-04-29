@@ -1,6 +1,6 @@
-<div style="padding-top: 20px" class="Authentication__BottomLinks">
+<div style="padding-top: 20px" >
   <%- if controller_name != 'sessions' %>
-      <%= link_to I18n.t("Sign in"), new_session_path(resource_name) , class="btn_full_outline" %>
+      <%= link_to I18n.t("Sign in"), new_session_path(resource_name) , class: 'btn_full_outline' %>
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>

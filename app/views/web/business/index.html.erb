@@ -1,19 +1,20 @@
-<!--  About Section  -->
+<!--&lt;!&ndash;  About Section  &ndash;&gt;-->
 
-<h2><%= I18n.t('Business') %></h2>
-<% if not @is_logged_in or (@is_logged_in and not  @is_business) %>
-    <%= render 'business_cover' %>
-<% end %>
+<!--<h2><%= I18n.t('Business') %></h2>-->
+<!--<% if not @is_logged_in or (@is_logged_in and not  @is_business) %>-->
+    <!--<%= render 'business_cover' %>-->
+<!--<% end %>-->
 
 <%= render 'prices' %>
 
-<div class="text-center">
-  <% if @is_logged_in %>
-      <% if not @is_business %>
-          <%= link_to t('Apply for business account'), request_account_business_index_path, class: "AppButton" %>
-      <% end %>
-  <% else %>
-      <%= link_to I18n.t('Sign up'), new_user_registration_path, class: "AppButton" %>
-      <%= link_to I18n.t('Already have an account ?'), new_user_session_path, class: "AppButton" %>
-  <% end %>
-</div>
+<!--<div class="text-center">-->
+  <!--<% if @is_logged_in %>-->
+      <!--<% if not @is_business %>-->
+          <!--<%= link_to t('Apply for business account'), request_account_business_index_path, class: "AppButton" %>-->
+      <!--<% end %>-->
+  <!--<% else %>-->
+      <!--<%= link_to I18n.t('Sign up'), new_user_registration_path, class: " btn_1 green" %>-->
+      <!--<%= link_to I18n.t('Already have an account ?'), new_user_session_path, class: " btn_1 green" %>-->
+  <!--<% end %>-->
+<!--</div>-->
+<!--<hr/>-->

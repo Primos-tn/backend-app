@@ -18,16 +18,16 @@ class ApplicationController < ActionController::Base
       # TODO check for supported locales
       cookies.permanent[:locale] = params[:locale]
     end
-    I18n.locale = cookies.permanent[:locale] || 'en'
+    I18n.locale = cookies.permanent[:locale] || 'fr'
     cookies.permanent[:locale] = I18n.locale
   end
+
 
   def set_header
     @with_header = false
     @is_logged_in = user_signed_in?.present?
     @is_business = true if (@is_logged_in and current_user.is_business?)
   end
-
 
 
   def after_sign_in_path_for(resource)

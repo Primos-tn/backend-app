@@ -8,28 +8,28 @@
 
 <div class="clearfix"></div>
 <div class="text-center">
-    <div class="field">
-        <%= f.text_field :username, autofocus: true, placeholder: true %>
+    <div class="form-group">
+        <%= f.text_field :username, autofocus: true, placeholder: true, class: "form-control" %>
     </div>
 
-    <div class="field">
-        <%= f.email_field :email, placeholder: true  %>
+    <div class="form-group">
+        <%= f.email_field :email, placeholder: true , class: "form-control" %>
     </div>
 
-    <div class="field ">
+    <div class="form-group">
         <!--<% if @minimum_password_length %>
         <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %>-->
-        <%= f.password_field :password, autocomplete: "off" , placeholder: true %>
+        <%= f.password_field :password, autocomplete: "off" , placeholder: true , class: "form-control"%>
     </div>
 
-    <div class="field">
-        <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: true %>
+    <div class="form-group">
+        <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: true , class: "form-control"%>
     </div>
     <div class="links">
         <div class="actions">
           <div>
-            <%= f.submit I18n.t("Sign up"), class: 'btn' %>
+            <%= f.submit I18n.t("Sign up"),  class:"btn_full" %>
           </div>
           <%- if style.to_s == 'modal' %>
               <span id="open_login_modal"><%= I18n.t("Sign in") %> </span>

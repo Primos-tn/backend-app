@@ -15,4 +15,4 @@ Rails.application.config.assets.precompile += %w(components/user/brands/index.js
 # CSS assets
 Rails.application.config.assets.precompile += %w( dashboard.css )
 Rails.application.config.assets.precompile += %w( rtl.css )
-Rails.application.config.assets.precompile += %w( vendor.css )
+Rails.application.config.assets.precompile += %w( ltr.css )

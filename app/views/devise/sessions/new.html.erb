@@ -1,10 +1,15 @@
-
-  <!--  login Section  -->
-  <div class="AccountAuthenticationContainer text-center">
-    <article>
-      <h2><%= I18n.t('Sign in') %></h2>
-      <!-- -->
-      <%= render "devise/sessions/form" , { :style => 'page'}%>
-    </article>
+<!--  login Section  -->
+<section id="hero" class="login">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div id="login">
+          <h2><%= I18n.t("Sign in") %> </h2>
+          <hr/>
+          <!-- -->
+          <%= render "devise/sessions/form", {:style => 'page'} %>
+        </div>
+      </div>
+    </div>
   </div>
-
+</section>

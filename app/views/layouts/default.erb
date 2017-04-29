@@ -9,11 +9,14 @@
 
   <%= stylesheet_link_tag 'vendor', media: 'all', 'data-turbolinks-track' => true %>
 
-  <%= content_for?(:stylesheets) ? yield(:stylesheets) : '' %>
-
   <% if I18n.locale.equal?(:ar) %>
       <%= stylesheet_link_tag 'rtl', media: 'all', 'data-turbolinks-track' => true %>
+  <% else %>
+      <%= stylesheet_link_tag 'ltr', media: 'all', 'data-turbolinks-track' => true %>
   <% end %>
+
+  <%= content_for?(:stylesheets) ? yield(:stylesheets) : '' %>
+
 
   <%= csrf_meta_tags %>
 </head>
@@ -32,6 +35,7 @@
 <%= content_for?(:body) ? yield(:body) : yield %>
 
 <%= content_for?(:scripts) ? yield(:scripts) : '' %>
-<div id="ws_config" data-host="<%= ws_app_host? %>" data-user="<%= ws_app_user? %>" data-connection="<%= content_for?(:ws_connection) ? yield(:ws_connection) : '' %>" ></div>
+
+<div id="ws_config" data-host="<%= ws_app_host? %>" data-user="<%= ws_app_user? %>" data-connection="<%= content_for?(:ws_connection) ? yield(:ws_connection) : '' %>"></div>
 </body>
 </html>

@@ -11,7 +11,7 @@
  * file per style scope.
  *
  *= include_self
- *= require_tree ./vendor
+ *= require_tree ./application/dashboard/vendor
  *= require_directory ./application/dashboard
  */
 body {
