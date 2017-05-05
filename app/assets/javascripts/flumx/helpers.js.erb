@@ -1,0 +1,199 @@
+/**
+ * Minimum
+ */
+App.Helpers = {
+  /**
+   *
+   * @param map
+   * @returns {{map: {center: *}}}
+   */
+  getUserPosition: function (map) {
+    return window[App.Constants.USER_LOCATION_STORAGE_KEY];
+  },
+  /**
+   *
+   * @returns {string}
+   */
+  getDefaultCoverPicture: function () {
+    return "<%= image_path('default.brand.jpeg') %>";
+  },
+  /**
+   *
+   * @param position
+   */
+  setUserPosition: function (position) {
+    if (typeof(Storage) !== "undefined") {
+      localStorage.setItem(App.Constants.USER_LOCATION_STORAGE_KEY, JSON.stringify(position));
+      // Code for localStorage/sessionStorage.
+    } else {
+      // Sorry! No Web Storage support..
+    }
+    window[App.Constants.USER_LOCATION_STORAGE_KEY] = position;
+  },
+  /**
+   *
+   * @param callback
+   * @returns {*}
+   */
+  locate: function (callback) {
+    if (!navigator.geolocation) {
+      App.Helpers._alertLocationRequired();
+      return callback(App.Errors.GEO_NOT_SUPPORTED);
+    }
+    /**
+     *
+     * @param position
+     */
+    function success(position) {
+      App.Helpers.setUserPosition(position);
+      callback(null)
+    }
+
+    /**
+     *
+     */
+    function error(e) {
+      App.Helpers._alertLocationRequired();
+      console.log(e);
+      callback(App.Errors.GEO_NOT_SUPPORTED)
+
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, {
+      timeout: 10000,
+      enableHighAccuracy: true,
+      maximumAge: 10000
+    });
+  },
+  /**
+   *
+   */
+  _alertLocationRequired: function () {
+    //$('body').empty().addClass('location-required');
+    new $.popup({
+      title: '',
+      content: '<a><img src="<%= image_path('logo.png') %>" alt="Image" class="pop_img">' +
+      '<h4 id="pop_msg"><%= I18n.t("Popup geo required") %><strong> </h4></a>' +
+      '<small> <%= I18n.t("Usage promise") %>  </small>' +
+      '<div class="facebook-messenger-container">' +
+      '<a href="m.me/" class="facebook-messenger">' +
+      '<img style="width: 30px; height: 30px;" src="<%= image_path('icons/facebook-messenger-white.svg') %>" class="img-facebook-messenger">' +
+      '<span class="facebook-messenger__text"> <%= I18n.t("Find us on messenger") %> </span>' +
+      '</a>' +
+      '<a style="padding:4px">' +
+      '<span class="facebook-messenger__text"> <%= I18n.t("How to activate Geolocation ?") %> </span>' +
+      '</a>' +
+      '</div>',
+      html: true,
+      buttons: false
+    });
+  },
+  /**
+   *
+   * @param names
+   */
+  getUrlParameters(names){
+    var params = {};
+    _.each(names, function (key) {
+      params[key] = App.Helpers._getUrlParameterByName(key);
+    });
+    return params;
+  },
+  /**
+   *
+   * @param name
+   * @param url
+   * @returns {*}
+   * @private
+   */
+  _getUrlParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  },
+  /**
+   *
+   */
+  querify: function (queryObject) {
+    var query = '';
+    for (var key in queryObject) {
+      query += key + '=' + queryObject[key];
+      query += '&'
+    }
+    return query;
+  },
+  /**
+   *
+   * @param entry
+   * @returns {*}
+   * @private
+   */
+  parsePosition: function (entry) {
+    var position = entry.position || entry;
+    if (position.latitude) {
+      position = [position.latitude, position.longitude]
+    }
+    if (position.lat) {
+      position = [position.lat, position.lng]
+    }
+    return position;
+  }
+  ,
+//
+  getTomorrow: function () {
+    var tomorrow = new Date();
+    tomorrow.setTime(tomorrow.getTime() + 60 * 60 * 24 * 1000);
+    tomorrow.setHours(0);
+    tomorrow.setMinutes(0);
+    tomorrow.setSeconds(0);
+    return tomorrow;
+  }
+  ,
+  /**
+   * Format an url given a key, value object
+   * foo/:bar , { bar : "alex" } will be transformed to foo/alex
+   * queryObject , { bar : "alex" } will be transformed to foo/alex
+   */
+  formatApiUrl: function (url, data, queryObject) {
+    for (var key in data) {
+      url = url.replace(':' + key, data[key]);
+    }
+    return url + (queryObject ? '?' + App.Helpers.querify(queryObject) : '');
+  }
+  ,
+  /**
+   * Format an url given a key, value object
+   * foo/:bar , { bar : "alex" } will be transformed to foo/alex
+   * queryObject , { bar : "alex", 'ok' : 'fine } will be transformed to ?foo=alex&ok=fine
+   */
+  getAbsoluteUrl: function (url, data, queryObject) {
+    return App.Helpers.formatApiUrl(url, data, queryObject).replace(baseApiUrl, '/');
+  }
+  ,
+
+  /**
+   * Format an url given a key, value object
+   * foo/:bar , { bar : "alex" } will be transformed to foo/alex
+   */
+  getMediaUrl: function (url, data) {
+    return App.Constants.MEDIA_URL + App.Helpers.getAbsoluteUrl(url, data);
+  },
+  /**
+   *
+   */
+  localize: function (object, key) {
+    if (!object) {
+      return '';
+    }
+    var locale = "<%= I18n.locale.to_s %>";
+    if (locale != App.Constants.En_en) {
+      key += '_' + locale;
+    }
+    return object[key];
+  }
+}
+;

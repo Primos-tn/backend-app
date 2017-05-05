@@ -19,12 +19,15 @@ class Api::V1::BaseController < ApplicationController
   end
 
   # api error pretty
-  def api_error(status = 500, errors = [], action = 'IDLE')
+  def api_error(status = 500, errors = [], action = 'IDLE', code=nil)
+    if action.nil?
+      action = 'IDLE'
+    end
     unless Rails.env.production?
       puts errors.full_messages if errors.respond_to? :full_messages
     end
     head(status: status) and return if errors.empty?
-    render json: json_api_format(errors, action), status: status
+    render json: json_api_format(errors, action, code), status: status
   end
 
 
@@ -38,7 +41,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   #ember specific :/
-  def json_api_format(errors, action=nil)
+  def json_api_format(errors, action=nil, code=nil)
     errors_hash = {}
     if errors.is_a? Array
       errors_hash[:error] = errors
@@ -62,6 +65,9 @@ class Api::V1::BaseController < ApplicationController
           end
 
         end
+      end
+      unless code.nil?
+        errors_hash[:code] = code
       end
     end
 

@@ -1,21 +1,36 @@
-<div class="AccountAuthenticationContainer">
-  <article>
-    <h2><%= I18n.t('Forgot your password?') %></h2>
+<!--  login Section  -->
+<section id="hero" class="login">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div id="login">
+          <h2><%= I18n.t('Forgot your password?') %></h2>
+          <hr/>
+          <!-- -->
 
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-        <%= devise_error_messages! %>
 
-        <div class="field">
-          <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true %>
-        </div>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :post}) do |f| %>
+              <%= devise_error_messages! %>
 
-        <div class="actions">
-          <div>
-            <%= f.submit I18n.t('Send me reset password instructions'), class: 'btn' %>
+              <div class="field">
+                <div class="form-group">
+
+                  <%= f.label :email %><br/>
+                  <%= f.email_field :email, autofocus: true, class: "form-control" %>
+                </div>
+
+                <div class="actions">
+                  <div>
+                    <%= f.submit I18n.t('Send me reset password instructions'), class: "btn_full" %>
+                  </div>
+
+                </div>
+          <% end %>
+          <div class="text-center">
+            <%= render "devise/shared/links" %>
           </div>
-          <%= render "devise/shared/links" %>
+          </div>
         </div>
-    <% end %>
-  </article>
-</div>
+      </div>
+    </div>
+</section>

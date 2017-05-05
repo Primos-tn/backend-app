@@ -182,8 +182,8 @@ class Dashboard::ProductsController < Dashboard::DashboardController
         else
           at = Date.today
         end
-        start_at = launch_form_params[:start_at] || Datetime.beginning_of_day
-        end_at = launch_form_params[:end_at] || Datetime.ending_of_day
+        start_at = launch_form_params[:start_at] || at.beginning_of_day.strftime("%I:%M%p")
+        end_at = launch_form_params[:end_at] || at.end_of_day.strftime("%I:%M%p")
         launch = ProductLaunch.new ({launch_date: at, product: @product, start_at: start_at, end_at: end_at})
         launch.save
         format.html { redirect_to dashboard_product_path(@product), notice: t('Product was successfully launched.') }

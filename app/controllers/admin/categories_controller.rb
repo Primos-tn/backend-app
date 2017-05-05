@@ -7,6 +7,12 @@ class Admin::CategoriesController < Admin::BaseController
     @categories = Category.all
   end
 
+  # GET /category_products
+  # GET /category_products.json
+  def export
+      send_data Category.all.to_csv
+  end
+
   # GET /category_products/1
   # GET /category_products/1.json
   def show
@@ -69,13 +75,13 @@ class Admin::CategoriesController < Admin::BaseController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_category
+    @category = Category.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def category_params
-      params.require(:category).permit(:name, :name_fr, :name_ar, :desc, :parent_id, :icon_class_name)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def category_params
+    params.require(:category).permit(:name, :name_fr, :name_ar, :desc, :parent_id, :icon_class_name)
+  end
 end

@@ -52,37 +52,44 @@
         <a class="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="javascript:void(0);"><span>Menu mobile</span></a>
         <div class="main-menu">
           <div id="header_menu">
-            <img src="img/logo_sticky.png" width="160" height="34" alt="City tours" data-retina="true">
+            <img src="as" width="160" height="34" alt="City tours" data-retina="true">
           </div>
           <a href="#" class="open_close" id="close_in"><i class="icon_set_1_icon-77"></i></a>
           <ul>
             <li class="submenu">
               <%= link_to (controller_name == "brands" ? products_path : brands_path) do %>
-                   <%= t(controller_name == "brands" ? "Products" : "Brands") %>
+                  <%= t(controller_name == "brands" ? "Products" : "Brands") %>
               <% end %>
             </li>
-            <li class="submenu">
-              <a href="javascript:void(0);">Carrefour</a>
+            <% trending_brands.each do |entry| %>
+                <li class="submenu">
+                  <%= link_to brand_path(entry) do %>
+                      <i class="yalla_fontello-flash"></i> <%= entry.name %>
+                  <% end %>
+                </li>
+            <% end %>
+            <!--<li class="submenu">-->
 
-            </li>
-            <li>
-              <a href="javascript:void(0);">Festival cartaghe <i class="icon-address-book"></i></a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">Hotels <i class="icon-address-book"></i></a>
-            </li>
-            <li class="">
-              <a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>
+            <!--</li>-->
 
-            </li>
-            <li class="">
-              <a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>
+            <!--<li>-->
+            <!--<a href="javascript:void(0);">Festival cartaghe <i class="icon-address-book"></i></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="javascript:void(0);">Hotels <i class="icon-address-book"></i></a>-->
+            <!--</li>-->
+            <!--<li class="">-->
+            <!--<a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>-->
 
-            </li>
-            <li class="">
-              <a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>
+            <!--</li>-->
+            <!--<li class="">-->
+            <!--<a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>-->
 
-            </li>
+            <!--</li>-->
+            <!--<li class="">-->
+            <!--<a href="javascript:void(0);">Food <i class="icon-down-open-mini"></i></a>-->
+
+            <!--</li>-->
             <!--<li class="submenu">
               <a href="javascript:void(0);" class="show-submenu">Bonus <i class="icon-down-open-mini"></i></a><ul>
               <li><a href="javascript:void(0);">Header styles</a>

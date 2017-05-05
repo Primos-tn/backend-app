@@ -21,6 +21,10 @@
 
 fr:
   app : "Yalla"
+  How to activate Geolocation ? : Comment activer la géolocalisation?
   Require invitation : Désolé, nous somme en beta version et nous travaillons sur la version officielle, Seuls les comptes invités sont permis!
   Beta invitation : Nous somme en beta version et nous travaillons sur la version officielle, merci pour votre patience!
   This service is not available in beta mode : Ce service n'est pas disponible en mode bêta.
+  Find us on messenger : Utilisez Messenger
+  Usage promise : Nous promettons, aucun spam, aucun emplacement ou données personnelles partagés!
+  Popup geo required : Pingo ne fonctionnera pas sans votre emplacement

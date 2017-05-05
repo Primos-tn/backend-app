@@ -9,11 +9,7 @@
 
   <%= stylesheet_link_tag 'vendor', media: 'all', 'data-turbolinks-track' => true %>
 
-  <% if I18n.locale.equal?(:ar) %>
-      <%= stylesheet_link_tag 'rtl', media: 'all', 'data-turbolinks-track' => true %>
-  <% else %>
-      <%= stylesheet_link_tag 'ltr', media: 'all', 'data-turbolinks-track' => true %>
-  <% end %>
+
 
   <%= content_for?(:stylesheets) ? yield(:stylesheets) : '' %>
 

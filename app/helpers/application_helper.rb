@@ -18,12 +18,22 @@ module ApplicationHelper
   end
 
   def get_assets_url(url)
-    '/media/'.concat(url)
+     '/media' + (url.start_with?('/')? '' : '/' ).concat(url)
+  end
+
+  def trending_brands
+    Brand.top(5)
+  end
+
+  def category_children(category)
+    Category.children(category)
   end
 
   def humanize_category_name(category)
     category['name' + (locale.equal?(:en) ? '' : '_' + locale.to_s)]
   end
+
+
 
   def sortable(column, title = nil)
     title ||= column.titleize

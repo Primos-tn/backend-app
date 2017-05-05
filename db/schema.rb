@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170409010423) do
+ActiveRecord::Schema.define(version: 20170504135820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,21 +126,22 @@ ActiveRecord::Schema.define(version: 20170409010423) do
 
   create_table "brands", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "account_id"
-    t.integer  "followers_count", default: 0
-    t.integer  "reviews_count",   default: 0
+    t.integer  "followers_count",           default: 0
+    t.integer  "reviews_count",             default: 0
     t.json     "picture"
     t.string   "cover"
-    t.integer  "products_count",  default: 0
-    t.integer  "stores_count",    default: 0
+    t.integer  "products_count",            default: 0
+    t.integer  "stores_count",              default: 0
     t.string   "fb_link"
     t.string   "tw_link"
     t.string   "ln_link"
     t.string   "address"
     t.date     "creation_date"
     t.integer  "category_id"
+    t.integer  "messenger_followers_count"
     t.index ["account_id"], name: "index_brands_on_account_id", using: :btree
   end
 
@@ -214,6 +215,32 @@ ActiveRecord::Schema.define(version: 20170409010423) do
   create_table "gallery_pictures_products", force: :cascade do |t|
     t.integer  "picture_id"
     t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "messenger_account_brand_followers", force: :cascade do |t|
+    t.integer  "messenger_account_id"
+    t.integer  "brand_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "messenger_accounts", force: :cascade do |t|
+    t.string   "user_id"
+    t.integer  "last_connexion"
+    t.string   "last_name"
+    t.string   "first_name"
+    t.string   "cover"
+    t.string   "locale"
+    t.json     "location"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "messenger_discussions", force: :cascade do |t|
+    t.string   "user_id"
+    t.string   "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

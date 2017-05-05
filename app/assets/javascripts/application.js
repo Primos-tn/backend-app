@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require ./vendor/jquery-1.11.2.min
+//= require ./vendor/underscore
 //= require  ./flumx/index
 //= require_tree ./components/user/common
 //= require_self

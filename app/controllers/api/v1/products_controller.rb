@@ -1,6 +1,7 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   include StatisticsUtils
   include RabbitMQDispatcher
+
   #
   skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
   before_action :set_product, except: [:index, :product_of_day] # only: [:wish, :unwish, :share, :notify, :reviews, :wishers]
@@ -8,16 +9,19 @@ class Api::V1::ProductsController < Api::V1::BaseController
   before_action :register_static_view, except: [:index, :unwish, :product_of_day]
 
   def index
-    if request.params[:map]
+    unless request.params[:map]
+      return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
+    end
+    begin
       center = request.params[:map][:center].to_a
-      distance = 50 #request.params[:map][:distance].to_i
+      distance = 35
       center = center.collect { |i| i.to_f }
       # get within 50 km near given position
       box = Geocoder::Calculations.bounding_box(center, distance)
       # find all stores id within the bounding box
       stores_ids = Store.within_bounding_box(box).map(&:id)
-    else
-      stores_ids = nil
+    rescue => ex
+      return api_error(422, I18n.t('geo.no coordinates provided'))
     end
 
     @products = ProductLaunch.launches_of_day({stores_ids: stores_ids, page: params[:page], limit: params[:limit]})
@@ -65,14 +69,13 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
     # get all items with same collection
     same_brand_launches_of_day = ProductLaunch
-                                .joins(product: [:brand, :stores])
-                                .eager_load!(product: [:brand, :pictures])
-                                .where({launch_date: Date.today})
-                                .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
-                                .where
-                                .not({product_id: already_loaded_products_ids})
-                                .order('products.user_product_views_count DESC')
-
+                                     .joins(product: [:brand, :stores])
+                                     .eager_load!(product: [:brand, :pictures])
+                                     .where({launch_date: Date.today})
+                                     .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
+                                     .where
+                                     .not({product_id: already_loaded_products_ids})
+                                     .order('products.user_product_views_count DESC')
 
 
     # get id form products in collection s

@@ -5,7 +5,7 @@ class Web::ProductsController < Web::BaseController
   before_action :set_tab, only: [:stores, :coupons, :reviews, :wishers]
 
   def index
-
+      @category = params['category']
   end
 
   def show

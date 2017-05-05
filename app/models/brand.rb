@@ -40,6 +40,10 @@ class Brand < ActiveRecord::Base
     end
   end
 
+  def self.top(limit)
+    order('followers_count').limit(5)
+  end
+
   # Returns the model id
   def media_store_dir
     "#{account.id}/brands/#{id}"

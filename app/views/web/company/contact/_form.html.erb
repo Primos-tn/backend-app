@@ -1,0 +1,61 @@
+<%= form_for(@contact, url: company_contact_path) do |f| %>
+    <% if @contact.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+            <% @contact.errors.full_messages.each do |message| %>
+                <li class="text-danger">* <%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" class="form-control" id="name_contact" name="name_contact" placeholder="Enter Name">
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" class="form-control" id="lastname_contact" name="lastname_contact" placeholder="Enter Last Name">
+        </div>
+      </div>
+    </div>
+    <!-- End row -->
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          <%= f.label :email %>
+          <%= f.text_field :email, :id => 'email_contact', :class => 'form-control' %>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="phone_contact" name="phone_contact" class="form-control" placeholder="Enter Phone number">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <%= f.label :body %><br>
+          <%= f.text_area :body, :rows => "5", :id => "message_contact", :name => "message_contact", :class => "form-control", :style => "height:200px;" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label>Human verification</label>
+        <input type="text" id="verify_contact" class=" form-control add_bottom_30" placeholder="Are you human? 3 + 1 =">
+        <%= f.submit I18n.t("Submit contact"), :class => 'btn_1', :id => "submit-contact" %>
+      </div>
+    </div>
+    <!--<div class="actions text-center">-->
+
+    <!--<%= link_to I18n.t("Back"), root_path, :class => 'btn btn-wd' %>-->
+    <!--</div>-->
+<% end %>

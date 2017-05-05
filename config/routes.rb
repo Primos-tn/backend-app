@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   authenticated do
-    root :to => 'web/map#index'
+    root :to => 'web/products#index'
   end
-  root :to => 'web/map#index', :as => 'anonymous'
+  root :to => 'web/products#index', :as => 'anonymous'
   # handle account
   # check fo devise_scope method to show how to handle
   devise_scope :user do
@@ -58,7 +58,6 @@ Rails.application.routes.draw do
     end
 
 
-    get 'map', to: 'map#index'
     post 'company/contact'
     get 'company/:page', to: 'company#show', as: 'company_page'
 
@@ -198,7 +197,11 @@ Rails.application.routes.draw do
       end
     end
     resources :accounts, :path => '/business', :controller => 'business_accounts', as: 'business_accounts'
-    resources :categories
+    resources :categories do
+      collection do
+        get 'export'
+      end
+    end
     resources :contacts, only: %w(index show)
     resources :brands, only: %w(index show)
     resources :products, only: %w(index show) do
@@ -314,8 +317,7 @@ Rails.application.routes.draw do
   end
 
 
-
   Rails.application.routes.draw do
-    mount Facebook::Messenger::Server, at: "messenger-webhook"
+    mount Facebook::Messenger::Server, at: 'messenger-webhook'
   end
 end

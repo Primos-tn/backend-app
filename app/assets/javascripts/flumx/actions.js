@@ -31,16 +31,3 @@ App.Actions = {
     BRAND_EDIT_REVIEW : 'BRAND_EDIT_REVIEW'
 
 };
-/**
- *
- * @type {{}}
- */
-App.Constants = {
-    AUTO_COMPLETE: 'AUTOCOMPLETE',
-    MEDIA_URL: '/media',
-    LOGIN_ACTION: 'LOGIN',
-    END_DAY: 'END_DAY',
-    USER_MAP_LAST_CENTER : 'USER_MAP_LAST_CENTER',
-    USER_MAP_LAST_ZOOM : 'USER_MAP_LAST_ZOOM'
-
-};

@@ -1,0 +1,11 @@
+id,name,desc,created_at,updated_at,parent_id,name_ar,name_fr,icon_class_name
+13,theatre,"",2017-02-02 22:37:17 UTC,2017-04-22 09:26:08 UTC,,مسرح,théâtre,icon_set_1_icon-4
+11,fashion,"",2016-12-26 08:28:00 UTC,2017-04-22 09:56:36 UTC,,موضة,mode,icon_set_2_icon-103
+8,man,"",2016-12-26 08:28:00 UTC,2017-04-22 09:58:46 UTC,,رجال,homme,icon_set_2_icon-105
+10,food,"",2016-12-26 08:28:00 UTC,2017-04-22 10:00:05 UTC,,طعام,aliments, icon_set_1_icon-14
+7,kids,"",2016-12-26 08:28:00 UTC,2017-04-22 10:01:00 UTC,,اطفال,enfants, icon_set_1_icon-29
+9,home,"",2016-12-26 08:28:00 UTC,2017-04-22 10:02:37 UTC,,بيت,électroménagers,icon_set_1_icon-64
+12,women,"",2016-12-26 08:28:00 UTC,2017-04-22 10:05:33 UTC,,نساء,femmes,icon_set_1_icon-50
+14,music,"",2017-02-02 22:37:17 UTC,2017-04-22 10:06:20 UTC,,موسيقى,musique, icon_set_1_icon-7
+15,Pizza,"",2017-04-30 18:44:16 UTC,2017-04-30 18:44:16 UTC,10,Pizza,Pizza,icon_set_3_restaurant-1
+16,Fast Food,"",2017-04-30 18:48:24 UTC,2017-04-30 18:48:24 UTC,10,وجبات سريعة,Fast Food,icon_set_3_restaurant-2

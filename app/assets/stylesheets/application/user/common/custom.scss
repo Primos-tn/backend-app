@@ -1,0 +1,19 @@
+@charset "UTF-8";
+/* CSS Document */
+.facebook-messenger-container {
+  margin-top: 15px;
+  .facebook-messenger {
+    background: #0084FF;
+    border-radius: 4px;
+    padding: 12px 10px;
+    .facebook-messenger__text {
+      color: white;
+    }
+  }
+}
+.location-required {
+  background: url(image_path('geo_required.jpeg')) no-repeat;;
+}
+.item-template {
+  display: none;
+}

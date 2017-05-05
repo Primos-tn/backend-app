@@ -3,7 +3,7 @@ class Api::V1::CategoriesController < Api::V1::BaseController
 
   # TODO , fix the search
   def index
-    @categories = Category.all
+    @categories = Category.children(nil)
   end
 
 end

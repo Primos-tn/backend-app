@@ -1,3 +1,9 @@
+<% start_time = DateTime.parse("9 AM").to_i
+   start_interval = DateTime.parse("11 AM").to_i
+   end_interval = DateTime.parse("1 PM").to_i
+   end_time = DateTime.parse("11 PM").to_i
+   values = (start_time..end_time).step(15.minutes).select { |t| t <= start_interval || t >= end_interval }
+%>
 <table class="table table-striped">
   <thead>
   <th><%= I18n.t('Product name') %></th>
@@ -30,12 +36,12 @@
           <%- if product.can_be_launched? %>
               <div class="DashboardProductsList__LaunchingButtonItem">
                 <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
-                    <%= f.time_field :start_at, value: '00:00:00', placeholder: 'hh:mm:ss', type: 'time' %>
-                    <%= f.time_field :end_at, value: '00:00:00', placeholder: 'hh:mm:ss', type: 'time' %>
+                    <%= select_tag :start_at, options_for_select(values.map { |t| [Time.at(t).utc.to_datetime.strftime("%H:%M %p"), Time.at(t).utc.to_datetime] }) %>
+                    <%= select_tag :end_at, options_for_select(values.map { |t| [Time.at(t).utc.to_datetime.strftime("%H:%M %p"), Time.at(t).utc.to_datetime] }) %>
+
                     <%= f.submit I18n.t('Launch'), :class => 'btn  btn-sm btn-danger', data: {confirm: I18n.t('Are you sure about that')} %>
 
                 <% end %>
-
 
               </div>
               <div class="DashboardProductsList__LaunchingButtonItem">
@@ -43,7 +49,7 @@
               </div>
               <div class="DashboardProductsList__LaunchingButtonItem">
                 <%= form_for([:dashboard, product], url: launch_dashboard_product_path(product), method: :post) do |f| %>
-                    <!--<%= f.date_field :last_launch, value: '', placeholder: 'MM/DD/YYYY', type: 'time' %>-->
+                    <%= f.date_field :last_launch, value: '', placeholder: 'MM/DD/YYYY', type: 'datetime' %>
                     <%= f.submit t('Schedule'), :class => 'btn btn-danger btn-sm btn-fill' %>
                 <% end %>
               </div>

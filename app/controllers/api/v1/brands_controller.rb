@@ -6,6 +6,35 @@ class Api::V1::BrandsController < Api::V1::BaseController
 
 
   def index
+    unless request.params[:map]
+      return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
+    end
+    begin
+      center = request.params[:map][:center].to_a
+      distance = 35
+      center = center.collect { |i| i.to_f }
+      # get within 50 km near given position
+      box = Geocoder::Calculations.bounding_box(center, distance)
+      # find all stores id within the bounding box
+      stores_ids = Store.within_bounding_box(box).map(&:id)
+    rescue => ex
+      return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
+    end
+
+    # used to exclude stores of today
+    # this used when user asked for a map with exclude_today query key
+    @exclude_stores_ids = []
+
+    @brands = Brand.eager_load ([:account, :stores])
+
+    @brands = @brands.joins([:stores]).where({:stores => {id: stores_ids}})
+
+
+    # check if we need to exclude stores that has an offer today
+    if request.params[:exclude_today]
+      @exclude_stores_ids = Store.has_offers_toady.map(&:id)
+    end
+
     page = params[:page]
     limit = params[:limit] || 10
 
@@ -14,30 +43,11 @@ class Api::V1::BrandsController < Api::V1::BaseController
     else
       page = [page.to_i, 1].max
     end
-    # used to exclude stores of today
-    # this used when user asked for a map with exclude_today query key
-    @exclude_stores_ids = []
-
-    @brands = Brand.eager_load ([:account, :stores])
-
-    if request.params[:map]
-      center = request.params[:map][:center].to_a
-      distance = 50 #request.params[:map][:distance].to_i
-      center = center.collect { |i| i.to_f }
-      box = Geocoder::Calculations.bounding_box(center, distance)
-      stores_ids = Store.within_bounding_box(box).map(&:id)
-      @brands = @brands.joins([:stores]).where({:stores => {id: stores_ids}})
-      # check if we need to exclude stores that has
-      if request.params[:exclude_today]
-        @exclude_stores_ids = Store.has_offers_toady.map(&:id)
-      end
-
-    end
-
-    categories_ids = request.params[:categoriesList]
+    # check for category
+    categories_ids = request.params[:categoriesList] || request.params[:category]
 
     unless categories_ids.blank?
-      @brands = @brands.where(:category_id => request.params[:categoriesList])
+      @brands = @brands.where(:category_id => categories_ids)
     end
 
     @brands = @brands.page(page).per(limit)

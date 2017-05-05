@@ -1,10 +1,14 @@
-class  Web::BrandsController < Web::BaseController
+class Web::BrandsController < Web::BaseController
   before_action :set_id, except: [:index]
+
+  def index
+    @category = params[:category]
+  end
+
   def info
     @active_tab = 'info'
     render 'show'
   end
-
 
   def reviews
     @active_tab = 'reviews'
@@ -24,7 +28,7 @@ class  Web::BrandsController < Web::BaseController
   def stores
     @active_tab = 'stores'
 
-    @stores = @brand.stores.collect {|entry| { id: entry.id , position: { longitude: entry.longitude,  latitude: entry.latitude } } }
+    @stores = @brand.stores.collect { |entry| {id: entry.id, position: {longitude: entry.longitude, latitude: entry.latitude}} }
     render 'show'
   end
 
