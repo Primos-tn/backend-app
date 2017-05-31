@@ -17,7 +17,7 @@ ar:
   Confirmed : مقبولة
   Resend request: إعادة بعث
   Request accepted: قبول طلب الانضمام
-  Already have an account ? : ''
+  Already have an account ? :  لدي  حساب
   activerecord:
       attributes:
         account_registration_invitation:

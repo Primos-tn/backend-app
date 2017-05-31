@@ -25,10 +25,12 @@ class ApplicationController < ActionController::Base
 
   def set_header
     @with_header = false
-    @is_logged_in = user_signed_in?.present?
-    @is_business = true if (@is_logged_in and current_user.is_business?)
+    @is_business = true if (is_logged_in? and current_user.is_business?)
   end
 
+  def is_logged_in?
+    user_signed_in?.present?
+  end
 
   def after_sign_in_path_for(resource)
     if current_user.is_admin?

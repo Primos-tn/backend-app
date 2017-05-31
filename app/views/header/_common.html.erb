@@ -26,14 +26,16 @@
 
         <div class="col-md-6 col-sm-6 col-xs-6">
           <ul id="top_links">
-            <li>
-              <div class="dropdown dropdown-access">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="access_link">Sign in</a>
-                <div class="dropdown-menu">
-                  <%= render 'devise/sessions/form', {:style => 'modal'} %>
-                </div>
-              </div><!-- End Dropdown access -->
-            </li>
+            <% unless current_user %>
+                <li>
+                  <div class="dropdown dropdown-access">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="access_link">Sign in</a>
+                    <div class="dropdown-menu">
+                      <%= render 'devise/sessions/form', {:style => 'modal'} %>
+                    </div>
+                  </div><!-- End Dropdown access -->
+                </li>
+            <% end %>
             <li><a href="#" id="wishlist_link">Wishlist</a></li>
           </ul>
         </div>

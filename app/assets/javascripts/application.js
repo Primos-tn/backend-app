@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require ./vendor/jquery-1.11.2.min
+//= require jquery
 //= require ./vendor/underscore
 //= require  ./flumx/index
 //= require_tree ./components/user/common

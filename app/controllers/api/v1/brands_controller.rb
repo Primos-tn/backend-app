@@ -1,6 +1,7 @@
 class Api::V1::BrandsController < Api::V1::BaseController
   include RabbitMQDispatcher
-
+  include GeoUtils
+  include StoresSearchable
   skip_before_filter :authenticate_user!, only: ['index', 'show', 'followers', 'stores']
   before_action :set_brand, only: [:follow, :unfollow]
 
@@ -10,13 +11,7 @@ class Api::V1::BrandsController < Api::V1::BaseController
       return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
     end
     begin
-      center = request.params[:map][:center].to_a
-      distance = 35
-      center = center.collect { |i| i.to_f }
-      # get within 50 km near given position
-      box = Geocoder::Calculations.bounding_box(center, distance)
-      # find all stores id within the bounding box
-      stores_ids = Store.within_bounding_box(box).map(&:id)
+      stores_ids = get_stores_near
     rescue => ex
       return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
     end
@@ -143,4 +138,6 @@ class Api::V1::BrandsController < Api::V1::BaseController
       end
     end
   end
+
+
 end

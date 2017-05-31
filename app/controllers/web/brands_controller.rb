@@ -1,8 +1,14 @@
 class Web::BrandsController < Web::BaseController
-  before_action :set_id, except: [:index]
+  before_action  except: [:index] do
+    set_id([:business_profile])
+  end
 
   def index
     @category = params[:category]
+  end
+
+  def show
+    @review = @brand.reviews.build({:brand => @brand})
   end
 
   def info
@@ -37,6 +43,7 @@ class Web::BrandsController < Web::BaseController
   def set_id(includes=[])
     @brand = Brand.includes(includes).find(params[:id])
     @id = params[:id]
+    @review = @brand.reviews.build({:brand => @brand})
   end
 end
 

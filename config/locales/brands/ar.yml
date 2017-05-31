@@ -11,6 +11,9 @@ ar:
   Last launch : أحدث إطلاق
   The products : المنتجات
   Are you sure about that :  هل انت متاكد من ذلك ?
+  Reviews : الاراء
+  Reviews based on : التعليقات على أساس
+  Your review : رأيك
   activerecord:
       attributes:
         brand :

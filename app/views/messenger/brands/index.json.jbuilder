@@ -1,16 +1,22 @@
 json.list @items do |entry|
   json.title entry.account.username
-  json.image_url @host + get_assets_url(entry.cover.to_s)
-  json.subtitle @host + get_assets_url(entry.cover.to_s)
+  json.image_url app_host? + get_assets_url(entry.cover.to_s)
+  json.subtitle app_host? + get_assets_url(entry.cover.to_s)
   json.default_action do
     json.type "web_url" # get path
-    json.url @host + '/brands/' + entry.id.to_s
+    json.url app_host? + '/brands/' + entry.id.to_s
   end
   json.buttons do
-    json.array!([0]) do
-      json.type "web_url" # get path
-      json.url @host + '/brands/' + entry.id.to_s
-      json.title  I18n.t("Follow")
+    json.array!([0, 1]) do |index|
+      if index == 1
+        json.url app_host? + '/brands/' + entry.id.to_s
+        json.title I18n.t("Follow ")
+        json.type "web_url"
+      else
+        json.type "postback"
+        json.payload "BRAND_PRDOCUT_" + entry.id.to_s
+        json.title I18n.t("Products")
+      end
       #     "type": "web_url",
       #     "url": "https://peterssendreceiveapp.ngrok.io/collection",
       #     "messenger_extensions": true,

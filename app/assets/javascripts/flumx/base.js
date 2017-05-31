@@ -7,7 +7,16 @@ var baseApiUrl = "/api/v1/";
 App.Configuration = {
     MAP_TILES_URL: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 };
+(function (A) {
 
+    if (!Array.prototype.forEach)
+        A.forEach = A.forEach || function (action, that) {
+                for (var i = 0, l = this.length; i < l; i++)
+                    if (i in this)
+                        action.call(that, this[i], i, this);
+            };
+
+})(Array.prototype);
 // error login
 $(document).ready(function () {
     console.log('base ready');
@@ -24,7 +33,7 @@ $(document).ready(function () {
             }
             else {
                 if ((xhr.status === 422) && (response.code === App.Constants.MISSING_LOCATION)) {
-                    App.Helpers.locate();
+                   App.Helpers.locate();
                 }
             }
         }

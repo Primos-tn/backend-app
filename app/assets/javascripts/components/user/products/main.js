@@ -334,7 +334,7 @@ ProductsList.prototype = {
    */
   loadData: function () {
     // Get products query
-    var query = $.extend({}, {}, {});
+    var query = $.extend({}, App.Helpers.getUserPosition(), {});
     App.Stores.loadData({
       url: App.Routes.products,
       query: query

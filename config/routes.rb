@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'accounts/settings', :to => 'devise/registrations#edit'
   end
+
   devise_for :accounts, singular: :user,
              :controllers => {
                  :passwords => 'account/passwords',
@@ -147,7 +148,7 @@ Rails.application.routes.draw do
     resources :brand_galleries, :path => '/gallery'
 
     resources :users, only: [:index, :show]
-    resources :api_keys, :path => '/api-keys', only: %w(index create destroy)
+    resources :business_api_tokens, :path => '/api', controller: :api, only: %w(index create destroy)
     resources :hooks
 
     scope :system, controller: :system do
@@ -158,6 +159,7 @@ Rails.application.routes.draw do
     scope :targetize, controller: 'targetize' do
       get '/(*)' => 'targetize#index'
     end
+
 
     scope :bots, controller: 'bots', as: 'bots' do
       post '/manage-page/' => 'bots#manage_page', as: 'manage_page'
@@ -308,7 +310,9 @@ Rails.application.routes.draw do
         end
       end
 
-
+      namespace :b do
+        resources :products
+      end
 
     end
 
@@ -320,4 +324,10 @@ Rails.application.routes.draw do
   Rails.application.routes.draw do
     mount Facebook::Messenger::Server, at: 'messenger-webhook'
   end
+
+
+  if Rails.env.development?
+      get '/test-dev' => 'tester#index'
+  end
+
 end

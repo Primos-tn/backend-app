@@ -16,20 +16,26 @@ class Brand < ActiveRecord::Base
   has_many :reviews, class_name: :BrandReview
 
 
-
   # photo and gallery
   has_many :gallery, class_name: :BrandGallery, dependent: :destroy
 
+  # photo and gallery
+  has_many :brand_features
+  has_many :features, :through => :brand_features, class_name: :Feature
+
+
   # followers
   has_many :followers, class_name: :BrandUserFollower
-  has_many :followersDetails, :through => :user_brands_relations,  class_name: Account, source: :account
+  has_many :followersDetails, :through => :user_brands_relations, class_name: Account, source: :account
 
   #
   belongs_to :category
 
+
   validates :account, presence: true
   validates_presence_of :name
 
+  has_one :business_profile, through: :account
 
 
   def self.search(search)
@@ -40,8 +46,20 @@ class Brand < ActiveRecord::Base
     end
   end
 
-  def self.top(limit)
-    order('followers_count').limit(5)
+  def self.top(limit=5, categories_ids=nil, stories_ids=nil)
+    looking = Brand
+    categories_ids = categories_ids.nil? ? nil : Category.children_recursive_ids(categories_ids)
+    looking = looking.where({:category => categories_ids}) unless categories_ids.nil?
+    looking = looking.includes(:stores).where({:stores => { :id => stories_ids}}) unless stories_ids.nil?
+    looking.order('followers_count').limit(limit)
+  end
+
+  def reviews_average
+    if self.reviews_count > 0
+      BrandReview.where({brand: self}).sum('eval') / self.reviews_count
+    else
+      0
+    end
   end
 
   # Returns the model id

@@ -18,6 +18,9 @@ class BusinessProfile < ActiveRecord::Base
     end
   end
 
+  def full_address
+      [city, country, post_code, business_phone].join('-')
+  end
 
   def is_blocked?
     is_blocked

@@ -35,8 +35,7 @@
   <div class="row">
     <aside class="col-lg-3 col-md-3">
       <p>
-        <a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">View
-          on map</a>
+        <a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="<%= t('Hide map') %>" data-text-original='<%= t("View on map")%>'><%= t('View on map')%></a>
       </p>
 
       <%= render :partial => 'web/products/categories' %>
@@ -46,11 +45,11 @@
           <i class="icon-plus-1 pull-right"></i></a>
         <div class="collapse" id="collapseFilters">
           <div class="filter_type">
-            <h6>Price</h6>
+            <h6><%= I18n.t("Price") %></h6>
             <input type="text" id="range" name="range" value="">
           </div>
           <div class="filter_type">
-            <h6>Rating</h6>
+            <h6><%= I18n.t("Rating") %></h6>
             <ul>
               <li><label><input type="checkbox"><span class="rating">
 						<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i>
@@ -71,12 +70,7 @@
           </div>
         </div><!--End collapse -->
       </div><!--End filters col-->
-      <div class="box_style_2">
-        <i class="icon_set_1_icon-57"></i>
-        <h4>Need <span>Help?</span></h4>
-        <a href="tel://004542344599" class="phone">+45 423 445 99</a>
-        <small>Monday to Friday 9.00am - 7.30pm</small>
-      </div>
+      <%= render 'shared/help/index' %>
     </aside><!--End aside -->
     <div class="col-lg-9 col-md-9">
 
@@ -121,15 +115,15 @@
       <hr>
 
       <!--<div class="text-center">-->
-        <!--<ul class="pagination">-->
-          <!--<li><a href="#">Prev</a></li>-->
-          <!--<li class="active"><a href="#">1</a></li>-->
-          <!--<li><a href="#">2</a></li>-->
-          <!--<li><a href="#">3</a></li>-->
-          <!--<li><a href="#">4</a></li>-->
-          <!--<li><a href="#">5</a></li>-->
-          <!--<li><a href="#">Next</a></li>-->
-        <!--</ul>-->
+      <!--<ul class="pagination">-->
+      <!--<li><a href="#">Prev</a></li>-->
+      <!--<li class="active"><a href="#">1</a></li>-->
+      <!--<li><a href="#">2</a></li>-->
+      <!--<li><a href="#">3</a></li>-->
+      <!--<li><a href="#">4</a></li>-->
+      <!--<li><a href="#">5</a></li>-->
+      <!--<li><a href="#">Next</a></li>-->
+      <!--</ul>-->
       <!--</div>&lt;!&ndash; end pagination&ndash;&gt;-->
 
     </div><!-- End col lg-9 -->
@@ -143,11 +137,12 @@
         <div class="wishlist">
           <a class="tooltip_flip tooltip-effect-1" href="javascript:void(0);">+<span class="tooltip-content-flip"><span class="tooltip-back">Add to wishlist</span></span></a>
         </div>
-        <div class="img_list"><a href="single_hotel.html">
+        <div class="img_list">
+          <a href="{{App.Helpers.getAbsoluteUrl(App.Routes.showProduct, { 'id' : id })}}">
           <div class="ribbon top_rated"></div>
-          <img src="assets/brands/hotel_5.jpg" alt="Image">
+          <img src="{{App.Helpers.getMediaUrl(pictures[0].file.url)}}" alt="Image">
           <div class="short_info"></div>
-        </a>
+          </a>
         </div>
       </div>
       <div class="clearfix visible-xs-block"></div>
@@ -157,7 +152,7 @@
           <div class="rating">
             <i class="icon-star voted"></i><i class="icon-star  voted"></i><i class="icon-star  voted"></i><i class="icon-star  voted"></i><i class="icon-star  voted"></i>
           </div>
-          <h3><strong>{{name}}</strong> Hotel</h3>
+          <h3><strong>{{info.name}}</strong> Hotel</h3>
           <p>Lorem ipsum dolor sit amet, quem convenire interesset ut vix, ad dicat sanctus detracto vis. Eos modus
             dolorum...</p>
           <ul class="add_info">
@@ -181,9 +176,9 @@
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <div class="price_list">
-          <div><sup>$</sup>129*<span class="normal_price_list">$99</span>
+          <div><sup>$</sup>{{info.new_price}}<span class="normal_price_list">{{info.old_price}}</span>
             <small>*From/Per night</small>
-            <p><a href="single_hotel.html" class="btn_1">Details</a></p>
+            <p><a href="<%= url_for('products') %>/{{info.id}}" class="btn_1">Details</a></p>
           </div>
         </div>
       </div>

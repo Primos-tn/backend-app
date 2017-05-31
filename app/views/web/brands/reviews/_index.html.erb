@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-3">
+    <h3><%= t('Reviews') %>  <%= @brand.reviews_count %> </h3>
+    <!--<a href="#" class="btn_1 add_bottom_30" data-toggle="modal" data-target="#myReview">Leave a review</a>-->
+  </div>
+  <div class="col-md-9">
+    <div id="score_detail"><span><%= @brand.reviews_average %></span>Good
+      <small><%= t('Reviews based on') %> <%= @brand.reviews_count %> reviews</small>
+    </div><!-- End general_rating -->
+    <!--<div class="row" id="rating_summary">-->
+    <!--<div class="col-md-6">-->
+    <!--<ul>-->
+    <!--<li>Position-->
+    <!--<div class="rating">-->
+    <!--<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><i class="icon-smile"></i>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--<li>Comfort-->
+    <!--<div class="rating">-->
+    <!--<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<div class="col-md-6">-->
+    <!--<ul>-->
+    <!--<li>Price-->
+    <!--<div class="rating">-->
+    <!--<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><i class="icon-smile"></i>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--<li>Quality-->
+    <!--<div class="rating">-->
+    <!--<i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--</div>&lt;!&ndash; End row &ndash;&gt;-->
+    <hr>
+    <%= render 'web/brands/reviews/form' %>
+    <div id="brand_reviews_list">
+    </div>
+  </div>
+</div>
+<template>
+  <div class="review_strip_single last">
+    <!--<img src="img/avatar3.jpg" alt="Image" class="img-circle">-->
+    <small> {{create_at}}</small>
+    <h4>{{ account.username }}</h4>
+    <p>
+      {{ entry.body }}
+    </p>
+    <div class="rating">
+      <i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile voted"></i><i class="icon-smile"></i><i class="icon-smile"></i>
+    </div>
+  </div><!-- End review strip -->
+</template>
+
+<% content_for :scripts do %>
+    <script>
+      $(document).ready(function () {
+        (new BrandReviewsList(<%= @brand.id %>)).loadData();
+      });
+    </script>
+<% end %>

@@ -34,7 +34,7 @@ class Dashboard::SystemController < Dashboard::DashboardController
   end
 
   def get_brand_params
-    params.require(:brand).permit([:fb_link, :tw_link, :ln_link, :address, :creation_date, :category_id])
+    params.require(:brand).permit([:fb_link, :tw_link, :ln_link, :address, :creation_date, :category_id, feature_ids: []])
   end
 
   def get_business_profile_params

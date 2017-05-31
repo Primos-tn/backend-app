@@ -3,8 +3,9 @@ namespace :configure do
   task categories: :environment do
 # Countries seed
     #Category.delete_all
-    open(Rails.root.join('lib', 'tasks', 'seeds', 'categories')) do |categories|
-      categories.read.each_line do |category|
+    open(Rails.root.join('lib', 'tasks', 'seeds', 'categories.csv')) do |categories|
+      categories.read.each_line.with_index do |category, index|
+        next if index == 0
         name, name_fr, name_ar, icon_class_name = category.chomp.split('|')
         puts icon_class_name
         puts '************************'

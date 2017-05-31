@@ -1,17 +1,18 @@
 class MessengerConstants
-  MENU_TAKE_TOUR = 'MENU_TAKE_TOUR'
+  SELECT_CATEGORIES = 'SELECT_CATEGORIES'
   MENU_HELP = 'MENU_HELP'
   LOCATION = 'LOCATION'
-  LOCALE = 'LOCALE'
   FULL_ADDRESS = 'FULL_ADDRESS'
   TYPE_LOCATION = [{content_type: 'location'}]
   GETTING_STARTED = 'GETTING_STARTED'
+  LOCALE = 'LOCALE'
   LOCALE_AR = 'LOCALE_AR'
   LOCALE_FR = 'LOCALE_FR'
   LOCALE_EN = 'LOCALE_EN'
-  GREETING = "Hello {{user_first_name}} 👋 Moi c\'est Captain Metro 🤖 Je suis là pour te donner les prochains passages du métro de ton choix 🚊 GO !"
-  REQUEST_LOCALE = 'Please choose your  language'
-  REQUEST_LOCATION = 'Please choose your location'
+  CATEGORY_SELECT_PREFIX  = 'CATEGORY_PAYLOAD_'
+  CATEGORY_PRODUCTS_SEARCH_PREFIX  = 'CATEGORY_PRODUCTS_SEARCH_'
+  CATEGORY_BRANDS_SEARCH_PREFIX  = 'CATEGORY_BRANDS_SEARCH_'
+  BRAND_SELECT_PREFIX  = 'BRAND_PAYLOAD_'
   MENU_LOCALE_REPLIES = [
       {
           content_type: 'text',

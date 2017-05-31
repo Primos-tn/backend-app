@@ -48,17 +48,21 @@ class Dashboard::AccountsController < Dashboard::DashboardController
   end
 
   def upgrade
+    # check if's already upgraded
     business_profile =
         BusinessProfile
             .find_by_account_id(current_user.id)
-    offer_plan = :basic
+    offer_plan = (params[:offer] || '0').to_a || 0
+
+    if offer_plan != 1 or offer_plan != 2
+      redirect_to dashboard_upgrade_form_path
+    end
     business_profile.plan_type = BusinessProfile.plans_types[offer_plan]
     business_profile.expires = Date.today.next_month
     business_profile.save!
     BusinessMailer.business_upgraded(offer_plan, business_profile).deliver_now
     AdminMailer.business_upgraded(offer_plan, business_profile).deliver_now
     redirect_to dashboard_main_path
-
 
   end
 
@@ -69,10 +73,20 @@ class Dashboard::AccountsController < Dashboard::DashboardController
   protected
 
   def can_upgrade
-    if current_user.is_business_basic?
+    # must be 0
+    # or 1 & expires
+    #
+    offer_plan = current_user.business_profile.plan_type
+    expires = current_user.business_profile.expires
+    if expires.nil?
+      expires = Date.yesterday
+    end
+
+    unless offer_plan == 0 or
+        (offer_plan == 1 && expires < Date.today) or
+        (offer_plan == 2 && expires < Date.today)
       render 'already_upgraded'
     end
+
   end
-
-
 end

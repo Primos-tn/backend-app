@@ -1,12 +1,6 @@
 <% content_for :scripts do %>
     <% render partial: 'shared/requires_map_libs' %>
     <%= javascript_include_tag 'components/user/brands/index', "data-turbolinks-track" => true %>
-    <script>
-      $('input').iCheck({
-        checkboxClass: 'icheckbox_square-grey',
-        radioClass: 'iradio_square-grey'
-      });
-    </script>
 <% end %>
 
 <section class="parallax-window" data-parallax="scroll" data-image-src="assets/brands/hotels_bg.jpg" data-natural-width="1400" data-natural-height="470">
@@ -36,10 +30,10 @@
   <div class="row">
     <aside class="col-lg-3 col-md-3">
       <p>
-        <a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="Hide map" data-text-original="View on map">View
-          on map</a>
+        <a class="btn_map" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap" data-text-swap="<%= t('Hide map') %>" data-text-original="<%= t('View on map') %>"><%= t('View on map') %></a>
       </p>
       <%= render :partial => 'web/brands/categories' %>
+      <!--
       <div id="filters_col">
         <a data-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt"><i class="icon_set_1_icon-65"></i>Filters
           <i class="icon-plus-1 pull-right"></i></a>
@@ -96,13 +90,10 @@
             </ul>
           </div>
         </div><!--End collapse -->
-      </div><!--End filters col-->
-      <div class="box_style_2">
-        <i class="icon_set_1_icon-57"></i>
-        <h4>Need <span>Help?</span></h4>
-        <a href="tel://004542344599" class="phone">+45 423 445 99</a>
-        <small>Monday to Friday 9.00am - 7.30pm</small>
-      </div>
+      <!--</div><!--End filters col-->
+
+
+      <%= render 'shared/help/index' %>
     </aside><!--End aside -->
     <div class="col-lg-9 col-md-8">
 
@@ -131,10 +122,11 @@
     <div class="tour_container">
       <div class="ribbon_3"><span>Top rated</span></div>
       <div class="img_container">
-        <a href="single_restaurant.html">
-          <img src="{{App.Helpers.getMediaUrl(cover.thumb.url)}}" width="100%"  class="img-responsive brand-image" alt="Image">
+        <a href="{{App.Helpers.getAbsoluteUrl(App.Routes.showBrand, { 'id' : id })}}">
+          <img src="{{App.Helpers.getMediaUrl(cover.thumb.url)}}" width="100%" class="img-responsive brand-image" alt="Image">
           <div class="short_info">
-            <i class="{{category ? category.icon_class_name : ''}}"></i> {{App.Helpers.localize(category, 'name')}}<span class="price"><sup><i class=" icon-shop-1"></i></sup>{{stores.length}}</span>
+            <i class="{{category ? category.icon_class_name : ''}}"></i> {{App.Helpers.localize(category,
+            'name')}}<span class="price"><sup><i class=" icon-shop-1"></i></sup>{{stores.length}}</span>
           </div>
         </a>
       </div>

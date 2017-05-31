@@ -1,0 +1,28 @@
+<div id="brand_review_form">
+  <%= form_for @review, :url => api_v1_brand_reviews_path(@brand, @review) do |f| %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label><%= t('Your review') %>
+              <%= select_tag :eval, options_for_select((0..5).step(1).to_a.map { |s| ["#{s}", s] }), :id => "eval" %></label>
+              <textarea rows="5" id="my_review_body" name="body"
+                        class="form-control" placeholder="<%= t('Your review') %>" style="height:200px;"></textarea>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <input type="submit" value="<%= t('Save') %>" class="btn_1" id="submit-contact">
+          </div>
+        </div>
+
+      </div>
+  <% end %>
+</div>
+
+<% content_for :scripts do %>
+    <script>
+      $(document).ready(function () {
+        new BrandReviewsForm(<%= @brand.id %>);
+      });
+    </script>
+<% end %>

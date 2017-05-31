@@ -16,6 +16,7 @@ ar:
   Scheduler : "البرنامج"
   Users : "المستخدمون"
   Stores : المحلات
+  Api : برمجة واجهة التطبيقات
   # header nav
   Statistics : 'الاحصائيات'
 

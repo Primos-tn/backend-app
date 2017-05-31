@@ -6,7 +6,7 @@ class MessengerConfig
     Facebook::Messenger::Thread.set({
                                         setting_type: 'greeting',
                                         greeting: {
-                                            text: MessengerConstants::GREETING
+                                            text: MessengerConstants::GETTING_STARTED
                                         },
                                     }, access_token: MessengerController.get_token)
     # Set call to action button when user is about to address bot
@@ -28,8 +28,8 @@ class MessengerConfig
                                         call_to_actions: [
                                             {
                                                 type: 'postback',
-                                                title: 'Take tour',
-                                                payload: MessengerConstants::MENU_TAKE_TOUR
+                                                title: 'Categories',
+                                                payload: MessengerConstants::SELECT_CATEGORIES
                                             },
                                             {
                                                 type: 'postback',

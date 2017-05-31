@@ -3,8 +3,6 @@ class Api::V1::BaseController < ApplicationController
   protect_from_forgery with: :null_session
   # raise all non found record to be catched by not_found method
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
-  # destroy action
-  before_action :check_for_token
   before_action :destroy_session
   before_action :authenticate_user!, except: [:not_found]
 
@@ -14,8 +12,8 @@ class Api::V1::BaseController < ApplicationController
   end
 
   # handle RecordNotFound exception
-  def not_found(error='Not found')
-    api_error(404, error)
+  def not_found(error='Not found', action='NOT FOUND')
+    api_error(404, error, action)
   end
 
   # api error pretty
@@ -106,7 +104,7 @@ class Api::V1::BaseController < ApplicationController
   # Once the client has the token it sends both token and email
   # to the API for each subsequent request.
   def authenticate_user!
-    return true if @current_user
+    return true if current_user
     # get token and options
     authenticate_or_request_with_http_token do |token, options|
       access_token = AccountAccessToken.where('token_value = ? AND expires > ?', token, Date.today).first
@@ -115,13 +113,6 @@ class Api::V1::BaseController < ApplicationController
       else
         unauthenticated!
       end
-    end
-  end
-
-  # Check if the user has an authorization in the header
-  def check_for_token
-    if request.authorization
-      authenticate_user!
     end
   end
 

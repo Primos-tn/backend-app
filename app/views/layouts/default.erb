@@ -31,6 +31,13 @@
 <%= content_for?(:body) ? yield(:body) : yield %>
 
 <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+<script>
+  $(document).ready(function () {
+        console.log(JSON.parse('<%= raw get_location.to_json %>').data);
+      }
+  );
+</script>
+
 
 <div id="ws_config" data-host="<%= ws_app_host? %>" data-user="<%= ws_app_user? %>" data-connection="<%= content_for?(:ws_connection) ? yield(:ws_connection) : '' %>"></div>
 </body>

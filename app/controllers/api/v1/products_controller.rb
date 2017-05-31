@@ -1,6 +1,7 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   include StatisticsUtils
   include RabbitMQDispatcher
+  include StoresSearchable
 
   #
   skip_before_action :authenticate_user!, only: [:index, :show, :reviews, :wishers, :product_of_day]
@@ -13,87 +14,77 @@ class Api::V1::ProductsController < Api::V1::BaseController
       return api_error(422, I18n.t('geo.no coordinates provided'), nil, ApiConstants::MISSING_LOCATION)
     end
     begin
-      center = request.params[:map][:center].to_a
-      distance = 35
-      center = center.collect { |i| i.to_f }
-      # get within 50 km near given position
-      box = Geocoder::Calculations.bounding_box(center, distance)
-      # find all stores id within the bounding box
-      stores_ids = Store.within_bounding_box(box).map(&:id)
+      stores_ids = get_stores_near
     rescue => ex
+      puts ex
       return api_error(422, I18n.t('geo.no coordinates provided'))
     end
+    @products = []
+    unless stores_ids.count == 0
+      categories_ids = params[:categories] || params[:category]
+      @products = ProductLaunch.launches_in_collections(
+          {stores_ids: stores_ids,
+           categories_ids: categories_ids,
+           page: params[:page], limit: params[:limit]}
+      )
+      #
+      collections_ids = []
+      # e
+      already_loaded_products_ids = []
+      # products without collection
+      standalone_products = []
 
-    @products = ProductLaunch.launches_of_day({stores_ids: stores_ids, page: params[:page], limit: params[:limit]})
+      # collections by ids
+      @collections = {}
+      # collections by ids
+      @same_brand_collections = {}
 
-    #
-    collections_ids = []
-    # e
-    already_loaded_products_ids = []
-    # products without collection
-    standalone_products = []
+      @products.each do |entry|
+        already_loaded_products_ids << entry.product_id
+        if entry.products_collection_id.nil?
+          standalone_products << entry.product_id
+        else
+          collections_ids << entry.products_collection_id
+          @collections[entry.products_collection_id] = []
+        end
+      end
+      # get all items with same collection
+      products_in_collections = ProductLaunch
+                                    .look_now({categories_ids: categories_ids,
+                                               exclude: already_loaded_products_ids,
+                                               collections_ids: collections_ids,
+                                               stores_ids: stores_ids})
 
-    # collections by ids
-    @collections = {}
-    # collections by ids
-    @same_brand_collections = {}
+      # get id form products in collection s
+      products_in_collections.each do |entry|
+        @collections[entry.products_collection_id] << entry
+        already_loaded_products_ids << entry.product_id
+      end
+
+      # get all items with stand alone but same brand
+      same_brand_launches_of_day = ProductLaunch.look_now({categories_ids: categories_ids,
+                                                           exclude: already_loaded_products_ids,
+                                                           stores_ids: stores_ids})
 
 
-    @products.each do |entry|
-
-      already_loaded_products_ids << entry.product_id
-
-      if entry.products_collection_id.nil?
-        standalone_products << entry.product_id
-      else
-        collections_ids << entry.products_collection_id
-        @collections[entry.products_collection_id] = []
+      # get id form products in collection s
+      same_brand_launches_of_day.each do |entry|
+        brand_id = entry.product.brand_id
+        if @same_brand_collections[brand_id].nil?
+          @same_brand_collections[brand_id] = []
+        end
+        @same_brand_collections[brand_id] << entry
+      end
+      # find user with relation to current user
+      @me_and_products = {}
+      if current_user
+        mine = current_user.get_products_i_voted_from_list(standalone_products)
+        mine.map do |entry|
+          @me_and_products[entry[:product_id]] = true
+        end
       end
     end
-    # get all items with same collection
-    products_in_collections = ProductLaunch
-                                  .joins(product: [:brand, :stores])
-                                  .eager_load!(product: [:brand, :pictures])
-                                  .where({launch_date: Date.today})
-                                  .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
-                                  .where({products_collection_id: collections_ids})
-                                  .where
-                                  .not({product_id: already_loaded_products_ids})
-                                  .order('products.user_product_views_count DESC')
 
-    # get id form products in collection s
-    products_in_collections.each do |entry|
-      @collections[entry.products_collection_id] << entry
-      already_loaded_products_ids << entry.product_id
-    end
-
-    # get all items with same collection
-    same_brand_launches_of_day = ProductLaunch
-                                     .joins(product: [:brand, :stores])
-                                     .eager_load!(product: [:brand, :pictures])
-                                     .where({launch_date: Date.today})
-                                     .where(stores_ids.nil? ? '' : "product_stores.store_id in (#{stores_ids.join(',')})")
-                                     .where
-                                     .not({product_id: already_loaded_products_ids})
-                                     .order('products.user_product_views_count DESC')
-
-
-    # get id form products in collection s
-    same_brand_launches_of_day.each do |entry|
-      brand_id = entry.product.brand_id
-      if @same_brand_collections[brand_id].nil?
-        @same_brand_collections[brand_id] = []
-      end
-      @same_brand_collections[brand_id] << entry
-    end
-    # find user with relation to current user
-    @me_and_products = {}
-    if current_user
-      mine = current_user.get_products_i_voted_from_list(standalone_products)
-      mine.map do |entry|
-        @me_and_products[entry[:product_id]] = true
-      end
-    end
     # get all items that items
 
   end
@@ -104,7 +95,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
     #@products = Product.eager_load(:brand).page(params[:page] || 1).per(2)
     search = {}
     search[:brand] = params[:brand]
-    search[:categories] = params[:categories]
+    search[:categories] = params[:categories] || request.params[:category]
     ids_query = Product.get_sql_query(params[:limit], params[:page], params)
     ids_query_results = ActiveRecord::Base.connection.execute(ids_query)
     products_ids = ids_query_results.map { |c| c['id'] }
@@ -259,7 +250,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
     account_id = current_user.id if current_user
   else
     nil
-
     view = UserProductView
                .where(:ip_address => ip, :product => @product, :account_id => account_id)
                .first_or_create(:count => 1)

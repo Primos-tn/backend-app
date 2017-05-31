@@ -112,16 +112,20 @@
         <%= render partial: 'dashboard/partials/footer' %>
       </div>
     </div>
+
     <%= content_for?(:out_wrapper) ? yield(:out_wrapper) : '' %>
+
     <%= javascript_include_tag 'dashboard', 'data-turbolinks-track' => true %>
+
     <%- if flash[:notice] %>
         <div class="flash" data-type="success" data-text="<%= flash[:notice] %>"></div>
     <% end -%>
     <%- if flash[:error] %>
         <div class="flash" data-type="danger" data-text="<%= flash[:error] %>"></div>
     <% end -%>
+
     <script>
-      <%= content_for?(:scripts) ? yield(:scripts) : '' %>
+      <% content_for?(:scripts) ? yield(:scripts) : '' %>
     </script>
 <% end %>
 

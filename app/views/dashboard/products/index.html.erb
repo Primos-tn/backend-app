@@ -4,38 +4,45 @@
 
 %>
 
-  <div class="col-md-12">
-    <div class="card">
-      <div class="header">
-        <h4 class="title">
-          <%= I18n.t('The products') %>
-          <%= form_tag({url: dashboard_products_path}, method: :get, class: 'visible-lg-inline') do |f| %>
-              <%= text_field_tag :search , @search_query %>
-              <%= submit_tag I18n.t('search') , class: 'btn btn-primary btn-sm'%>
-          <% end %>
+<div class="col-md-12">
+  <div class="card">
+    <div class="header">
+      <h4 class="title">
+        <%= I18n.t('The products') %>
+        <%= form_tag({url: dashboard_products_path}, method: :get, class: 'visible-lg-inline') do |f| %>
+            <%= text_field_tag :search, @search_query %>
+            <%= submit_tag I18n.t('search'), class: 'btn btn-primary btn-sm' %>
+        <% end %>
 
-          <%= link_to  dashboard_products_collections_path, class: 'btn btn-primary pull-right' do %>
-              <%= t('Collections') %>
-          <% end %>
+        <%= link_to dashboard_products_collections_path, class: 'btn btn-primary pull-right' do %>
+            <%= t('Collections') %>
+        <% end %>
 
-          <%= link_to t('New Product'), new_dashboard_product_path, class: 'pull-right btn btn-primary' %>
-          <%= link_to t('Import'), import_dashboard_products_path, class: 'pull-right btn btn-primary' %>
-        </h4>
+        <%= link_to t('New Product'), new_dashboard_product_path, class: 'pull-right btn btn-primary' %>
+        <%= link_to t('Import'), import_dashboard_products_path, class: 'pull-right btn btn-primary' %>
+      </h4>
+    </div>
+    <div class="content table-responsive table-full-width" style="<%= view_style == grid ? '' : '' %> ">
+      <% if view_style && view_style == grid %>
+          <%= render 'grid' %>
+      <% else %>
+          <%= render 'list' %>
+      <% end %>
+
+      <div class="text-center">
+        <%- if @page > 1 %>
+            <a href="<%= dashboard_products_path(:page => @page - 1) %>"><%= t('Previous') %></a>
+        <% end -%>
+        <%= @page.to_s + '/' + @page_count.to_s %>
+        <%- if @page < @page_count %>
+            <a href="<%= dashboard_products_path(:page => @page + 1) %>"><%= t('Next') %></a>
+        <% end -%>
+
       </div>
-      <div class="content table-responsive table-full-width" style="<%= view_style == grid ? '' : '' %> ">
-        <% if view_style && view_style == grid %>
-            <%= render 'grid' %>
-        <% else %>
-            <%= render 'list' %>
-        <%end %>
-
-        <div class="text-center">
-          <%= @page.to_s + '/' +  @count.to_s %>
-        </div>
-        <div class="text-center">
-          <%= link_to t('New Product'), new_dashboard_product_path, class: 'btn btn-primary' %>
-        </div>
-
+      <div class="text-center">
+        <%= link_to t('New Product'), new_dashboard_product_path, class: 'btn btn-primary' %>
       </div>
+
     </div>
   </div>
+</div>

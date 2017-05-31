@@ -31,5 +31,10 @@ ar:
         Create: "%{model} انشاء"
   Find us on messenger : استعمل Messenger
   Usage promise : نحن نعدك، لا  بريد  مزعج ، لا مشاركة لمكانك أو بياناتك الشخصية !
-  Popup geo required :  لاتعمل بدون الموقع الجغرافي Pingo
+  Popup geo required :  لاتعمل بدون الموقع الجغرافي YallaPingo
+  Feature not available : #FIXME
+  Need help? : تحتاج مساعدة؟
+  Discover : اكتشف
+  View on map : عرض على الخريطة
+  Hide map: إخفاء الخريطة
 

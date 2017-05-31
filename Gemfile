@@ -89,4 +89,6 @@ gem "koala"
 
 gem 'facebook-messenger'
 
+gem 'whatlanguage'
+
 ruby '2.3.3'

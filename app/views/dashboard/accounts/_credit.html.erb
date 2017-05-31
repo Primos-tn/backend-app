@@ -6,8 +6,13 @@
       <div class="panel-heading display-table">
         <div class="row display-tr">
           <h3 class="panel-title display-td text-center"><%= t('Payment Details') %></h3>
-          <div class="display-td">
-            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+          <div class="display-td text-center">
+            <span class="danger" style="color:red">Only tunisian e-dinar cart accepted, for cheque and international please <%= link_to 'contact', company_page_path('contact') %> </span>
+
+
+            <img class="img-responsive pull-right" style="height: 35px;
+                margin-right: 14px;
+                border-radius: 4px;" src="<%= asset_path('business/e-dinar.jpeg')%>">
           </div>
         </div>
       </div>
@@ -69,6 +74,7 @@
           </div>
         </div>
         -->
+
           <div class="row">
             <div class="col-xs-12">
               <button class="btn btn-success btn-lg btn-block" type="submit"><%= t('Recharge my offer') %></button>

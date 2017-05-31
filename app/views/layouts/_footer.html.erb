@@ -25,12 +25,12 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-3">
-        <h3>Need help?</h3>
+        <h3><%= I18n.t('Need help?') %></h3>
         <a href="tel://004542344599" id="phone">+216 123456</a>
         <a href="mailto:help@yallapingo.com" id="email_footer">help@yallapingo.com</a>
       </div>
       <div class="col-md-3 col-sm-3">
-        <h3>Discover</h3>
+        <h3><%= I18n.t('Discover') %></h3>
         <ul>
           <li><%= link_to I18n.t('Sign up'), new_user_registration_path %></li>
           <li><%= link_to I18n.t('Already have an account ?'), new_user_session_path %></li>
@@ -38,7 +38,7 @@
         </ul>
       </div>
       <div class="col-md-3 col-sm-3">
-        <h3>Contact</h3>
+        <h3><%= t('Contact') %></h3>
         <ul>
           <li><%= link_to I18n.t('Business'), business_index_path %></li>
           <li><%= link_to I18n.t('About'), company_page_path('about') %></li>
@@ -46,7 +46,7 @@
         </ul>
       </div>
       <div class="col-md-2 col-sm-3">
-        <h3>Settings</h3>
+        <h3><%= t('Settings') %></h3>
         <div class="styled-select">
           <%= form_tag('/', :method => 'get') do %>
               <select class="form-control" name="locale" id="select_locale">

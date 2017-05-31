@@ -20,6 +20,9 @@ module BusinessHelper
     end
     string = nil
     expires = business_profile.expires
+    if expires.nil?
+      expires = Date.today
+    end
     if plan.equal?(0)
       string = t('Free')
     else

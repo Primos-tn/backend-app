@@ -28,8 +28,7 @@ class Dashboard::ProductsController < Dashboard::DashboardController
 
     total_count = products.count
     @page = page
-    @count = total_count / limit + ((total_count % limit) > 0 ? 1 : 0)
-
+    @page_count = total_count / limit + ((total_count % limit) > 0 ? 1 : 0)
     @products = products
                     .order(sort_column + ' ' + sort_direction)
                     .page(page)

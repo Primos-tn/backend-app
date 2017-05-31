@@ -61,14 +61,6 @@ class Product < ActiveRecord::Base
     join_top_wishers(get_base_products_query(limit, offset, options))
   end
 
-  def self.search(search)
-    if search
-      where('lower(name) LIKE ?', "%#{search.downcase}%")
-    else
-      where(nil)
-    end
-  end
-
   #
   # FIXME sql injections
 
@@ -205,6 +197,5 @@ class Product < ActiveRecord::Base
   end
 
   private
-
 
 end

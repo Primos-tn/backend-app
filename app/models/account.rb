@@ -170,7 +170,9 @@ class Account < ActiveRecord::Base
 
   def is_business_free?
     self.business_profile.nil? or
-        (self.business_profile.plan_type != BusinessProfile.plans_types[:free] && self.business_profile.expires < Date.today)
+        (self.business_profile.plan_type != BusinessProfile.plans_types[:free] &&
+            self.business_profile.expires &&
+            self.business_profile.expires < Date.today)
     (self.business_profile.plan_type == BusinessProfile.plans_types[:free])
   end
 
@@ -189,7 +191,9 @@ class Account < ActiveRecord::Base
   def has_expired?
     # check if no business profile or it has a business profile  but has expires
     self.business_profile.nil? or
-        ((self.business_profile.plan_type != BusinessProfile.plans_types[:free]) and self.business_profile.expires < Date.today)
+        # not free but has expired
+        ((self.business_profile.plan_type != BusinessProfile.plans_types[:free]) and
+            self.business_profile.expires < Date.today)
   end
 
   def is_business_blocked?

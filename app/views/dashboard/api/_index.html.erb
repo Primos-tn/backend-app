@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title"><%= t('Hooks') %> </h4>
+      </div>
+
+      <div class="content table-responsive table-full-width">
+        <table class="table table-striped">
+          <% @hooks.each do |hook| %>
+              <tr>
+                <td><%= hook.name %></td>
+                <td><%= hook.brand_id %></td>
+                <td><%= link_to 'Show', dashboard_hook %></td>
+                <td><%= link_to 'Edit', dashboard_edit_hook_path(webhook) %></td>
+                <td><%= link_to 'Destroy', dashboard_hook, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+              </tr>
+          <% end %>
+        </table>
+        <div class="text-center">
+          <%= link_to t('New Hook'), new_dashboard_hook_path, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,4 +1,3 @@
-
 /**
  * App routes
  */
@@ -8,7 +7,7 @@ App.Stores = {
      * @param options
      */
     loadData: function (options) {
-        var $defer = $.Deferred() ;
+        var $defer = $.Deferred();
         $.ajax({
             type: 'GET',
             url: App.Helpers.formatApiUrl(options.url, options.params || {}),
@@ -23,7 +22,7 @@ App.Stores = {
                 console.error(options.action || options.url, status, err.toString());
             }.bind(this)
         });
-        return $defer ;
+        return $defer;
     },
     /**
      *
@@ -38,17 +37,24 @@ App.Stores = {
      * }
      */
     post: function (options) {
+        var $defer = $.Deferred();
         $.ajax({
             type: 'POST',
             url: App.Helpers.formatApiUrl(options.url, options.params || {}),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+            },
             data: options.data || {},
             success: function (data) {
+                $defer.resolve(data);
                 App.Dispatcher.dispatch(options.action || options.url, data, options.event || {});
             }.bind(this),
             error: function (xhr, status, err) {
+                $defer.reject(err);
                 console.error(options.action || options.url, status, err.toString());
             }.bind(this)
         });
+        return $defer;
     }
 };
 // alias

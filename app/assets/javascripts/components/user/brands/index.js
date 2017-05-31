@@ -1,8 +1,18 @@
 //= require ./icheck
 //= require ./infobox
-//= require ./main
+//= require ./list
+//= require ./map
+//= require ./../brands-reviews/index
 //= require_self
-
 $(document).ready(function () {
-    (new BrandsList()).loadData();
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-grey',
+        radioClass: 'iradio_square-grey'
+    });
+    $(document).ready(function () {
+        //
+        var query = $.extend({}, {}, App.Helpers.getUserPosition(), App.Helpers.getUrlParameters(['category']));
+        (new BrandsList()).loadData();
+        new MapList({url: App.Routes.brands, query: query});
+    });
 });

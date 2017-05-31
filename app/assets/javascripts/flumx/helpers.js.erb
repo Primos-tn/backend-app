@@ -8,6 +8,11 @@ App.Helpers = {
    * @returns {{map: {center: *}}}
    */
   getUserPosition: function (map) {
+    return {
+      'map' : {
+        center : [48.839293, 2.351074]
+      }
+    };
     return window[App.Constants.USER_LOCATION_STORAGE_KEY];
   },
   /**

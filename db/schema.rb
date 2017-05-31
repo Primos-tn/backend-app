@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504135820) do
+ActiveRecord::Schema.define(version: 20170518212419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,13 @@ ActiveRecord::Schema.define(version: 20170504135820) do
     t.integer  "brand_id"
   end
 
+  create_table "brand_features", force: :cascade do |t|
+    t.integer  "brand_id"
+    t.integer  "feature_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "brand_galleries", force: :cascade do |t|
     t.integer  "brand_id"
     t.string   "name"
@@ -143,6 +150,14 @@ ActiveRecord::Schema.define(version: 20170504135820) do
     t.integer  "category_id"
     t.integer  "messenger_followers_count"
     t.index ["account_id"], name: "index_brands_on_account_id", using: :btree
+  end
+
+  create_table "business_api_tokens", force: :cascade do |t|
+    t.integer  "account_id"
+    t.string   "token"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "business_profiles", force: :cascade do |t|
@@ -210,6 +225,15 @@ ActiveRecord::Schema.define(version: 20170504135820) do
     t.datetime "updated_at", null: false
     t.string   "code"
     t.string   "real_name"
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.string   "name"
+    t.string   "name_ar"
+    t.string   "name_fr"
+    t.string   "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "gallery_pictures_products", force: :cascade do |t|

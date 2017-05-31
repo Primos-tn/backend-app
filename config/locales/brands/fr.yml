@@ -1,4 +1,7 @@
 fr:
+  Your review : Votre point de vue
+  Reviews : Revues
+  Reviews based on : Basés sur
   Follow : Suivre
   # views/dashboard/index.html
   activerecord:

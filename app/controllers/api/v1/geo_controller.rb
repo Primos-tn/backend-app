@@ -29,8 +29,8 @@ class Api::V1::GeoController < Api::V1::BaseController
 
   # Based on ip address
   def mine
-    render json: ["ok"]
-  end
 
+    render json: ['ok']
+  end
 
 end

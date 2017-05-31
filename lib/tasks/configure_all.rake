@@ -6,5 +6,6 @@ namespace :configure do
     Rake::Task['configure:business_system'].invoke 3
     Rake::Task['db:seed'].invoke 4
     Rake::Task['configure:categories'].invoke 5
+    Rake::Task['configure:features'].invoke 6
   end
 end

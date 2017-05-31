@@ -1,8 +1,8 @@
 //= require jquery
 //= require jquery_ujs
+//= require_tree  ./vendor
 //= require react
 //= require react_ujs
-//= require_tree  ./vendor
 //= require websocket
 //= require  ./flumx/index
 //= require ./modules/dropzone

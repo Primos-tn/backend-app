@@ -1,8 +1,8 @@
 <% if not @is_logged_in or (@is_logged_in and not  @is_business) %>
     <%= render 'web/business/features/index' %>
+    <%= render 'web/business/prices/index' %>
 <% end %>
 
-<%= render 'prices' %>
 
 <div class="text-center">
   <% if @is_logged_in %>
