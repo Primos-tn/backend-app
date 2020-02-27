@@ -62,7 +62,7 @@ gem 'sidekiq', '4.0.0'
 # react dvise
 gem 'react-rails', '1.4.2'
 
-gem 'nokogiri', '1.6.7.rc3'
+gem 'nokogiri', '1.10.8'
 # pagination
 gem 'kaminari'
 # uplaod
